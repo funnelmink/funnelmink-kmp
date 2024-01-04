@@ -16,7 +16,7 @@ struct ContentView: View {
                     Image(systemName: "swift")
                         .font(.system(size: 200))
                         .foregroundColor(.accentColor)
-                    Text("SwiftUI: \(Greeting().greet())")
+                    Text("SwiftUI: Hello, funnelmink!")
                 }
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
@@ -30,4 +30,8 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
+}
+
+class NetworkingLayer {
+    static let api: API = { FunnelminkAPI(baseURL: "") }
 }
