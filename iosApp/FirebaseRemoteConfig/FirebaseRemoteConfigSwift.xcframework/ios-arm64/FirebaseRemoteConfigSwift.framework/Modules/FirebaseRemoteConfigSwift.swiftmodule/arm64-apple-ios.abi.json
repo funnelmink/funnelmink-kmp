@@ -1,0 +1,42 @@
+{
+  "ABIRoot": {
+    "kind": "Root",
+    "name": "TopLevel",
+    "printedName": "TopLevel",
+    "children": [
+      {
+        "kind": "Import",
+        "name": "FirebaseRemoteConfig",
+        "printedName": "FirebaseRemoteConfig",
+        "declKind": "Import",
+        "moduleName": "FirebaseRemoteConfigSwift",
+        "declAttributes": [
+          "Exported",
+          "RawDocComment"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "FirebaseRemoteConfig",
+        "printedName": "FirebaseRemoteConfig",
+        "declKind": "Import",
+        "moduleName": "FirebaseRemoteConfigSwift",
+        "declAttributes": [
+          "Exported"
+        ]
+      },
+      {
+        "kind": "Import",
+        "name": "FirebaseRemoteConfig",
+        "printedName": "FirebaseRemoteConfig",
+        "declKind": "Import",
+        "moduleName": "FirebaseRemoteConfigSwift",
+        "declAttributes": [
+          "Exported"
+        ]
+      }
+    ],
+    "json_format_version": 8
+  },
+  "ConstValues": []
+}

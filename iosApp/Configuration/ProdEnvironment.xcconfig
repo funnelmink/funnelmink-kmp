@@ -1,0 +1,13 @@
+//
+//  ProdEnvironment.xcconfig
+//  funnelmink
+//
+//  Created by Jared Warren on 11/27/23.
+//  Copyright © 2023 FunnelMink, LLC. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+BASE_URL = https:/$()/funnelmink.com
+GOOGLE_SERVICE_PATH = GoogleService-Info-PROD
