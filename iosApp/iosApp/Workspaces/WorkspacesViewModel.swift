@@ -28,14 +28,16 @@ class WorkspacesViewModel: ViewModel {
             AppState.shared.signIntoWorkspace(workspace)
             onSuccess()
         } catch {
+            // TODO: show the error on the UI
             AppState.shared.error = error
         }
     }
     
     @MainActor
-    func inviteToWorkspace(email: String) async {
+    func inviteToWorkspace(email: String, onSuccess: @escaping () -> Void) async {
         do {
             try await Networking.api.inviteUserToWorkspace(email: email)
+            onSuccess()
         } catch {
             AppState.shared.error = error
         }
