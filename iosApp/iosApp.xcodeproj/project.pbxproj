@@ -83,6 +83,10 @@
 		0D012E942B477FFC00658153 /* GoogleService-Info-PROD.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E922B477FFC00658153 /* GoogleService-Info-PROD.plist */; };
 		0D012E9A2B47877B00658153 /* ProdEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */; };
 		0D012E9B2B47877B00658153 /* LocalEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */; };
+		1F022A3B2B49159100966345 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A372B49159100966345 /* CustomButton.swift */; };
+		1F022A3C2B49159100966345 /* CustomAccordion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A382B49159100966345 /* CustomAccordion.swift */; };
+		1F022A3D2B49159100966345 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A392B49159100966345 /* CustomCell.swift */; };
+		1F022A3E2B49159100966345 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A3A2B49159100966345 /* CustomTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -165,6 +169,10 @@
 		0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ProdEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LocalEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E9C2B47878F00658153 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		1F022A372B49159100966345 /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		1F022A382B49159100966345 /* CustomAccordion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAccordion.swift; sourceTree = "<group>"; };
+		1F022A392B49159100966345 /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
+		1F022A3A2B49159100966345 /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* funnelmink DEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "funnelmink DEV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
@@ -389,6 +397,10 @@
 			isa = PBXGroup;
 			children = (
 				0D012E592B477E3A00658153 /* AsyncButton.swift */,
+				1F022A382B49159100966345 /* CustomAccordion.swift */,
+				1F022A372B49159100966345 /* CustomButton.swift */,
+				1F022A392B49159100966345 /* CustomCell.swift */,
+				1F022A3A2B49159100966345 /* CustomTextField.swift */,
 				0D012E5A2B477E3A00658153 /* WarningAlertButton.swift */,
 			);
 			path = Components;
@@ -436,6 +448,7 @@
 			isa = PBXGroup;
 			children = (
 				1FCB748BC4D5293EE49EEABA /* jarwarren.xcuserdatad */,
+				41CC66C8F97DDF864CFC73DA /* jeremywarren.xcuserdatad */,
 			);
 			path = xcuserdata;
 			sourceTree = "<group>";
@@ -477,6 +490,7 @@
 			isa = PBXGroup;
 			children = (
 				1FCB75B9F417D25DD85B206F /* jarwarren.xcuserdatad */,
+				41CC64D4F40910F2CFB187DF /* jeremywarren.xcuserdatad */,
 			);
 			name = xcuserdata;
 			path = iosApp.xcodeproj/xcuserdata;
@@ -495,6 +509,28 @@
 				1FCB7F587D73CA1C8312E8CF /* configuration */,
 			);
 			path = swiftpm;
+			sourceTree = "<group>";
+		};
+		41CC64D4F40910F2CFB187DF /* jeremywarren.xcuserdatad */ = {
+			isa = PBXGroup;
+			children = (
+				41CC66322A28CCE491022D1C /* xcschemes */,
+			);
+			path = jeremywarren.xcuserdatad;
+			sourceTree = "<group>";
+		};
+		41CC66322A28CCE491022D1C /* xcschemes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = xcschemes;
+			sourceTree = "<group>";
+		};
+		41CC66C8F97DDF864CFC73DA /* jeremywarren.xcuserdatad */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = jeremywarren.xcuserdatad;
 			sourceTree = "<group>";
 		};
 		42799AB246E5F90AF97AA0EF /* Frameworks */ = {
@@ -695,6 +731,8 @@
 				0D012E862B477E3A00658153 /* ImportContactsVM.swift in Sources */,
 				0D012E842B477E3A00658153 /* ContactsView.swift in Sources */,
 				0D012E882B477E3A00658153 /* WorkspacesViewModel.swift in Sources */,
+				1F022A3C2B49159100966345 /* CustomAccordion.swift in Sources */,
+				1F022A3E2B49159100966345 /* CustomTextField.swift in Sources */,
 				0D012E742B477E3A00658153 /* Networking.swift in Sources */,
 				0D012E7D2B477E3A00658153 /* AccountViewModel.swift in Sources */,
 				0D012E6D2B477E3A00658153 /* Color+.swift in Sources */,
@@ -708,6 +746,8 @@
 				0D012E7C2B477E3A00658153 /* LoginBackgroundGradient.swift in Sources */,
 				0D012E722B477E3A00658153 /* Navigation.swift in Sources */,
 				0D012E7F2B477E3A00658153 /* WorkspaceSettingsView.swift in Sources */,
+				1F022A3B2B49159100966345 /* CustomButton.swift in Sources */,
+				1F022A3D2B49159100966345 /* CustomCell.swift in Sources */,
 				0D012E6A2B477E3A00658153 /* String+.swift in Sources */,
 				0D012E8B2B477E3A00658153 /* JoinExistingWorkspaceView.swift in Sources */,
 				0D012E6B2B477E3A00658153 /* Gradient+.swift in Sources */,
