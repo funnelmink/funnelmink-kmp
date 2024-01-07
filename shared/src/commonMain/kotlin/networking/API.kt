@@ -20,7 +20,7 @@ interface API {
     // workspaces
     @Throws(Exception::class) suspend fun acceptWorkspaceInvitation(id: String): Workspace
     @Throws(Exception::class) suspend fun declineWorkspaceInvitation(id: String)
-    @Throws(Exception::class) suspend fun createWorkspace(name: String): Workspace
+    @Throws(Exception::class) suspend fun createWorkspace(body: CreateWorkspaceRequest): Workspace
     @Throws(Exception::class) suspend fun getWorkspaces(): List<Workspace>
     @Throws(Exception::class) suspend fun requestWorkspaceMembership(name: String)
 

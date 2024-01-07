@@ -125,10 +125,9 @@ class FunnelminkAPI(private val baseURL: String) : API {
         return genericRequest("$baseURL/v1/tasks", HttpMethod.Delete)
     }
 
-    @Throws(Exception::class) override suspend fun createWorkspace(name: String): Workspace {
-        // TODO: add a body "{ "name": String }"
+    @Throws(Exception::class) override suspend fun createWorkspace(body: CreateWorkspaceRequest): Workspace {
         return genericRequest("$baseURL/v1/workspaces", HttpMethod.Post) {
-            setBody(CreateWorkspaceRequest(name))
+            setBody(body)
         }
     }
 

@@ -23,7 +23,8 @@ class WorkspacesViewModel: ViewModel {
     @MainActor
     func createWorkspace(name: String, onSuccess: () -> Void) async {
         do {
-            let workspace = try await Networking.api.createWorkspace(name: name)
+            let body = CreateWorkspaceRequest(name: name)
+            let workspace = try await Networking.api.createWorkspace(body: body)
             state.workspaces.append(workspace)
             AppState.shared.signIntoWorkspace(workspace)
             onSuccess()
