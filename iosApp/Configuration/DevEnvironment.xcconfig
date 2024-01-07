@@ -1,0 +1,14 @@
+//
+//  DevEnvironment.xcconfig
+//  iosApp
+//
+//  Created by Jared Warren on 1/6/24.
+//  Copyright © 2024 orgName. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+BASE_URL = http:/$()/dev.funnelmink.com
+GOOGLE_SERVICE_PATH = GoogleService-Info-DEV
+KOTLIN_FRAMEWORK_BUILD_TYPE = debug
