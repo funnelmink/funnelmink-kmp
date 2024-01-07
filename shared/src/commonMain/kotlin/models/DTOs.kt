@@ -28,17 +28,26 @@ data class CreateUserRequest(
 @Serializable
 data class CreateTaskRequest(
     val title: String,
-    val body: String,
     val priority: Int,
-    val scheduledDate: String?,
-    )
+    val body: String? = null,
+    val scheduledDate: String? = null,
+)
+
+@Serializable
+data class UpdateTaskRequest(
+    val title: String,
+    val priority: Int,
+    val body: String? = null,
+    val isComplete: Boolean? = null,
+    val scheduledDate: String? = null,
+)
 
 @Serializable
 data class User(
     val id: String,
     val username: String,
     val email: String,
-    )
+)
 
 @Serializable
 data class CreateWorkspaceRequest(val name: String)
@@ -47,4 +56,4 @@ data class CreateWorkspaceRequest(val name: String)
 data class APIError(
     val message: String,
     val code: Int,
-    )
+)

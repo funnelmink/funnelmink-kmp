@@ -41,8 +41,7 @@ interface API {
     @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): ScheduleTask
     @Throws(Exception::class) suspend fun deleteTask(id: String)
     @Throws(Exception::class) suspend fun getTasks(date: String?, priority: Int?, limit: Int?, offset: Int?): Array<ScheduleTask>
-    // TODO: updateTask(body: UpdateTaskRequest)
-    @Throws(Exception::class) suspend fun updateTask(id: String, isComplete: Boolean, priority: Int, title: String, body: String, scheduledDate: String): ScheduleTask
+    @Throws(Exception::class) suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask
 
     // workspaces
     @Throws(Exception::class) suspend fun getWorkspaceMembers(): List<WorkspaceMember>

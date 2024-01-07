@@ -110,16 +110,10 @@ class FunnelminkAPI(private val baseURL: String) : API {
         return genericRequest("$baseURL/v1/tasks", HttpMethod.Get)
     }
 
-    // TODO: take in an object instead of piecemeal arguments
-    @Throws(Exception::class) override suspend fun updateTask(
-        id: String,
-        isComplete: Boolean,
-        priority: Int,
-        title: String,
-        body: String,
-        scheduledDate: String
-    ): ScheduleTask {
-        TODO("Not yet implemented")
+    @Throws(Exception::class) override suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask {
+        return genericRequest("$baseURL/v1/tasks/$id", HttpMethod.Put) {
+            setBody(body)
+        }
     }
 
     @Throws(Exception::class) override suspend fun deleteTask(id: String) {
