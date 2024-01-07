@@ -1,6 +1,6 @@
-package com.funnelmink.crm.networking
+package networking
 
-import com.funnelmink.crm.models.*
+import models.*
 
 /// Endpoints are sorted by access level.
 /// Each new access level builds onto the rules from all prior levels.

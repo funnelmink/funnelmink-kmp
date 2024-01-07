@@ -13,12 +13,10 @@ extension String: LocalizedError {
     public var errorDescription: String? { self }
 }
 
-// MARK: - constants
-
+// MARK: constants
 extension String {
     static let constants = Constants()
     struct Constants {
         let refreshTokenExpiration = "refreshTokenExpiration"
     }
-    
 }

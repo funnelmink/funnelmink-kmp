@@ -1,4 +1,4 @@
-package com.funnelmink.crm.models
+package models
 
 import kotlinx.serialization.Serializable
 

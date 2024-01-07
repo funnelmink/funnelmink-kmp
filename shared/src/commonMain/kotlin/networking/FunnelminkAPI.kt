@@ -1,6 +1,6 @@
-package com.funnelmink.crm.networking
+package networking
 
-import com.funnelmink.crm.models.*
+import models.*
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.cache.*
