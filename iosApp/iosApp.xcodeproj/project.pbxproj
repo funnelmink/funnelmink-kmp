@@ -745,7 +745,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		0DFA1F502B4A61EB0047B550 /* Local */ = {
+		0DFA1F502B4A61EB0047B550 /* Debug Local */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AB3632DC29227652001CCB65 /* Config.xcconfig */;
 			buildSettings = {
@@ -806,9 +806,9 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "configuration/funnelmink-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
-			name = Local;
+			name = "Debug Local";
 		};
-		0DFA1F512B4A61EB0047B550 /* Local */ = {
+		0DFA1F512B4A61EB0047B550 /* Debug Local */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */;
 			buildSettings = {
@@ -841,7 +841,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = Local;
+			name = "Debug Local";
 		};
 		0DFA1F522B4A62000047B550 /* Debug Prod */ = {
 			isa = XCBuildConfiguration;
@@ -941,7 +941,7 @@
 			};
 			name = "Debug Prod";
 		};
-		0DFA1F552B4A67EF0047B550 /* Release PROD */ = {
+		0DFA1F552B4A67EF0047B550 /* Release Prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = AB3632DC29227652001CCB65 /* Config.xcconfig */;
 			buildSettings = {
@@ -996,9 +996,9 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = "Release PROD";
+			name = "Release Prod";
 		};
-		0DFA1F562B4A67EF0047B550 /* Release PROD */ = {
+		0DFA1F562B4A67EF0047B550 /* Release Prod */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 0DFA1F542B4A652F0047B550 /* DevEnvironment.xcconfig */;
 			buildSettings = {
@@ -1031,7 +1031,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Release PROD";
+			name = "Release Prod";
 		};
 		7555FFA3242A565B00829871 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1231,9 +1231,9 @@
 			buildConfigurations = (
 				7555FFA3242A565B00829871 /* Debug */,
 				0DFA1F522B4A62000047B550 /* Debug Prod */,
-				0DFA1F502B4A61EB0047B550 /* Local */,
+				0DFA1F502B4A61EB0047B550 /* Debug Local */,
 				7555FFA4242A565B00829871 /* Release Dev */,
-				0DFA1F552B4A67EF0047B550 /* Release PROD */,
+				0DFA1F552B4A67EF0047B550 /* Release Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Release Dev";
@@ -1243,9 +1243,9 @@
 			buildConfigurations = (
 				7555FFA6242A565B00829871 /* Debug */,
 				0DFA1F532B4A62000047B550 /* Debug Prod */,
-				0DFA1F512B4A61EB0047B550 /* Local */,
+				0DFA1F512B4A61EB0047B550 /* Debug Local */,
 				7555FFA7242A565B00829871 /* Release Dev */,
-				0DFA1F562B4A67EF0047B550 /* Release PROD */,
+				0DFA1F562B4A67EF0047B550 /* Release Prod */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Release Dev";
