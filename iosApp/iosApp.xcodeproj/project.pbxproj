@@ -83,6 +83,7 @@
 		0D012E942B477FFC00658153 /* GoogleService-Info-PROD.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E922B477FFC00658153 /* GoogleService-Info-PROD.plist */; };
 		0D012E9A2B47877B00658153 /* ProdEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */; };
 		0D012E9B2B47877B00658153 /* LocalEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */; };
+		1FCB7CD17EFAA37FE7FA338F /* Shared+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -165,6 +166,7 @@
 		0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ProdEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LocalEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E9C2B47878F00658153 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Shared+.swift"; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* funnelmink DEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "funnelmink DEV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
@@ -327,6 +329,7 @@
 				0D012E3E2B477E3900658153 /* Color+.swift */,
 				0D012E3F2B477E3900658153 /* View+.swift */,
 				0D012E402B477E3900658153 /* SwiftUI+.swift */,
+				1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -720,6 +723,7 @@
 				0D012E812B477E3A00658153 /* WorkspaceSettingsViewModel.swift in Sources */,
 				0D012E772B477E3A00658153 /* Segue.swift in Sources */,
 				0D012E692B477E3A00658153 /* CGFloat+.swift in Sources */,
+				1FCB7CD17EFAA37FE7FA338F /* Shared+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,6 +6,7 @@
 //  Copyright © 2023 FunnelMink, LLC. All rights reserved.
 //
 
+import Shared
 import SwiftUI
 
 struct WorkspaceInviteView: View {
@@ -40,8 +41,7 @@ struct WorkspaceInviteView: View {
             }
             .padding(.vertical)
             AsyncButton {
-                // TODO: email validation
-                guard !inviteEmailAddress.isEmpty else {
+                guard Utilities.validation.isEmail(input: inviteEmailAddress) else {
                     AppState.shared.prompt = "Please enter a valid email address."
                     return
                 }
