@@ -74,7 +74,7 @@ class WorkspaceSettingsViewModel: ViewModel {
     func changeMemberRole(id: String, to role: WorkspaceMembershipRole) {
         Task {
             do {
-                try await Networking.api.changeWorkspaceRole(userID: id, role: role.roleName)
+                try await Networking.api.changeWorkspaceRole(userID: id, role: role)
                 if let index = state.workspaceMembers.firstIndex(where: { $0.userID == id }) {
                     state.workspaceMembers[index].role = role
                 }

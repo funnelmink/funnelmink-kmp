@@ -1,0 +1,1 @@
+./gradlew :Shared:compileKotlinIosArm64 && ./gradlew :Shared:linkDebugFrameworkIosArm64

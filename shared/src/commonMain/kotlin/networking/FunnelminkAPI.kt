@@ -69,7 +69,7 @@ class FunnelminkAPI(private val baseURL: String) : API {
         return genericRequest("$baseURL/v1/workspaces/invite/$email", HttpMethod.Post)
     }
 
-    @Throws(Exception::class) override suspend fun changeWorkspaceRole(userID: String, role: String) {
+    @Throws(Exception::class) override suspend fun changeWorkspaceRole(userID: String, role: WorkspaceMembershipRole) {
         return genericRequest("$baseURL/v1/workspaces/roles/$userID?role=$role", HttpMethod.Post)
     }
 

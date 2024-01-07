@@ -55,7 +55,7 @@ interface API {
 
     // workspaces
     @Throws(Exception::class) suspend fun acceptWorkspaceRequest(userID: String)
-    @Throws(Exception::class) suspend fun changeWorkspaceRole(userID: String, role: String) // TODO: enum
+    @Throws(Exception::class) suspend fun changeWorkspaceRole(userID: String, role: WorkspaceMembershipRole)
     @Throws(Exception::class) suspend fun declineWorkspaceRequest(userID: String)
     @Throws(Exception::class) suspend fun deleteWorkspace(): Workspace
     @Throws(Exception::class) suspend fun inviteUserToWorkspace(email: String)
