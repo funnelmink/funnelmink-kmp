@@ -53,6 +53,12 @@ data class User(
 data class CreateWorkspaceRequest(val name: String)
 
 @Serializable
+data class UpdateWorkspaceRequest(
+    val name: String? = null,
+    val avatarURL: String? = null
+)
+
+@Serializable
 data class APIError(
     val message: String,
     val code: Int,

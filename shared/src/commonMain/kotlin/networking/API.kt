@@ -60,5 +60,5 @@ interface API {
     @Throws(Exception::class) suspend fun deleteWorkspace(): Workspace
     @Throws(Exception::class) suspend fun inviteUserToWorkspace(email: String)
     @Throws(Exception::class) suspend fun removeMemberFromWorkspace(userID: String)
-    @Throws(Exception::class) suspend fun updateWorkspace(name: String?, avatarURL: String?): Workspace
+    @Throws(Exception::class) suspend fun updateWorkspace(body: UpdateWorkspaceRequest): Workspace
 }
