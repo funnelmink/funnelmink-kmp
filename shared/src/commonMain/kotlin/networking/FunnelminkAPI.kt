@@ -107,8 +107,12 @@ class FunnelminkAPI(private val baseURL: String) : API {
     }
 
     @Throws(Exception::class) override suspend fun getTasks(date: String?, priority: Int?, limit: Int?, offset: Int?): Array<ScheduleTask> {
-        // TODO: add the parameters as query items
-        return genericRequest("$baseURL/v1/tasks", HttpMethod.Get)
+        return genericRequest("$baseURL/v1/tasks", HttpMethod.Get) {
+            date?.let { parameter("date", it) }
+            priority?.let { parameter("priority", it) }
+            limit?.let { parameter("limit", it) }
+            offset?.let { parameter("offset", it) }
+        }
     }
 
     @Throws(Exception::class) override suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask {
