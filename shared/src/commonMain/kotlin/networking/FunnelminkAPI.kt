@@ -15,98 +15,124 @@ import kotlinx.serialization.json.Json
 class FunnelminkAPI(private val baseURL: String) : API {
     override var token: String? = null
     override var workspaceID: String? = null
+    override var onAuthFailure: ((message: String) -> Unit)? = null
+    override var onBadRequest: ((message: String) -> Unit)? = null
+    override var onDecodingError: ((message: String) -> Unit)? = null
+    override var onMissing: ((message: String) -> Unit)? = null
+    override var onServerError: ((message: String) -> Unit)? = null
 
-    @Throws(Exception::class) override suspend fun createContact(body: CreateContactRequest): Contact {
+    @Throws(Exception::class)
+    override suspend fun createContact(body: CreateContactRequest): Contact {
         return genericRequest("$baseURL/v1/contacts", HttpMethod.Post) {
             setBody(body)
         }
     }
 
-    @Throws(Exception::class) override suspend fun deleteContact(id: String) {
+    @Throws(Exception::class)
+    override suspend fun deleteContact(id: String) {
         return genericRequest("$baseURL/v1/contacts/$id", HttpMethod.Delete)
     }
 
-    @Throws(Exception::class) override suspend fun getContactDetails(id: String): Contact {
+    @Throws(Exception::class)
+    override suspend fun getContactDetails(id: String): Contact {
         return genericRequest("$baseURL/v1/contacts/$id", HttpMethod.Get)
     }
 
-    @Throws(Exception::class) override suspend fun getContacts(): List<Contact> {
+    @Throws(Exception::class)
+    override suspend fun getContacts(): List<Contact> {
         return genericRequest("$baseURL/v1/contacts", HttpMethod.Get)
     }
 
-    @Throws(Exception::class) override suspend fun updateContact(id: String, body: UpdateContactRequest): Contact {
+    @Throws(Exception::class)
+    override suspend fun updateContact(id: String, body: UpdateContactRequest): Contact {
         return genericRequest("$baseURL/v1/contacts/$id", HttpMethod.Put) {
             setBody(body)
         }
     }
 
-    @Throws(Exception::class) override suspend fun getWorkspaces(): List<Workspace> {
+    @Throws(Exception::class)
+    override suspend fun getWorkspaces(): List<Workspace> {
         return genericRequest("$baseURL/v1/workspaces", HttpMethod.Get)
     }
 
-    @Throws(Exception::class) override suspend fun getWorkspaceMembers(): List<WorkspaceMember> {
+    @Throws(Exception::class)
+    override suspend fun getWorkspaceMembers(): List<WorkspaceMember> {
         return genericRequest("$baseURL/v1/workspaces/members", HttpMethod.Get)
     }
 
-    @Throws(Exception::class) override suspend fun deleteWorkspace(): Workspace {
+    @Throws(Exception::class)
+    override suspend fun deleteWorkspace(): Workspace {
         return genericRequest("$baseURL/v1/workspaces/delete", HttpMethod.Delete)
     }
 
-    @Throws(Exception::class) override suspend fun acceptWorkspaceRequest(userID: String) {
+    @Throws(Exception::class)
+    override suspend fun acceptWorkspaceRequest(userID: String) {
         return genericRequest("$baseURL/v1/workspaces/acceptRequest/$userID", HttpMethod.Post)
     }
 
-    @Throws(Exception::class) override suspend fun declineWorkspaceRequest(userID: String) {
+    @Throws(Exception::class)
+    override suspend fun declineWorkspaceRequest(userID: String) {
         return genericRequest("$baseURL/v1/workspaces/declineRequest/$userID", HttpMethod.Post)
     }
 
-    @Throws(Exception::class) override suspend fun updateWorkspace(body: UpdateWorkspaceRequest): Workspace {
+    @Throws(Exception::class)
+    override suspend fun updateWorkspace(body: UpdateWorkspaceRequest): Workspace {
         return genericRequest("$baseURL/v1/workspaces/update", HttpMethod.Put) {
             setBody(body)
         }
     }
 
-    @Throws(Exception::class) override suspend fun inviteUserToWorkspace(email: String) {
+    @Throws(Exception::class)
+    override suspend fun inviteUserToWorkspace(email: String) {
         return genericRequest("$baseURL/v1/workspaces/invite/$email", HttpMethod.Post)
     }
 
-    @Throws(Exception::class) override suspend fun changeWorkspaceRole(userID: String, role: WorkspaceMembershipRole) {
+    @Throws(Exception::class)
+    override suspend fun changeWorkspaceRole(userID: String, role: WorkspaceMembershipRole) {
         return genericRequest("$baseURL/v1/workspaces/roles/$userID?role=$role", HttpMethod.Post)
     }
 
-    @Throws(Exception::class) override suspend fun declineWorkspaceInvitation(id: String) {
+    @Throws(Exception::class)
+    override suspend fun declineWorkspaceInvitation(id: String) {
         return genericRequest("$baseURL/v1/workspaces/$id/declineInvite", HttpMethod.Post)
     }
 
-    @Throws(Exception::class) override suspend fun acceptWorkspaceInvitation(id: String): Workspace {
+    @Throws(Exception::class)
+    override suspend fun acceptWorkspaceInvitation(id: String): Workspace {
         return genericRequest("$baseURL/v1/workspaces/$id/acceptInvite", HttpMethod.Post)
     }
 
-    @Throws(Exception::class) override suspend fun requestWorkspaceMembership(name: String) {
+    @Throws(Exception::class)
+    override suspend fun requestWorkspaceMembership(name: String) {
         return genericRequest("$baseURL/v1/workspaces/$name/requestMembership", HttpMethod.Post)
     }
 
-    @Throws(Exception::class) override suspend fun leaveWorkspace() {
+    @Throws(Exception::class)
+    override suspend fun leaveWorkspace() {
         return genericRequest("$baseURL/v1/workspaces/leave", HttpMethod.Post)
     }
 
-    @Throws(Exception::class) override suspend fun createUser(body: CreateUserRequest): User {
+    @Throws(Exception::class)
+    override suspend fun createUser(body: CreateUserRequest): User {
         return genericRequest("$baseURL/v1/user", HttpMethod.Post) {
             setBody(body)
         }
     }
 
-    @Throws(Exception::class) override suspend fun getUserById(userId: String): User {
+    @Throws(Exception::class)
+    override suspend fun getUserById(userId: String): User {
         return genericRequest("$baseURL/v1/user/$userId", HttpMethod.Get)
     }
 
-    @Throws(Exception::class) override suspend fun createTask(body: CreateTaskRequest): ScheduleTask {
+    @Throws(Exception::class)
+    override suspend fun createTask(body: CreateTaskRequest): ScheduleTask {
         return genericRequest("$baseURL/v1/tasks", HttpMethod.Post) {
             setBody(body)
         }
     }
 
-    @Throws(Exception::class) override suspend fun getTasks(date: String?, priority: Int?, limit: Int?, offset: Int?): Array<ScheduleTask> {
+    @Throws(Exception::class)
+    override suspend fun getTasks(date: String?, priority: Int?, limit: Int?, offset: Int?): Array<ScheduleTask> {
         return genericRequest("$baseURL/v1/tasks", HttpMethod.Get) {
             date?.let { parameter("date", it) }
             priority?.let { parameter("priority", it) }
@@ -115,23 +141,27 @@ class FunnelminkAPI(private val baseURL: String) : API {
         }
     }
 
-    @Throws(Exception::class) override suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask {
+    @Throws(Exception::class)
+    override suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask {
         return genericRequest("$baseURL/v1/tasks/$id", HttpMethod.Put) {
             setBody(body)
         }
     }
 
-    @Throws(Exception::class) override suspend fun deleteTask(id: String) {
+    @Throws(Exception::class)
+    override suspend fun deleteTask(id: String) {
         return genericRequest("$baseURL/v1/tasks", HttpMethod.Delete)
     }
 
-    @Throws(Exception::class) override suspend fun createWorkspace(body: CreateWorkspaceRequest): Workspace {
+    @Throws(Exception::class)
+    override suspend fun createWorkspace(body: CreateWorkspaceRequest): Workspace {
         return genericRequest("$baseURL/v1/workspaces", HttpMethod.Post) {
             setBody(body)
         }
     }
 
-    @Throws(Exception::class) override suspend fun removeMemberFromWorkspace(userID: String) {
+    @Throws(Exception::class)
+    override suspend fun removeMemberFromWorkspace(userID: String) {
         return genericRequest("$baseURL/v1/workspaces/removeMember/$userID", HttpMethod.Delete)
     }
 
@@ -166,9 +196,11 @@ class FunnelminkAPI(private val baseURL: String) : API {
                     is ClientRequestException -> {
                         println("Request Failure: $exceptionString\n${exception.response}")
                     }
+
                     is ServerResponseException -> {
                         println("Server Error: $exceptionString\n${exception.response}")
                     }
+
                     is ResponseException -> {
                         println("Response Error: $exceptionString\n${exception.response}")
                     }
@@ -195,22 +227,28 @@ class FunnelminkAPI(private val baseURL: String) : API {
 
         if (response.status.isSuccess()) {
             println("✅ $responseBody")
+            try {
+                val body = jsonDecoder.decodeFromString<T>(responseBody)
+                return body
+            } catch (e: SerializationException) {
+                onDecodingError?.invoke(e.message.orEmpty())
+                throw e
+            }
         } else {
             println("🆘 $responseBody")
             try {
-                // Attempt to decode an API error
-                val apiError = jsonDecoder.decodeFromString<APIError>(responseBody)
-                throw RuntimeException("${apiError.code} ${method.value}\n\n${url}\n\n${apiError.message}")
-            } catch (ignored: SerializationException) {
-            // If decoding APIError fails, ignore and continue
+                val message = jsonDecoder.decodeFromString<APIError>(responseBody).message
+                when (response.status) {
+                    HttpStatusCode.Unauthorized -> onAuthFailure?.invoke(message)
+                    HttpStatusCode.BadRequest -> onBadRequest?.invoke(message)
+                    HttpStatusCode.NotFound -> onMissing?.invoke(message)
+                    HttpStatusCode.InternalServerError -> onServerError?.invoke(message)
+                }
+                throw RuntimeException("Unexpected server response: $responseBody")
+            } catch (e: SerializationException) {
+                onServerError?.invoke(e.message.orEmpty())
+                throw e
             }
-        }
-
-        return try {
-            jsonDecoder.decodeFromString<T>(responseBody)
-        } catch (e: SerializationException) {
-            // Log the exception or handle it as you see fit
-            throw RuntimeException("${method.value} $url\n\nDecodingError\n\n$responseBody", e)
         }
     }
 

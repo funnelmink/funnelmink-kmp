@@ -7,6 +7,11 @@ import models.*
 interface API {
     var token: String?
     var workspaceID: String?
+    var onAuthFailure: ((message: String) -> Unit)?
+    var onBadRequest: ((message: String) -> Unit)?
+    var onDecodingError: ((message: String) -> Unit)?
+    var onMissing: ((message: String) -> Unit)?
+    var onServerError: ((message: String) -> Unit)?
 
     // ------------------------------------------------------------------------
     // Auth-Only Endpoints
