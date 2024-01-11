@@ -11,7 +11,6 @@ import SwiftUI
 
 class Navigation: ObservableObject {
     static let shared = Navigation()
-    private init() {}
     @Published var _selectedTab = FunnelMinkTab.today
     // navigation stack for each tab
     @Published var _0 = [Segue]()
