@@ -23,12 +23,19 @@ struct WorkspaceSettingsView: View {
                         memberCell(id: member.userID, name: member.username, role: member.role, image: nil)
                     }
                 }
-                Section("WORKSPACE NAME") {
-                    if appState.isWorkspaceOwner {
-                        TextField("Workspace name", text: $newWorkspaceName)
-                            .keyboardType(.alphabet)
-                            .autocorrectionDisabled()
-                            .textContentType(.organizationName)
+                if appState.isWorkspaceOwner {
+                    Section("WORKSPACE NAME") {
+                        HStack {
+                            TextField("Workspace name", text: $newWorkspaceName)
+                                .keyboardType(.alphabet)
+                                .autocorrectionDisabled()
+                                .textContentType(.organizationName)
+                            AsyncButton {
+                                await viewModel.updateWorkspace(name: newWorkspaceName)
+                            } label: {
+                                Text("Save")
+                            }
+                        }
                     }
                 }
                 Section("DANGER ZONE") {
@@ -38,14 +45,20 @@ struct WorkspaceSettingsView: View {
                     
                     Button("Upgrade to premium") {
                         appState.todo()
-//                        navigation.externalDeeplink(to: .funnelminkStripe)
+                        //                        navigation.externalDeeplink(to: .funnelminkStripe)
                     }
                     
                     
                     WarningAlertButton(warningMessage: "Leave workspace?\n\nYou will need an invite to rejoin.") {
                         Task { await viewModel.leaveWorkspace() }
                     } label: {
-                        Text("Leave workspace").foregroundStyle(.red)
+                        Text("Leave workspace")
+                    }
+                    
+                    WarningAlertButton(warningMessage: "Delete workspace?\n\nThis action cannot be undone.") {
+                        Task { await viewModel.deleteWorkspace() }
+                    } label: {
+                        Text("Delete workspace").foregroundStyle(.red)
                     }
                 }
             }

@@ -77,7 +77,7 @@ class FunnelminkAPI(private val baseURL: String) : API {
 
     @Throws(Exception::class)
     override suspend fun updateWorkspace(body: UpdateWorkspaceRequest): Workspace {
-        return genericRequest("$baseURL/v1/workspaces/update", HttpMethod.Put) {
+        return genericRequest("$baseURL/v1/workspaces", HttpMethod.Put) {
             setBody(body)
         }
     }

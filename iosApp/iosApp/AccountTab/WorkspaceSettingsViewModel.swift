@@ -115,4 +115,36 @@ class WorkspaceSettingsViewModel: ViewModel {
             AppState.shared.error = error
         }
     }
+    
+    @MainActor
+    func deleteWorkspace() async {
+        do {
+            try await Networking.api.deleteWorkspace()
+            AppState.shared.workspace = nil
+            state.workspaceMembers = []
+        } catch {
+            AppState.shared.error = error
+        }
+    }
+    
+    @MainActor
+    func updateWorkspace(name: String) async {
+        guard name != AppState.shared.workspace?.name else { return }
+        if name.isEmpty {
+            AppState.shared.prompt = "Name cannot be empty."
+            return
+        }
+        if !Utilities.validation.isName(input: name) {
+            AppState.shared.prompt = "`\(name)` is not a valid name"
+            return
+        }
+        
+        do {
+            let body = UpdateWorkspaceRequest(name: name, avatarURL: nil)
+            let workspace = try await Networking.api.updateWorkspace(body: body)
+            AppState.shared.workspace = workspace
+        } catch {
+            AppState.shared.error = error
+        }
+    }
 }
