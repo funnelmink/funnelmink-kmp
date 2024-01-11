@@ -11,6 +11,15 @@ import Shared
 
 class Networking {
     // TODO: mink api takes a closure that's called when the user is not authenticated. Plus any other hooks we need
-    static let api: API = { FunnelminkAPI(baseURL: Properties.baseURL) }()
+    static let api: API = {
+        let fmapi = FunnelminkAPI(
+            baseURL: Properties.baseURL
+        )
+        
+        // TODO: initialize all 5 closures. Use if DEV to intercept some of the ugly ones (like 500s)
+        
+        
+        return fmapi
+    }()
 }
 

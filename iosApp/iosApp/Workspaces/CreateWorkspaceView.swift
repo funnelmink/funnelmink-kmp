@@ -8,6 +8,7 @@
 
 import SwiftUI
 
+// TODO: name validator
 struct CreateWorkspaceView: View {
     @ObservedObject var viewModel: WorkspacesViewModel
     @EnvironmentObject var navigation: Navigation
