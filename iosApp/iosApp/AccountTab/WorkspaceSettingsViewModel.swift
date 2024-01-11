@@ -65,7 +65,10 @@ class WorkspaceSettingsViewModel: ViewModel {
     
     @MainActor
     func removeMemberFromWorkspace(id: String) async {
-        // TODO: also guard that the user is an owner
+        guard AppState.shared.isWorkspaceOwner else {
+            AppState.shared.error = "You must be an owner to remove members."
+            return
+        }
         guard id != AppState.shared.user?.uid else {
             AppState.shared.error = "You can't remove yourself."
             return
