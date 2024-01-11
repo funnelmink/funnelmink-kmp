@@ -46,6 +46,14 @@ class WorkspaceSettingsViewModel: ViewModel {
     
     @MainActor
     func leaveWorkspace() async {
+        if AppState.shared.isWorkspaceOwner {
+            let owners = workspaceMembers.filter { $0.role == .owner }
+            guard owners.count > 1 else {
+                AppState.shared.prompt = "You can't leave the workspace because you are the only owner. Please promote another member to owner before leaving."
+                return
+            }
+        }
+        
         do {
             try await Networking.api.leaveWorkspace()
             AppState.shared.workspace = nil

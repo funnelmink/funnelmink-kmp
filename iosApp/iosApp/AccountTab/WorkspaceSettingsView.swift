@@ -9,7 +9,6 @@
 import Shared
 import SwiftUI
 
-// TODO: be able to change workspace name, avatarURL
 // TODO: guard against leaving workspace if owner
 
 struct WorkspaceSettingsView: View {
@@ -36,6 +35,12 @@ struct WorkspaceSettingsView: View {
                         .font(.title2)
                         .fontWeight(.bold)
                         .padding()
+                    
+                    if appState.isWorkspaceOwner {
+                        Button("Change workspace name") {
+                            appState.todo()
+                        }
+                    }
                     
                     Button("Invite new members") {
                         navigation.presentSheet(.inviteToWorkspace)
