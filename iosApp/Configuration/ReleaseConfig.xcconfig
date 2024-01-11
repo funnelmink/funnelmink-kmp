@@ -1,14 +1,15 @@
 //
-//  DevEnvironment.xcconfig
+//  ReleaseConfig.xcconfig
 //  iosApp
 //
-//  Created by Jared Warren on 1/6/24.
+//  Created by Jared Warren on 1/10/24.
 //  Copyright © 2024 orgName. All rights reserved.
 //
 
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-BASE_URL = https:/$()/dev.funnelmink.com
-GOOGLE_SERVICE_PATH = GoogleService-Info-DEV
-KOTLIN_FRAMEWORK_BUILD_TYPE = debug
+APP_NAME = funnelmink
+BUNDLE_ID = com.funnelmink.crm.dev
+TEAM_ID =
+KOTLIN_FRAMEWORK_BUILD_TYPE = release

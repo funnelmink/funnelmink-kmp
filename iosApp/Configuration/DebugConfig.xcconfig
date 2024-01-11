@@ -10,8 +10,6 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 
 APP_NAME = funnelmink
-BASE_URL = https:/$()/dev.funnelmink.com
 BUNDLE_ID = com.funnelmink.crm.dev
-GOOGLE_SERVICE_PATH = GoogleService-Info-DEV
 TEAM_ID =
 KOTLIN_FRAMEWORK_BUILD_TYPE = debug
