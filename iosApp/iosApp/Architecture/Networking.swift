@@ -28,19 +28,27 @@ class Networking {
         
         // TODO: all of the following will also need to be surfaced to the user
         fmapi.onBadRequest = { message in
-            AppState.shared.error = message
+            Task { @MainActor in
+                AppState.shared.error = message
+            }
         }
         
         fmapi.onDecodingError = { message in
-            AppState.shared.error = message
+            Task { @MainActor in
+                AppState.shared.error = message
+            }
         }
         
         fmapi.onMissing = { message in
-            AppState.shared.error = message
+            Task { @MainActor in
+                AppState.shared.error = message
+            }
         }
         
         fmapi.onServerError = { message in
-            AppState.shared.error = message
+            Task { @MainActor in
+                AppState.shared.error = message
+            }
         }
         
         return fmapi

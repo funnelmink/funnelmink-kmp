@@ -475,6 +475,7 @@
 			isa = PBXGroup;
 			children = (
 				1FCB73951508CB9D7232AE9F /* xcschemes */,
+				1FCB7AC79B21DAB70F01D61E /* xcdebugger */,
 			);
 			path = jarwarren.xcuserdatad;
 			sourceTree = "<group>";
@@ -486,6 +487,13 @@
 			);
 			name = xcuserdata;
 			path = iosApp.xcodeproj/xcuserdata;
+			sourceTree = "<group>";
+		};
+		1FCB7AC79B21DAB70F01D61E /* xcdebugger */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = xcdebugger;
 			sourceTree = "<group>";
 		};
 		1FCB7F587D73CA1C8312E8CF /* configuration */ = {

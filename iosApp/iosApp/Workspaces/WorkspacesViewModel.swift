@@ -7,6 +7,7 @@ class WorkspacesViewModel: ViewModel {
     struct State: Hashable {
         var didError = false
         var workspaces: [Workspace] = []
+        var creationErrorMessage: String?
     }
 
     @MainActor
@@ -23,13 +24,20 @@ class WorkspacesViewModel: ViewModel {
     @MainActor
     func createWorkspace(name: String, onSuccess: () -> Void) async {
         do {
+            if name.isEmpty {
+                state.creationErrorMessage = "Workspace name cannot be empty."
+                return
+            }
+            if !Utilities.validation.isName(input: name) {
+                state.creationErrorMessage = "\(name) contains invalid characters."
+                return
+            }
             let body = CreateWorkspaceRequest(name: name)
             let workspace = try await Networking.api.createWorkspace(body: body)
             state.workspaces.append(workspace)
             AppState.shared.signIntoWorkspace(workspace)
             onSuccess()
         } catch {
-            // TODO: show the error on the UI
             AppState.shared.error = error
         }
     }

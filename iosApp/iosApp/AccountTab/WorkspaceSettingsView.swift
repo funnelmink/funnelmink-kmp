@@ -9,8 +9,6 @@
 import Shared
 import SwiftUI
 
-// TODO: guard against leaving workspace if owner
-
 struct WorkspaceSettingsView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
