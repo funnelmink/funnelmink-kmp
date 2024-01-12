@@ -19,7 +19,11 @@ struct TodayView: View {
             ForEach(viewModel.tasks.keys.sorted(), id: \.self) { date in
                 Section(header: Text(date)) {
                     ForEach(viewModel.tasks[date] ?? [], id: \.id) { task in
-                        TaskCell(task: task)
+                        Button {
+                            navigation.presentSheet(.editTask(task))
+                        } label: {
+                            TaskCell(task: task)
+                        }
                     }
                 }
             }
@@ -32,7 +36,7 @@ struct TodayView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    navigation.presentSheet(.createTask(viewModel))
+                    navigation.presentSheet(.createTask)
                 } label: {
                     Image(systemName: "plus")
                 }

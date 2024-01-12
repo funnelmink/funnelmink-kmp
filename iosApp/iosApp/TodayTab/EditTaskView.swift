@@ -1,17 +1,20 @@
 //
-//  CreateTaskView.swift
+//  EditTaskView.swift
 //  iosApp
 //
 //  Created by Jared Warren on 1/11/24.
 //  Copyright © 2024 orgName. All rights reserved.
 //
 
+import Shared
 import SwiftUI
 
-struct CreateTaskView: View {
+// TODO: used when creating a task. also used when editing
+struct EditTaskView: View {
     @EnvironmentObject var navigation: Navigation
-    @ObservedObject var viewModel: TodayViewModel
+    @StateObject var viewModel = EditTaskViewModel()
     @State var createTaskName = ""
+    var task: ScheduleTask?
     var body: some View {
         VStack {
             Spacer()
@@ -62,9 +65,14 @@ struct CreateTaskView: View {
         }
         .padding()
         .multilineTextAlignment(.center)
+        .onAppear {
+            if let task = task {
+                createTaskName = task.title
+            }
+        }
     }
 }
 
 #Preview {
-    CreateTaskView(viewModel: .init())
+    EditTaskView(viewModel: .init())
 }

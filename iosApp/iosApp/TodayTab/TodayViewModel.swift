@@ -14,7 +14,6 @@ class TodayViewModel: ViewModel {
     
     struct State: Hashable {
         var tasks: [String: [ScheduleTask]] = [:]
-        var creationErrorMessage: String?
     }
     
     @MainActor
@@ -24,34 +23,6 @@ class TodayViewModel: ViewModel {
             state.tasks = Dictionary(grouping: tasks, by: { $0.scheduledDate ?? "" })
         } catch {
             AppState.shared.error = error
-        }
-    }
-    
-    
-    // TODO: all task parameters - prio, date, body
-    @MainActor
-    func createTask(title: String, priority: Int, body: String?, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
-        state.creationErrorMessage = nil
-        if title.isEmpty {
-            state.creationErrorMessage = "Task name cannot be empty."
-            return
-        }
-        if !Utilities.validation.isName(input: title) {
-            state.creationErrorMessage = "`\(title)` is not a valid Task name."
-            return
-        }
-        do {
-            let body = CreateTaskRequest(
-                title: title,
-                priority: Int32(priority),
-                body: body,
-                scheduledDate: scheduledDate
-            )
-            let task = try await Networking.api.createTask(body: body)
-            state.tasks[task.scheduledDate ?? ""]?.append(task)
-            onSuccess()
-        } catch {
-            state.creationErrorMessage = "\(error)"
         }
     }
 }
