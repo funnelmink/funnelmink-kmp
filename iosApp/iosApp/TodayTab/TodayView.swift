@@ -6,51 +6,28 @@
 //  Copyright © 2023 FunnelMink. All rights reserved.
 //
 
+import Shared
 import SwiftUI
 
 struct TodayView: View {
-    @EnvironmentObject var nav: Navigation
+    @EnvironmentObject var navigation: Navigation
+    @StateObject var viewModel = TodayViewModel()
     
-    let tasks: [CalendarTask] = [
-//        .init(id: "a", priority: 1, title: "Task 1", body: "This is a task", scheduledDate: nil),
-//        .init(id: "b", priority: 2, title: "Task 2", body: "This is a task", scheduledDate: nil),
-//        .init(id: "c", priority: 3, title: "Task 3", body: "This is a task", scheduledDate: nil),
-    ]
+    @ViewBuilder
     var body: some View {
-        Text("Coming soon!")
-//        ScrollView {
-//            ForEach(tasks) { task in
-//                TaskCell(task: task)
-//            }
-//        }
-//        .scrollIndicators(.never)
+        ScrollView {
+            ForEach(viewModel.tasks.keys.sorted(), id: \.self) { date in
+                Section(header: Text(date)) {
+                    ForEach(viewModel.tasks[date] ?? [], id: \.id) { task in
+                        TaskCell(task: task)
+                    }
+                }
+            }
+        }
+        .scrollIndicators(.never)
         .navigationTitle("Today")
-    }
-}
-
-#Preview {
-    TodayView()
-}
-
-
-struct TaskCell: View {
-    let task: CalendarTask
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(task.title)
-                .font(.title2)
-                .fontWeight(.semibold)
-            Text(task.body)
-                .font(.body)
-                .foregroundColor(.secondary)
+        .task {
+            await viewModel.getTasks()
         }
     }
-}
-
-struct CalendarTask: Codable, Identifiable {
-    let id: String
-    let priority: Int
-    let title: String
-    let body: String
-    let scheduledDate: Date?
 }

@@ -122,7 +122,7 @@ class WorkspaceSettingsViewModel: ViewModel {
     @MainActor
     func deleteWorkspace() async {
         do {
-            try await Networking.api.deleteWorkspace()
+            _ = try await Networking.api.deleteWorkspace()
             AppState.shared.workspace = nil
             state.workspaceMembers = []
         } catch {

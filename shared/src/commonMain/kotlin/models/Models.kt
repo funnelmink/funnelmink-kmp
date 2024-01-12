@@ -22,10 +22,10 @@ data class ScheduleTask(
     // Can't name it `Task` because it's taken by Swift concurrency
     val id: String,
     val title: String,
-    val body: String,
+    val body: String? = null,
     val priority: Int,
     val isComplete: Boolean,
-    val scheduledDate: String,
+    val scheduledDate: String? = null,
 )
 
 @Serializable
