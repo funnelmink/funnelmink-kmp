@@ -15,19 +15,22 @@ struct TodayView: View {
     
     @ViewBuilder
     var body: some View {
-        ScrollView {
+        List {
             ForEach(viewModel.tasks.keys.sorted(), id: \.self) { date in
                 Section(header: Text(date)) {
                     ForEach(viewModel.tasks[date] ?? [], id: \.id) { task in
                         Button {
                             navigation.presentSheet(.editTask(task))
                         } label: {
-                            TaskCell(task: task)
+                            TaskCell(task: task) {
+                                // TODO: toggle completeness
+                            }
                         }
                     }
                 }
             }
         }
+        .tint(.primary)
         .scrollIndicators(.never)
         .navigationTitle("Today")
         .task {
