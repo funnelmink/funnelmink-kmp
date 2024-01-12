@@ -12,6 +12,8 @@ enum Modal: Identifiable {
     case any(view: () -> (any View))
     case importContacts
     
+    case createTask(TodayViewModel)
+    
     case createWorkspace(WorkspacesViewModel)
     case inviteToWorkspace
     case joinExistingWorkspace
@@ -22,6 +24,8 @@ enum Modal: Identifiable {
         switch self {
         case let .any(view): AnyView(view())
         case .importContacts: ImportContactsView()
+            
+        case let .createTask(viewModel): CreateTaskView(viewModel: viewModel)
             
         case let .createWorkspace(viewModel): CreateWorkspaceView(viewModel: viewModel)
         case .inviteToWorkspace: WorkspaceInviteView()

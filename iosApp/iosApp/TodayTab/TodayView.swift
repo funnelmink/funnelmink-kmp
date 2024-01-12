@@ -29,5 +29,14 @@ struct TodayView: View {
         .task {
             await viewModel.getTasks()
         }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button {
+                    navigation.presentSheet(.createTask(viewModel))
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+        }
     }
 }
