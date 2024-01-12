@@ -23,6 +23,7 @@ class WorkspacesViewModel: ViewModel {
 
     @MainActor
     func createWorkspace(name: String, onSuccess: () -> Void) async {
+        state.creationErrorMessage = nil
         do {
             if name.isEmpty {
                 state.creationErrorMessage = "Workspace name cannot be empty."

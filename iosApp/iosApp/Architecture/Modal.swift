@@ -12,8 +12,10 @@ enum Modal: Identifiable {
     case any(view: () -> (any View))
     case importContacts
     
+    // TODO: don't depend on this viewmodel
     case createTask(TodayViewModel)
     
+    // TODO: maybe don't depend on this viewmodel
     case createWorkspace(WorkspacesViewModel)
     case inviteToWorkspace
     case joinExistingWorkspace
