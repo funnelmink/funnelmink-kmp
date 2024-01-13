@@ -13,6 +13,13 @@ extension String: LocalizedError {
     public var errorDescription: String? { self }
 }
 
+// MARK: formatting
+extension String {
+    func toDate() -> Date? {
+        DateFormatter.funnelmink.date(from: self)
+    }
+}
+
 // MARK: constants
 extension String {
     static let constants = Constants()

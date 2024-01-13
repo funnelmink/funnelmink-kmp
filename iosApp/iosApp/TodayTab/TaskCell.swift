@@ -15,9 +15,8 @@ struct TaskCell: View {
     
     private var priorityColor: Color {
         switch task.priority {
-        case 0: return .gray
-        case 1: return .yellow
-        case 2: return .orange
+        case 1: return .blue
+        case 2: return .purple
         case 3: return .red
         default: return .gray
         }
