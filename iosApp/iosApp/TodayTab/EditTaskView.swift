@@ -13,52 +13,34 @@ struct EditTaskView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = EditTaskViewModel()
     @State var createTaskName = ""
+    @State var taskBody = ""
     @State var priority: Int32 = 0
     @State var date: Date?
     var task: ScheduleTask?
     
     var body: some View {
         VStack {
-            Spacer()
             Text(task == nil ? "Create Task" : "Edit Task")
                 .font(.title)
                 .fontWeight(.bold)
-            Color
-                .clear
-                .overlay {
-                    if let errorMessage = viewModel.creationErrorMessage {
-                        Text(errorMessage)
-                            .foregroundStyle(.red)
-                    }
+            List {
+                Section("TITLE") {
+                    TextField(
+                        "",
+                        text: $createTaskName,
+                        prompt: Text("Ex. Place a call")
+                            .foregroundColor(.gray)
+                    )
+                    .frame(minHeight: 44)
                 }
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Task name")
-                    .foregroundStyle(.secondary)
                 
-                TextField("", text: $createTaskName, prompt: Text("Place a call").foregroundColor(.gray))
-                    .frame(height: 52)
-                    .maxReadableWidth()
-                    .background(Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 4))
-                    .overlay(RoundedRectangle(cornerRadius: 4).stroke(Color.black, lineWidth: 0.5))
-                    .shadow(radius: 2)
-                    .foregroundStyle(.black)
-                    .keyboardType(.alphabet)
-                    .autocorrectionDisabled()
-                    .textContentType(.organizationName)
-            }
-            .padding(.vertical)
-            
-            // TODO: description/body textfield or textview
-            
-            
-            HStack {
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack {
-                        Text("Priority")
-                            .foregroundStyle(.secondary)
-                        Spacer()
-                    }
+                Section("DESCRIPTION") {
+                    TextField("", text: $taskBody, prompt: Text("(Optional)").foregroundColor(.gray))
+                        .frame(minHeight: 44)
+                }
+                
+                
+                Section("OPTIONS") {
                     Picker(selection: $priority, label: Text("Priority")) {
                         Label("Low", systemImage: "gauge.with.dots.needle.0percent")
                             .tag(Int32(0))
@@ -76,13 +58,6 @@ struct EditTaskView: View {
                             priority == 2 ? .purple : .red
                     )
                     .frame(height: 52)
-                }
-                VStack(alignment: .leading, spacing: 0) {
-                    HStack {
-                        Text("Date")
-                            .foregroundStyle(.secondary)
-                        Spacer()
-                    }
                     if let date {
                         HStack {
                             DatePicker(
@@ -102,14 +77,20 @@ struct EditTaskView: View {
                         }
                         .frame(height: 52)
                     } else {
-                        Button {
-                            date = Date().addingTimeInterval(60 * 60 * 24)
-                        } label: {
-                            Text("Add date")
-                                .frame(height: 52)
+                        HStack {
+                            Text("Date")
+                            Spacer()
+                            Button {
+                                date = Date().addingTimeInterval(60 * 60 * 24)
+                            } label: {
+                                Text("Add date")
+                                    .frame(height: 52)
+                            }
                         }
                     }
                 }
+                
+                
             }
             AsyncButton {
                 await viewModel.createTask(title: createTaskName, priority: 1, body: nil, scheduledDate: nil) {
@@ -124,9 +105,8 @@ struct EditTaskView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 4))
             }
             .multilineTextAlignment(.leading)
-            Color.clear
+            .padding()
         }
-        .padding()
         .multilineTextAlignment(.center)
         .onAppear {
             if let task = task {
