@@ -87,6 +87,7 @@
 		1F022A3C2B49159100966345 /* CustomAccordion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A382B49159100966345 /* CustomAccordion.swift */; };
 		1F022A3D2B49159100966345 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A392B49159100966345 /* CustomCell.swift */; };
 		1F022A3E2B49159100966345 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A3A2B49159100966345 /* CustomTextField.swift */; };
+		1FA27F762B53151400A447C3 /* CreateContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F752B53151400A447C3 /* CreateContactView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -173,6 +174,7 @@
 		1F022A382B49159100966345 /* CustomAccordion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAccordion.swift; sourceTree = "<group>"; };
 		1F022A392B49159100966345 /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		1F022A3A2B49159100966345 /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		1FA27F752B53151400A447C3 /* CreateContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContactView.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* funnelmink DEV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "funnelmink DEV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AB3632DC29227652001CCB65 /* Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
@@ -410,6 +412,7 @@
 			isa = PBXGroup;
 			children = (
 				0D012E5C2B477E3A00658153 /* ContactsView.swift */,
+				1FA27F752B53151400A447C3 /* CreateContactView.swift */,
 				0D012E5D2B477E3A00658153 /* ImportContacts */,
 				0D012E602B477E3A00658153 /* ContactsViewModel.swift */,
 			);
@@ -726,6 +729,7 @@
 				0D012E802B477E3A00658153 /* AccountView.swift in Sources */,
 				0D012E7B2B477E3A00658153 /* LoginView.swift in Sources */,
 				0D012E892B477E3A00658153 /* JoinExistingWorkspaceViewModel.swift in Sources */,
+				1FA27F762B53151400A447C3 /* CreateContactView.swift in Sources */,
 				0D012E7E2B477E3A00658153 /* WorkspaceInviteView.swift in Sources */,
 				0D012E852B477E3A00658153 /* ImportContactsView.swift in Sources */,
 				0D012E862B477E3A00658153 /* ImportContactsVM.swift in Sources */,

@@ -2,7 +2,7 @@
 //  ContactsView.swift
 //  iosApp
 //
-//  Created by Jared Warren on 10/19/23.
+//  Created by JEREMY Warren on 10/19/23.
 //  Copyright © 2023 FunnelMink. All rights reserved.
 //
 
@@ -11,12 +11,15 @@ import SwiftUI
 struct ContactsView: View {
     @EnvironmentObject var nav: Navigation
     @StateObject var viewModel = ContactsViewModel()
+    
     var body: some View {
-        Text("Contacts")
+        List {
+            Text("Contacts")
+        }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
-                        nav.presentSheet(.importContacts)
+                        nav.presentSheet(.createContact)
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -24,7 +27,7 @@ struct ContactsView: View {
             }
             .navigationTitle("Contacts")
             .task {
-                await viewModel.getContacts()
+//                await viewModel.getContacts()
             }
     }
 }

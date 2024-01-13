@@ -16,6 +16,7 @@ enum Modal: Identifiable {
     case inviteToWorkspace
     case joinExistingWorkspace
     case selectWorkspace
+    case createContact
     
     @ViewBuilder
     var view: some View {
@@ -27,6 +28,7 @@ enum Modal: Identifiable {
         case .inviteToWorkspace: WorkspaceInviteView()
         case .joinExistingWorkspace: JoinExistingWorkspaceView()
         case .selectWorkspace: WorkspacesView()
+        case .createContact: CreateContactView()
         }
     }
 }
