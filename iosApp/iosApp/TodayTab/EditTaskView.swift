@@ -12,7 +12,7 @@ import SwiftUI
 struct EditTaskView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = EditTaskViewModel()
-    @State var createTaskName = ""
+    @State var taskName = ""
     @State var taskBody = ""
     @State var priority: Int32 = 0
     @State var date: Date?
@@ -27,7 +27,7 @@ struct EditTaskView: View {
                 Section("TITLE") {
                     TextField(
                         "",
-                        text: $createTaskName,
+                        text: $taskName,
                         prompt: Text("Ex. Place a call")
                             .foregroundColor(.gray)
                     )
@@ -42,13 +42,13 @@ struct EditTaskView: View {
                 
                 Section("OPTIONS") {
                     Picker(selection: $priority, label: Text("Priority")) {
-                        Label("Low", systemImage: "gauge.with.dots.needle.0percent")
+                        Label(" Low", systemImage: "gauge.with.dots.needle.0percent")
                             .tag(Int32(0))
-                        Label("Medium", systemImage: "gauge.with.dots.needle.33percent")
+                        Label(" Medium", systemImage: "gauge.with.dots.needle.33percent")
                             .tag(Int32(1))
-                        Label("High", systemImage: "gauge.with.dots.needle.67percent")
+                        Label(" High", systemImage: "gauge.with.dots.needle.67percent")
                             .tag(Int32(2))
-                        Label("Ultra", systemImage: "gauge.with.dots.needle.100percent")
+                        Label(" Ultra", systemImage: "gauge.with.dots.needle.100percent")
                             .tag(Int32(3))
                     }
                     .pickerStyle(.menu)
@@ -93,8 +93,26 @@ struct EditTaskView: View {
                 
             }
             AsyncButton {
-                await viewModel.createTask(title: createTaskName, priority: 1, body: nil, scheduledDate: nil) {
-                    navigation.dismissModal()
+                if let task = task {
+                    await viewModel.updateTask(
+                        id: task.id,
+                        title: taskName,
+                        priority: priority,
+                        isComplete: task.isComplete,
+                        body: taskBody,
+                        scheduledDate: nil // TODO: convert to RFC339
+                    ) {
+                        navigation.dismissModal()
+                    }
+                } else {
+                    await viewModel.createTask(
+                        title: taskName,
+                        priority: priority,
+                        body: taskBody,
+                        scheduledDate: nil // TODO: convert to RFC339
+                    ) {
+                        navigation.dismissModal()
+                    }
                 }
             } label: {
                 Text(task == nil ? "Create" : "Update")
@@ -110,9 +128,10 @@ struct EditTaskView: View {
         .multilineTextAlignment(.center)
         .onAppear {
             if let task = task {
-                createTaskName = task.title
+                taskName = task.title
                 priority = task.priority
                 date = task.scheduledDate?.toDate()
+                taskBody = task.body ?? ""
             }
         }
     }

@@ -17,9 +17,8 @@ class EditTaskViewModel: ViewModel {
         var creationErrorMessage: String?
     }
     
-    // TODO: all task parameters - prio, date, body
     @MainActor
-    func createTask(title: String, priority: Int, body: String?, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
+    func createTask(title: String, priority: Int32, body: String?, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
         state.creationErrorMessage = nil
         if title.isEmpty {
             state.creationErrorMessage = "Task name cannot be empty."
@@ -44,7 +43,7 @@ class EditTaskViewModel: ViewModel {
     }
     
     @MainActor
-    func updateTask(id: String, title: String, priority: Int, isComplete: Bool,  body: String?, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
+    func updateTask(id: String, title: String, priority: Int32, isComplete: Bool,  body: String?, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
         state.creationErrorMessage = nil
         if title.isEmpty {
             state.creationErrorMessage = "Task name cannot be empty."

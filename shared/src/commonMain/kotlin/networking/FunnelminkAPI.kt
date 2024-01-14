@@ -214,12 +214,17 @@ class FunnelminkAPI(private val baseURL: String) : API {
         method: HttpMethod,
         crossinline block: HttpRequestBuilder.() -> Unit = {}
     ): T {
+        var requestBody = ""
         val response: HttpResponse = httpClient.request(url) {
             this.method = method
             this.apply(block)
+            requestBody = this.body.toString()
         }
         val responseBody = response.bodyAsText()
         println("⬆️ ${method.value} $url")
+        if (requestBody != "EmptyContent") {
+            println("✴️ $requestBody")
+        }
 
         if (T::class == Unit::class) {
             return Unit as T
