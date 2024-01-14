@@ -20,7 +20,7 @@ class TodayViewModel: ViewModel {
     func getTasks() async {
         do {
             let tasks = try await Networking.api.getTasks(date: nil, priority: nil, limit: nil, offset: nil)
-            state.tasks = Dictionary(grouping: tasks, by: { $0.scheduledDate ?? "" })
+            state.tasks = Dictionary(grouping: tasks, by: { $0.scheduledDate?.toDate()?.toNumberRelativeAndWeekday() ?? "" })
         } catch {
             AppState.shared.error = error
         }

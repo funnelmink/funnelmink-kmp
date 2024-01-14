@@ -23,6 +23,7 @@ struct EditTaskView: View {
             Text(task == nil ? "Create Task" : "Edit Task")
                 .font(.title)
                 .fontWeight(.bold)
+                .padding(.top)
             List {
                 Section("TITLE") {
                     TextField(
@@ -100,7 +101,7 @@ struct EditTaskView: View {
                         priority: priority,
                         isComplete: task.isComplete,
                         body: taskBody,
-                        scheduledDate: nil // TODO: convert to RFC339
+                        scheduledDate: date?.toFunnelminkString()
                     ) {
                         navigation.dismissModal()
                     }
@@ -109,7 +110,7 @@ struct EditTaskView: View {
                         title: taskName,
                         priority: priority,
                         body: taskBody,
-                        scheduledDate: nil // TODO: convert to RFC339
+                        scheduledDate: date?.toFunnelminkString()
                     ) {
                         navigation.dismissModal()
                     }
