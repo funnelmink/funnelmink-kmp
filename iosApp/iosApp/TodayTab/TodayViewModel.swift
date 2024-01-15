@@ -17,7 +17,7 @@ class TodayViewModel: ViewModel {
         if searchText.isEmpty { return state.tasksByDate }
         var results: [String: [ScheduleTask]] = [:]
         for (key, value) in state.tasksByDate {
-            results[key] = value.filter { $0.description.contains(searchText) }
+            results[key] = value.filter { $0.description.lowercased().contains(searchText.lowercased()) }
         }
         return results
     }
@@ -25,27 +25,46 @@ class TodayViewModel: ViewModel {
         if searchText.isEmpty { return state.tasksByPriority }
         var results: [Int32: [ScheduleTask]] = [:]
         for (key, value) in state.tasksByPriority {
-            results[key] = value.filter { $0.description.contains(searchText) }
+            results[key] = value.filter { $0.description.lowercased().contains(searchText.lowercased()) }
         }
         return results
+    }
+    var completedTasksSearchResults: [ScheduleTask] {
+        if searchText.isEmpty { return state.completedTasks }
+        return state.completedTasks.filter { $0.description.lowercased().contains(searchText.lowercased()) }
     }
     
     struct State: Hashable {
         var tasksByDate: [String: [ScheduleTask]] = [:]
         var tasksByPriority: [Int32: [ScheduleTask]] = [:]
+        var completedTasks: [ScheduleTask] = []
         var displayCompletedTasks = false
     }
     
     func toggleDisplayCompletedTasks() {
         state.displayCompletedTasks.toggle()
+        if state.displayCompletedTasks {
+            Task {
+                await getCompletedTasks()
+            }
+        }
     }
     
     @MainActor
     func getTasks() async {
         do {
-            let tasks = try await Networking.api.getTasks(date: nil, priority: nil, limit: nil, offset: nil)
+            let tasks = try await Networking.api.getTasks(date: nil, priority: nil, limit: nil, offset: nil, isComplete: false)
             state.tasksByDate = Dictionary(grouping: tasks, by: { $0.scheduledDate?.toDate()?.toNumberRelativeAndWeekday() ?? "" })
             state.tasksByPriority = Dictionary(grouping: tasks, by: { $0.priority })
+        } catch {
+            AppState.shared.error = error
+        }
+    }
+    
+    @MainActor
+    func getCompletedTasks() async {
+        do {
+            state.completedTasks = try await Networking.api.getTasks(date: nil, priority: nil, limit: nil, offset: nil, isComplete: true)
         } catch {
             AppState.shared.error = error
         }

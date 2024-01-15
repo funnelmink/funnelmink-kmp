@@ -19,10 +19,12 @@ struct TodayView: View {
     @ViewBuilder
     var body: some View {
         ZStack {
-            if isSearchable {
-                searchableList
-            } else {
-                vanillaList
+            switch (isSearchable, viewModel.displayCompletedTasks) {
+            case (true, true): searchableCompleted
+            case (false, true): vanillaCompleted
+                
+            case (true, false): searchableList
+            case (false, false): vanillaList
             }
             VStack {
                 Spacer()
@@ -139,6 +141,39 @@ struct TodayView: View {
             switch sortOrder {
             case .date: tasksByDate
             case .priority: tasksByPriority
+            }
+        }
+        .searchable(text: $viewModel.searchText)
+    }
+    
+    var vanillaCompleted: some View {
+        List {
+            ForEach(viewModel.completedTasksSearchResults, id: \.id) { task in
+                Button {
+                    navigation.presentSheet(.editTask(task))
+                } label: {
+                    TaskCell(task: task) {
+                        Task {
+                            await viewModel.toggleIsComplete(for: task)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    var searchableCompleted: some View {
+        List {
+            ForEach(viewModel.completedTasksSearchResults, id: \.id) { task in
+                Button {
+                    navigation.presentSheet(.editTask(task))
+                } label: {
+                    TaskCell(task: task) {
+                        Task {
+                            await viewModel.toggleIsComplete(for: task)
+                        }
+                    }
+                }
             }
         }
         .searchable(text: $viewModel.searchText)
