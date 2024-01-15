@@ -16,8 +16,6 @@ struct TodayView: View {
     @AppStorage(.storage.todaySortOrder) var sortOrder: SortOrder = .date
     @AppStorage(.storage.todayIsSearchable) var isSearchable = false
     
-    @State var searchText = ""
-    
     @ViewBuilder
     var body: some View {
         ZStack {
@@ -77,9 +75,9 @@ struct TodayView: View {
     }
     
     var tasksByDate: some View {
-        ForEach(viewModel.tasksByDate.keys.sorted(), id: \.self) { section in
+        ForEach(viewModel.tasksByDateSearchResults.keys.sorted(), id: \.self) { section in
             Section(header: Text(section)) {
-                ForEach(viewModel.tasksByDate[section] ?? [], id: \.id) { task in
+                ForEach(viewModel.tasksByDateSearchResults[section] ?? [], id: \.id) { task in
                     Button {
                         navigation.presentSheet(.editTask(task))
                     } label: {
@@ -95,9 +93,9 @@ struct TodayView: View {
     }
     
     var tasksByPriority: some View {
-        ForEach(viewModel.tasksByPriority.keys.sorted(by: >), id: \.self) { section in
+        ForEach(viewModel.tasksByPrioritySearchResults.keys.sorted(by: >), id: \.self) { section in
             Section(header: Text("Priority \(section)")) {
-                ForEach(viewModel.tasksByPriority[section] ?? [], id: \.id) { task in
+                ForEach(viewModel.tasksByPrioritySearchResults[section] ?? [], id: \.id) { task in
                     Button {
                         navigation.presentSheet(.editTask(task))
                     } label: {
@@ -143,7 +141,7 @@ struct TodayView: View {
             case .priority: tasksByPriority
             }
         }
-        .searchable(text: $searchText)
+        .searchable(text: $viewModel.searchText)
     }
     
     enum SortOrder: Int, Identifiable {

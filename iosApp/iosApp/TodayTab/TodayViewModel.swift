@@ -12,6 +12,24 @@ import Shared
 class TodayViewModel: ViewModel {
     @Published var state = State()
     
+    @Published var searchText = ""
+    var tasksByDateSearchResults: [String: [ScheduleTask]] {
+        if searchText.isEmpty { return state.tasksByDate }
+        var results: [String: [ScheduleTask]] = [:]
+        for (key, value) in state.tasksByDate {
+            results[key] = value.filter { $0.description.contains(searchText) }
+        }
+        return results
+    }
+    var tasksByPrioritySearchResults: [Int32: [ScheduleTask]] {
+        if searchText.isEmpty { return state.tasksByPriority }
+        var results: [Int32: [ScheduleTask]] = [:]
+        for (key, value) in state.tasksByPriority {
+            results[key] = value.filter { $0.description.contains(searchText) }
+        }
+        return results
+    }
+    
     struct State: Hashable {
         var tasksByDate: [String: [ScheduleTask]] = [:]
         var tasksByPriority: [Int32: [ScheduleTask]] = [:]
