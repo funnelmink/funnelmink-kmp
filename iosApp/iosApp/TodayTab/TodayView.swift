@@ -17,13 +17,22 @@ struct TodayView: View {
     
     @ViewBuilder
     var body: some View {
-        List {
-            switch sortOrder {
-            case .date: tasksByDate
-            case .priority: tasksByPriority
+        ZStack {
+            List {
+                switch sortOrder {
+                case .date: tasksByDate
+                case .priority: tasksByPriority
+                }
+            }
+            .searchable(text: $searchText)
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    addTaskFAB
+                }
             }
         }
-        .searchable(text: $searchText)
         .tint(.primary)
         .scrollIndicators(.never)
         .navigationTitle("Tasks")
@@ -32,10 +41,11 @@ struct TodayView: View {
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
+                // TODO: make it a menu
                 Button {
-                    navigation.presentSheet(.createTask)
+//                    navigation.presentSheet(.addTask)
                 } label: {
-                    Image(systemName: "plus")
+                    Image(systemName: "ellipsis.circle")
                 }
             }
             ToolbarItem(placement: .principal) {
@@ -82,6 +92,22 @@ struct TodayView: View {
                 }
             }
         }
+    }
+    
+    var addTaskFAB: some View {
+        Button {
+            navigation.presentSheet(.createTask)
+        } label: {
+            Image(systemName: "plus")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .padding()
+                .foregroundStyle(.white)
+                .background(LoginBackgroundGradient())
+                .clipShape(Circle())
+        }
+//        .frame(maxWidth: .infinity, alignment: .trailing)
+        .padding()
     }
     
     enum SortOrder: Int, Identifiable {
