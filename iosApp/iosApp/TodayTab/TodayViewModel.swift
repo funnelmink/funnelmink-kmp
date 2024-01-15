@@ -13,28 +13,41 @@ class TodayViewModel: ViewModel {
     @Published var state = State()
     
     struct State: Hashable {
-        var tasks: [String: [ScheduleTask]] = [:]
+        var tasksByDate: [String: [ScheduleTask]] = [:]
+        var tasksByPriority: [Int32: [ScheduleTask]] = [:]
     }
     
     @MainActor
     func getTasks() async {
         do {
             let tasks = try await Networking.api.getTasks(date: nil, priority: nil, limit: nil, offset: nil)
-            state.tasks = Dictionary(grouping: tasks, by: { $0.scheduledDate?.toDate()?.toNumberRelativeAndWeekday() ?? "" })
+            state.tasksByDate = Dictionary(grouping: tasks, by: { $0.scheduledDate?.toDate()?.toNumberRelativeAndWeekday() ?? "" })
+            state.tasksByPriority = Dictionary(grouping: tasks, by: { $0.priority })
         } catch {
             AppState.shared.error = error
         }
     }
     
     @MainActor
-    func toggleIsComplete(for task: ScheduleTask, in section: String) async {
+    func toggleIsComplete(for task: ScheduleTask) async {
         do {
             let updated = try await Networking.api.toggleTaskCompletion(id: task.id, isComplete: !task.isComplete)
-            if let index = state.tasks[section]?.firstIndex(where: { $0.id == task.id }) {
-                state.tasks[section]?[index] = updated
-            }
+            updateTask(updated)
         } catch {
             AppState.shared.error = error
+        }
+    }
+    
+    private func updateTask(_ task: ScheduleTask) {
+        for section in state.tasksByDate.keys {
+            if let index = state.tasksByDate[section]?.firstIndex(where: { $0.id == task.id }) {
+                state.tasksByDate[section]?[index] = task
+            }
+        }
+        for section in state.tasksByPriority.keys {
+            if let index = state.tasksByPriority[section]?.firstIndex(where: { $0.id == task.id }) {
+                state.tasksByPriority[section]?[index] = task
+            }
         }
     }
 }

@@ -12,29 +12,21 @@ import SwiftUI
 struct TodayView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = TodayViewModel()
+    @State var sortOrder: SortOrder = .date
+    @State var searchText = ""
     
     @ViewBuilder
     var body: some View {
         List {
-            ForEach(viewModel.tasks.keys.sorted(), id: \.self) { section in
-                Section(header: Text(section)) {
-                    ForEach(viewModel.tasks[section] ?? [], id: \.id) { task in
-                        Button {
-                            navigation.presentSheet(.editTask(task))
-                        } label: {
-                            TaskCell(task: task) {
-                                Task {
-                                    await viewModel.toggleIsComplete(for: task, in: section)
-                                }
-                            }
-                        }
-                    }
-                }
+            switch sortOrder {
+            case .date: tasksByDate
+            case .priority: tasksByPriority
             }
         }
+        .searchable(text: $searchText)
         .tint(.primary)
         .scrollIndicators(.never)
-        .navigationTitle("Today")
+        .navigationTitle("Tasks")
         .task {
             await viewModel.getTasks()
         }
@@ -46,6 +38,56 @@ struct TodayView: View {
                     Image(systemName: "plus")
                 }
             }
+            ToolbarItem(placement: .principal) {
+                Picker("Sort Order", selection: $sortOrder) {
+                    Text("By Date").tag(SortOrder.date)
+                    Text("By Priority").tag(SortOrder.priority)
+                }
+                .pickerStyle(.segmented)
+            }
         }
+    }
+    
+    var tasksByDate: some View {
+        ForEach(viewModel.tasksByDate.keys.sorted(), id: \.self) { section in
+            Section(header: Text(section)) {
+                ForEach(viewModel.tasksByDate[section] ?? [], id: \.id) { task in
+                    Button {
+                        navigation.presentSheet(.editTask(task))
+                    } label: {
+                        TaskCell(task: task) {
+                            Task {
+                                await viewModel.toggleIsComplete(for: task)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    var tasksByPriority: some View {
+        ForEach(viewModel.tasksByPriority.keys.sorted(by: >), id: \.self) { section in
+            Section(header: Text("Priority \(section)")) {
+                ForEach(viewModel.tasksByPriority[section] ?? [], id: \.id) { task in
+                    Button {
+                        navigation.presentSheet(.editTask(task))
+                    } label: {
+                        TaskCell(task: task) {
+                            Task {
+                                await viewModel.toggleIsComplete(for: task)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    enum SortOrder: Int, Identifiable {
+        case date
+        case priority
+        
+        var id: Int { rawValue }
     }
 }
