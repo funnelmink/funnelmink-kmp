@@ -97,7 +97,7 @@ struct TodayView: View {
     
     var tasksByPriority: some View {
         ForEach(viewModel.tasksByPrioritySearchResults.keys.sorted(by: >), id: \.self) { section in
-            Section(header: Text("Priority \(section)")) {
+            Section(header: Text(section.priorityName)) {
                 ForEach(viewModel.tasksByPrioritySearchResults[section] ?? [], id: \.id) { task in
                     Button {
                         navigation.presentSheet(.editTask(task))

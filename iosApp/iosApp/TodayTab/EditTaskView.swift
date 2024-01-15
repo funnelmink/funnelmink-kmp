@@ -43,21 +43,13 @@ struct EditTaskView: View {
                 
                 Section("OPTIONS") {
                     Picker(selection: $priority, label: Text("Priority")) {
-                        Label(" Low", systemImage: "gauge.with.dots.needle.0percent")
-                            .tag(Int32(0))
-                        Label(" Medium", systemImage: "gauge.with.dots.needle.33percent")
-                            .tag(Int32(1))
-                        Label(" High", systemImage: "gauge.with.dots.needle.67percent")
-                            .tag(Int32(2))
-                        Label(" Ultra", systemImage: "gauge.with.dots.needle.100percent")
-                            .tag(Int32(3))
+                        ForEach(Int32(0)..<4, id: \.self) { prio in
+                            Label(" " + prio.priorityName, systemImage: prio.priorityIconName)
+                                .tag(prio)
+                        }
                     }
                     .pickerStyle(.menu)
-                    .tint(
-                        priority == 0 ? .gray :
-                            priority == 1 ? .blue :
-                            priority == 2 ? .purple : .red
-                    )
+                    .tint(priority.priorityColor)
                     .frame(height: 52)
                     if let date {
                         HStack {

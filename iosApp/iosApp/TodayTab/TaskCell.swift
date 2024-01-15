@@ -13,15 +13,6 @@ struct TaskCell: View {
     let task: ScheduleTask
     let onTapIsComplete: () -> Void
     
-    private var priorityColor: Color {
-        switch task.priority {
-        case 1: return .blue
-        case 2: return .purple
-        case 3: return .red
-        default: return .gray
-        }
-    }
-    
     var body: some View {
         HStack {
             Button {
@@ -29,12 +20,12 @@ struct TaskCell: View {
             } label: {
                 ZStack {
                     Circle()
-                        .fill(priorityColor.opacity(0.24))
+                        .fill(task.priority.priorityColor.opacity(0.24))
                     Circle()
-                        .stroke(priorityColor, lineWidth: 2)
+                        .stroke(task.priority.priorityColor, lineWidth: 2)
                     if task.isComplete {
                         Circle()
-                            .fill(priorityColor)
+                            .fill(task.priority.priorityColor)
                         Image(systemName: "checkmark")
                             .foregroundStyle(.white)
                             .font(.caption.bold())
