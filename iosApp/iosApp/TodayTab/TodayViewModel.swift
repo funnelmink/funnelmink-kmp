@@ -54,6 +54,7 @@ class TodayViewModel: ViewModel {
     func getTasks() async {
         do {
             let tasks = try await Networking.api.getTasks(date: nil, priority: nil, limit: nil, offset: nil, isComplete: false)
+            // TODO: scheduledTate?.toSortableDate()
             state.tasksByDate = Dictionary(grouping: tasks, by: { $0.scheduledDate?.toDate()?.toNumberRelativeAndWeekday() ?? "" })
             state.tasksByPriority = Dictionary(grouping: tasks, by: { $0.priority })
         } catch {

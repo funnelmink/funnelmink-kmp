@@ -15,35 +15,35 @@ extension Date {
     }
     
     func toNumberRelativeAndWeekday() -> String {
-        let components = Calendar.current.dateComponents([.month, .day, .weekday], from: self)
+        let calendar = Calendar.current
+        
+        let components = calendar.dateComponents([.month, .day, .weekday], from: self)
+        
+        let todayComponents = calendar.dateComponents([.month, .day, .weekday], from: Date())
+        
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: Date())!
+        let tomorrowComponents = calendar.dateComponents([.month, .day, .weekday], from: tomorrow)
+        
+        let yesterday = calendar.date(byAdding: .day, value: -1, to: Date())!
+        let yesterdayComponents = calendar.dateComponents([.month, .day, .weekday], from: yesterday)
+
         let month = components.month ?? 1
-        var monthString = ""
-        switch month {
-        case 1: monthString = "Jan"
-        case 2: monthString = "Feb"
-        case 3: monthString = "Mar"
-        case 4: monthString = "Apr"
-        case 5: monthString = "May"
-        case 6: monthString = "Jun"
-        case 7: monthString = "Jul"
-        case 8: monthString = "Aug"
-        case 9: monthString = "Sep"
-        case 10: monthString = "Oct"
-        case 11: monthString = "Nov"
-        case 12: monthString = "Dec"
-        default: break
+        let day = components.day ?? 1
+        
+        let monthArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        let weekdayArray = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        
+        var output = ""
+        
+        if components == todayComponents {
+            output = "Today • "
+        } else if components == tomorrowComponents {
+            output = "Tomorrow • "
+        } else if components == yesterdayComponents {
+            output = "Yesterday • "
         }
-        var weekdayString = ""
-        switch components.weekday {
-        case 1: weekdayString = "Sunday"
-        case 2: weekdayString = "Monday"
-        case 3: weekdayString = "Tuesday"
-        case 4: weekdayString = "Wednesday"
-        case 5: weekdayString = "Thursday"
-        case 6: weekdayString = "Friday"
-        case 7: weekdayString = "Saturday"
-        default: break
-        }
-        return "\(monthString) \(components.day ?? 1) • \(weekdayString)"
+        
+        output += "\(monthArray[month - 1]) \(day) • \(weekdayArray[(components.weekday ?? 1) - 1])"
+        return output
     }
 }
