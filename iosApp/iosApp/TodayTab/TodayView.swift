@@ -12,9 +12,11 @@ import SwiftUI
 struct TodayView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = TodayViewModel()
-    @State var sortOrder: SortOrder = .date
+    
+    @AppStorage(.storage.todaySortOrder) var sortOrder: SortOrder = .date
+    @AppStorage(.storage.todayIsSearchable) var isSearchable = false
+    
     @State var searchText = ""
-    @State var isSearchable = false
     
     @ViewBuilder
     var body: some View {
@@ -39,7 +41,6 @@ struct TodayView: View {
             await viewModel.getTasks()
         }
         .toolbar {
-            // task options menu
             ToolbarItem(placement: .primaryAction) {
                 Menu {
                     Button {
@@ -65,7 +66,6 @@ struct TodayView: View {
                 }
             }
             
-            // sort segment picker
             ToolbarItem(placement: .principal) {
                 Picker("Sort Order", selection: $sortOrder) {
                     Text("By Date").tag(SortOrder.date)

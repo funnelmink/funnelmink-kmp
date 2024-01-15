@@ -23,7 +23,13 @@ extension String {
 // MARK: constants
 extension String {
     static let constants = Constants()
+    static let storage = AppStorage()
     struct Constants {
         let refreshTokenExpiration = "refreshTokenExpiration"
+    }
+    
+    struct AppStorage {
+        let todaySortOrder = "todaySortOrder"
+        let todayIsSearchable = "todayIsSearchable"
     }
 }
