@@ -16,14 +16,16 @@ struct TodayView: View {
     @ViewBuilder
     var body: some View {
         List {
-            ForEach(viewModel.tasks.keys.sorted(), id: \.self) { date in
-                Section(header: Text(date)) {
-                    ForEach(viewModel.tasks[date] ?? [], id: \.id) { task in
+            ForEach(viewModel.tasks.keys.sorted(), id: \.self) { section in
+                Section(header: Text(section)) {
+                    ForEach(viewModel.tasks[section] ?? [], id: \.id) { task in
                         Button {
                             navigation.presentSheet(.editTask(task))
                         } label: {
                             TaskCell(task: task) {
-                                // TODO: toggle completeness
+                                Task {
+                                    await viewModel.toggleIsComplete(for: task, in: section)
+                                }
                             }
                         }
                     }

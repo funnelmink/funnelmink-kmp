@@ -25,4 +25,16 @@ class TodayViewModel: ViewModel {
             AppState.shared.error = error
         }
     }
+    
+    @MainActor
+    func toggleIsComplete(for task: ScheduleTask, in section: String) async {
+        do {
+            let updated = try await Networking.api.toggleTaskCompletion(id: task.id, isComplete: !task.isComplete)
+            if let index = state.tasks[section]?.firstIndex(where: { $0.id == task.id }) {
+                state.tasks[section]?[index] = updated
+            }
+        } catch {
+            AppState.shared.error = error
+        }
+    }
 }

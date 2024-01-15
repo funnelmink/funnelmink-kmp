@@ -149,6 +149,11 @@ class FunnelminkAPI(private val baseURL: String) : API {
     }
 
     @Throws(Exception::class)
+    override suspend fun toggleTaskCompletion(id: String, isComplete: Boolean) : ScheduleTask {
+        return genericRequest("$baseURL/v1/tasks/$id/toggle/$isComplete", HttpMethod.Put)
+    }
+
+    @Throws(Exception::class)
     override suspend fun deleteTask(id: String) {
         return genericRequest("$baseURL/v1/tasks", HttpMethod.Delete)
     }

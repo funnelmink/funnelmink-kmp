@@ -40,7 +40,7 @@ struct TaskCell: View {
                             .font(.caption.bold())
                     }
                 }
-                .frame(width: 30)
+                .frame(width: 24)
             }
             .padding(.trailing, 4)
             VStack(alignment: .leading) {

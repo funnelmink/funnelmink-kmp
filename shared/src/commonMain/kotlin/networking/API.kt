@@ -47,6 +47,7 @@ interface API {
     @Throws(Exception::class) suspend fun deleteTask(id: String)
     @Throws(Exception::class) suspend fun getTasks(date: String?, priority: Int?, limit: Int?, offset: Int?): List<ScheduleTask>
     @Throws(Exception::class) suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask
+    @Throws(Exception::class) suspend fun toggleTaskCompletion(id: String, isComplete: Boolean) : ScheduleTask
 
     // workspaces
     @Throws(Exception::class) suspend fun getWorkspaceMembers(): List<WorkspaceMember>
