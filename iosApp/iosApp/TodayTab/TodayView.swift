@@ -36,7 +36,7 @@ struct TodayView: View {
         }
         .tint(.primary)
         .scrollIndicators(.never)
-        .navigationTitle("Tasks")
+        .navigationTitle(viewModel.state.displayCompletedTasks ? "Completed" : "Tasks")
         .task {
             await viewModel.getTasks()
         }
@@ -65,13 +65,14 @@ struct TodayView: View {
                     Label("Options", systemImage: "ellipsis.circle")
                 }
             }
-            
-            ToolbarItem(placement: .principal) {
-                Picker("Sort Order", selection: $sortOrder) {
-                    Text("By Date").tag(SortOrder.date)
-                    Text("By Priority").tag(SortOrder.priority)
+            if !viewModel.state.displayCompletedTasks {
+                ToolbarItem(placement: .principal) {
+                    Picker("Sort Order", selection: $sortOrder) {
+                        Text("By Date").tag(SortOrder.date)
+                        Text("By Priority").tag(SortOrder.priority)
+                    }
+                    .pickerStyle(.segmented)
                 }
-                .pickerStyle(.segmented)
             }
         }
     }
