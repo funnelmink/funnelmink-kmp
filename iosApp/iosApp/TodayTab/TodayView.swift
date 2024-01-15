@@ -14,17 +14,16 @@ struct TodayView: View {
     @StateObject var viewModel = TodayViewModel()
     @State var sortOrder: SortOrder = .date
     @State var searchText = ""
+    @State var isSearchable = false
     
     @ViewBuilder
     var body: some View {
         ZStack {
-            List {
-                switch sortOrder {
-                case .date: tasksByDate
-                case .priority: tasksByPriority
-                }
+            if isSearchable {
+                searchableList
+            } else {
+                vanillaList
             }
-            .searchable(text: $searchText)
             VStack {
                 Spacer()
                 HStack {
@@ -40,14 +39,33 @@ struct TodayView: View {
             await viewModel.getTasks()
         }
         .toolbar {
+            // task options menu
             ToolbarItem(placement: .primaryAction) {
-                // TODO: make it a menu
-                Button {
-//                    navigation.presentSheet(.addTask)
+                Menu {
+                    Button {
+                        viewModel.toggleDisplayCompletedTasks()
+                    } label: {
+                        if viewModel.displayCompletedTasks {
+                            Label("Show completed tasks", systemImage: "checkmark")
+                        } else {
+                            Text("Show completed tasks")
+                        }
+                    }
+                    Button {
+                        isSearchable.toggle()
+                    } label: {
+                        if isSearchable {
+                            Label("Display search bar", systemImage: "checkmark")
+                        } else {
+                            Text("Display search bar")
+                        }
+                    }
                 } label: {
-                    Image(systemName: "ellipsis.circle")
+                    Label("Options", systemImage: "ellipsis.circle")
                 }
             }
+            
+            // sort segment picker
             ToolbarItem(placement: .principal) {
                 Picker("Sort Order", selection: $sortOrder) {
                     Text("By Date").tag(SortOrder.date)
@@ -106,8 +124,26 @@ struct TodayView: View {
                 .background(LoginBackgroundGradient())
                 .clipShape(Circle())
         }
-//        .frame(maxWidth: .infinity, alignment: .trailing)
         .padding()
+    }
+    
+    var vanillaList: some View {
+        List {
+            switch sortOrder {
+            case .date: tasksByDate
+            case .priority: tasksByPriority
+            }
+        }
+    }
+    
+    var searchableList: some View {
+        List {
+            switch sortOrder {
+            case .date: tasksByDate
+            case .priority: tasksByPriority
+            }
+        }
+        .searchable(text: $searchText)
     }
     
     enum SortOrder: Int, Identifiable {

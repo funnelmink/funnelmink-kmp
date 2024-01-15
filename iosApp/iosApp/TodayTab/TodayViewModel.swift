@@ -15,6 +15,11 @@ class TodayViewModel: ViewModel {
     struct State: Hashable {
         var tasksByDate: [String: [ScheduleTask]] = [:]
         var tasksByPriority: [Int32: [ScheduleTask]] = [:]
+        var displayCompletedTasks = false
+    }
+    
+    func toggleDisplayCompletedTasks() {
+        state.displayCompletedTasks.toggle()
     }
     
     @MainActor
