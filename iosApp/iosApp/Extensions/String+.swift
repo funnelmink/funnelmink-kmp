@@ -11,6 +11,9 @@ import Foundation
 extension String: LocalizedError {
     var localizedDescription: String { self }
     public var errorDescription: String? { self }
+    static var loremShort: String { "Lorem ipsum dolor sit amet" }
+    static var loremMedium: String { "Lorem ipsum dolor sit amet, consectetur adipiscing elit." }
+    static var loremLong: String { "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum, risus mollis gravida aliquet, risus sem pulvinar metus, vel consectetur metus elit quis arcu." }
 }
 
 // MARK: formatting

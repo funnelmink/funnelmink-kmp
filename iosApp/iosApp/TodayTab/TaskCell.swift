@@ -15,37 +15,20 @@ struct TaskCell: View {
     
     var body: some View {
         HStack {
-            Button {
-                onTapIsComplete()
-            } label: {
-                ZStack {
-                    Circle()
-                        .fill(task.priority.priorityColor.opacity(0.24))
-                    Circle()
-                        .stroke(task.priority.priorityColor, lineWidth: 2)
-                    if task.isComplete {
-                        Circle()
-                            .fill(task.priority.priorityColor)
-                        Image(systemName: "checkmark")
-                            .foregroundStyle(.white)
-                            .font(.caption.bold())
-                    }
-                }
-                .frame(width: 24)
-            }
-            .padding(.trailing, 4)
+            TaskCompletionButton(task: task, onTap: onTapIsComplete)
             VStack(alignment: .leading) {
                 Text(task.title)
                     .font(.headline)
-                if let body = task.body {
+                if let body = task.body, !body.isEmpty {
                     Text(body)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
             }
+            .frame(height: 44)
         }
         .lineLimit(1)
-        .frame(minHeight: 44)
+        .frame(height: 44)
     }
 }
 
