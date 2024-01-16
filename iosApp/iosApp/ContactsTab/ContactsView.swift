@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Shared
 
 struct ContactsView: View {
     @EnvironmentObject var nav: Navigation
@@ -14,7 +15,13 @@ struct ContactsView: View {
     
     var body: some View {
         List {
-            Text("Contacts")
+            ForEach(viewModel.contacts, id: \.id) { contact in
+                Button(action: {
+                    nav.performSegue(.contactView(contact))
+                }, label: {
+                CustomCell(title: contact.name, cellType: .navigation)
+                })
+            }
         }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -27,7 +34,7 @@ struct ContactsView: View {
             }
             .navigationTitle("Contacts")
             .task {
-//                await viewModel.getContacts()
+                await viewModel.getContacts()
             }
     }
 }

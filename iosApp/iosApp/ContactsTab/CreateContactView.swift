@@ -14,6 +14,7 @@ struct CreateContactView: View {
     @StateObject var viewModel = ContactsViewModel()
     @State var firstName: String = ""
     @State var lastName: String = ""
+    @State var businessName: String = ""
     @State var email: String = ""
     @State var address: String = ""
     @State var phoneNumber: String = ""
@@ -24,8 +25,8 @@ struct CreateContactView: View {
     
     func addContact() {
         Task {
-            let name = firstName + lastName
-            await viewModel.createContact(name: name, emails: emails, phoneNumbers: phoneNumbers, jobTitle: jobTitle)
+            let name = firstName + " " + lastName
+            await viewModel.createContact(name: name, emails: emails, phoneNumbers: phoneNumbers, jobTitle: businessName)
             nav.dismissModal()
         }
     }
@@ -80,6 +81,8 @@ struct CreateContactView: View {
                     CustomTextField(text: $lastName, placeholder: "Last", style: .text)
                 }
                 .padding(.horizontal)
+                CustomTextField(text: $businessName, placeholder: "Company", style: .text)
+                    .padding(.horizontal)
                 CustomTextField(text: $email, placeholder: "Email", style: .email)
                     .padding(.horizontal)
                 CustomTextField(text: $address, placeholder: "Address", style: .text)

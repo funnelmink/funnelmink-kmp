@@ -7,11 +7,13 @@
 //
 
 import SwiftUI
+import Shared
 
 enum Segue: NavigationSegue {
     case home
     case contacts
     case workspaceSettings
+    case contactView(Contact)
     
     @ViewBuilder
     var view: some View {
@@ -19,6 +21,7 @@ enum Segue: NavigationSegue {
         case .home: Text("HOME")
         case .contacts: ContactsView()
         case .workspaceSettings: WorkspaceSettingsView()
+        case let .contactView(contact): ContactView(contact: contact)
         }
     }
 }
