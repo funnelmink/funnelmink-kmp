@@ -30,10 +30,12 @@ struct WorkspaceSettingsView: View {
                                 .keyboardType(.alphabet)
                                 .autocorrectionDisabled()
                                 .textContentType(.organizationName)
-                            AsyncButton {
-                                await viewModel.updateWorkspace(name: newWorkspaceName)
-                            } label: {
-                                Text("Save")
+                            if newWorkspaceName != workspace.name {
+                                AsyncButton {
+                                    await viewModel.updateWorkspace(name: newWorkspaceName)
+                                } label: {
+                                    Text("Save")
+                                }
                             }
                         }
                     }

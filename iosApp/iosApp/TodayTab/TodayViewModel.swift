@@ -23,7 +23,7 @@ class TodayViewModel: ViewModel {
     }
     
     init() {
-        // clear everything the user changes workspaces
+        // clear everything when the user changes workspaces
         AppState
             .shared
             .$workspace
