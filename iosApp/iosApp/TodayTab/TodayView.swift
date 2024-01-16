@@ -6,51 +6,187 @@
 //  Copyright © 2023 FunnelMink. All rights reserved.
 //
 
+import Shared
 import SwiftUI
 
 struct TodayView: View {
-    @EnvironmentObject var nav: Navigation
+    @EnvironmentObject var navigation: Navigation
+    @StateObject var viewModel = TodayViewModel()
     
-    let tasks: [CalendarTask] = [
-//        .init(id: "a", priority: 1, title: "Task 1", body: "This is a task", scheduledDate: nil),
-//        .init(id: "b", priority: 2, title: "Task 2", body: "This is a task", scheduledDate: nil),
-//        .init(id: "c", priority: 3, title: "Task 3", body: "This is a task", scheduledDate: nil),
-    ]
+    @AppStorage(.storage.todaySortOrder) var sortOrder: SortOrder = .date
+    @AppStorage(.storage.todayIsSearchable) var isSearchable = false
+    
+    @ViewBuilder
     var body: some View {
-        Text("Coming soon!")
-//        ScrollView {
-//            ForEach(tasks) { task in
-//                TaskCell(task: task)
-//            }
-//        }
-//        .scrollIndicators(.never)
-        .navigationTitle("Today")
-    }
-}
-
-#Preview {
-    TodayView()
-}
-
-
-struct TaskCell: View {
-    let task: CalendarTask
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(task.title)
-                .font(.title2)
-                .fontWeight(.semibold)
-            Text(task.body)
-                .font(.body)
-                .foregroundColor(.secondary)
+        ZStack {
+            switch (isSearchable, viewModel.displayCompletedTasks) {
+            case (true, true): searchableCompleted
+            case (false, true): vanillaCompleted
+                
+            case (true, false): searchableList
+            case (false, false): vanillaList
+            }
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    addTaskFAB
+                }
+            }
+        }
+        .tint(.primary)
+        .scrollIndicators(.never)
+        .navigationTitle(viewModel.state.displayCompletedTasks ? "Completed" : "Tasks")
+        .task {
+            await viewModel.getTasks()
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Menu {
+                    Button {
+                        viewModel.toggleDisplayCompletedTasks()
+                    } label: {
+                        if viewModel.displayCompletedTasks {
+                            Label("Show completed tasks", systemImage: "checkmark")
+                        } else {
+                            Text("Show completed tasks")
+                        }
+                    }
+                    Button {
+                        isSearchable.toggle()
+                    } label: {
+                        if isSearchable {
+                            Label("Display search bar", systemImage: "checkmark")
+                        } else {
+                            Text("Display search bar")
+                        }
+                    }
+                } label: {
+                    Label("Options", systemImage: "ellipsis.circle")
+                }
+            }
+            if !viewModel.state.displayCompletedTasks {
+                ToolbarItem(placement: .principal) {
+                    Picker("Sort Order", selection: $sortOrder) {
+                        Text("By Date").tag(SortOrder.date)
+                        Text("By Priority").tag(SortOrder.priority)
+                    }
+                    .pickerStyle(.segmented)
+                }
+            }
         }
     }
-}
-
-struct CalendarTask: Codable, Identifiable {
-    let id: String
-    let priority: Int
-    let title: String
-    let body: String
-    let scheduledDate: Date?
+    
+    var tasksByDate: some View {
+        ForEach(viewModel.tasksByDateSearchResults.keys.sorted(), id: \.self) { section in
+            let title = section == .distantPast ? "No Deadline" : section.toTaskSectionTitle()
+            Section(header: Text(title)
+                .foregroundStyle(title == "No Deadline" ? .gray : title.contains("Today") ? .blue : section < Date() ? .red : .gray)
+            ) {
+                ForEach(viewModel.tasksByDateSearchResults[section] ?? [], id: \.id) { task in
+                    Button {
+                        navigation.performSegue(.taskDetails(task))
+                    } label: {
+                        TaskCell(task: task) {
+                            Task {
+                                await viewModel.toggleIsComplete(for: task)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    var tasksByPriority: some View {
+        ForEach(viewModel.tasksByPrioritySearchResults.keys.sorted(by: >), id: \.self) { section in
+            Section(header: Text(section.priorityName)) {
+                ForEach(viewModel.tasksByPrioritySearchResults[section] ?? [], id: \.id) { task in
+                    Button {
+                        navigation.performSegue(.taskDetails(task))
+                    } label: {
+                        TaskCell(task: task) {
+                            Task {
+                                await viewModel.toggleIsComplete(for: task)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    var addTaskFAB: some View {
+        Button {
+            navigation.presentSheet(.createTask)
+        } label: {
+            Image(systemName: "plus")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .padding()
+                .foregroundStyle(.white)
+                .background(LoginBackgroundGradient())
+                .clipShape(Circle())
+        }
+        .padding()
+    }
+    
+    var vanillaList: some View {
+        List {
+            switch sortOrder {
+            case .date: tasksByDate
+            case .priority: tasksByPriority
+            }
+        }
+    }
+    
+    var searchableList: some View {
+        List {
+            switch sortOrder {
+            case .date: tasksByDate
+            case .priority: tasksByPriority
+            }
+        }
+        .searchable(text: $viewModel.searchText)
+    }
+    
+    var vanillaCompleted: some View {
+        List {
+            ForEach(viewModel.completedTasksSearchResults, id: \.id) { task in
+                Button {
+                    navigation.performSegue(.taskDetails(task))
+                } label: {
+                    TaskCell(task: task) {
+                        Task {
+                            await viewModel.toggleIsComplete(for: task)
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    var searchableCompleted: some View {
+        List {
+            ForEach(viewModel.completedTasksSearchResults, id: \.id) { task in
+                Button {
+                    navigation.performSegue(.taskDetails(task))
+                } label: {
+                    TaskCell(task: task) {
+                        Task {
+                            await viewModel.toggleIsComplete(for: task)
+                        }
+                    }
+                }
+            }
+        }
+        .searchable(text: $viewModel.searchText)
+    }
+    
+    enum SortOrder: Int, Identifiable {
+        case date
+        case priority
+        
+        var id: Int { rawValue }
+    }
 }

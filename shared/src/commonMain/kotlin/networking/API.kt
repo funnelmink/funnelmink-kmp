@@ -1,12 +1,17 @@
-package com.funnelmink.crm.networking
+package networking
 
-import com.funnelmink.crm.models.*
+import models.*
 
 /// Endpoints are sorted by access level.
 /// Each new access level builds onto the rules from all prior levels.
 interface API {
     var token: String?
     var workspaceID: String?
+    var onAuthFailure: ((message: String) -> Unit)?
+    var onBadRequest: ((message: String) -> Unit)?
+    var onDecodingError: ((message: String) -> Unit)?
+    var onMissing: ((message: String) -> Unit)?
+    var onServerError: ((message: String) -> Unit)?
 
     // ------------------------------------------------------------------------
     // Auth-Only Endpoints
@@ -20,7 +25,7 @@ interface API {
     // workspaces
     @Throws(Exception::class) suspend fun acceptWorkspaceInvitation(id: String): Workspace
     @Throws(Exception::class) suspend fun declineWorkspaceInvitation(id: String)
-    @Throws(Exception::class) suspend fun createWorkspace(name: String): Workspace
+    @Throws(Exception::class) suspend fun createWorkspace(body: CreateWorkspaceRequest): Workspace
     @Throws(Exception::class) suspend fun getWorkspaces(): List<Workspace>
     @Throws(Exception::class) suspend fun requestWorkspaceMembership(name: String)
 
@@ -40,9 +45,9 @@ interface API {
     // tasks
     @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): ScheduleTask
     @Throws(Exception::class) suspend fun deleteTask(id: String)
-    @Throws(Exception::class) suspend fun getTasks(date: String?, priority: Int?, limit: Int?, offset: Int?): Array<ScheduleTask>
-    // TODO: updateTask(body: UpdateTaskRequest)
-    @Throws(Exception::class) suspend fun updateTask(id: String, isComplete: Boolean, priority: Int, title: String, body: String, scheduledDate: String): ScheduleTask
+    @Throws(Exception::class) suspend fun getTasks(date: String?, priority: Int?, limit: Int?, offset: Int?, isComplete: Boolean): List<ScheduleTask>
+    @Throws(Exception::class) suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask
+    @Throws(Exception::class) suspend fun toggleTaskCompletion(id: String, isComplete: Boolean) : ScheduleTask
 
     // workspaces
     @Throws(Exception::class) suspend fun getWorkspaceMembers(): List<WorkspaceMember>
@@ -56,10 +61,10 @@ interface API {
 
     // workspaces
     @Throws(Exception::class) suspend fun acceptWorkspaceRequest(userID: String)
-    @Throws(Exception::class) suspend fun changeWorkspaceRole(userID: String, role: String) // TODO: enum
+    @Throws(Exception::class) suspend fun changeWorkspaceRole(userID: String, role: WorkspaceMembershipRole)
     @Throws(Exception::class) suspend fun declineWorkspaceRequest(userID: String)
     @Throws(Exception::class) suspend fun deleteWorkspace(): Workspace
     @Throws(Exception::class) suspend fun inviteUserToWorkspace(email: String)
     @Throws(Exception::class) suspend fun removeMemberFromWorkspace(userID: String)
-    @Throws(Exception::class) suspend fun updateWorkspace(name: String?, avatarURL: String?): Workspace
+    @Throws(Exception::class) suspend fun updateWorkspace(body: UpdateWorkspaceRequest): Workspace
 }

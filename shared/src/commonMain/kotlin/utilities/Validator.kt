@@ -23,4 +23,21 @@ class Validator {
         val phoneRegex = Regex("^[0-9()\\[\\]\\-.*#+]{1,25}$")
         return phoneRegex.matches(input)
     }
+
+    fun isName(input: String): Boolean {
+        if (input.isEmpty() || input.length > 32) return false
+
+        for (char in input) {
+            if (!char.isLetterOrDigit() && !char.isWhitespace() && !char.isPunctuation()) {
+                return false
+            }
+        }
+        return true
+    }
+
+    // Extension function to check if a Char is punctuation.
+    private fun Char.isPunctuation(): Boolean {
+        val punctuationChars = "!\"#\$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+        return this in punctuationChars
+    }
 }

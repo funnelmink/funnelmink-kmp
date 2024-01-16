@@ -1,0 +1,15 @@
+//
+//  ReleaseConfig.xcconfig
+//  iosApp
+//
+//  Created by Jared Warren on 1/10/24.
+//  Copyright © 2024 orgName. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+APP_NAME = funnelmink
+BUNDLE_ID = com.funnelmink.crm.dev
+TEAM_ID =
+KOTLIN_FRAMEWORK_BUILD_TYPE = release

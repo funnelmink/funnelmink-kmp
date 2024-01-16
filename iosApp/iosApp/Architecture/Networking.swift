@@ -6,11 +6,52 @@
 //  Copyright © 2023 FunnelMink, LLC. All rights reserved.
 //
 
+import FirebaseAuth
 import Foundation
 import Shared
 
 class Networking {
-    // TODO: mink api takes a closure that's called when the user is not authenticated. Plus any other hooks we need
-    static let api: API = { FunnelminkAPI(baseURL: Properties.baseURL) }()
+    static let api: API = {
+        let fmapi = FunnelminkAPI(
+            baseURL: Properties.baseURL
+        )
+        
+        fmapi.onAuthFailure = { _ in
+            Task { @MainActor in
+                do {
+                    Networking.api.token = try await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true).token
+                } catch {
+                    AppState.shared.prompt = "Your session has expired. Please log in again."
+                }
+            }
+        }
+        
+        // TODO: all of the following will also need to be surfaced to the user
+        fmapi.onBadRequest = { message in
+            Task { @MainActor in
+                AppState.shared.error = message
+            }
+        }
+        
+        fmapi.onDecodingError = { message in
+            Task { @MainActor in
+                AppState.shared.error = message
+            }
+        }
+        
+        fmapi.onMissing = { message in
+            Task { @MainActor in
+                AppState.shared.error = message
+            }
+        }
+        
+        fmapi.onServerError = { message in
+            Task { @MainActor in
+                AppState.shared.error = message
+            }
+        }
+        
+        return fmapi
+    }()
 }
 

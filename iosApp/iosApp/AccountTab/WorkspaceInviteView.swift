@@ -11,6 +11,7 @@ import SwiftUI
 
 struct WorkspaceInviteView: View {
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = WorkspacesViewModel()
     @State var inviteEmailAddress = ""
     var body: some View {
@@ -46,7 +47,9 @@ struct WorkspaceInviteView: View {
                     return
                 }
                 
-                await viewModel.inviteToWorkspace(email: inviteEmailAddress)
+                await viewModel.inviteToWorkspace(email: inviteEmailAddress) {
+                    navigation.dismissModal()
+                }
             } label: {
                 Text("Invite")
                     .frame(height: 52)
