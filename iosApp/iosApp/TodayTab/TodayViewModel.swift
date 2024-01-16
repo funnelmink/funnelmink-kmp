@@ -6,18 +6,31 @@
 //  Copyright © 2024 orgName. All rights reserved.
 //
 
+import Combine
 import Foundation
 import Shared
 
 class TodayViewModel: ViewModel {
     @Published var state = State()
     @Published var searchText = ""
+    private var subscriptions = Set<AnyCancellable>()
     
     struct State: Hashable {
         var tasksByDate: [Date: [ScheduleTask]] = [:]
         var tasksByPriority: [Int32: [ScheduleTask]] = [:]
         var completedTasks: [ScheduleTask] = []
         var displayCompletedTasks = false
+    }
+    
+    init() {
+        // clear everything the user changes workspaces
+        AppState
+            .shared
+            .$workspace
+            .sink { _ in
+                self.state = State()
+            }
+            .store(in: &subscriptions)
     }
     
     var tasksByDateSearchResults: [Date: [ScheduleTask]] {

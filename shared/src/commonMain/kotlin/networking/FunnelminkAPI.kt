@@ -57,7 +57,7 @@ class FunnelminkAPI(private val baseURL: String) : API {
 
     @Throws(Exception::class)
     override suspend fun getWorkspaceMembers(): List<WorkspaceMember> {
-        return genericRequest("$baseURL/v1/workspaces/members", HttpMethod.Get)
+        return genericRequest("$baseURL/v1/workspace/members", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
