@@ -79,7 +79,7 @@ struct TodayView: View {
     
     var tasksByDate: some View {
         ForEach(viewModel.tasksByDateSearchResults.keys.sorted(), id: \.self) { section in
-            let title = section == .distantPast ? "No Deadline" : section.toNumberRelativeAndWeekday()
+            let title = section == .distantPast ? "No Deadline" : section.toTaskSectionTitle()
             Section(header: Text(title)
                 .foregroundStyle(title == "No Deadline" ? .gray : title.contains("Today") ? .blue : section < Date() ? .red : .gray)
             ) {

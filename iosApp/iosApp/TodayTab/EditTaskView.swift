@@ -75,7 +75,7 @@ struct EditTaskView: View {
                             Text("Date")
                             Spacer()
                             Button {
-                                date = Date().addingTimeInterval(60 * 60)
+                                date = .noon
                             } label: {
                                 Text("Add date")
                                     .frame(height: 52)
@@ -94,7 +94,7 @@ struct EditTaskView: View {
                         priority: priority,
                         isComplete: task.isComplete,
                         body: taskBody,
-                        scheduledDate: date?.toFunnelminkString()
+                        scheduledDate: date?.iso8601()
                     ) {
                         navigation.dismissModal()
                     }
@@ -103,7 +103,7 @@ struct EditTaskView: View {
                         title: taskName,
                         priority: priority,
                         body: taskBody,
-                        scheduledDate: date?.toFunnelminkString()
+                        scheduledDate: date?.iso8601()
                     ) {
                         navigation.dismissModal()
                     }

@@ -9,7 +9,8 @@
 import Foundation
 
 extension DateFormatter {
-    static let funnelmink: ISO8601DateFormatter = {
+    /// The format our backend sends and receives dates in
+    static let iso8601: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime]
         return formatter

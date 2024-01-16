@@ -10,11 +10,20 @@ import Foundation
 import Shared
 
 extension Date {
-    func toFunnelminkString() -> String {
-        DateFormatter.funnelmink.string(from: self)
+    /// 12 o'clock noon today in the user's current time zone
+    static var noon: Date {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.year, .month, .day], from: Date())
+        return calendar.date(from: components) ?? Date()
     }
     
-    func toNumberRelativeAndWeekday() -> String {
+    /// The format our backend sends and receives dates in
+    func iso8601() -> String {
+        DateFormatter.iso8601.string(from: self)
+    }
+    
+    /// "Today • Dec 25 • Saturday"
+    func toTaskSectionTitle() -> String {
         let calendar = Calendar.current
         
         let components = calendar.dateComponents([.month, .day, .weekday], from: self)

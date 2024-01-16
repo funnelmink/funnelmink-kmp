@@ -16,11 +16,11 @@ extension String: LocalizedError {
 // MARK: formatting
 extension String {
     func toDate() -> Date? {
-        DateFormatter.funnelmink.date(from: self)
+        DateFormatter.iso8601.date(from: self)
     }
     
     func toSortableDate() -> Date? {
-        guard let date = DateFormatter.funnelmink.date(from: self) else { return nil }
+        guard let date = DateFormatter.iso8601.date(from: self) else { return nil }
         let components = Calendar.current.dateComponents([.year, .month, .day], from: date)
         return Calendar.current.date(from: components)
     }
