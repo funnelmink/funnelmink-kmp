@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.skie)
+    alias(libs.plugins.sqldelight)
     alias(libs.plugins.versionChecker)
 }
 
@@ -54,5 +55,13 @@ android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+}
+
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName = "com.funnelmink.crm.dev.cache" // TODO: dynamic? Or not needed?
+        }
     }
 }
