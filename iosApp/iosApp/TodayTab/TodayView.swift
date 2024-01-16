@@ -79,7 +79,10 @@ struct TodayView: View {
     
     var tasksByDate: some View {
         ForEach(viewModel.tasksByDateSearchResults.keys.sorted(), id: \.self) { section in
-            Section(header: Text(section)) {
+            let title = section == .distantPast ? "No Deadline" : section.toNumberRelativeAndWeekday()
+            Section(header: Text(title)
+                .foregroundStyle(title == "No Deadline" ? .gray : title.contains("Today") ? .blue : section < Date() ? .red : .gray)
+            ) {
                 ForEach(viewModel.tasksByDateSearchResults[section] ?? [], id: \.id) { task in
                     Button {
                         navigation.presentSheet(.editTask(task))

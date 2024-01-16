@@ -59,8 +59,9 @@ struct EditTaskView: View {
                                     get: { date },
                                     set: { self.date = $0 }
                                 ),
-                                displayedComponents: [.date, .hourAndMinute]
+                                displayedComponents: [.date]
                             )
+                            
                             Button {
                                 self.date = nil
                             } label: {
@@ -74,7 +75,7 @@ struct EditTaskView: View {
                             Text("Date")
                             Spacer()
                             Button {
-                                date = Date().addingTimeInterval(60 * 60 * 24)
+                                date = Date().addingTimeInterval(60 * 60)
                             } label: {
                                 Text("Add date")
                                     .frame(height: 52)

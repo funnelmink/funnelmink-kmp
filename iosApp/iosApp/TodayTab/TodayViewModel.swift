@@ -11,11 +11,18 @@ import Shared
 
 class TodayViewModel: ViewModel {
     @Published var state = State()
-    
     @Published var searchText = ""
-    var tasksByDateSearchResults: [String: [ScheduleTask]] {
+    
+    struct State: Hashable {
+        var tasksByDate: [Date: [ScheduleTask]] = [:]
+        var tasksByPriority: [Int32: [ScheduleTask]] = [:]
+        var completedTasks: [ScheduleTask] = []
+        var displayCompletedTasks = false
+    }
+    
+    var tasksByDateSearchResults: [Date: [ScheduleTask]] {
         if searchText.isEmpty { return state.tasksByDate }
-        var results: [String: [ScheduleTask]] = [:]
+        var results: [Date: [ScheduleTask]] = [:]
         for (key, value) in state.tasksByDate {
             results[key] = value.filter { $0.description.lowercased().contains(searchText.lowercased()) }
         }
@@ -34,13 +41,6 @@ class TodayViewModel: ViewModel {
         return state.completedTasks.filter { $0.description.lowercased().contains(searchText.lowercased()) }
     }
     
-    struct State: Hashable {
-        var tasksByDate: [String: [ScheduleTask]] = [:]
-        var tasksByPriority: [Int32: [ScheduleTask]] = [:]
-        var completedTasks: [ScheduleTask] = []
-        var displayCompletedTasks = false
-    }
-    
     func toggleDisplayCompletedTasks() {
         state.displayCompletedTasks.toggle()
         if state.displayCompletedTasks {
@@ -54,8 +54,11 @@ class TodayViewModel: ViewModel {
     func getTasks() async {
         do {
             let tasks = try await Networking.api.getTasks(date: nil, priority: nil, limit: nil, offset: nil, isComplete: false)
-            // TODO: scheduledTate?.toSortableDate()
-            state.tasksByDate = Dictionary(grouping: tasks, by: { $0.scheduledDate?.toDate()?.toNumberRelativeAndWeekday() ?? "" })
+            
+            state.tasksByDate = Dictionary(
+                grouping: tasks,
+                by: { $0.scheduledDate?.toSortableDate() ?? Date.distantPast }
+            )
             state.tasksByPriority = Dictionary(grouping: tasks, by: { $0.priority })
         } catch {
             AppState.shared.error = error
