@@ -83,6 +83,7 @@
 		0D012E942B477FFC00658153 /* GoogleService-Info-PROD.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E922B477FFC00658153 /* GoogleService-Info-PROD.plist */; };
 		0D012E9A2B47877B00658153 /* ProdEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */; };
 		0D012E9B2B47877B00658153 /* LocalEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */; };
+		0D5987372B5607DF00327504 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5987362B5607DF00327504 /* TaskDetailView.swift */; };
 		0D73AB132B54DAF30026EC4D /* Int32+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AB122B54DAF30026EC4D /* Int32+.swift */; };
 		0DBB674F2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */; };
 		0DCC16342B50D26C008F705B /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC16332B50D26C008F705B /* TodayViewModel.swift */; };
@@ -174,6 +175,7 @@
 		0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ProdEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LocalEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E9C2B47878F00658153 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		0D5987362B5607DF00327504 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		0D73AB122B54DAF30026EC4D /* Int32+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int32+.swift"; sourceTree = "<group>"; };
 		0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DevEnvironment.xcconfig; sourceTree = "<group>"; };
 		0DBB67562B4FA39B00CFE9A5 /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 				0DCC16332B50D26C008F705B /* TodayViewModel.swift */,
 				0DCC16372B50E184008F705B /* EditTaskView.swift */,
 				0DCC16392B511A2C008F705B /* EditTaskViewModel.swift */,
+				0D5987362B5607DF00327504 /* TaskDetailView.swift */,
 			);
 			path = TodayTab;
 			sourceTree = "<group>";
@@ -754,6 +757,7 @@
 				0D012E7F2B477E3A00658153 /* WorkspaceSettingsView.swift in Sources */,
 				0D012E6A2B477E3A00658153 /* String+.swift in Sources */,
 				0D012E8B2B477E3A00658153 /* JoinExistingWorkspaceView.swift in Sources */,
+				0D5987372B5607DF00327504 /* TaskDetailView.swift in Sources */,
 				0D012E6B2B477E3A00658153 /* Gradient+.swift in Sources */,
 				0D012E6E2B477E3A00658153 /* View+.swift in Sources */,
 				0D012E762B477E3A00658153 /* ExternalDeeplink.swift in Sources */,

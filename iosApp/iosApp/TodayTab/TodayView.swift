@@ -85,7 +85,7 @@ struct TodayView: View {
             ) {
                 ForEach(viewModel.tasksByDateSearchResults[section] ?? [], id: \.id) { task in
                     Button {
-                        navigation.presentSheet(.editTask(task))
+                        navigation.performSegue(.taskDetails(task))
                     } label: {
                         TaskCell(task: task) {
                             Task {
@@ -103,7 +103,7 @@ struct TodayView: View {
             Section(header: Text(section.priorityName)) {
                 ForEach(viewModel.tasksByPrioritySearchResults[section] ?? [], id: \.id) { task in
                     Button {
-                        navigation.presentSheet(.editTask(task))
+                        navigation.performSegue(.taskDetails(task))
                     } label: {
                         TaskCell(task: task) {
                             Task {
@@ -154,7 +154,7 @@ struct TodayView: View {
         List {
             ForEach(viewModel.completedTasksSearchResults, id: \.id) { task in
                 Button {
-                    navigation.presentSheet(.editTask(task))
+                    navigation.performSegue(.taskDetails(task))
                 } label: {
                     TaskCell(task: task) {
                         Task {
@@ -170,7 +170,7 @@ struct TodayView: View {
         List {
             ForEach(viewModel.completedTasksSearchResults, id: \.id) { task in
                 Button {
-                    navigation.presentSheet(.editTask(task))
+                    navigation.performSegue(.taskDetails(task))
                 } label: {
                     TaskCell(task: task) {
                         Task {
