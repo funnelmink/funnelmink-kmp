@@ -14,6 +14,7 @@ extension String: LocalizedError {
     static var loremShort: String { "Lorem ipsum dolor sit amet" }
     static var loremMedium: String { "Lorem ipsum dolor sit amet, consectetur adipiscing elit." }
     static var loremLong: String { "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In condimentum, risus mollis gravida aliquet, risus sem pulvinar metus, vel consectetur metus elit quis arcu." }
+    static var loremDate: String { "2024-01-20T00:31:00-03:00" }
 }
 
 // MARK: formatting

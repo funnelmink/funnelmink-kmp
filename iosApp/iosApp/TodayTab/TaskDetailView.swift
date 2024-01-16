@@ -85,5 +85,14 @@ struct TaskDetailView: View {
 }
 
 #Preview {
-    TaskDetailView(task: ScheduleTask(id: "", title: .loremShort, body: .loremLong, priority: 2, isComplete: false, scheduledDate: "2024-01-20T00:31:00-03:00"))
+    TaskDetailView(
+        task: ScheduleTask(
+            id: "",
+            title: .loremShort,
+            body: .loremLong,
+            priority: 2,
+            isComplete: false,
+            scheduledDate: .loremDate
+        )
+    )
 }
