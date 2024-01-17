@@ -1,21 +1,21 @@
-CREATE TABLE User (
+CREATE TABLE SQLUser (
     id TEXT PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
     username TEXT
 );
 
 insertUser:
-INSERT INTO User(id, email, username)
+INSERT INTO SQLUser(id, email, username)
 VALUES(?, ?, ?);
 
 selectUserById:
 SELECT *
-FROM User
+FROM SQLUser
 WHERE id = ?;
 
 selectAllUsersInfo:
-SELECT User.*
-FROM User;
+SELECT SQLUser.*
+FROM SQLUser;
 
 removeAllUsers:
-DELETE FROM User;
+DELETE FROM SQLUser;

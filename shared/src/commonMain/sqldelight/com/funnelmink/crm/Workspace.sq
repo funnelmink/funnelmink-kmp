@@ -1,4 +1,4 @@
-CREATE TABLE Workspace(
+CREATE TABLE SQLWorkspace(
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     role TEXT,
@@ -6,17 +6,17 @@ CREATE TABLE Workspace(
 );
 
 insertWorkspace:
-INSERT INTO Workspace(id, name, role, avatarURL)
+INSERT INTO SQLWorkspace(id, name, role, avatarURL)
 VALUES(?, ?, ?, ?);
 
 selectWorkspaceById:
 SELECT *
-FROM Workspace
+FROM SQLWorkspace
 WHERE id = ?;
 
 selectAllWorkspacesInfo:
-SELECT Workspace.*
-FROM Workspace;
+SELECT SQLWorkspace.*
+FROM SQLWorkspace;
 
 removeAllWorkspaces:
-DELETE FROM Workspace;
+DELETE FROM SQLWorkspace;

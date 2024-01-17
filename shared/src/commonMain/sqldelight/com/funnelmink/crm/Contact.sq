@@ -1,4 +1,4 @@
-CREATE TABLE Contact (
+CREATE TABLE SQLContact (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     emails TEXT, -- Storing emails as a comma-separated string
@@ -8,17 +8,17 @@ CREATE TABLE Contact (
 
 
 insertContact:
-INSERT INTO Contact(id, name, emails, phoneNumbers, jobTitle)
+INSERT INTO SQLContact(id, name, emails, phoneNumbers, jobTitle)
 VALUES(?, ?, ?, ?, ?);
 
 selectContactById:
 SELECT *
-FROM Contact
+FROM SQLContact
 WHERE id = ?;
 
 selectAllContactsInfo:
-SELECT Contact.*
-FROM Contact;
+SELECT SQLContact.*
+FROM SQLContact;
 
 removeAllContacts:
-DELETE FROM Contact;
+DELETE FROM SQLContact;

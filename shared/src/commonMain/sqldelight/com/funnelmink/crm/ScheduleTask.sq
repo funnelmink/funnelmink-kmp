@@ -1,4 +1,4 @@
-CREATE TABLE ScheduleTask(
+CREATE TABLE SQLScheduleTask(
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
     body TEXT,
@@ -8,17 +8,17 @@ CREATE TABLE ScheduleTask(
 );
 
 insertScheduleTask:
-INSERT INTO ScheduleTask(id, title, body, priority, isComplete, scheduledDate)
+INSERT INTO SQLScheduleTask(id, title, body, priority, isComplete, scheduledDate)
 VALUES(?, ?, ?, ?, ?, ?);
 
 selectScheduleTaskById:
 SELECT *
-FROM ScheduleTask
+FROM SQLScheduleTask
 WHERE id = ?;
 
 selectAllScheduleTasksInfo:
-SELECT ScheduleTask.*
-FROM ScheduleTask;
+SELECT SQLScheduleTask.*
+FROM SQLScheduleTask;
 
 removeAllScheduleTasks:
-DELETE FROM ScheduleTask;
+DELETE FROM SQLScheduleTask;

@@ -1,4 +1,4 @@
-CREATE TABLE WorkspaceMember(
+CREATE TABLE SQLWorkspaceMember(
     id TEXT PRIMARY KEY,
     userID TEXT,
     username TEXT,
@@ -6,17 +6,17 @@ CREATE TABLE WorkspaceMember(
 );
 
 insertWorkspaceMember:
-INSERT INTO WorkspaceMember(id, userID, username, role)
+INSERT INTO SQLWorkspaceMember(id, userID, username, role)
 VALUES(?, ?, ?, ?);
 
 selecteWorkspaceMemberById:
 SELECT *
-FROM WorkspaceMember
+FROM SQLWorkspaceMember
 WHERE id = ?;
 
 selectAllWorkspaceMembersInfo:
-SELECT WorkspaceMember.*
-FROM WorkspaceMember;
+SELECT SQLWorkspaceMember.*
+FROM SQLWorkspaceMember;
 
 removeAllWorkspaceMembers:
-DELETE FROM WorkspaceMember;
+DELETE FROM SQLWorkspaceMember;

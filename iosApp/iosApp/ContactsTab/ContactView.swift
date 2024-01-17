@@ -44,9 +44,9 @@ struct ContactView: View {
         }
         Spacer()
         ScrollView {
-            CustomCell(title: "Phone", subtitle: contact.phoneNumbers?.first, icon: "phone" ,cellType: .iconAction)
+            CustomCell(title: "Phone", subtitle: contact.phoneNumbers.first, icon: "phone" ,cellType: .iconAction)
                 .padding()
-            CustomCell(title: "Email", subtitle: contact.emails?.first, icon: "envelope" ,cellType: .iconAction)
+            CustomCell(title: "Email", subtitle: contact.emails.first, icon: "envelope" ,cellType: .iconAction)
                 .padding()
             CustomCell(title: "Address", subtitle: "891 N 800 E, Orem, UT", icon: "arrow.merge" ,cellType: .iconAction)
                 .padding()
