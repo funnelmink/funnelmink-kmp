@@ -8,6 +8,7 @@
 
 import Shared
 import SwiftUI
+import Shared
 
 enum Segue: NavigationSegue {
     case home
@@ -16,6 +17,7 @@ enum Segue: NavigationSegue {
     case taskDetails(ScheduleTask)
     
     case workspaceSettings
+    case contactView(Contact)
     
     @ViewBuilder
     var view: some View {
@@ -24,6 +26,7 @@ enum Segue: NavigationSegue {
         case .contacts: ContactsView()
         case let .taskDetails(task): TaskDetailView(task: task)
         case .workspaceSettings: WorkspaceSettingsView()
+        case let .contactView(contact): ContactView(contact: contact)
         }
     }
 }
