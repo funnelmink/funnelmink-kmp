@@ -4,7 +4,7 @@ import com.funnelmink.crm.FunnelminkCache
 import models.User
 
 
-internal class Database(databaseDriverFactory: FunnelminkSQLCache) {
+internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val database = FunnelminkCache(databaseDriverFactory.createDriver())
     private val dbQuery = database.userQueries
     
@@ -15,7 +15,7 @@ internal class Database(databaseDriverFactory: FunnelminkSQLCache) {
     }
     
     private fun createUser(user: User) {
-        
+        // TODO: implement the full database for all types!
     }
     
     internal fun insertUser(user: User) {

@@ -1,5 +1,6 @@
 package networking
 
+import cache.*
 import models.*
 import io.ktor.client.*
 import io.ktor.client.plugins.*
@@ -12,7 +13,7 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 
-class FunnelminkAPI(private val baseURL: String) : API {
+class FunnelminkAPI(private val baseURL: String, private val databaseDriver: DatabaseDriver) : API {
     override var token: String? = null
     override var workspaceID: String? = null
     override var onAuthFailure: ((message: String) -> Unit)? = null
@@ -20,6 +21,7 @@ class FunnelminkAPI(private val baseURL: String) : API {
     override var onDecodingError: ((message: String) -> Unit)? = null
     override var onMissing: ((message: String) -> Unit)? = null
     override var onServerError: ((message: String) -> Unit)? = null
+    internal val database = Database(databaseDriver)
 
     @Throws(Exception::class)
     override suspend fun createContact(body: CreateContactRequest): Contact {

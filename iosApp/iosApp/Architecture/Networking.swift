@@ -13,7 +13,8 @@ import Shared
 class Networking {
     static let api: API = {
         let fmapi = FunnelminkAPI(
-            baseURL: Properties.baseURL
+            baseURL: Properties.baseURL,
+            databaseDriver: DatabaseDriver()
         )
         
         fmapi.onAuthFailure = { _ in
