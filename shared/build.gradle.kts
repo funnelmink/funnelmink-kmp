@@ -28,6 +28,7 @@ kotlin {
             baseName = "Shared"
             isStatic = true
             freeCompilerArgs += "-Xbinary=bundleId=com.funnelmink.crm.dev" // TODO: dynamic bundle id
+            freeCompilerArgs += "-Xexpect-actual-classes"
         }
     }
     
@@ -60,8 +61,8 @@ android {
 
 sqldelight {
     databases {
-        create("AppDatabase") {
-            packageName = "com.funnelmink.crm.dev.cache" // TODO: dynamic? Or not needed?
+        create("FunnelminkCache") {
+            packageName.set("com.funnelmink.crm")
         }
     }
 }

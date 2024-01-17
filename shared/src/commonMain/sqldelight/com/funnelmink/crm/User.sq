@@ -1,0 +1,21 @@
+CREATE TABLE User (
+    id TEXT PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    username TEXT
+);
+
+insertUser:
+INSERT INTO User(id, email, username)
+VALUES(?, ?, ?);
+
+selectUserById:
+SELECT *
+FROM User
+WHERE id = ?;
+
+selectAllUsersInfo:
+SELECT User.*
+FROM User;
+
+removeAllUsers:
+DELETE FROM User;
