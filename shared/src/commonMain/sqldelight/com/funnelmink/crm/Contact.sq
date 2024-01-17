@@ -1,0 +1,24 @@
+CREATE TABLE Contact (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    emails TEXT, -- Storing emails as a comma-separated string
+    phoneNumbers TEXT, -- Storing phone numbers as a comma-separated string
+    jobTitle TEXT
+);
+
+
+insertContact:
+INSERT INTO Contact(id, name, emails, phoneNumbers, jobTitle)
+VALUES(?, ?, ?, ?, ?);
+
+selectContactById:
+SELECT *
+FROM Contact
+WHERE id = ?;
+
+selectAllContactsInfo:
+SELECT Contact.*
+FROM Contact;
+
+removeAllContacts:
+DELETE FROM Contact;

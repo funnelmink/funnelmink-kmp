@@ -1,0 +1,24 @@
+CREATE TABLE ScheduleTask(
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    body TEXT,
+    priority INTEGER NOT NULL,
+    isComplete INTEGER NOT NULL,
+    scheduledDate TEXT
+);
+
+insertScheduleTask:
+INSERT INTO ScheduleTask(id, title, body, priority, isComplete, scheduledDate)
+VALUES(?, ?, ?, ?, ?, ?);
+
+selectScheduleTaskById:
+SELECT *
+FROM ScheduleTask
+WHERE id = ?;
+
+selectAllScheduleTasksInfo:
+SELECT ScheduleTask.*
+FROM ScheduleTask;
+
+removeAllScheduleTasks:
+DELETE FROM ScheduleTask;

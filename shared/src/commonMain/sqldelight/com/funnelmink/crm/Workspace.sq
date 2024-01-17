@@ -1,0 +1,22 @@
+CREATE TABLE Workspace(
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    role TEXT,
+    avatarURL TEXT
+);
+
+insertWorkspace:
+INSERT INTO Workspace(id, name, role, avatarURL)
+VALUES(?, ?, ?, ?);
+
+selectWorkspaceById:
+SELECT *
+FROM Workspace
+WHERE id = ?;
+
+selectAllWorkspacesInfo:
+SELECT Workspace.*
+FROM Workspace;
+
+removeAllWorkspaces:
+DELETE FROM Workspace;

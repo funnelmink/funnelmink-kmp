@@ -18,6 +18,13 @@ data class Contact(
 )
 
 @Serializable
+data class User(
+    val id: String,
+    val username: String,
+    val email: String,
+)
+
+@Serializable
 data class ScheduleTask(
     // Can't name it `Task` because it's taken by Swift concurrency
     val id: String,
@@ -38,6 +45,7 @@ data class Workspace(
 
 @Serializable
 data class WorkspaceMember(
+    val id: String,
     val userID: String,
     val username: String,
     //    @SerialName("avatar_url") val avatarURL: String? = null,

@@ -43,13 +43,6 @@ data class UpdateTaskRequest(
 )
 
 @Serializable
-data class User(
-    val id: String,
-    val username: String,
-    val email: String,
-)
-
-@Serializable
 data class CreateWorkspaceRequest(val name: String)
 
 @Serializable

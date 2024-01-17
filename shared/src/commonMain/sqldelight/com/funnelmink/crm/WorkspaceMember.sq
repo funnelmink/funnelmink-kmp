@@ -1,0 +1,22 @@
+CREATE TABLE WorkspaceMember(
+    id TEXT PRIMARY KEY,
+    userID TEXT,
+    username TEXT,
+    role TEXT
+);
+
+insertWorkspaceMember:
+INSERT INTO WorkspaceMember(id, userID, username, role)
+VALUES(?, ?, ?, ?);
+
+selecteWorkspaceMemberById:
+SELECT *
+FROM WorkspaceMember
+WHERE id = ?;
+
+selectAllWorkspaceMembersInfo:
+SELECT WorkspaceMember.*
+FROM WorkspaceMember;
+
+removeAllWorkspaceMembers:
+DELETE FROM WorkspaceMember;
