@@ -27,7 +27,7 @@ struct CustomButton: View {
         }, label: {
            foregroundText
                 .frame(height: 56)
-                .frame(minWidth: 144)
+                .frame(minWidth: 80)
                 .background(background)
         })
     }

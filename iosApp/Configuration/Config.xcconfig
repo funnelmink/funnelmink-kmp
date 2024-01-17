@@ -1,5 +1,0 @@
-APP_NAME=funnelmink DEV
-BASE_URL = https:/$()/dev.funnelmink.com
-BUNDLE_ID=com.funnelmink.crm.dev
-GOOGLE_SERVICE_PATH = GoogleService-Info-DEV
-TEAM_ID=

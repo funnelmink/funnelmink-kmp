@@ -9,52 +9,60 @@
 import Shared
 import SwiftUI
 
-// TODO: be able to change workspace name, avatarURL
-// TODO: guard against leaving workspace if owner
-
 struct WorkspaceSettingsView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = WorkspaceSettingsViewModel()
+    @State var newWorkspaceName = ""
     @ViewBuilder
     var body: some View {
         if let workspace = appState.workspace {
-            VStack {
-                Text("Members")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .padding(.top)
-                ScrollView {
+            List {
+                Section("MEMBERS") {
                     ForEach(viewModel.workspaceMembers, id: \.self) { member in
                         memberCell(id: member.userID, name: member.username, role: member.role, image: nil)
                     }
-
                 }
-                .padding(.horizontal)
-                VStack(spacing: 12) {
-                    Text("Administration")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .padding()
-                    
+                if appState.isWorkspaceOwner {
+                    Section("WORKSPACE NAME") {
+                        HStack {
+                            TextField("Workspace name", text: $newWorkspaceName)
+                                .keyboardType(.alphabet)
+                                .autocorrectionDisabled()
+                                .textContentType(.organizationName)
+                            if newWorkspaceName != workspace.name {
+                                AsyncButton {
+                                    await viewModel.updateWorkspace(name: newWorkspaceName)
+                                } label: {
+                                    Text("Save")
+                                }
+                            }
+                        }
+                    }
+                }
+                Section("DANGER ZONE") {
                     Button("Invite new members") {
                         navigation.presentSheet(.inviteToWorkspace)
                     }
                     
                     Button("Upgrade to premium") {
                         appState.todo()
-//                        navigation.externalDeeplink(to: .funnelminkStripe)
+                        //                        navigation.externalDeeplink(to: .funnelminkStripe)
                     }
                     
                     
                     WarningAlertButton(warningMessage: "Leave workspace?\n\nYou will need an invite to rejoin.") {
                         Task { await viewModel.leaveWorkspace() }
                     } label: {
-                        Text("Leave workspace").foregroundStyle(.red)
+                        Text("Leave workspace")
                     }
                     
+                    WarningAlertButton(warningMessage: "Delete workspace?\n\nThis action cannot be undone.") {
+                        Task { await viewModel.deleteWorkspace() }
+                    } label: {
+                        Text("Delete workspace").foregroundStyle(.red)
+                    }
                 }
-                .padding()
             }
             .navigationTitle(workspace.name)
             .toolbar {
@@ -68,6 +76,7 @@ struct WorkspaceSettingsView: View {
             }
             .task {
                 await viewModel.onAppear()
+                newWorkspaceName = workspace.name
             }
         } else {
             Color.primary.onAppear { navigation.popSegue() }
@@ -93,7 +102,7 @@ struct WorkspaceSettingsView: View {
                 Text("Invited")
                     .foregroundStyle(.secondary)
             } else if role == .requested && appState.isWorkspaceOwner {
-                HStack {
+                VStack {
                     AsyncButton {
                         await viewModel.acceptWorkspaceRequest(userID: id)
                     } label: {
@@ -110,7 +119,7 @@ struct WorkspaceSettingsView: View {
                     .foregroundStyle(.secondary)
             } else if appState.isWorkspaceOwner {
                 Picker(
-                    role.name,
+                    "",
                     selection: Binding(
                         get: { role },
                         set: { viewModel.changeMemberRole(id: id, to: $0) }
@@ -131,7 +140,6 @@ struct WorkspaceSettingsView: View {
                     .foregroundStyle(.secondary)
             }
         }
-        .padding(.vertical, 8)
     }
 }
 

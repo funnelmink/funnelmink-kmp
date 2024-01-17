@@ -31,10 +31,12 @@ struct CustomCell: View {
     var body: some View {
         HStack(spacing: 15) {
             if let icon {
-                Image(systemName: icon)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 24, height: 24)
+                if self.cellType != .iconAction {
+                    Image(systemName: icon)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                }
             }
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
@@ -59,20 +61,23 @@ struct CustomCell: View {
                     .foregroundColor(.secondary)
             }
             switch cellType {
-                        case .navigation:
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.gray)
-                        case .switchControl:
-                            Toggle("", isOn: $switchIsOn)
-                        case .checkbox:
-                            Checkbox(isChecked: $isChecked)
-                        case .radio:
-                            RadioButton(isSelected: $radioButton)
-                        case .informative:
-                            EmptyView()
-                        case .iconAction:
-                            Text("Icon Action")
-                        }
+            case .navigation:
+                Image(systemName: "chevron.right")
+                    .foregroundColor(.gray)
+            case .switchControl:
+                Toggle("", isOn: $switchIsOn)
+            case .checkbox:
+                Checkbox(isChecked: $isChecked)
+            case .radio:
+                RadioButton(isSelected: $radioButton)
+            case .informative:
+                EmptyView()
+            case .iconAction:
+                Image(systemName: icon ?? "person")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
+            }
         }
         .padding(.vertical, 8)
     }
@@ -80,7 +85,7 @@ struct CustomCell: View {
 
 struct Checkbox: View {
     @Binding var isChecked: Bool
-
+    
     var body: some View {
         Image(systemName: isChecked ? "checkmark.square" : "square")
             .resizable()
@@ -98,7 +103,7 @@ struct Checkbox: View {
 
 struct RadioButton: View {
     @Binding var isSelected: Bool
-
+    
     var body: some View {
         Image(systemName: isSelected ? "largecircle.fill.circle" : "circle")
             .resizable()
@@ -120,6 +125,6 @@ struct RadioButton: View {
         CustomCell(title: "Title", subtitle: "Subtitle", icon: "person", cellType: .informative)
         CustomCell(title: "Title", subtitle: "Subtitle", description: "891 N 800 E", icon: "person", cellType: .radio)
         CustomCell(title: "Title", subtitle: "Subtitle", description: "891 N 800 E", detail: "Meeting Today", icon: "person", cellType: .switchControl)
-
+        
     }
 }

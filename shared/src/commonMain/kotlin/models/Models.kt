@@ -1,4 +1,4 @@
-package com.funnelmink.crm.models
+package models
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
@@ -15,17 +15,18 @@ data class Contact(
     val emails: List<String>? = null,
     val phoneNumbers: List<String>? = null,
     val jobTitle: String? = null,
-    )
+)
 
 @Serializable
-data class ScheduleTask( // Can't name it `Task` because it's taken by Swift concurrency
+data class ScheduleTask(
+    // Can't name it `Task` because it's taken by Swift concurrency
     val id: String,
     val title: String,
-    val body: String,
+    val body: String? = null,
     val priority: Int,
     val isComplete: Boolean,
-    val scheduledDate: String, // TODO: make this an actual Date object
-    )
+    val scheduledDate: String? = null,
+)
 
 @Serializable
 data class Workspace(
@@ -42,7 +43,7 @@ data class WorkspaceMember(
     //    @SerialName("avatar_url") val avatarURL: String? = null,
     var role: WorkspaceMembershipRole,
     //    val email: String, I don't think we want to share emails?
-    )
+)
 
 @Serializable(with = WorkspaceMembershipRoleSerializer::class)
 enum class WorkspaceMembershipRole(val roleName: String) {
@@ -54,12 +55,13 @@ enum class WorkspaceMembershipRole(val roleName: String) {
     companion object {
         fun fromRoleName(roleName: String): WorkspaceMembershipRole =
             entries.find { it.roleName == roleName }
-                    ?: throw IllegalArgumentException("Role not found for name: $roleName")
+                ?: throw IllegalArgumentException("Role not found for name: $roleName")
     }
 }
 
 object WorkspaceMembershipRoleSerializer : KSerializer<WorkspaceMembershipRole> {
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("WorkspaceMembershipRole", PrimitiveKind.STRING)
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("WorkspaceMembershipRole", PrimitiveKind.STRING)
 
     override fun serialize(encoder: Encoder, value: WorkspaceMembershipRole) {
         encoder.encodeString(value.roleName)

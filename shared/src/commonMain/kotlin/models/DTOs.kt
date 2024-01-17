@@ -1,4 +1,4 @@
-package com.funnelmink.crm.models
+package models
 
 import kotlinx.serialization.Serializable
 
@@ -28,23 +28,38 @@ data class CreateUserRequest(
 @Serializable
 data class CreateTaskRequest(
     val title: String,
-    val body: String,
     val priority: Int,
-    val scheduledDate: String?,
-    )
+    val body: String? = null,
+    val scheduledDate: String? = null,
+)
+
+@Serializable
+data class UpdateTaskRequest(
+    val title: String,
+    val priority: Int,
+    val body: String? = null,
+    val isComplete: Boolean? = null,
+    val scheduledDate: String? = null,
+)
 
 @Serializable
 data class User(
     val id: String,
     val username: String,
     val email: String,
-    )
+)
 
 @Serializable
 data class CreateWorkspaceRequest(val name: String)
 
 @Serializable
+data class UpdateWorkspaceRequest(
+    val name: String? = null,
+    val avatarURL: String? = null
+)
+
+@Serializable
 data class APIError(
     val message: String,
     val code: Int,
-    )
+)

@@ -19,7 +19,8 @@ struct ContactsView: View {
                 Button(action: {
                     nav.performSegue(.contactView(contact))
                 }, label: {
-                CustomCell(title: contact.name, cellType: .navigation)
+                    CustomCell(title: contact.name, cellType: .navigation)
+                        .foregroundStyle(Color.primary)
                 })
             }
         }

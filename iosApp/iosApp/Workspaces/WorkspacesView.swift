@@ -15,30 +15,11 @@ struct WorkspacesView: View {
     @EnvironmentObject var navigation: Navigation
     var body: some View {
         VStack {
-            Spacer()
             Text("Sign into a workspace")
                 .font(.largeTitle)
             Spacer()
             if viewModel.didError {
-                Text("Failed to reach the backend. Please check your connection and try again.")
-            } else if viewModel.workspaces.isEmpty {
-                // TODO: empty state. Has a "try again" button if the connection fails (hopefully never)
-                Text("TODO: empty state")
-            } else {
-                ScrollView {
-                    // TODO: this ui is atrocious. Display workspace avatars. Display plan (free, paid) and member count
-                    ForEach(viewModel.workspaces, id: \.self) { workspace in
-                        workspaceButton(workspace)
-                    }
-                }
-                .scrollIndicators(.never)
-                
-                Button("Or join an existing workspace") {
-                    navigation.presentSheet(.joinExistingWorkspace)
-                }
-            }
-            Spacer()
-            if viewModel.didError {
+                Text("Something went wrong")
                 AsyncButton {
                     await viewModel.fetchWorkspaces()
                 } label: {
@@ -49,8 +30,18 @@ struct WorkspacesView: View {
                         .foregroundStyle(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 4))
                 }
-                Spacer()
+            } else if viewModel.workspaces.isEmpty {
+                Text("You're not in a workspace yet")
+            } else {
+                ScrollView {
+                    ForEach(viewModel.workspaces, id: \.self) { workspace in
+                        workspaceButton(workspace)
+                    }
+                }
+                .scrollIndicators(.never)
             }
+            Spacer()
+            otherOptions
         }
         .padding()
         .multilineTextAlignment(.center)
@@ -59,7 +50,7 @@ struct WorkspacesView: View {
             await viewModel.fetchWorkspaces()
             
             // if they don't have any, force them to create one? (TODO: button that lets them to join an existing?)
-            if viewModel.workspaces.isEmpty {
+            if viewModel.workspaces.isEmpty && !viewModel.didError {
                 navigation.presentSheet(.createWorkspace(viewModel))
                 
                 // if they're a member of exactly one workspace, sign them in automatically
@@ -71,6 +62,7 @@ struct WorkspacesView: View {
         }
     }
     
+    // TODO: Display workspace avatars. Display plan (free, paid) and member count
     @ViewBuilder
     func workspaceButton(_ workspace: Workspace) -> some View {
         HStack {
@@ -131,8 +123,24 @@ struct WorkspacesView: View {
                 )
         }
     }
+    
+    @ViewBuilder
+    var otherOptions: some View {
+        VStack {
+            if !viewModel.workspaces.isEmpty {
+                Text("You can also")
+            }
+            Button("Create a new workspace") {
+                navigation.presentSheet(.createWorkspace(viewModel))
+            }
+            Text("or")
+            Button("Join an existing one") {
+                navigation.presentSheet(.joinExistingWorkspace)
+            }
+        }
+    }
 }
 
 #Preview {
-    WorkspacesView()
+    WorkspacesView().withPreviewDependencies()
 }

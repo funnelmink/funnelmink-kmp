@@ -6,12 +6,16 @@
 //  Copyright © 2023 FunnelMink, LLC. All rights reserved.
 //
 
+import Shared
 import SwiftUI
 import Shared
 
 enum Segue: NavigationSegue {
     case home
     case contacts
+    
+    case taskDetails(ScheduleTask)
+    
     case workspaceSettings
     case contactView(Contact)
     
@@ -20,6 +24,7 @@ enum Segue: NavigationSegue {
         switch self {
         case .home: Text("HOME")
         case .contacts: ContactsView()
+        case let .taskDetails(task): TaskDetailView(task: task)
         case .workspaceSettings: WorkspaceSettingsView()
         case let .contactView(contact): ContactView(contact: contact)
         }

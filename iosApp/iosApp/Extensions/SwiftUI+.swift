@@ -7,4 +7,12 @@
 //
 
 import Foundation
+import SwiftUI
 
+extension View {
+    func withPreviewDependencies() -> some View {
+        self
+            .environmentObject(AppState())
+            .environmentObject(Navigation())
+    }
+}
