@@ -26,13 +26,13 @@ class ContactsViewModel: ViewModel {
     }
     
     @MainActor
-    func createContact() async {
+    func createContact(name: String, emails: [String], phoneNumbers: [String], jobTitle: String) async {
         do {
             let body = CreateContactRequest(
-                name: "",           //  String
-                emails: [],         //  [String]
-                phoneNumbers: [],   //  [String]
-                jobTitle: nil       //  String?
+                name: name,
+                emails: emails,
+                phoneNumbers: phoneNumbers,
+                jobTitle: jobTitle
             )
             if !Utilities.validation.isName(input: body.name) {
                 throw "\(body.name) contains invalid characters"
