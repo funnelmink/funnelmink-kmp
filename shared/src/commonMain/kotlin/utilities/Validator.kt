@@ -13,6 +13,7 @@ class Validator {
     // .
     // one or more characters that are not `@`
     fun isEmail(input: String): Boolean {
+        if (input.contains(",")) { return false }
         val emailRegex = Regex("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")
         return emailRegex.matches(input)
     }

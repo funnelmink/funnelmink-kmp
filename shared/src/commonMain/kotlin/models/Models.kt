@@ -11,10 +11,11 @@ import kotlinx.serialization.encoding.Encoder
 @Serializable
 data class Contact(
     val id: String,
-    val name: String,
+    val firstName: String,
+    val lastName: String? = null,
     val emails: List<String>,
     val phoneNumbers: List<String>,
-    val jobTitle: String? = null,
+    val companyName: String? = null,
 )
 
 @Serializable

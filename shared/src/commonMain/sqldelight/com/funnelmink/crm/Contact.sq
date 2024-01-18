@@ -1,15 +1,16 @@
 CREATE TABLE SQLContact (
     id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
+    firstName TEXT NOT NULL,
+    lastName TEXT,
     emails TEXT, -- Storing emails as a comma-separated string
     phoneNumbers TEXT, -- Storing phone numbers as a comma-separated string
-    jobTitle TEXT
+    companyName TEXT
 );
 
 
 insertContact:
-INSERT INTO SQLContact(id, name, emails, phoneNumbers, jobTitle)
-VALUES(?, ?, ?, ?, ?);
+INSERT INTO SQLContact(id, firstName, lastName, emails, phoneNumbers, companyName)
+VALUES(?, ?, ?, ?, ?, ?);
 
 selectContactById:
 SELECT *

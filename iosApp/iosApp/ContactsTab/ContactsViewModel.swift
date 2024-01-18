@@ -35,19 +35,22 @@ class ContactsViewModel: ViewModel {
                 phoneNumbers: phoneNumbers,
                 companyName: companyName
             )
-            if !Utilities.validation.isName(input: body.firstName) {
+            
+            let validator = Utilities.validation
+            
+            if !validator.isName(input: body.firstName) {
                 throw "\(body.firstName) contains invalid characters"
             }
-            if let lastName = body.lastName, !Utilities.validation.isName(input: lastName) {
+            if let lastName = body.lastName, !validator.isName(input: lastName) {
                 throw "\(lastName) contains invalid characters"
             }
             for number in body.phoneNumbers {
-                if !Utilities.validation.isPhoneNumber(input: number) {
+                if !validator.isPhoneNumber(input: number) {
                     throw "\(number) is not a valid phone number"
                 }
             }
             for email in body.emails {
-                if !Utilities.validation.isEmail(input: email) {
+                if !validator.isEmail(input: email) {
                     throw "\(email) is not a valid email"
                 }
             }

@@ -15,11 +15,8 @@ struct ContactView: View {
     @State private var isAnimating: Bool = false
     var contact: Contact
     var initials: String {
-        let fullName = contact.name
-        let nameComponents = fullName.split(separator: " ")
-        
-        if let firstNameInitial = nameComponents.first?.first,
-           let lastNameInitial = nameComponents.last?.first {
+        if let firstNameInitial = contact.firstName.first,
+           let lastNameInitial = contact.lastName?.first {
             return String(firstNameInitial) + String(lastNameInitial)
         } else {
             return ""
@@ -36,10 +33,10 @@ struct ContactView: View {
                 Text(initials)
                     .bold().font(.system(size: 80))
             }
-            Text(contact.name)
+            Text(contact.firstName + " " + (contact.lastName ?? ""))
                 .bold()
                 .font(.title)
-            Text(contact.jobTitle ?? "")
+            Text(contact.companyName ?? "")
                 .foregroundStyle(.secondary)
         }
         Spacer()
@@ -57,5 +54,5 @@ struct ContactView: View {
 
 
 #Preview {
-    ContactView(contact: Contact(id: "", name: "Jeremy Warren", emails: ["jeddynwarren@gmail.com"], phoneNumbers: ["(801) 226-8345"], jobTitle: "Funnelmink"))
+    ContactView(contact: Contact(id: "", firstName: "Jeremy", lastName: "Warren", emails: ["jeddynwarren@gmail.com"], phoneNumbers: ["(801) 226-8345"], companyName: "Funnelmink"))
 }
