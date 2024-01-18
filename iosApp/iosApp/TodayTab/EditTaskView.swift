@@ -24,6 +24,10 @@ struct EditTaskView: View {
                 .font(.title)
                 .fontWeight(.bold)
                 .padding(.top)
+            if let errorMessage = viewModel.creationErrorMessage {
+                Text(errorMessage)
+                    .foregroundStyle(.red)
+            }
             List {
                 Section("TITLE") {
                     TextField(

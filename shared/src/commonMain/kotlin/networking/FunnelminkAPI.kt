@@ -82,20 +82,35 @@ class FunnelminkAPI(
         offset: Int?,
         isComplete: Boolean
     ): List<ScheduleTask> {
-        val cached = cache.selectAllTasks()
-        if (cached.isNotEmpty()) {
-            return cached
+        val cacheKey = "getTasks"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllTasks()
+                if (cached.isNotEmpty()) {
+                    return cached
+                }
+            }
+            val fetched: List<ScheduleTask> = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Get) {
+                date?.let { parameter("date", it) }
+                priority?.let { parameter("priority", it) }
+                limit?.let { parameter("limit", it) }
+                offset?.let { parameter("offset", it) }
+                parameter("isComplete", isComplete)
+            }
+            cache.replaceAllTasks(fetched)
+            cacheInvalidator.updateTimestamp(cacheKey)
+            return fetched
+        } catch (e: Exception) {
+            // Fallback to cached data if a network request fails
+            val cached = cache.selectAllTasks()
+            if (cached.isNotEmpty()) {
+                return cached
+            } else {
+                throw e // Re-throw the exception if there's no cached data
+            }
         }
-        val fetched: List<ScheduleTask> = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Get) {
-            date?.let { parameter("date", it) }
-            priority?.let { parameter("priority", it) }
-            limit?.let { parameter("limit", it) }
-            offset?.let { parameter("offset", it) }
-            parameter("isComplete", isComplete)
-        }
-        cache.replaceAllTasks(fetched)
-        return fetched
     }
+
 
     @Throws(Exception::class)
     override suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask {

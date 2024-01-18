@@ -14,7 +14,8 @@ class Networking {
     static let api: API = {
         let fmapi = FunnelminkAPI(
             baseURL: Properties.baseURL,
-            databaseDriver: DatabaseDriver()
+            databaseDriver: DatabaseDriver(),
+            cacheThreshold: 60 * 5 // 5 minutes
         )
         
         fmapi.onAuthFailure = { _ in

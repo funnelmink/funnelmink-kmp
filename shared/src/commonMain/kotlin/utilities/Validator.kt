@@ -7,6 +7,7 @@ package utilities
 // TODO: update backend to use the same regexes!
 class Validator {
 
+    // TODO: returns an optional string stating what went wrong (or nothing, if nothing went wrong)
     // one or more characters that are not `@`
     // @
     // one or more characters that are not `@`
@@ -18,6 +19,7 @@ class Validator {
         return emailRegex.matches(input)
     }
 
+    // TODO: returns an optional string stating what went wrong (or nothing, if nothing went wrong)
     // is 1-25 characters long
     // contains only numbers and the characters `()[]-.*#+`
     fun isPhoneNumber(input: String): Boolean {
@@ -25,8 +27,9 @@ class Validator {
         return phoneRegex.matches(input)
     }
 
+    // TODO: returns an optional string stating what went wrong (or nothing, if nothing went wrong)
     fun isName(input: String): Boolean {
-        if (input.isEmpty() || input.length > 32) return false
+        if (input.isEmpty() || input.length > 100) return false
 
         for (char in input) {
             if (!char.isLetterOrDigit() && !char.isWhitespace() && !char.isPunctuation()) {
@@ -36,6 +39,7 @@ class Validator {
         return true
     }
 
+    // TODO: returns an optional string stating what went wrong (or nothing, if nothing went wrong)
     // Extension function to check if a Char is punctuation.
     private fun Char.isPunctuation(): Boolean {
         val punctuationChars = "!\"#\$%&'()*+,-./:;<=>?@[\\]^_`{|}~"

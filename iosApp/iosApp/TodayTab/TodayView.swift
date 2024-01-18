@@ -118,7 +118,11 @@ struct TodayView: View {
     
     var addTaskFAB: some View {
         Button {
-            navigation.presentSheet(.createTask)
+            navigation.presentSheet(.createTask) {
+                Task {
+                    await viewModel.getTasks()
+                }
+            }
         } label: {
             Image(systemName: "plus")
                 .resizable()
