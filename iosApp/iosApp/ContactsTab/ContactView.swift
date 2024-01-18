@@ -48,7 +48,7 @@ struct ContactView: View {
                 .padding()
             CustomCell(title: "Email", subtitle: contact.emails?.first, icon: "envelope" ,cellType: .iconAction)
                 .padding()
-            CustomCell(title: "Address", subtitle: "891 N 800 E, Orem, UT", icon: "arrow.merge" ,cellType: .iconAction)
+            CustomCell(title: "Address", subtitle: "891 N 800 E, Orem, UT              ", icon: "arrow.merge" ,cellType: .iconAction)
                 .padding()
         }
         .padding()
