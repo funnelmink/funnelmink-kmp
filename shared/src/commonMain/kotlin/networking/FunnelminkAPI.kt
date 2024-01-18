@@ -13,7 +13,11 @@ import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 
-class FunnelminkAPI(private val baseURL: String, private val databaseDriver: DatabaseDriver) : API {
+class FunnelminkAPI(
+    private val baseURL: String,
+    private val databaseDriver: DatabaseDriver,
+    private val cacheThreshold: Long
+) : API {
     override var token: String? = null
     override var workspaceID: String? = null
     override var onAuthFailure: ((message: String) -> Unit)? = null
@@ -22,7 +26,7 @@ class FunnelminkAPI(private val baseURL: String, private val databaseDriver: Dat
     override var onMissing: ((message: String) -> Unit)? = null
     override var onServerError: ((message: String) -> Unit)? = null
     private val cache = Database(databaseDriver)
-    private val cacheTimestamps = HashMap<String, Long>()
+    private val cacheInvalidator = CacheInvalidator(cacheThreshold)
 
     // ------------------------------------------------------------------------
     // Contacts
