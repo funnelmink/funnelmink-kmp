@@ -2,8 +2,8 @@ CREATE TABLE SQLContact (
     id TEXT PRIMARY KEY,
     firstName TEXT NOT NULL,
     lastName TEXT,
-    emails TEXT, -- Storing emails as a comma-separated string
-    phoneNumbers TEXT, -- Storing phone numbers as a comma-separated string
+    emails TEXT NOT NULL, -- Storing emails as a comma-separated string
+    phoneNumbers TEXT NOT NULL, -- Storing phone numbers as a comma-separated string
     companyName TEXT
 );
 
@@ -20,6 +20,15 @@ WHERE id = ?;
 selectAllContactsInfo:
 SELECT SQLContact.*
 FROM SQLContact;
+
+updateContact:
+UPDATE SQLContact
+SET firstName = ?,
+    lastName = ?,
+    emails = ?,
+    phoneNumbers = ?,
+    companyName = ?
+WHERE id = ?;
 
 removeAllContacts:
 DELETE FROM SQLContact;
