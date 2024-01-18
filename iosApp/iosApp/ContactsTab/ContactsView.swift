@@ -14,11 +14,15 @@ struct ContactsView: View {
     @StateObject var viewModel = ContactsViewModel()
     @State var searchText: String = ""
     
-    private var filteredContacts: [Contact] {
+    private var filteredContacts: [String : [Contact]] {
         if searchText.isEmpty {
-            return viewModel.contacts
+            return groupedContacts
         } else {
-            return viewModel.contacts.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            var results: [String: [Contact]] = [:]
+            for (key, value) in groupedContacts {
+                results[key] = value.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+            }
+            return results   
         }
     }
     
@@ -32,7 +36,7 @@ struct ContactsView: View {
     
     private func deleteContact(at offsets: IndexSet, from sectionKey: String) {
         
-        guard let contactsInSection = groupedContacts[sectionKey] else { return }
+        guard let contactsInSection = filteredContacts[sectionKey] else { return }
         
         let contactsToDelete = offsets.map { contactsInSection[$0] }
         guard let id = contactsToDelete.first?.id else { return }
@@ -45,7 +49,7 @@ struct ContactsView: View {
         List {
             ForEach(sortedGroupKeys, id: \.self) { key in
                 Section(header: Text(key)) {
-                    ForEach(groupedContacts[key] ?? [], id: \.id) { contact in
+                    ForEach(filteredContacts[key] ?? [], id: \.id) { contact in
                         Button(action: {
                             nav.performSegue(.contactView(contact))
                         }, label: {
