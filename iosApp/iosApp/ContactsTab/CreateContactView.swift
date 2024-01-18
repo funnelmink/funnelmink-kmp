@@ -25,8 +25,13 @@ struct CreateContactView: View {
     
     func addContact() {
         Task {
-            let name = firstName + " " + lastName
-            await viewModel.createContact(name: name, emails: emails, phoneNumbers: phoneNumbers, jobTitle: businessName)
+            await viewModel.createContact(
+                firstName: firstName,
+                lastName: lastName,
+                emails: emails,
+                phoneNumbers: phoneNumbers,
+                companyName: businessName
+            )
             nav.dismissModal()
         }
     }

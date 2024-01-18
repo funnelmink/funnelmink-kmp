@@ -26,16 +26,20 @@ class ContactsViewModel: ViewModel {
     }
     
     @MainActor
-    func createContact(name: String, emails: [String], phoneNumbers: [String], jobTitle: String) async {
+    func createContact(firstName: String, lastName: String, emails: [String], phoneNumbers: [String], companyName: String) async {
         do {
             let body = CreateContactRequest(
-                name: name,
+                firstName: firstName,
+                lastName: lastName,
                 emails: emails,
                 phoneNumbers: phoneNumbers,
-                jobTitle: jobTitle
+                companyName: companyName
             )
-            if !Utilities.validation.isName(input: body.name) {
-                throw "\(body.name) contains invalid characters"
+            if !Utilities.validation.isName(input: body.firstName) {
+                throw "\(body.firstName) contains invalid characters"
+            }
+            if let lastName = body.lastName, !Utilities.validation.isName(input: lastName) {
+                throw "\(lastName) contains invalid characters"
             }
             for number in body.phoneNumbers {
                 if !Utilities.validation.isPhoneNumber(input: number) {
@@ -47,10 +51,8 @@ class ContactsViewModel: ViewModel {
                     throw "\(email) is not a valid email"
                 }
             }
-            if let jobTitle = body.jobTitle {
-                if !Utilities.validation.isName(input: jobTitle) {
-                    throw "\(jobTitle) contains invalid characters"
-                }
+            if let companyName = body.companyName, !Utilities.validation.isName(input: companyName) {
+                throw "\(companyName) contains invalid characters"
             }
             _ = try await Networking.api.createContact(body: body)
         } catch {
@@ -62,10 +64,11 @@ class ContactsViewModel: ViewModel {
     func updateContact() async {
         do {
             let body = UpdateContactRequest(
-                name: "",           //  String
+                firstName: "",           //  String
+                lastName: "",
                 emails: [],         //  [String]
                 phoneNumbers: [],   //  [String]
-                jobTitle: nil       //  String?
+                companyName: nil       //  String?
             )
             
             _ = try await Networking.api.updateContact(id: "", body: body)

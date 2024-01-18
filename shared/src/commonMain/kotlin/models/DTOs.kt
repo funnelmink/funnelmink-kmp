@@ -4,18 +4,21 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CreateContactRequest(
-    val name: String,
+    val firstName: String,
+    val lastName: String? = null,
     val emails: List<String>,
     val phoneNumbers: List<String>,
-    val jobTitle: String? = null,
+    val companyName: String? = null,
+
 )
 
 @Serializable
 data class UpdateContactRequest(
-    val name: String?,
-    val emails: List<String>?,
-    val phoneNumbers: List<String>?,
-    val jobTitle: String?,
+    val firstName: String,
+    val lastName: String? = null,
+    val emails: List<String>,
+    val phoneNumbers: List<String>,
+    val companyName: String? = null,
 )
 
 @Serializable
