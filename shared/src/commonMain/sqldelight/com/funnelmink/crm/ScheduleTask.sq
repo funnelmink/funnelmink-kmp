@@ -20,5 +20,14 @@ selectAllScheduleTasksInfo:
 SELECT SQLScheduleTask.*
 FROM SQLScheduleTask;
 
+updateScheduleTask:
+UPDATE SQLScheduleTask
+SET title = ?,
+    body = ?,
+    priority = ?,
+    isComplete = ?,
+    scheduledDate = ?
+WHERE id = ?;
+
 removeAllScheduleTasks:
 DELETE FROM SQLScheduleTask;

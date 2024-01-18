@@ -1,8 +1,8 @@
 package cache
 
 import com.funnelmink.crm.FunnelminkCache
-import com.funnelmink.crm.SQLContact
 import models.Contact
+import models.ScheduleTask
 import models.User
 
 
@@ -45,7 +45,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     fun selectAllContacts(): List<Contact> {
         return contactDB.selectAllContactsInfo(::mapContact).executeAsList()
     }
-    
+
     fun updateContact(contact: Contact) {
         contactDB.updateContact(
             contact.firstName,
@@ -61,7 +61,14 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         contactDB.removeAllContacts()
     }
 
-    private fun mapContact(id: String, firstName: String, lastName: String?, emails: String, phoneNumbers: String, companyName: String?): Contact {
+    private fun mapContact(
+        id: String,
+        firstName: String,
+        lastName: String?,
+        emails: String,
+        phoneNumbers: String,
+        companyName: String?
+    ): Contact {
         return Contact(
             id,
             firstName,
@@ -75,6 +82,67 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
     // Tasks
     // ------------------------------------------------------------------------
+
+    fun insertTask(task: ScheduleTask) {
+        taskDB.insertScheduleTask(
+            task.id,
+            task.title,
+            task.body,
+            task.priority.toLong(),
+            if (task.isComplete) 1 else 0,
+            task.scheduledDate
+        )
+    }
+
+    fun selectTask(id: String): ScheduleTask? {
+        val cached = taskDB.selectScheduleTaskById(id).executeAsOneOrNull() ?: return null
+
+        return mapTask(
+            id = cached.id,
+            title = cached.title,
+            body = cached.body,
+            priority = cached.priority,
+            isComplete = cached.isComplete,
+            scheduledDate = cached.scheduledDate
+        )
+    }
+
+    fun selectAllTasks(): List<ScheduleTask> {
+        return taskDB.selectAllScheduleTasksInfo(::mapTask).executeAsList()
+    }
+
+    fun updateTask(task: ScheduleTask) {
+        taskDB.updateScheduleTask(
+            task.title,
+            task.body,
+            task.priority.toLong(),
+            if (task.isComplete) 1 else 0, // Convert Boolean to Long
+            task.scheduledDate,
+            task.id
+        )
+    }
+
+    fun deleteAllTasks() {
+        taskDB.removeAllScheduleTasks()
+    }
+
+    private fun mapTask(
+        id: String,
+        title: String,
+        body: String?,
+        priority: Long,
+        isComplete: Long,
+        scheduledDate: String?
+    ): ScheduleTask {
+        return ScheduleTask(
+            id,
+            title,
+            body,
+            priority.toInt(),
+            isComplete != 0L, // Convert Long to Boolean
+            scheduledDate
+        )
+    }
 
     // ------------------------------------------------------------------------
     // Users
