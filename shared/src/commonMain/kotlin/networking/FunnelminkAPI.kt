@@ -21,7 +21,12 @@ class FunnelminkAPI(private val baseURL: String, private val databaseDriver: Dat
     override var onDecodingError: ((message: String) -> Unit)? = null
     override var onMissing: ((message: String) -> Unit)? = null
     override var onServerError: ((message: String) -> Unit)? = null
-    internal val database = Database(databaseDriver)
+    private val cache = Database(databaseDriver)
+    private val cacheTimestamps = HashMap<String, Long>()
+
+    // ------------------------------------------------------------------------
+    // Contacts
+    // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
     override suspend fun createContact(body: CreateContactRequest): Contact {
@@ -51,6 +56,76 @@ class FunnelminkAPI(private val baseURL: String, private val databaseDriver: Dat
             setBody(body)
         }
     }
+
+    // ------------------------------------------------------------------------
+    // Tasks
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun createTask(body: CreateTaskRequest): ScheduleTask {
+        val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Post) {
+            setBody(body)
+        }
+        cache.insertTask(task)
+        return task
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getTasks(
+        date: String?,
+        priority: Int?,
+        limit: Int?,
+        offset: Int?,
+        isComplete: Boolean
+    ): List<ScheduleTask> {
+        val cached = cache.selectAllTasks()
+        if (cached.isNotEmpty()) {
+            return cached
+        }
+        val fetched: List<ScheduleTask> = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Get) {
+            date?.let { parameter("date", it) }
+            priority?.let { parameter("priority", it) }
+            limit?.let { parameter("limit", it) }
+            offset?.let { parameter("offset", it) }
+            parameter("isComplete", isComplete)
+        }
+        cache.replaceAllTasks(fetched)
+        return fetched
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask {
+        val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.updateTask(task)
+        return task
+    }
+
+    @Throws(Exception::class)
+    override suspend fun toggleTaskCompletion(id: String, isComplete: Boolean): ScheduleTask {
+        val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks/$id/toggle/$isComplete", HttpMethod.Put)
+        cache.updateTask(task)
+        return task
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteTask(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/tasks/$id", HttpMethod.Delete)
+        cache.deleteTask(id)
+    }
+
+    // ------------------------------------------------------------------------
+    // Users
+    // ------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------
+    // Workspaces
+    // ------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------
+    // Workspace Members
+    // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
     override suspend fun getWorkspaces(): List<Workspace> {
@@ -127,41 +202,6 @@ class FunnelminkAPI(private val baseURL: String, private val databaseDriver: Dat
     }
 
     @Throws(Exception::class)
-    override suspend fun createTask(body: CreateTaskRequest): ScheduleTask {
-        return genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Post) {
-            setBody(body)
-        }
-    }
-
-    @Throws(Exception::class)
-    override suspend fun getTasks(date: String?, priority: Int?, limit: Int?, offset: Int?, isComplete: Boolean): List<ScheduleTask> {
-        return genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Get) {
-            date?.let { parameter("date", it) }
-            priority?.let { parameter("priority", it) }
-            limit?.let { parameter("limit", it) }
-            offset?.let { parameter("offset", it) }
-            parameter("isComplete", isComplete)
-        }
-    }
-
-    @Throws(Exception::class)
-    override suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask {
-        return genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Put) {
-            setBody(body)
-        }
-    }
-
-    @Throws(Exception::class)
-    override suspend fun toggleTaskCompletion(id: String, isComplete: Boolean) : ScheduleTask {
-        return genericRequest("$baseURL/v1/workspace/tasks/$id/toggle/$isComplete", HttpMethod.Put)
-    }
-
-    @Throws(Exception::class)
-    override suspend fun deleteTask(id: String) {
-        return genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Delete)
-    }
-
-    @Throws(Exception::class)
     override suspend fun createWorkspace(body: CreateWorkspaceRequest): Workspace {
         return genericRequest("$baseURL/v1/workspaces", HttpMethod.Post) {
             setBody(body)
@@ -172,6 +212,10 @@ class FunnelminkAPI(private val baseURL: String, private val databaseDriver: Dat
     override suspend fun removeMemberFromWorkspace(userID: String) {
         return genericRequest("$baseURL/v1/workspace/owner/removeMember/$userID", HttpMethod.Delete)
     }
+
+    // ------------------------------------------------------------------------
+    // Utility Methods
+    // ------------------------------------------------------------------------
 
     private val httpClient = HttpClient {
         install(HttpCache)

@@ -83,6 +83,11 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // Tasks
     // ------------------------------------------------------------------------
 
+    fun replaceAllTasks(tasks: List<ScheduleTask>) {
+        deleteAllTasks()
+        tasks.forEach(::insertTask)
+    }
+
     fun insertTask(task: ScheduleTask) {
         taskDB.insertScheduleTask(
             task.id,
@@ -120,6 +125,10 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             task.scheduledDate,
             task.id
         )
+    }
+
+    fun deleteTask(id: String) {
+        taskDB.removeTask(id)
     }
 
     fun deleteAllTasks() {

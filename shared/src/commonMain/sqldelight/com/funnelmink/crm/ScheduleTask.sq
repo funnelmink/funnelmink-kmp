@@ -29,5 +29,9 @@ SET title = ?,
     scheduledDate = ?
 WHERE id = ?;
 
+removeTask:
+DELETE FROM SQLScheduleTask
+WHERE id = ?;
+
 removeAllScheduleTasks:
 DELETE FROM SQLScheduleTask;
