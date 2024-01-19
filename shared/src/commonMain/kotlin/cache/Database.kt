@@ -17,6 +17,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // Contacts
     // ------------------------------------------------------------------------
 
+    @Throws(Exception::class)
     fun insertContact(contact: Contact) {
         contactDB.insertContact(
             contact.id,
@@ -28,6 +29,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
+    @Throws(Exception::class)
     fun selectContact(id: String): Contact? {
         val cached = contactDB.selectContactById(id).executeAsOneOrNull() ?: return null
         return mapContact(
@@ -40,10 +42,12 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
+    @Throws(Exception::class)
     fun selectAllContacts(): List<Contact> {
         return contactDB.selectAllContactsInfo(::mapContact).executeAsList()
     }
 
+    @Throws(Exception::class)
     fun updateContact(contact: Contact) {
         contactDB.updateContact(
             contact.firstName,
@@ -55,6 +59,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
+    @Throws(Exception::class)
     private fun deleteAllContacts() {
         contactDB.removeAllContacts()
     }
@@ -81,11 +86,13 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // Tasks
     // ------------------------------------------------------------------------
 
+    @Throws(Exception::class)
     fun replaceAllTasks(tasks: List<ScheduleTask>) {
         deleteAllTasks()
         tasks.forEach(::insertTask)
     }
 
+    @Throws(Exception::class)
     fun insertTask(task: ScheduleTask) {
         taskDB.insertScheduleTask(
             task.id,
@@ -97,6 +104,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
+    @Throws(Exception::class)
     fun selectTask(id: String): ScheduleTask? {
         val cached = taskDB.selectScheduleTaskById(id).executeAsOneOrNull() ?: return null
 
@@ -110,10 +118,12 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
+    @Throws(Exception::class)
     fun selectAllTasks(): List<ScheduleTask> {
         return taskDB.selectAllScheduleTasksInfo(::mapTask).executeAsList()
     }
 
+    @Throws(Exception::class)
     fun updateTask(task: ScheduleTask) {
         taskDB.updateScheduleTask(
             task.title,
@@ -125,10 +135,12 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
+    @Throws(Exception::class)
     fun deleteTask(id: String) {
         taskDB.removeTask(id)
     }
 
+    @Throws(Exception::class)
     private fun deleteAllTasks() {
         taskDB.removeAllScheduleTasks()
     }
@@ -155,6 +167,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // Users
     // ------------------------------------------------------------------------
 
+    @Throws(Exception::class)
     fun replaceUser(user: User) {
         userDB.transaction {
             userDB.removeAllUsers()
@@ -167,6 +180,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         }
     }
 
+    @Throws(Exception::class)
     fun selectUser(id: String): User? {
         val cached = userDB.selectUserById(id).executeAsOneOrNull() ?: return null
         return mapUser(
@@ -177,6 +191,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
+    @Throws(Exception::class)
     fun updateUser(user: User) {
         userDB.updateUser(
             user.email,
@@ -186,6 +201,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
+    @Throws(Exception::class)
     private fun deleteAllUsers() {
         userDB.removeAllUsers()
     }
@@ -198,6 +214,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // Workspaces
     // ------------------------------------------------------------------------
 
+    @Throws(Exception::class)
     fun insertWorkspace(workspace: Workspace) {
         workspaceDB.insertWorkspace(
             workspace.id,
@@ -207,15 +224,18 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
+    @Throws(Exception::class)
     fun selectWorkspaceById(id: String): Workspace? {
         val cached = workspaceDB.selectWorkspaceById(id).executeAsOneOrNull() ?: return null
         return mapWorkspace(cached.id, cached.name, cached.role, cached.avatarURL)
     }
 
+    @Throws(Exception::class)
     fun selectAllWorkspaces(): List<Workspace> {
         return workspaceDB.selectAllWorkspacesInfo(::mapWorkspace).executeAsList()
     }
 
+    @Throws(Exception::class)
     fun updateWorkspace(workspace: Workspace) {
         workspaceDB.updateWorkspace(
             workspace.name,
@@ -225,11 +245,13 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
+    @Throws(Exception::class)
     fun deleteWorkspace(id: String) {
         workspaceDB.removeWorkspace(id)
     }
 
-    private fun deleteAllWorkspaces() {
+    @Throws(Exception::class)
+    fun deleteAllWorkspaces() {
         workspaceDB.removeAllWorkspaces()
     }
 
@@ -246,6 +268,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // Workspace Members
     // ------------------------------------------------------------------------
 
+    @Throws(Exception::class)
     private fun insertWorkspaceMember(member: WorkspaceMember) {
         workspaceMemberDB.insertWorkspaceMember(
             member.id,
@@ -255,20 +278,23 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
+    @Throws(Exception::class)
     fun selectAllWorkspaceMembers(): List<WorkspaceMember> {
         return workspaceMemberDB.selectAllWorkspaceMembersInfo(::mapWorkspaceMember).executeAsList()
     }
 
+    @Throws(Exception::class)
     fun replaceAllWorkspaceMembers(members: List<WorkspaceMember>) {
         deleteAllWorkspaceMembers()
         members.forEach(::insertWorkspaceMember)
     }
 
+    @Throws(Exception::class)
     private fun deleteAllWorkspaceMembers() {
         workspaceMemberDB.removeAllWorkspaceMembers()
     }
 
-    private fun mapWorkspaceMember(id: String, userID: String?, username: String, role: String?): WorkspaceMember {
+    private fun mapWorkspaceMember(id: String, userID: String, username: String, role: String?): WorkspaceMember {
         return WorkspaceMember(
             id,
             userID,
@@ -281,6 +307,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // Utilities
     // ------------------------------------------------------------------------
 
+    @Throws(Exception::class)
     fun clearAllDatabases() {
         deleteAllContacts()
         deleteAllTasks()

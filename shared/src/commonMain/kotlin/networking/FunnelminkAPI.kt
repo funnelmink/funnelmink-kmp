@@ -45,6 +45,7 @@ class FunnelminkAPI(
     }
 
     override fun signIntoWorkspace(workspace: Workspace) {
+        cache.deleteAllWorkspaces()
         cache.insertWorkspace(workspace)
         workspaceID = workspace.id
     }

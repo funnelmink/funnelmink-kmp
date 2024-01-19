@@ -1,8 +1,8 @@
 CREATE TABLE SQLWorkspaceMember(
     id TEXT PRIMARY KEY,
-    userID TEXT,
+    userID TEXT NOT NULL,
     username TEXT NOT NULL,
-    role TEXT
+    role TEXT NOT NULL
 );
 
 insertWorkspaceMember:

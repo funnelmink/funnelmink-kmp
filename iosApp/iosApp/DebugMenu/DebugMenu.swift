@@ -52,18 +52,14 @@ struct DebugMenu: View {
             }
         } else {
             Button("Back") {
-                withAnimation {
-                    selection = .debugMenu
-                }
+                selection = .debugMenu
             }
         }
     }
     
     func menuButton(title: String, selection: Selection) -> some View {
         Button {
-            withAnimation {
-                self.selection = selection
-            }
+            self.selection = selection
         } label: {
             Text(title)
                 .padding()

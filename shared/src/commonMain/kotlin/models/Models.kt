@@ -48,7 +48,7 @@ data class Workspace(
 @Serializable
 data class WorkspaceMember(
     val id: String,
-    val userID: String? = null,
+    val userID: String,
     val username: String,
     //    @SerialName("avatar_url") val avatarURL: String? = null,
     var role: WorkspaceMembershipRole,
