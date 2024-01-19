@@ -55,7 +55,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
-    fun deleteAllContacts() {
+    private fun deleteAllContacts() {
         contactDB.removeAllContacts()
     }
 
@@ -129,7 +129,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         taskDB.removeTask(id)
     }
 
-    fun deleteAllTasks() {
+    private fun deleteAllTasks() {
         taskDB.removeAllScheduleTasks()
     }
 
@@ -183,7 +183,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
     }
 
-    fun deleteAllUsers() {
+    private fun deleteAllUsers() {
         userDB.removeAllUsers()
     }
 
@@ -199,7 +199,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         workspaceDB.insertWorkspace(
             workspace.id,
             workspace.name,
-            workspace.role?.let { toString() },
+            workspace.role?.toString(),
             workspace.avatarURL
         )
     }
@@ -216,7 +216,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     fun updateWorkspace(workspace: Workspace) {
         workspaceDB.updateWorkspace(
             workspace.name,
-            workspace.role?.let { toString() },
+            workspace.role?.toString(),
             workspace.avatarURL,
             workspace.id
         )
@@ -226,7 +226,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         workspaceDB.removeWorkspace(id)
     }
 
-    fun deleteAllWorkspaces() {
+    private fun deleteAllWorkspaces() {
         workspaceDB.removeAllWorkspaces()
     }
 
@@ -243,9 +243,48 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // Workspace Members
     // ------------------------------------------------------------------------
 
+    private fun insertWorkspaceMember(member: WorkspaceMember) {
+        workspaceMemberDB.insertWorkspaceMember(
+            member.id,
+            member.userID,
+            member.username,
+            member.role.toString()
+        )
+    }
+
+    fun selectAllWorkspaceMembers(): List<WorkspaceMember> {
+        return workspaceMemberDB.selectAllWorkspaceMembersInfo(::mapWorkspaceMember).executeAsList()
+    }
+
+    fun replaceAllWorkspaceMembers(members: List<WorkspaceMember>) {
+        deleteAllWorkspaceMembers()
+        members.forEach(::insertWorkspaceMember)
+    }
+
+    private fun deleteAllWorkspaceMembers() {
+        workspaceMemberDB.removeAllWorkspaceMembers()
+    }
+
+    private fun mapWorkspaceMember(id: String, userID: String?, username: String, role: String?): WorkspaceMember {
+        return WorkspaceMember(
+            id,
+            userID,
+            username,
+            WorkspaceMembershipRole.fromRoleName(role!!)
+        )
+    }
+
     // ------------------------------------------------------------------------
     // Utilities
     // ------------------------------------------------------------------------
+
+    fun clearAllDatabases() {
+        deleteAllContacts()
+        deleteAllTasks()
+        deleteAllUsers()
+        deleteAllWorkspaces()
+        deleteAllWorkspaceMembers()
+    }
 
     /// Retrieve `Long` value from SQLite and turn it back into a `Boolean`
     private fun toBool(long: Long): Boolean {
