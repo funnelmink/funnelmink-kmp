@@ -29,7 +29,8 @@ class Logger(private val maxEntries: Int = 1000) {
             // Remove the oldest 500 entries
             repeat(500) { logEntries.removeAt(0) }
         }
-        logEntries.add(LogEntry(Clock.System.now().epochSeconds, level, message))
+        val entry = LogEntry(Clock.System.now().toEpochMilliseconds(), level, message)
+        logEntries.add(entry)
     }
 
     fun getLogs(): List<LogEntry> {

@@ -13,7 +13,7 @@ struct LogsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-            ForEach(Utilities.shared.logger.getLogs(), id: \.timestamp) { log in
+            ForEach(Utilities.shared.logger.getLogs(), id: \.id) { log in
                     Color.gray.frame(height: 0.5)
                         .padding(.horizontal)
                     Text(log.message)
@@ -28,4 +28,8 @@ struct LogsView: View {
 
 #Preview {
     LogsView()
+}
+
+extension LogEntry {
+    var id: String { "\(timestamp)\(message)" }
 }

@@ -57,9 +57,8 @@ fileprivate struct FunnelminkAppContents: View {
                     Button {
                         navigation.presentFullscreen(.debugMenu)
                     } label: {
-                        Image(systemName: "apple.terminal.on.rectangle.fill")
+                        Image(systemName: "apple.terminal.fill")
                             .renderingMode(.original)
-                            .foregroundColor(.black)
                     }
                     .padding(.leading, 64)
                     Spacer()
