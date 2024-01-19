@@ -29,8 +29,8 @@ struct DebugMenu: View {
                     backButton.hidden()
                 }
                 switch selection {
-                case .logs: Text("Logs") // LogsView()
-                case .featureFlags: Text("FFs") // FeatureFlagsView()
+                case .logs: LogsView()
+                case .featureFlags: FeatureFlagsView()
                 case .debugMenu:
                     ScrollView {
                         menuButton(title: "Logs", selection: .logs)
@@ -52,14 +52,18 @@ struct DebugMenu: View {
             }
         } else {
             Button("Back") {
-                selection = .debugMenu
+                withAnimation {
+                    selection = .debugMenu
+                }
             }
         }
     }
     
     func menuButton(title: String, selection: Selection) -> some View {
         Button {
-            self.selection = selection
+            withAnimation {
+                self.selection = selection
+            }
         } label: {
             Text(title)
                 .padding()

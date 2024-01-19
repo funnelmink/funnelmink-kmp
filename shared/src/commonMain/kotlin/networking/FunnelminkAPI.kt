@@ -12,6 +12,7 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import utilities.*
 
 class FunnelminkAPI(
     private val baseURL: String,
@@ -264,15 +265,15 @@ class FunnelminkAPI(
                 val exceptionString = "${request.method.value} ${request.url}"
                 when (exception) {
                     is ClientRequestException -> {
-                        println("Request Failure: $exceptionString\n${exception.response}")
+                        Utilities.logger.log(LogLevel.ERROR, "Request Failure: $exceptionString\n${exception.response}")
                     }
 
                     is ServerResponseException -> {
-                        println("Server Error: $exceptionString\n${exception.response}")
+                        Utilities.logger.log(LogLevel.ERROR, "Server Error: $exceptionString\n${exception.response}")
                     }
 
                     is ResponseException -> {
-                        println("Response Error: $exceptionString\n${exception.response}")
+                        Utilities.logger.log(LogLevel.WARN, "Response Error: $exceptionString\n${exception.response}")
                     }
                 }
             }
@@ -291,9 +292,9 @@ class FunnelminkAPI(
             requestBody = this.body.toString()
         }
         val responseBody = response.bodyAsText()
-        println("⬆️ ${method.value} $url")
+        Utilities.logger.log(LogLevel.INFO, "⬆️ ${method.value} $url")
         if (requestBody != "EmptyContent") {
-            println("✴️ $requestBody")
+            Utilities.logger.log(LogLevel.INFO, "✴️ $requestBody")
         }
 
         if (T::class == Unit::class) {
@@ -301,16 +302,17 @@ class FunnelminkAPI(
         }
 
         if (response.status.isSuccess()) {
-            println("✅ $responseBody")
+            Utilities.logger.log(LogLevel.INFO, "✅ $responseBody")
             try {
                 val body = jsonDecoder.decodeFromString<T>(responseBody)
                 return body
             } catch (e: SerializationException) {
+                Utilities.logger.warn(e.message.orEmpty())
                 onDecodingError?.invoke(e.message.orEmpty())
                 throw e
             }
         } else {
-            println("🆘 $responseBody")
+            Utilities.logger.log(LogLevel.WARN, "🆘 $responseBody")
             try {
                 val message = jsonDecoder.decodeFromString<APIError>(responseBody).message
                 when (response.status) {

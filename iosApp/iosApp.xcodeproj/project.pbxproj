@@ -84,6 +84,8 @@
 		0D73AB132B54DAF30026EC4D /* Int32+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AB122B54DAF30026EC4D /* Int32+.swift */; };
 		0DBB674F2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */; };
 		0DBF9CAF2B5A16C20045AC44 /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */; };
+		0DBF9CB12B5A35F20045AC44 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF9CB02B5A35F20045AC44 /* LogsView.swift */; };
+		0DBF9CB32B5A35FB0045AC44 /* FeatureFlagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF9CB22B5A35FB0045AC44 /* FeatureFlagsView.swift */; };
 		0DCC16342B50D26C008F705B /* TodayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC16332B50D26C008F705B /* TodayViewModel.swift */; };
 		0DCC16362B50DC9D008F705B /* TaskCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC16352B50DC9D008F705B /* TaskCell.swift */; };
 		0DCC16382B50E184008F705B /* EditTaskView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC16372B50E184008F705B /* EditTaskView.swift */; };
@@ -185,6 +187,8 @@
 		0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DevEnvironment.xcconfig; sourceTree = "<group>"; };
 		0DBB67562B4FA39B00CFE9A5 /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = "<group>"; };
 		0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugMenu.swift; sourceTree = "<group>"; };
+		0DBF9CB02B5A35F20045AC44 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
+		0DBF9CB22B5A35FB0045AC44 /* FeatureFlagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsView.swift; sourceTree = "<group>"; };
 		0DCC16332B50D26C008F705B /* TodayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewModel.swift; sourceTree = "<group>"; };
 		0DCC16352B50DC9D008F705B /* TaskCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCell.swift; sourceTree = "<group>"; };
 		0DCC16372B50E184008F705B /* EditTaskView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskView.swift; sourceTree = "<group>"; };
@@ -481,6 +485,8 @@
 			isa = PBXGroup;
 			children = (
 				0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */,
+				0DBF9CB02B5A35F20045AC44 /* LogsView.swift */,
+				0DBF9CB22B5A35FB0045AC44 /* FeatureFlagsView.swift */,
 			);
 			path = DebugMenu;
 			sourceTree = "<group>";
@@ -770,6 +776,7 @@
 				0D73AB132B54DAF30026EC4D /* Int32+.swift in Sources */,
 				0D012E742B477E3A00658153 /* Networking.swift in Sources */,
 				0DCC16382B50E184008F705B /* EditTaskView.swift in Sources */,
+				0DBF9CB12B5A35F20045AC44 /* LogsView.swift in Sources */,
 				0D012E7D2B477E3A00658153 /* AccountViewModel.swift in Sources */,
 				0D012E6D2B477E3A00658153 /* Color+.swift in Sources */,
 				0D012E702B477E3A00658153 /* AppState.swift in Sources */,
@@ -806,6 +813,7 @@
 				1FCB76E5963E2B5E99E06A01 /* CustomTextField.swift in Sources */,
 				1FCB7A868056CEE7833B8D1F /* ContactView.swift in Sources */,
 				1FCB7F4778BB0D8858D5D07F /* ContactsView.swift in Sources */,
+				0DBF9CB32B5A35FB0045AC44 /* FeatureFlagsView.swift in Sources */,
 				1FCB7A42AD73B432D0CFDFA6 /* ContactsViewModel.swift in Sources */,
 				1FCB7E382AF8048E4998B8DC /* CreateContactView.swift in Sources */,
 			);
