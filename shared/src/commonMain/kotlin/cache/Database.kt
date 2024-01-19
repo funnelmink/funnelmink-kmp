@@ -60,6 +60,17 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
+    fun deleteContact(id: String) {
+        contactDB.removeContact(id)
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllContacts(contacts: List<Contact>) {
+        deleteAllContacts()
+        contacts.forEach(::insertContact)
+    }
+
+    @Throws(Exception::class)
     private fun deleteAllContacts() {
         contactDB.removeAllContacts()
     }

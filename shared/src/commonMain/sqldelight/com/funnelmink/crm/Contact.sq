@@ -30,5 +30,9 @@ SET firstName = ?,
     companyName = ?
 WHERE id = ?;
 
+removeContact:
+DELETE FROM SQLContact
+WHERE id = ?;
+
 removeAllContacts:
 DELETE FROM SQLContact;

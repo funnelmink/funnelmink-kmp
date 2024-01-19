@@ -81,31 +81,59 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun createContact(body: CreateContactRequest): Contact {
-        return genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Post) {
+        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Post) {
             setBody(body)
         }
+        cache.insertContact(contact)
+        return contact
     }
 
     @Throws(Exception::class)
     override suspend fun deleteContact(id: String) {
-        return genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Delete)
+        genericRequest<Unit>("$baseURL/v1/workspace/contacts/$id", HttpMethod.Delete)
+        cache.deleteTask(id)
     }
 
     @Throws(Exception::class)
     override suspend fun getContactDetails(id: String): Contact {
+        // TODO: maybe cache this? I think one day it might return Activities and Location data though. Could be complex
         return genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
     override suspend fun getContacts(): List<Contact> {
-        return genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Get)
+        val cacheKey = "getContacts"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllContacts()
+                if (cached.isNotEmpty()) {
+                    Utilities.logger.info("Retrieved ${cached.size} contacts from cache")
+                    return cached
+                }
+            }
+            val fetched: List<Contact> = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Get)
+            cache.replaceAllContacts(fetched)
+            cacheInvalidator.updateTimestamp(cacheKey)
+            Utilities.logger.info("Cached ${fetched.size} contacts")
+            return fetched
+        } catch (e: Exception) {
+            val cached = cache.selectAllContacts()
+            if (cached.isNotEmpty()) {
+                Utilities.logger.warn("Failed to fetch Contacts. Returned ${cached.size} contacts from cache")
+                return cached
+            } else {
+                throw e
+            }
+        }
     }
 
     @Throws(Exception::class)
     override suspend fun updateContact(id: String, body: UpdateContactRequest): Contact {
-        return genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Put) {
+        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Put) {
             setBody(body)
         }
+        cache.updateContact(contact)
+        return contact
     }
 
     // ------------------------------------------------------------------------
@@ -145,8 +173,8 @@ class FunnelminkAPI(
                 offset?.let { parameter("offset", it) }
                 parameter("isComplete", isComplete)
             }
-            Utilities.logger.info("Cached ${fetched.size} tasks")
             cache.replaceAllTasks(fetched)
+            Utilities.logger.info("Ccnaached ${fetched.size} tasks")
             cacheInvalidator.updateTimestamp(cacheKey)
             return fetched
         } catch (e: Exception) {
