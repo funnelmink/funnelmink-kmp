@@ -24,7 +24,7 @@ class EditTaskViewModel: ViewModel {
             state.creationErrorMessage = "Task name cannot be empty."
             return
         }
-        if !Utilities.validation.isName(input: title) {
+        if !Validator.isValidName(title) {
             state.creationErrorMessage = "`\(title)` is not a valid Task name."
             return
         }
@@ -49,7 +49,7 @@ class EditTaskViewModel: ViewModel {
             state.creationErrorMessage = "Task name cannot be empty."
             return
         }
-        if !Utilities.validation.isName(input: title) {
+        if !Validator.isValidName(title) {
             state.creationErrorMessage = "`\(title)` is not a valid Task name."
             return
         }

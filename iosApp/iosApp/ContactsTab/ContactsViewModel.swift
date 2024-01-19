@@ -36,25 +36,19 @@ class ContactsViewModel: ViewModel {
                 companyName: companyName
             )
             
-            let validator = Utilities.validation
-            
-            if !validator.isName(input: body.firstName) {
+            if !Validator.isValidName(body.firstName) {
                 throw "\(body.firstName) contains invalid characters"
             }
-            if let lastName = body.lastName, !validator.isName(input: lastName) {
+            if let lastName = body.lastName, !Validator.isValidName(lastName) {
                 throw "\(lastName) contains invalid characters"
             }
-            for number in body.phoneNumbers {
-                if !validator.isPhoneNumber(input: number) {
-                    throw "\(number) is not a valid phone number"
-                }
+            for number in body.phoneNumbers where !Validator.isValidPhoneNumber(number) {
+                throw "\(number) is not a valid phone number"
             }
-            for email in body.emails {
-                if !validator.isEmail(input: email) {
-                    throw "\(email) is not a valid email"
-                }
+            for email in body.emails where !Validator.isValidEmail(email) {
+                throw "\(email) is not a valid email"
             }
-            if let companyName = body.companyName, !Utilities.validation.isName(input: companyName) {
+            if let companyName = body.companyName, !Validator.isValidName(companyName) {
                 throw "\(companyName) contains invalid characters"
             }
             _ = try await Networking.api.createContact(body: body)

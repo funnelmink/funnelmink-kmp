@@ -29,7 +29,7 @@ class WorkspacesViewModel: ViewModel {
                 state.creationErrorMessage = "Workspace name cannot be empty."
                 return
             }
-            if !Utilities.validation.isName(input: name) {
+            if !Validator.isValidName(name) {
                 state.creationErrorMessage = "\(name) contains invalid characters."
                 return
             }

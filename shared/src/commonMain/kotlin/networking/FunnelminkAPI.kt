@@ -111,7 +111,6 @@ class FunnelminkAPI(
         }
     }
 
-
     @Throws(Exception::class)
     override suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask {
         val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Put) {
