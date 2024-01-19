@@ -1,9 +1,7 @@
 package cache
 
 import com.funnelmink.crm.FunnelminkCache
-import models.Contact
-import models.ScheduleTask
-import models.User
+import models.*
 
 
 internal class Database(databaseDriverFactory: DatabaseDriver) {
@@ -186,9 +184,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     fun deleteAllUsers() {
-        userDB.transaction {
-            userDB.removeAllUsers()
-        }
+        userDB.removeAllUsers()
     }
 
     private fun mapUser(id: String, email: String, username: String, isDevAccount: Boolean): User {
@@ -198,6 +194,50 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
     // Workspaces
     // ------------------------------------------------------------------------
+
+    fun insertWorkspace(workspace: Workspace) {
+        workspaceDB.insertWorkspace(
+            workspace.id,
+            workspace.name,
+            workspace.role?.let { toString() },
+            workspace.avatarURL
+        )
+    }
+
+    fun selectWorkspaceById(id: String): Workspace? {
+        val cached = workspaceDB.selectWorkspaceById(id).executeAsOneOrNull() ?: return null
+        return mapWorkspace(cached.id, cached.name, cached.role, cached.avatarURL)
+    }
+
+    fun selectAllWorkspaces(): List<Workspace> {
+        return workspaceDB.selectAllWorkspacesInfo(::mapWorkspace).executeAsList()
+    }
+
+    fun updateWorkspace(workspace: Workspace) {
+        workspaceDB.updateWorkspace(
+            workspace.name,
+            workspace.role?.let { toString() },
+            workspace.avatarURL,
+            workspace.id
+        )
+    }
+
+    fun deleteWorkspace(id: String) {
+        workspaceDB.removeWorkspace(id)
+    }
+
+    fun deleteAllWorkspaces() {
+        workspaceDB.removeAllWorkspaces()
+    }
+
+    private fun mapWorkspace(id: String, name: String, role: String?, avatarURL: String?): Workspace {
+        return Workspace(
+            id,
+            name,
+            role?.let { WorkspaceMembershipRole.fromRoleName(it) },
+            avatarURL
+        )
+    }
 
     // ------------------------------------------------------------------------
     // Workspace Members

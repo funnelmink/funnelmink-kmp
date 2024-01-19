@@ -18,5 +18,16 @@ selectAllWorkspacesInfo:
 SELECT SQLWorkspace.*
 FROM SQLWorkspace;
 
+updateWorkspace:
+UPDATE SQLWorkspace
+SET name = ?,
+    role = ?,
+    avatarURL = ?
+WHERE id = ?;
+
+removeWorkspace:
+DELETE FROM SQLWorkspace
+WHERE id = ?;
+
 removeAllWorkspaces:
 DELETE FROM SQLWorkspace;
