@@ -219,7 +219,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         workspaceDB.insertWorkspace(
             workspace.id,
             workspace.name,
-            workspace.role?.toString(),
+            workspace.role?.roleName,
             workspace.avatarURL
         )
     }
@@ -239,7 +239,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     fun updateWorkspace(workspace: Workspace) {
         workspaceDB.updateWorkspace(
             workspace.name,
-            workspace.role?.toString(),
+            workspace.role?.roleName,
             workspace.avatarURL,
             workspace.id
         )
@@ -274,7 +274,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             member.id,
             member.userID,
             member.username,
-            member.role.toString()
+            member.role.roleName
         )
     }
 

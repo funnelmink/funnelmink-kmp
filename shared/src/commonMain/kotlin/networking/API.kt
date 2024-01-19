@@ -11,13 +11,13 @@ interface API {
     var onMissing: ((message: String) -> Unit)?
     var onServerError: ((message: String) -> Unit)?
 
-    fun signIn(user: User, token: String)
-    fun signOut()
-    fun signIntoWorkspace(workspace: Workspace)
-    fun signOutOfWorkspace()
-    fun refreshToken(token: String)
-    fun getCachedUser(id: String): User?
-    fun getCachedWorkspace(id: String): Workspace?
+    @Throws(Exception::class) fun signIn(user: User, token: String)
+    @Throws(Exception::class) fun signOut()
+    @Throws(Exception::class) fun signIntoWorkspace(workspace: Workspace)
+    @Throws(Exception::class) fun signOutOfWorkspace()
+    @Throws(Exception::class) fun refreshToken(token: String)
+    @Throws(Exception::class) fun getCachedUser(id: String): User?
+    @Throws(Exception::class) fun getCachedWorkspace(id: String): Workspace?
 
     // ------------------------------------------------------------------------
     // Auth-Only Endpoints

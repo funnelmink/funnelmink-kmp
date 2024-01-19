@@ -30,13 +30,16 @@ final class AppState: ObservableObject {
     func configure() {
         Task {
             if let firebaseUser = Auth.auth().currentUser,
-               let funnelminkUser = Networking.api.getCachedUser(id: firebaseUser.uid) {
+               let funnelminkUser = try Networking.api.getCachedUser(id: firebaseUser.uid) {
                 await signIn(firebaseUser: firebaseUser, funnelminkUser: funnelminkUser)
-                
-                if let workspaceID = UserDefaults.standard.string(forKey: "workspaceID"),
-                   let workspace = Networking.api.getCachedWorkspace(id: workspaceID) {
-                    signIntoWorkspace(workspace)
-                }
+                   do {
+                       if let workspaceID = UserDefaults.standard.string(forKey: "workspaceID"),
+                   let workspace = try Networking.api.getCachedWorkspace(id: workspaceID) {
+                           signIntoWorkspace(workspace)
+                       }
+                   } catch {
+                       self.error = error
+                   }
             }
             hasInitialized = true
         }
@@ -59,7 +62,7 @@ final class AppState: ObservableObject {
         self.funnelminkUser = funnelminkUser
         do {
             let token = try await firebaseUser.getIDToken()
-            Networking.api.signIn(user: funnelminkUser, token: token)
+            try Networking.api.signIn(user: funnelminkUser, token: token)
 #if DEBUG
             Utilities.shared.logger.setIsLoggingEnabled(value: true)
 #endif
@@ -69,8 +72,13 @@ final class AppState: ObservableObject {
     }
     
     func signIntoWorkspace(_ workspace: Workspace) {
+        UserDefaults.standard.set(workspace.id, forKey: "workspaceID")
         self.workspace = workspace
-        Networking.api.signIntoWorkspace(workspace: workspace)
+        do {
+            try Networking.api.signIntoWorkspace(workspace: workspace)
+        } catch {
+            self.error = error
+        }
     }
     
     func todo() {

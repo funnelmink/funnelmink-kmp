@@ -22,7 +22,7 @@ class Networking {
             Task { @MainActor in
                 do {
                     guard let token = try await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true).token else { throw "Your session has expired. Please log in again." }
-                    Networking.api.refreshToken(token: token)
+                    try Networking.api.refreshToken(token: token)
                 } catch {
                     AppState.shared.prompt = "Your session has expired. Please log in again."
                 }

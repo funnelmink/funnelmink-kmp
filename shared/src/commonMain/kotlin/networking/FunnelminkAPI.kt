@@ -33,37 +33,44 @@ class FunnelminkAPI(
     // Auth
     // ------------------------------------------------------------------------
 
+    @Throws(Exception::class)
     override fun signIn(user: User, token: String) {
         this.token = token
         cache.replaceUser(user)
         Utilities.logger.setIsLoggingEnabled(user.isDevAccount)
     }
 
+    @Throws(Exception::class)
     override fun signOut() {
         signOutOfWorkspace()
         token = null
     }
 
+    @Throws(Exception::class)
     override fun signIntoWorkspace(workspace: Workspace) {
         cache.deleteAllWorkspaces()
         cache.insertWorkspace(workspace)
         workspaceID = workspace.id
     }
 
+    @Throws(Exception::class)
     override fun signOutOfWorkspace() {
         cache.clearAllDatabases()
         cacheInvalidator.reset()
         workspaceID = null
     }
 
+    @Throws(Exception::class)
     override fun refreshToken(token: String) {
         this.token = token
     }
 
+    @Throws(Exception::class)
     override fun getCachedUser(id: String): User? {
         return cache.selectUser(id)
     }
 
+    @Throws(Exception::class)
     override fun getCachedWorkspace(id: String): Workspace? {
         return cache.selectWorkspaceById(id)
     }
