@@ -94,7 +94,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             task.title,
             task.body,
             task.priority.toLong(),
-            if (task.isComplete) 1 else 0,
+            toLong(task.isComplete),
             task.scheduledDate
         )
     }
@@ -121,7 +121,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             task.title,
             task.body,
             task.priority.toLong(),
-            if (task.isComplete) 1 else 0, // Convert Boolean to Long
+            toLong(task.isComplete),
             task.scheduledDate,
             task.id
         )
@@ -148,7 +148,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             title,
             body,
             priority.toInt(),
-            isComplete != 0L, // Convert Long to Boolean
+            toBool(isComplete),
             scheduledDate
         )
     }
@@ -156,6 +156,44 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
     // Users
     // ------------------------------------------------------------------------
+
+    fun insertUser(user: User) {
+        userDB.insertUser(
+            user.id,
+            user.email,
+            user.username,
+            toLong(user.isDevAccount)
+        )
+    }
+
+    fun selectUser(id: String): User? {
+        val cached = userDB.selectUserById(id).executeAsOneOrNull() ?: return null
+        return mapUser(
+            cached.id,
+            cached.email,
+            cached.username,
+            toBool(cached.isDevAccount)
+        )
+    }
+
+    fun updateUser(user: User) {
+        userDB.updateUser(
+            user.email,
+            user.username,
+            toLong(user.isDevAccount),
+            user.id
+        )
+    }
+
+    fun deleteAllUsers() {
+        userDB.transaction {
+            userDB.removeAllUsers()
+        }
+    }
+
+    private fun mapUser(id: String, email: String, username: String, isDevAccount: Boolean): User {
+        return User(id, username, email, isDevAccount)
+    }
 
     // ------------------------------------------------------------------------
     // Workspaces
@@ -165,21 +203,17 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // Workspace Members
     // ------------------------------------------------------------------------
 
-    internal fun clearDatabase() {
-        userDB.transaction {
-            userDB.removeAllUsers()
-        }
+    // ------------------------------------------------------------------------
+    // Utilities
+    // ------------------------------------------------------------------------
+
+    /// Retrieve `Long` value from SQLite and turn it back into a `Boolean`
+    private fun toBool(long: Long): Boolean {
+        return long != 0L
     }
 
-    private fun createUser(user: User) {
-        // TODO: implement the full database for all types!
-    }
-
-    internal fun insertUser(user: User) {
-        userDB.insertUser(user.id, user.email, user.username)
-    }
-
-    private fun mapUser(id: String, email: String, username: String): User {
-        return User(id, username, email)
+    /// `Boolean` must be stored as `Long` in SQLite
+    private fun toLong(bool: Boolean): Long {
+        return if (bool) 1 else 0
     }
 }

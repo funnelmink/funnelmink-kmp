@@ -27,19 +27,22 @@ enum Modal: Identifiable {
     
     @ViewBuilder
     var view: some View {
-        switch self {
-        case let .any(view): AnyView(view())
-        case .importContacts: ImportContactsView()
-            
-        case .createTask: EditTaskView()
-        case let .editTask(task): EditTaskView(task: task)
-            
-        case let .createWorkspace(viewModel): CreateWorkspaceView(viewModel: viewModel)
-        case .inviteToWorkspace: WorkspaceInviteView()
-        case .joinExistingWorkspace: JoinExistingWorkspaceView()
-        case .selectWorkspace: WorkspacesView()
-        case .createContact: CreateContactView()
-        case .debugMenu: DebugMenu()
+        Group {
+            switch self {
+            case let .any(view): AnyView(view())
+            case .importContacts: ImportContactsView()
+                
+            case .createTask: EditTaskView()
+            case let .editTask(task): EditTaskView(task: task)
+                
+            case let .createWorkspace(viewModel): CreateWorkspaceView(viewModel: viewModel)
+            case .inviteToWorkspace: WorkspaceInviteView()
+            case .joinExistingWorkspace: JoinExistingWorkspaceView()
+            case .selectWorkspace: WorkspacesView()
+            case .createContact: CreateContactView()
+            case .debugMenu: DebugMenu()
+            }
         }
+        // TODO: toast modifier, bound to navigation.modalToast
     }
 }
