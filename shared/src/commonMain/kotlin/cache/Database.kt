@@ -155,13 +155,16 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // Users
     // ------------------------------------------------------------------------
 
-    fun insertUser(user: User) {
-        userDB.insertUser(
-            user.id,
-            user.email,
-            user.username,
-            toLong(user.isDevAccount)
-        )
+    fun replaceUser(user: User) {
+        userDB.transaction {
+            userDB.removeAllUsers()
+            userDB.insertUser(
+                user.id,
+                user.email,
+                user.username,
+                toLong(user.isDevAccount)
+            )
+        }
     }
 
     fun selectUser(id: String): User? {
