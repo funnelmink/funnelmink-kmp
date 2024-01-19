@@ -99,6 +99,7 @@
 		1F022A3E2B49159100966345 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A3A2B49159100966345 /* CustomTextField.swift */; };
 		1FA27F762B53151400A447C3 /* CreateContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F752B53151400A447C3 /* CreateContactView.swift */; };
 		1FA27F782B536DE600A447C3 /* ContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F772B536DE600A447C3 /* ContactView.swift */; };
+		1FA27F7A2B5978F300A447C3 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F792B5978F300A447C3 /* TimelineView.swift */; };
 		1FCB7CD17EFAA37FE7FA338F /* Shared+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */; };
 /* End PBXBuildFile section */
 
@@ -199,6 +200,7 @@
 		1F022A3A2B49159100966345 /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		1FA27F752B53151400A447C3 /* CreateContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContactView.swift; sourceTree = "<group>"; };
 		1FA27F772B536DE600A447C3 /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
+		1FA27F792B5978F300A447C3 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Shared+.swift"; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* funnelmink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = funnelmink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7555FF8C242A565B00829871 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -438,6 +440,7 @@
 				1F022A372B49159100966345 /* CustomButton.swift */,
 				1F022A392B49159100966345 /* CustomCell.swift */,
 				1F022A3A2B49159100966345 /* CustomTextField.swift */,
+				1FA27F792B5978F300A447C3 /* TimelineView.swift */,
 				0D012E5A2B477E3A00658153 /* WarningAlertButton.swift */,
 			);
 			path = Components;
@@ -806,6 +809,7 @@
 				0D012E722B477E3A00658153 /* Navigation.swift in Sources */,
 				0D012E7F2B477E3A00658153 /* WorkspaceSettingsView.swift in Sources */,
 				1F022A3B2B49159100966345 /* CustomButton.swift in Sources */,
+				1FA27F7A2B5978F300A447C3 /* TimelineView.swift in Sources */,
 				1F022A3D2B49159100966345 /* CustomCell.swift in Sources */,
 				0D012E6A2B477E3A00658153 /* String+.swift in Sources */,
 				0D012E8B2B477E3A00658153 /* JoinExistingWorkspaceView.swift in Sources */,
