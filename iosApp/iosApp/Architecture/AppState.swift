@@ -13,6 +13,7 @@ import Shared
 final class AppState: ObservableObject {
     static let shared = AppState()
     @Published var user: FirebaseAuth.User?
+    @Published var funnelminkUser: Shared.User?
     @Published var workspace: Workspace?
     @Published var hasInitialized = false
     
@@ -29,7 +30,7 @@ final class AppState: ObservableObject {
     func configure() {
         Task {
             if let firebaseUser = Auth.auth().currentUser,
-               let funnelminkUser = try? await Networking.api.getCachedUser(id: firebaseUser.uid) {
+               let funnelminkUser = Networking.api.getCachedUser(id: firebaseUser.uid) {
                 await signIn(firebaseUser: firebaseUser, funnelminkUser: funnelminkUser)
                 
                 if let workspaceID = UserDefaults.standard.string(forKey: "workspaceID"),
@@ -54,7 +55,8 @@ final class AppState: ObservableObject {
     
     @MainActor
     func signIn(firebaseUser: FirebaseAuth.User, funnelminkUser: Shared.User) async {
-        self.user = user
+        self.user = firebaseUser
+        self.funnelminkUser = funnelminkUser
         do {
             let token = try await firebaseUser.getIDToken()
             Networking.api.signIn(user: funnelminkUser, token: token)
