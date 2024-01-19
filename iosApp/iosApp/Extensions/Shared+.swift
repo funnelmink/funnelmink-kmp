@@ -18,6 +18,11 @@ extension Logger {
     static func logError(_ message: String) {
         Utilities.shared.logger.log(level: .error, message: message)
     }
+    
+    /// Only used when the user visits a new view.
+    static func view(_ name: String) {
+        Utilities.shared.logger.view(message: name)
+    }
 }
 
 

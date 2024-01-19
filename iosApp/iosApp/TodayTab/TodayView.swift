@@ -37,7 +37,7 @@ struct TodayView: View {
         .tint(.primary)
         .scrollIndicators(.never)
         .navigationTitle(viewModel.state.displayCompletedTasks ? "Completed" : "Tasks")
-        .task {
+        .loggedTask {
             await viewModel.getTasks()
         }
         .toolbar {

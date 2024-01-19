@@ -88,6 +88,7 @@ class FunnelminkAPI(
             if (!cacheInvalidator.isStale(cacheKey)) {
                 val cached = cache.selectAllTasks()
                 if (cached.isNotEmpty()) {
+                    Utilities.logger.info("Retrieved ${cached.size} tasks from cache")
                     return cached
                 }
             }
@@ -98,6 +99,7 @@ class FunnelminkAPI(
                 offset?.let { parameter("offset", it) }
                 parameter("isComplete", isComplete)
             }
+            Utilities.logger.info("Cached ${fetched.size} tasks")
             cache.replaceAllTasks(fetched)
             cacheInvalidator.updateTimestamp(cacheKey)
             return fetched
@@ -105,6 +107,7 @@ class FunnelminkAPI(
             // Fallback to cached data if a network request fails
             val cached = cache.selectAllTasks()
             if (cached.isNotEmpty()) {
+                Utilities.logger.warn("Failed to fetch Tasks. Returned ${cached.size} tasks from cache")
                 return cached
             } else {
                 throw e // Re-throw the exception if there's no cached data

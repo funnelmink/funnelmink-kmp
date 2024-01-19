@@ -2,7 +2,7 @@ package utilities
 
 import kotlinx.datetime.Clock
 
-enum class LogLevel { INFO, WARN, ERROR }
+enum class LogLevel { INFO, WARN, ERROR, VIEW }
 
 data class LogEntry(var timestamp: Long = 0, var level: LogLevel = LogLevel.INFO, var message: String = "")
 
@@ -20,6 +20,10 @@ class Logger(private val maxEntries: Int = 1000) {
 
     fun error(message: String) {
         log(LogLevel.ERROR, message)
+    }
+
+    fun view(message: String) {
+        log(LogLevel.VIEW, message)
     }
 
     fun log(level: LogLevel = LogLevel.INFO, message: String) {

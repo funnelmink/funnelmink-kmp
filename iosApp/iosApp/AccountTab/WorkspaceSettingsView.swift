@@ -74,7 +74,7 @@ struct WorkspaceSettingsView: View {
                     }
                 }
             }
-            .task {
+            .loggedTask {
                 await viewModel.onAppear()
                 newWorkspaceName = workspace.name
             }

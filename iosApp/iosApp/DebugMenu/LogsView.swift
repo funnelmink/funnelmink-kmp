@@ -13,11 +13,15 @@ struct LogsView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading) {
-            ForEach(Utilities.shared.logger.getLogs(), id: \.id) { log in
+                ForEach(Utilities.shared.logger.getLogs(), id: \.id) { log in
                     Color.gray.frame(height: 0.5)
                         .padding(.horizontal)
                     Text(log.message)
-                        .foregroundStyle(log.level == .info ? .white : log.level == .warn ? .yellow : .red)
+                        .foregroundStyle(
+                            log.level == .info ? .white :
+                                log.level == .view ? .cyan :
+                                log.level == .warn ? .yellow : .red
+                        )
                         .font(.caption)
                 }
             }

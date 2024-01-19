@@ -45,7 +45,7 @@ struct WorkspacesView: View {
         }
         .padding()
         .multilineTextAlignment(.center)
-        .task {
+        .loggedTask {
             // grab workspaces
             await viewModel.fetchWorkspaces()
             
