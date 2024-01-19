@@ -88,7 +88,7 @@ class FunnelminkAPI(
             if (!cacheInvalidator.isStale(cacheKey)) {
                 val cached = cache.selectAllTasks()
                 if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} tasks from cache")
+                    Utilities.logger.info(" Retrieved ${cached.size} tasks from cache")
                     return cached
                 }
             }
