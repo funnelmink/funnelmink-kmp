@@ -23,6 +23,8 @@ enum Modal: Identifiable {
     case selectWorkspace
     case createContact
     
+    case debugMenu
+    
     @ViewBuilder
     var view: some View {
         switch self {
@@ -37,6 +39,7 @@ enum Modal: Identifiable {
         case .joinExistingWorkspace: JoinExistingWorkspaceView()
         case .selectWorkspace: WorkspacesView()
         case .createContact: CreateContactView()
+        case .debugMenu: DebugMenu()
         }
     }
 }
