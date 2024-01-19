@@ -17,7 +17,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         #if DEBUG
         print("🪲 DEBUG BUILD 🪲")
-        Utilities.shared.logger.enableLogging()
+        Utilities.shared.logger.setIsLoggingEnabled(value: true)
         #else
         print("🌟 RELEASE BUILD 🌟")
         #endif

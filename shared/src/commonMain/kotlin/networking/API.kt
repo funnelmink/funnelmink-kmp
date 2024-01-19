@@ -5,13 +5,19 @@ import models.*
 /// Endpoints are sorted by access level.
 /// Each new access level builds onto the rules from all prior levels.
 interface API {
-    var token: String?
-    var workspaceID: String?
     var onAuthFailure: ((message: String) -> Unit)?
     var onBadRequest: ((message: String) -> Unit)?
     var onDecodingError: ((message: String) -> Unit)?
     var onMissing: ((message: String) -> Unit)?
     var onServerError: ((message: String) -> Unit)?
+
+    fun signIn(user: User, token: String)
+    fun signOut()
+    fun signIntoWorkspace(workspace: Workspace)
+    fun signOutOfWorkspace()
+    fun refreshToken(token: String)
+    fun getCachedUser(id: String): User?
+    fun getCachedWorkspace(id: String): Workspace?
 
     // ------------------------------------------------------------------------
     // Auth-Only Endpoints

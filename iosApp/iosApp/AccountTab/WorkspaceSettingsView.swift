@@ -83,7 +83,7 @@ struct WorkspaceSettingsView: View {
         }
     }
     
-    private func memberCell(id: String, name: String, role: WorkspaceMembershipRole, image: Image?) -> some View {
+    private func memberCell(id: String?, name: String, role: WorkspaceMembershipRole, image: Image?) -> some View {
         HStack {
             if let image = image {
                 image
@@ -101,7 +101,7 @@ struct WorkspaceSettingsView: View {
             if role == .invited {
                 Text("Invited")
                     .foregroundStyle(.secondary)
-            } else if role == .requested && appState.isWorkspaceOwner {
+            } else if role == .requested && appState.isWorkspaceOwner, let id {
                 VStack {
                     AsyncButton {
                         await viewModel.acceptWorkspaceRequest(userID: id)
@@ -117,7 +117,7 @@ struct WorkspaceSettingsView: View {
             } else if role == .requested {
                 Text("Requesting to join")
                     .foregroundStyle(.secondary)
-            } else if appState.isWorkspaceOwner {
+            } else if appState.isWorkspaceOwner, let id {
                 Picker(
                     "",
                     selection: Binding(

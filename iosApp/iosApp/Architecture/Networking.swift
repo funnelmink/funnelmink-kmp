@@ -21,7 +21,8 @@ class Networking {
         fmapi.onAuthFailure = { _ in
             Task { @MainActor in
                 do {
-                    Networking.api.token = try await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true).token
+                    guard let token = try await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true).token else { throw "Your session has expired. Please log in again." }
+                    Networking.api.refreshToken(token: token)
                 } catch {
                     AppState.shared.prompt = "Your session has expired. Please log in again."
                 }

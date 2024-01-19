@@ -41,7 +41,7 @@ class Logger(private val maxEntries: Int = 1000) {
         return logEntries.toList()
     }
 
-    fun enableLogging() {
-        isLoggingEnabled = true
+    fun setIsLoggingEnabled(value: Boolean) {
+        isLoggingEnabled = value
     }
 }

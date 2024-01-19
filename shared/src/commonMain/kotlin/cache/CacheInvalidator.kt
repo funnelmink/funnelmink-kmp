@@ -18,4 +18,8 @@ class CacheInvalidator(private val threshold: Long) {
     private fun now(): Long {
         return Clock.System.now().epochSeconds
     }
+
+    fun reset() {
+        timestamps.clear()
+    }
 }

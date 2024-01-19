@@ -16,7 +16,7 @@ final class AppState: ObservableObject {
     @Published var workspace: Workspace?
     @Published var hasInitialized = false
     
-    // TODO: on dev builds, present alert. on prod builds, log the error to Google Analytics instead
+    // TODO: replace this nonsense with Logging and Toasts. Toast automatically logs to console (toast: )
     /// only displays an alert to devs
     @Published var error: Error?
     
@@ -28,19 +28,14 @@ final class AppState: ObservableObject {
     @MainActor
     func configure() {
         Task {
-            if let user = Auth.auth().currentUser {
-                await signIn(user)
-            }
-            if let data = UserDefaults.standard.object(forKey: "appState") as? Data,
-               let persistentAppState = try? JSONDecoder().decode(PersistentAppState.self, from: data) {
-                let workspace = Workspace(
-                    id: persistentAppState.workspaceID,
-                    name: persistentAppState.workspaceName,
-                    role: persistentAppState.role,
-                    avatarURL: nil
-                )
-                self.workspace = workspace
-                Networking.api.workspaceID = workspace.id
+            if let firebaseUser = Auth.auth().currentUser,
+               let funnelminkUser = try? await Networking.api.getCachedUser(id: firebaseUser.uid) {
+                await signIn(firebaseUser: firebaseUser, funnelminkUser: funnelminkUser)
+                
+                if let workspaceID = UserDefaults.standard.string(forKey: "workspaceID"),
+                   let workspace = Networking.api.getCachedWorkspace(id: workspaceID) {
+                    signIntoWorkspace(workspace)
+                }
             }
             hasInitialized = true
         }
@@ -58,41 +53,25 @@ final class AppState: ObservableObject {
     }
     
     @MainActor
-    func signIn(_ user: FirebaseAuth.User) async {
+    func signIn(firebaseUser: FirebaseAuth.User, funnelminkUser: Shared.User) async {
         self.user = user
         do {
-            Networking.api.token = try await user.getIDToken()
+            let token = try await firebaseUser.getIDToken()
+            Networking.api.signIn(user: funnelminkUser, token: token)
+#if DEBUG
+            Utilities.shared.logger.setIsLoggingEnabled(value: true)
+#endif
         } catch {
             self.error = error
         }
     }
     
     func signIntoWorkspace(_ workspace: Workspace) {
-        Networking.api.workspaceID = workspace.id
         self.workspace = workspace
-        let persistentAppState = PersistentAppState(workspaceID: workspace.id, workspaceName: workspace.name, workspaceRoleName: workspace.role?.name)
-        if let data = try? JSONEncoder().encode(persistentAppState) {
-            UserDefaults.standard.setValue(data, forKey: "appState")
-        }
+        Networking.api.signIntoWorkspace(workspace: workspace)
     }
     
     func todo() {
         error = "TODO"
-    }
-}
-
-fileprivate struct PersistentAppState: Codable {
-    let workspaceID: String
-    let workspaceName: String
-    let workspaceRoleName: String?
-    
-    var role: WorkspaceMembershipRole? {
-        switch workspaceRoleName {
-        case "OWNER": return .owner
-        case "MEMBER": return .member
-        case "INVITED": return .invited
-        case "REQUESTED": return .requested
-        default: return nil
-        }
     }
 }

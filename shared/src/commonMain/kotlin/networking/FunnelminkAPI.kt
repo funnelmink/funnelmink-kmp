@@ -19,8 +19,8 @@ class FunnelminkAPI(
     private val databaseDriver: DatabaseDriver,
     private val cacheThreshold: Long
 ) : API {
-    override var token: String? = null
-    override var workspaceID: String? = null
+    private var token: String? = null
+    private var workspaceID: String? = null
     override var onAuthFailure: ((message: String) -> Unit)? = null
     override var onBadRequest: ((message: String) -> Unit)? = null
     override var onDecodingError: ((message: String) -> Unit)? = null
@@ -28,6 +28,44 @@ class FunnelminkAPI(
     override var onServerError: ((message: String) -> Unit)? = null
     private val cache = Database(databaseDriver)
     private val cacheInvalidator = CacheInvalidator(cacheThreshold)
+
+    // ------------------------------------------------------------------------
+    // Auth
+    // ------------------------------------------------------------------------
+
+    override fun signIn(user: User, token: String) {
+        this.token = token
+        cache.insertUser(user)
+        Utilities.logger.setIsLoggingEnabled(user.isDevAccount)
+    }
+
+    override fun signOut() {
+        signOutOfWorkspace()
+        token = null
+    }
+
+    override fun signIntoWorkspace(workspace: Workspace) {
+        cache.insertWorkspace(workspace)
+        workspaceID = workspace.id
+    }
+
+    override fun signOutOfWorkspace() {
+        cache.clearAllDatabases()
+        cacheInvalidator.reset()
+        workspaceID = null
+    }
+
+    override fun refreshToken(token: String) {
+        this.token = token
+    }
+
+    override fun getCachedUser(id: String): User? {
+        return cache.selectUser(id)
+    }
+
+    override fun getCachedWorkspace(id: String): Workspace? {
+        return cache.selectWorkspaceById(id)
+    }
 
     // ------------------------------------------------------------------------
     // Contacts
