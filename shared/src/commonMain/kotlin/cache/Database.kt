@@ -295,9 +295,19 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
+    fun changeWorkspaceMemberRole(userID: String, role: WorkspaceMembershipRole) {
+        workspaceMemberDB.changeWorkspaceMemberRole(role.roleName, userID)
+    }
+
+    @Throws(Exception::class)
     fun replaceAllWorkspaceMembers(members: List<WorkspaceMember>) {
         deleteAllWorkspaceMembers()
         members.forEach(::insertWorkspaceMember)
+    }
+
+    @Throws(Exception::class)
+    fun deleteWorkspaceMember(userID: String) {
+        workspaceMemberDB.removeWorkspaceMember(userID)
     }
 
     @Throws(Exception::class)

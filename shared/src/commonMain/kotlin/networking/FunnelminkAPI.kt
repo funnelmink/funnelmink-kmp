@@ -10,6 +10,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.util.reflect.*
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import utilities.*
@@ -174,7 +175,7 @@ class FunnelminkAPI(
                 parameter("isComplete", isComplete)
             }
             cache.replaceAllTasks(fetched)
-            Utilities.logger.info("Ccnaached ${fetched.size} tasks")
+            Utilities.logger.info("Cached ${fetched.size} tasks")
             cacheInvalidator.updateTimestamp(cacheKey)
             return fetched
         } catch (e: Exception) {
@@ -215,22 +216,25 @@ class FunnelminkAPI(
     // Users
     // ------------------------------------------------------------------------
 
-    // ------------------------------------------------------------------------
-    // Workspaces
-    // ------------------------------------------------------------------------
+    @Throws(Exception::class)
+    override suspend fun createUser(body: CreateUserRequest): User {
+        return genericRequest("$baseURL/v1/user", HttpMethod.Post) {
+            setBody(body)
+        }
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getUserById(userId: String): User {
+        return genericRequest("$baseURL/v1/user/$userId", HttpMethod.Get)
+    }
 
     // ------------------------------------------------------------------------
-    // Workspace Members
+    // Workspaces
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
     override suspend fun getWorkspaces(): List<Workspace> {
         return genericRequest("$baseURL/v1/workspaces", HttpMethod.Get)
-    }
-
-    @Throws(Exception::class)
-    override suspend fun getWorkspaceMembers(): List<WorkspaceMember> {
-        return genericRequest("$baseURL/v1/workspace/members", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
@@ -261,11 +265,6 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun changeWorkspaceRole(userID: String, role: WorkspaceMembershipRole) {
-        return genericRequest("$baseURL/v1/workspace/owner/roles/$userID?role=$role", HttpMethod.Post)
-    }
-
-    @Throws(Exception::class)
     override suspend fun declineWorkspaceInvitation(id: String) {
         return genericRequest("$baseURL/v1/workspace/owner/$id/declineInvite", HttpMethod.Post)
     }
@@ -286,27 +285,53 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun createUser(body: CreateUserRequest): User {
-        return genericRequest("$baseURL/v1/user", HttpMethod.Post) {
-            setBody(body)
-        }
-    }
-
-    @Throws(Exception::class)
-    override suspend fun getUserById(userId: String): User {
-        return genericRequest("$baseURL/v1/user/$userId", HttpMethod.Get)
-    }
-
-    @Throws(Exception::class)
     override suspend fun createWorkspace(body: CreateWorkspaceRequest): Workspace {
         return genericRequest("$baseURL/v1/workspaces", HttpMethod.Post) {
             setBody(body)
         }
     }
 
+    // ------------------------------------------------------------------------
+    // Workspace Members
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun getWorkspaceMembers(): List<WorkspaceMember> {
+        val cacheKey = "getWorkspaceMembers"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllWorkspaceMembers()
+                if (cached.isNotEmpty()) {
+                    Utilities.logger.info("Retrieved ${cached.size} workspace members from cache")
+                    return cached
+                }
+            }
+            val fetched: List<WorkspaceMember> = genericRequest("$baseURL/v1/workspace/members", HttpMethod.Get)
+            cache.replaceAllWorkspaceMembers(fetched)
+            Utilities.logger.info("Cached ${fetched.size} workspace members")
+            cacheInvalidator.updateTimestamp(cacheKey)
+            return fetched
+        } catch (e: Exception) {
+            val cached = cache.selectAllWorkspaceMembers()
+            if (cached.isNotEmpty()) {
+                Utilities.logger.warn("Failed to fetch workspace members. Returned ${cached.size} members from cache")
+                return cached
+            } else {
+                throw e
+            }
+        }
+    }
+
+    @Throws(Exception::class)
+    override suspend fun changeWorkspaceRole(userID: String, role: WorkspaceMembershipRole) {
+        genericRequest<Unit>("$baseURL/v1/workspace/owner/roles/$userID?role=$role", HttpMethod.Post)
+        cache.changeWorkspaceMemberRole(userID, role)
+    }
+
     @Throws(Exception::class)
     override suspend fun removeMemberFromWorkspace(userID: String) {
-        return genericRequest("$baseURL/v1/workspace/owner/removeMember/$userID", HttpMethod.Delete)
+        genericRequest<Unit>("$baseURL/v1/workspace/owner/removeMember/$userID", HttpMethod.Delete)
+        cache.deleteWorkspaceMember(userID)
     }
 
     // ------------------------------------------------------------------------

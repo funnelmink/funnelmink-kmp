@@ -14,9 +14,18 @@ SELECT *
 FROM SQLWorkspaceMember
 WHERE id = ?;
 
+changeWorkspaceMemberRole:
+UPDATE SQLWorkspaceMember
+SET role = ?
+WHERE userID = ?;
+
 selectAllWorkspaceMembersInfo:
 SELECT SQLWorkspaceMember.*
 FROM SQLWorkspaceMember;
+
+removeWorkspaceMember:
+DELETE FROM SQLWorkspaceMember
+WHERE userID = ?;
 
 removeAllWorkspaceMembers:
 DELETE FROM SQLWorkspaceMember;
