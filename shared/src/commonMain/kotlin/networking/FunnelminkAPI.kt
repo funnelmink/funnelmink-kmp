@@ -37,7 +37,7 @@ class FunnelminkAPI(
     @Throws(Exception::class)
     override fun signIn(user: User, token: String) {
         this.token = token
-        cache.insertUser(user)
+        cache.replaceUser(user)
         Utilities.logger.setIsLoggingEnabled(user.isDevAccount)
     }
 

@@ -184,13 +184,16 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun insertUser(user: User) {
-        userDB.insertUser(
-            user.id,
-            user.email,
-            user.username,
-            toLong(user.isDevAccount)
-        )
+    fun replaceUser(user: User) {
+        userDB.transaction {
+            userDB.removeAllUsers()
+            userDB.insertUser(
+                user.id,
+                user.email,
+                user.username,
+                toLong(user.isDevAccount)
+            )
+        }
     }
 
     @Throws(Exception::class)

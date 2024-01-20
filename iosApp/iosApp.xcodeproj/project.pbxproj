@@ -454,7 +454,6 @@
 		0D012E5B2B477E3A00658153 /* ContactsTab */ = {
 			isa = PBXGroup;
 			children = (
-				0D012E5C2B477E3A00658153,
 				1FA27F752B53151400A447C3 /* CreateContactView.swift */,
 				1FA27F772B536DE600A447C3 /* ContactView.swift */,
 				0D012E5D2B477E3A00658153 /* ImportContacts */,
@@ -1204,7 +1203,7 @@
 		};
 		0DBF9CB62B5B1D380045AC44 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */;
+			baseConfigurationReference = 0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDEV;
 				CODE_SIGN_ENTITLEMENTS = iosApp/iosApp.entitlements;
