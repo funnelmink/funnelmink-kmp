@@ -12,8 +12,7 @@ import Shared
 
 final class AppState: ObservableObject {
     static let shared = AppState()
-    @Published var user: FirebaseAuth.User?
-    @Published var funnelminkUser: Shared.User?
+    @Published var user: Shared.User?
     @Published var workspace: Workspace?
     @Published var hasInitialized = false
     
@@ -27,22 +26,22 @@ final class AppState: ObservableObject {
     var isWorkspaceOwner: Bool { workspace?.role == .owner }
     
     @MainActor
-    func configure() {
-        Task {
-            if let firebaseUser = Auth.auth().currentUser,
-               let funnelminkUser = try Networking.api.getCachedUser(id: firebaseUser.uid) {
-                await signIn(firebaseUser: firebaseUser, funnelminkUser: funnelminkUser)
-                   do {
-                       if let workspaceID = UserDefaults.standard.string(forKey: "workspaceID"),
+    func configure(token: String?) {
+        do {
+            if let token,
+               let uid = UserDefaults.standard.string(forKey: "userID"),
+               let user = try Networking.api.getCachedUser(id: uid) {
+                signIn(user: user, token: token)
+                
+                if let workspaceID = UserDefaults.standard.string(forKey: "workspaceID"),
                    let workspace = try Networking.api.getCachedWorkspace(id: workspaceID) {
-                           signIntoWorkspace(workspace)
-                       }
-                   } catch {
-                       self.error = error
-                   }
+                    signIntoWorkspace(workspace)
+                }
             }
-            hasInitialized = true
+        } catch {
+            self.error = error
         }
+        hasInitialized = true
     }
     
     func signOut() {
@@ -51,19 +50,18 @@ final class AppState: ObservableObject {
             try Auth.auth().signOut()
             user = nil
             workspace = nil
-            UserDefaults.standard.removeObject(forKey: "appState")
+            UserDefaults.standard.removeObject(forKey: "userID")
+            UserDefaults.standard.removeObject(forKey: "workspaceID")
         } catch {
             self.error = error
         }
     }
     
-    @MainActor
-    func signIn(firebaseUser: FirebaseAuth.User, funnelminkUser: Shared.User) async {
-        self.user = firebaseUser
-        self.funnelminkUser = funnelminkUser
+    func signIn(user: Shared.User, token: String) {
+        self.user = user
         do {
-            let token = try await firebaseUser.getIDToken()
-            try Networking.api.signIn(user: funnelminkUser, token: token)
+            UserDefaults.standard.set(user.id, forKey: "userID")
+            try Networking.api.signIn(user: user, token: token)
 #if DEBUG
             Utilities.shared.logger.setIsLoggingEnabled(value: true)
 #endif

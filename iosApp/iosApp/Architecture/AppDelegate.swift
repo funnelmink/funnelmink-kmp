@@ -23,25 +23,13 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         #endif
 //        setupInjectionForDebugBuilds()
         FirebaseApp.configure()
-        AppState.shared.configure()
+        Task {
+            AppState.shared.configure(token: try await Auth.auth().currentUser?.getIDToken())
+        }
         return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return GIDSignIn.sharedInstance.handle(url)
-    }
-}
-
-private extension AppDelegate {
-    func setupInjectionForDebugBuilds() {
-#if DEBUG
-var injectionBundlePath = "/Applications/InjectionIII.app/Contents/Resources"
-#if targetEnvironment(macCatalyst)
-injectionBundlePath = "\(injectionBundlePath)/macOSInjection.bundle"
-#elseif os(iOS)
-injectionBundlePath = "\(injectionBundlePath)/iOSInjection.bundle"
-#endif
-Bundle(path: injectionBundlePath)?.load()
-#endif
     }
 }

@@ -127,7 +127,7 @@ struct WorkspaceSettingsView: View {
                 ) {
                     Text("Owner").tag(WorkspaceMembershipRole.owner)
                     Text("Member").tag(WorkspaceMembershipRole.member)
-                    if appState.user?.uid != id {
+                    if appState.user?.id != id {
                         WarningAlertButton(warningMessage: "Remove \(name) from workspace?") {
                             Task { await viewModel.removeMemberFromWorkspace(id: id) }
                         } label: {

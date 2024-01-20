@@ -12,7 +12,7 @@ struct AccountView: View {
                 } label: {
                     HStack {
                     VStack(alignment: .leading) {
-                        Text("\(appState.user?.displayName ?? "Your account")")
+                        Text("\(appState.user?.username ?? "Your account")")
                             .font(.headline)
                             .fontWeight(.bold)
                             Text("\(appState.user?.email ?? "Workspace settings")")
@@ -49,7 +49,7 @@ struct AccountView: View {
                     infoRow(name: "App version:", value: version)
                 }
                 infoRow(name: "iOS version:", value: UIDevice.current.systemVersion)
-                if let id = appState.user?.uid {
+                if let id = appState.user?.id {
                     infoRow(name: "User:", value: id, font: .caption)
                 }
                 if let id = appState.workspace?.id {
@@ -89,7 +89,7 @@ struct AccountView: View {
             UIPasteboard.general.string = """
                 App version: \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
                 iOS version: \(UIDevice.current.systemVersion)
-                User ID: \(appState.user?.uid ?? "")
+                User ID: \(appState.user?.id ?? "")
                 Workspace ID: \(appState.workspace?.id ?? "")
                 """
         } label: {

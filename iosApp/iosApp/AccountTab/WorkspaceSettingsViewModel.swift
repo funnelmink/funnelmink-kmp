@@ -69,7 +69,7 @@ class WorkspaceSettingsViewModel: ViewModel {
             AppState.shared.error = "You must be an owner to remove members."
             return
         }
-        guard id != AppState.shared.user?.uid else {
+        guard id != AppState.shared.user?.id else {
             AppState.shared.error = "You can't remove yourself."
             return
         }

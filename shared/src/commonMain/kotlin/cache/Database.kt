@@ -184,16 +184,13 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun replaceUser(user: User) {
-        userDB.transaction {
-            userDB.removeAllUsers()
-            userDB.insertUser(
-                user.id,
-                user.email,
-                user.username,
-                toLong(user.isDevAccount)
-            )
-        }
+    fun insertUser(user: User) {
+        userDB.insertUser(
+            user.id,
+            user.email,
+            user.username,
+            toLong(user.isDevAccount)
+        )
     }
 
     @Throws(Exception::class)
@@ -203,8 +200,13 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             cached.id,
             cached.email,
             cached.username,
-            toBool(cached.isDevAccount)
+            cached.isDevAccount
         )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllUsersInfo(): List<User> {
+        return userDB.selectAllUsersInfo(::mapUser).executeAsList()
     }
 
     @Throws(Exception::class)
@@ -222,8 +224,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         userDB.removeAllUsers()
     }
 
-    private fun mapUser(id: String, email: String, username: String, isDevAccount: Boolean): User {
-        return User(id, username, email, isDevAccount)
+    private fun mapUser(id: String, email: String, username: String, isDevAccount: Long): User {
+        return User(id, username, email, toBool(isDevAccount))
     }
 
     // ------------------------------------------------------------------------
@@ -337,7 +339,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     fun clearAllDatabases() {
         deleteAllContacts()
         deleteAllTasks()
-        deleteAllUsers()
         deleteAllWorkspaces()
         deleteAllWorkspaceMembers()
     }

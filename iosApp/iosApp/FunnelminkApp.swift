@@ -1,6 +1,7 @@
 import FirebaseAuth
 import FirebaseCore
 import GoogleSignIn
+import Shared
 import SwiftUI
 
 @main

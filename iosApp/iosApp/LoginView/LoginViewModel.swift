@@ -45,10 +45,11 @@ class LoginViewModel: ViewModel {
             let authResult = try await Auth.auth().signIn(with: credential)
             Task {
                 do {
-                    try Networking.api.refreshToken(token: try await authResult.user.getIDToken())
+                    let token = try await authResult.user.getIDToken()
+                    try Networking.api.refreshToken(token: token)
                     let body = CreateUserRequest(id: authResult.user.uid, username: authResult.user.displayName ?? "", email: authResult.user.email ?? "")
                     let user = try await Networking.api.createUser(body: body)
-                    await AppState.shared.signIn(firebaseUser: authResult.user, funnelminkUser: user)
+                    AppState.shared.signIn(user: user, token: token)
                 } catch {
                     AppState.shared.error = error
                 }

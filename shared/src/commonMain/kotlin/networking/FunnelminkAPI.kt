@@ -37,7 +37,7 @@ class FunnelminkAPI(
     @Throws(Exception::class)
     override fun signIn(user: User, token: String) {
         this.token = token
-        cache.replaceUser(user)
+        cache.insertUser(user)
         Utilities.logger.setIsLoggingEnabled(user.isDevAccount)
     }
 
@@ -67,12 +67,29 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override fun getCachedUser(id: String): User? {
-        return cache.selectUser(id)
+        val user = cache.selectUser(id)
+        if (user == null) {
+            Utilities.logger.warn("User for $id not found. Dumping users:")
+            val users = cache.selectAllUsersInfo()
+            users.forEach { Utilities.logger.info("${it.id} - ${it.username}") }
+//            Utilities.logger.info("Not signed in. Navigating to LoginView")
+        } else {
+            Utilities.logger.info("Signing back in as ${user.username}")
+        }
+        return user
     }
 
     @Throws(Exception::class)
     override fun getCachedWorkspace(id: String): Workspace? {
-        return cache.selectWorkspaceById(id)
+        val workspace = cache.selectWorkspaceById(id)
+        if (workspace != null) {
+            Utilities.logger.info("Signing in to: ${workspace.name}")
+        } else {
+            Utilities.logger.warn("Workspace for $id not found. Dumping workspaces:")
+            val workspaces = cache.selectAllWorkspaces()
+            workspaces.forEach { Utilities.logger.info("${it.id} - ${it.name}") }
+        }
+        return workspace
     }
 
     // ------------------------------------------------------------------------
