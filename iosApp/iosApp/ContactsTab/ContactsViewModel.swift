@@ -26,14 +26,15 @@ class ContactsViewModel: ViewModel {
     }
     
     @MainActor
-    func createContact(firstName: String, lastName: String, emails: [String], phoneNumbers: [String], jobTitle: String) async {
+    func createContact(firstName: String, lastName: String, emails: [String], phoneNumbers: [String], companyName: String, isOrganization: Bool, onSuccess: @escaping () -> Void) async {
         do {
             let body = CreateContactRequest(
                 firstName: firstName,
                 lastName: lastName,
                 emails: emails,
                 phoneNumbers: phoneNumbers,
-                companyName: jobTitle
+                companyName: companyName,
+                isOrganization: isOrganization
             )
 //            if !Utilities.validation.isName(input: body.name) {
 //                throw "\(body.name) contains invalid characters"
@@ -54,6 +55,7 @@ class ContactsViewModel: ViewModel {
 //                }
 //            }
             _ = try await Networking.api.createContact(body: body)
+            onSuccess()
         } catch {
             AppState.shared.error = error
         }
@@ -67,7 +69,8 @@ class ContactsViewModel: ViewModel {
                 lastName: nil,
                 emails: [],         //  [String]
                 phoneNumbers: [],   //  [String]
-                companyName: nil       //  String?
+                companyName: nil,       //  String?
+                isOrganization: false
             )
             
             _ = try await Networking.api.updateContact(id: "", body: body)

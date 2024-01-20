@@ -16,6 +16,7 @@ data class Contact(
     val emails: List<String>,
     val phoneNumbers: List<String>,
     val companyName: String? = null,
+    val isOrganization: Boolean
 )
 
 @Serializable

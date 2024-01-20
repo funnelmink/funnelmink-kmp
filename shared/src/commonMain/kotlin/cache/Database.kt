@@ -25,7 +25,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             contact.lastName,
             contact.emails.joinToString(separator = ","),
             contact.phoneNumbers.joinToString(separator = ","),
-            contact.companyName
+            contact.companyName,
+            toLong(contact.isOrganization)
         )
     }
 
@@ -38,7 +39,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             cached.lastName,
             cached.emails,
             cached.phoneNumbers,
-            cached.companyName
+            cached.companyName,
+            cached.isOrganization
         )
     }
 
@@ -55,6 +57,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             contact.emails.joinToString(separator = ","),
             contact.phoneNumbers.joinToString(separator = ","),
             contact.companyName,
+            toLong(contact.isOrganization),
             contact.id
         )
     }
@@ -81,7 +84,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         lastName: String?,
         emails: String,
         phoneNumbers: String,
-        companyName: String?
+        companyName: String?,
+        isOrganization: Long
     ): Contact {
         return Contact(
             id,
@@ -89,7 +93,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             lastName,
             emails.takeIf { it.isNotBlank() }?.split(",") ?: emptyList(),
             phoneNumbers.takeIf { it.isNotBlank() }?.split(",") ?: emptyList(),
-            companyName
+            companyName,
+            toBool(isOrganization)
         )
     }
 

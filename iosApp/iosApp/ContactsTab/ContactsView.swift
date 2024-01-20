@@ -67,7 +67,11 @@ struct ContactsView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    nav.presentSheet(.createContact)
+                    nav.presentSheet(.createContact) {
+                        Task {
+                            await viewModel.getContacts()
+                        }
+                    }
                 } label: {
                     Image(systemName: "plus")
                 }

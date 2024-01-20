@@ -4,13 +4,14 @@ CREATE TABLE SQLContact (
     lastName TEXT,
     emails TEXT NOT NULL, -- Storing emails as a comma-separated string
     phoneNumbers TEXT NOT NULL, -- Storing phone numbers as a comma-separated string
-    companyName TEXT
+    companyName TEXT,
+    isOrganization INTEGER NOT NULL
 );
 
 
 insertContact:
-INSERT INTO SQLContact(id, firstName, lastName, emails, phoneNumbers, companyName)
-VALUES(?, ?, ?, ?, ?, ?);
+INSERT INTO SQLContact(id, firstName, lastName, emails, phoneNumbers, companyName, isOrganization)
+VALUES(?, ?, ?, ?, ?, ?, ?);
 
 selectContactById:
 SELECT *
@@ -27,7 +28,8 @@ SET firstName = ?,
     lastName = ?,
     emails = ?,
     phoneNumbers = ?,
-    companyName = ?
+    companyName = ?,
+    isOrganization = ?
 WHERE id = ?;
 
 removeContact:

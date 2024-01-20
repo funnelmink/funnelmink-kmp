@@ -103,5 +103,5 @@ struct ContactEvent {
 }
 
 #Preview {
-    ContactView(contact: Contact(id: "", firstName: "Jeremy", lastName: "Warren", emails: ["jeddynwarren@gmail.com"], phoneNumbers: ["(801) 226-8345"], companyName: "Funnelmink"))
+    ContactView(contact: Contact(id: "", firstName: "Jeremy", lastName: "Warren", emails: ["jeddynwarren@gmail.com"], phoneNumbers: ["(801) 226-8345"], companyName: "Funnelmink", isOrganization: false))
 }
