@@ -47,6 +47,7 @@ final class AppState: ObservableObject {
     
     func signOut() {
         do {
+            try Networking.api.signOut()
             try Auth.auth().signOut()
             user = nil
             workspace = nil
@@ -72,9 +73,10 @@ final class AppState: ObservableObject {
     }
     
     func signIntoWorkspace(_ workspace: Workspace) {
-        UserDefaults.standard.set(workspace.id, forKey: "workspaceID")
-        self.workspace = workspace
         do {
+            try Networking.api.signOutOfWorkspace()
+            UserDefaults.standard.set(workspace.id, forKey: "workspaceID")
+            self.workspace = workspace
             try Networking.api.signIntoWorkspace(workspace: workspace)
         } catch {
             self.error = error
