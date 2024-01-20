@@ -20,6 +20,9 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         Utilities.shared.logger.setIsLoggingEnabled(value: true)
         #else
         print("🌟 RELEASE BUILD 🌟")
+        if Properties.isDevEnvironment {
+            Utilities.shared.logger.setIsLoggingEnabled(value: true)
+        }
         #endif
 //        setupInjectionForDebugBuilds()
         FirebaseApp.configure()

@@ -64,6 +64,10 @@ final class AppState: ObservableObject {
             try Networking.api.signIn(user: user, token: token)
 #if DEBUG
             Utilities.shared.logger.setIsLoggingEnabled(value: true)
+#else
+            if Properties.isDevEnvironment {
+                Utilities.shared.logger.setIsLoggingEnabled(value: true)
+            }
 #endif
         } catch {
             self.error = error
