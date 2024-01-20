@@ -74,7 +74,7 @@ struct ContactsView: View {
             }
         }
         .navigationTitle("Contacts")
-        .task {
+        .loggedTask {
             await viewModel.getContacts()
         }
     }
