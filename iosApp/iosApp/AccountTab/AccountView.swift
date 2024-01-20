@@ -50,7 +50,10 @@ struct AccountView: View {
                 }
                 infoRow(name: "iOS version:", value: UIDevice.current.systemVersion)
                 if let id = appState.user?.uid {
-                    infoRow(name: "User ID:", value: id, font: .caption)
+                    infoRow(name: "User:", value: id, font: .caption)
+                }
+                if let id = appState.workspace?.id {
+                    infoRow(name: "Workspace:", value: id, font: .caption)
                 }
                 WarningAlertButton(
                     warningMessage: "Are you sure you want to sign out?",
@@ -80,16 +83,19 @@ struct AccountView: View {
         }
     }
     
-    private func infoRow(name: String, value: String, font: Font = .body) -> some View {
+    private func infoRow(name: String, value: String, font: Font = .caption2) -> some View {
+        // TODO: toast "copied to clipboard"
         Button {
             UIPasteboard.general.string = """
                 App version: \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
                 iOS version: \(UIDevice.current.systemVersion)
                 User ID: \(appState.user?.uid ?? "")
+                Workspace ID: \(appState.workspace?.id ?? "")
                 """
         } label: {
             HStack {
                 Text(name)
+                    .font(.caption2)
                 Spacer()
                 Text(value)
                     .font(font)
