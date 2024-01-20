@@ -26,32 +26,36 @@ class ContactsViewModel: ViewModel {
     }
     
     @MainActor
-    func createContact(firstName: String, lastName: String, emails: [String], phoneNumbers: [String], companyName: String) async {
+    func createContact(firstName: String, lastName: String, emails: [String], phoneNumbers: [String], companyName: String, isOrganization: Bool, onSuccess: @escaping () -> Void) async {
         do {
             let body = CreateContactRequest(
                 firstName: firstName,
                 lastName: lastName,
                 emails: emails,
                 phoneNumbers: phoneNumbers,
-                companyName: companyName
+                companyName: companyName,
+                isOrganization: isOrganization
             )
-            
-            if !Validator.isValidName(body.firstName) {
-                throw "\(body.firstName) contains invalid characters"
-            }
-            if let lastName = body.lastName, !Validator.isValidName(lastName) {
-                throw "\(lastName) contains invalid characters"
-            }
-            for number in body.phoneNumbers where !Validator.isValidPhoneNumber(number) {
-                throw "\(number) is not a valid phone number"
-            }
-            for email in body.emails where !Validator.isValidEmail(email) {
-                throw "\(email) is not a valid email"
-            }
-            if let companyName = body.companyName, !Validator.isValidName(companyName) {
-                throw "\(companyName) contains invalid characters"
-            }
+//            if !Utilities.validation.isName(input: body.name) {
+//                throw "\(body.name) contains invalid characters"
+//            }
+//            for number in body.phoneNumbers {
+//                if !Utilities.validation.isPhoneNumber(input: number) {
+//                    throw "\(number) is not a valid phone number"
+//                }
+//            }
+//            for email in body.emails {
+//                if !Utilities.validation.isEmail(input: email) {
+//                    throw "\(email) is not a valid email"
+//                }
+//            }
+//            if let jobTitle = body.jobTitle {
+//                if !Utilities.validation.isName(input: jobTitle) {
+//                    throw "\(jobTitle) contains invalid characters"
+//                }
+//            }
             _ = try await Networking.api.createContact(body: body)
+            onSuccess()
         } catch {
             AppState.shared.error = error
         }
@@ -62,10 +66,11 @@ class ContactsViewModel: ViewModel {
         do {
             let body = UpdateContactRequest(
                 firstName: "",           //  String
-                lastName: "",
+                lastName: nil,
                 emails: [],         //  [String]
                 phoneNumbers: [],   //  [String]
-                companyName: nil       //  String?
+                companyName: nil,       //  String?
+                isOrganization: false
             )
             
             _ = try await Networking.api.updateContact(id: "", body: body)
