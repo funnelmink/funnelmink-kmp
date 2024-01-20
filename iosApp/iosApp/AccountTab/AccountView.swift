@@ -45,6 +45,13 @@ struct AccountView: View {
             }
             
             Section {
+                if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                    infoRow(name: "App version:", value: version)
+                }
+                infoRow(name: "iOS version:", value: UIDevice.current.systemVersion)
+                if let id = appState.user?.uid {
+                    infoRow(name: "User ID:", value: id, font: .caption)
+                }
                 WarningAlertButton(
                     warningMessage: "Are you sure you want to sign out?",
                     action: {
@@ -70,6 +77,23 @@ struct AccountView: View {
             Text(text)
             Spacer()
             chevron
+        }
+    }
+    
+    private func infoRow(name: String, value: String, font: Font = .body) -> some View {
+        Button {
+            UIPasteboard.general.string = """
+                App version: \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
+                iOS version: \(UIDevice.current.systemVersion)
+                User ID: \(appState.user?.uid ?? "")
+                """
+        } label: {
+            HStack {
+                Text(name)
+                Spacer()
+                Text(value)
+                    .font(font)
+            }
         }
     }
 }

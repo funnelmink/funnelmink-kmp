@@ -43,19 +43,16 @@ class LoginViewModel: ViewModel {
             }
             let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: user.accessToken.tokenString)
             let authResult = try await Auth.auth().signIn(with: credential)
-            Networking.api.token = try await Auth.auth().currentUser?.getIDToken()
-            print(authResult)
-            let body = CreateUserRequest(id: authResult.user.uid, username: authResult.user.displayName ?? "", email: authResult.user.email ?? "")
             Task {
                 do {
+                    try Networking.api.refreshToken(token: try await authResult.user.getIDToken())
+                    let body = CreateUserRequest(id: authResult.user.uid, username: authResult.user.displayName ?? "", email: authResult.user.email ?? "")
                     let user = try await Networking.api.createUser(body: body)
-                    print(user)
+                    await AppState.shared.signIn(firebaseUser: authResult.user, funnelminkUser: user)
                 } catch {
-                    print(error, error.localizedDescription)
                     AppState.shared.error = error
                 }
             }
-            await AppState.shared.signIn(authResult.user)
         } catch {
             AppState.shared.error = error
         }

@@ -1,0 +1,38 @@
+CREATE TABLE SQLContact (
+    id TEXT PRIMARY KEY,
+    firstName TEXT NOT NULL,
+    lastName TEXT,
+    emails TEXT NOT NULL, -- Storing emails as a comma-separated string
+    phoneNumbers TEXT NOT NULL, -- Storing phone numbers as a comma-separated string
+    companyName TEXT
+);
+
+
+insertContact:
+INSERT INTO SQLContact(id, firstName, lastName, emails, phoneNumbers, companyName)
+VALUES(?, ?, ?, ?, ?, ?);
+
+selectContactById:
+SELECT *
+FROM SQLContact
+WHERE id = ?;
+
+selectAllContactsInfo:
+SELECT SQLContact.*
+FROM SQLContact;
+
+updateContact:
+UPDATE SQLContact
+SET firstName = ?,
+    lastName = ?,
+    emails = ?,
+    phoneNumbers = ?,
+    companyName = ?
+WHERE id = ?;
+
+removeContact:
+DELETE FROM SQLContact
+WHERE id = ?;
+
+removeAllContacts:
+DELETE FROM SQLContact;

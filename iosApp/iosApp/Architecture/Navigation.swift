@@ -24,6 +24,9 @@ class Navigation: ObservableObject {
     @Published var _sheet: Modal?
     @Published var _fullscreen: Modal?
     
+    // TODO: @Published var _toast: Toast?
+    // TODO: @Published var _modalToast: Toast?
+    
     @Published var _onModalDismiss: (() -> Void)?
     
     func _path(for tab: FunnelMinkTab) -> Binding<[Segue]> {
@@ -70,6 +73,7 @@ class Navigation: ObservableObject {
         }
     }
     
+    // TODO: presentToast(_ message: String, type: ToastType = .info) { check if a modal is presented }
     
     func presentSheet(_ modal: Modal, onDismiss: (() -> Void)? = nil) {
         _fullscreen = nil
