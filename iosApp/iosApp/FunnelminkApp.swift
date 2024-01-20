@@ -60,8 +60,10 @@ fileprivate struct FunnelminkAppContents: View {
                     } label: {
                         Image(systemName: "apple.terminal.fill")
                             .renderingMode(.original)
+                            .font(.largeTitle)
                     }
                     .padding(.leading, 64)
+                    .padding(.top, 8)
                     Spacer()
                 }
                 Spacer()
