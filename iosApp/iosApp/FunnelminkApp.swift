@@ -51,6 +51,21 @@ fileprivate struct FunnelminkAppContents: View {
                 }
             }
         }
+        .overlay {
+            VStack {
+                HStack {
+                    Button {
+                        navigation.presentFullscreen(.debugMenu)
+                    } label: {
+                        Image(systemName: "apple.terminal.fill")
+                            .renderingMode(.original)
+                    }
+                    .padding(.leading, 64)
+                    Spacer()
+                }
+                Spacer()
+            }
+        }
         .tint(.accentColor)
         .sheet(
             item: $navigation._sheet,

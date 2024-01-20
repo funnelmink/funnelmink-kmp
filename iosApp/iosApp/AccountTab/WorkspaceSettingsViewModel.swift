@@ -137,7 +137,7 @@ class WorkspaceSettingsViewModel: ViewModel {
             AppState.shared.prompt = "Name cannot be empty."
             return
         }
-        if !Utilities.validation.isName(input: name) {
+        if !Validator.isValidName(name) {
             AppState.shared.prompt = "`\(name)` is not a valid name"
             return
         }

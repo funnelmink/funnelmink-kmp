@@ -1,0 +1,33 @@
+CREATE TABLE SQLWorkspace(
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    role TEXT,
+    avatarURL TEXT
+);
+
+insertWorkspace:
+INSERT INTO SQLWorkspace(id, name, role, avatarURL)
+VALUES(?, ?, ?, ?);
+
+selectWorkspaceById:
+SELECT *
+FROM SQLWorkspace
+WHERE id = ?;
+
+selectAllWorkspacesInfo:
+SELECT SQLWorkspace.*
+FROM SQLWorkspace;
+
+updateWorkspace:
+UPDATE SQLWorkspace
+SET name = ?,
+    role = ?,
+    avatarURL = ?
+WHERE id = ?;
+
+removeWorkspace:
+DELETE FROM SQLWorkspace
+WHERE id = ?;
+
+removeAllWorkspaces:
+DELETE FROM SQLWorkspace;

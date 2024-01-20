@@ -1,0 +1,31 @@
+CREATE TABLE SQLWorkspaceMember(
+    id TEXT PRIMARY KEY,
+    userID TEXT NOT NULL,
+    username TEXT NOT NULL,
+    role TEXT NOT NULL
+);
+
+insertWorkspaceMember:
+INSERT INTO SQLWorkspaceMember(id, userID, username, role)
+VALUES(?, ?, ?, ?);
+
+selecteWorkspaceMemberById:
+SELECT *
+FROM SQLWorkspaceMember
+WHERE id = ?;
+
+changeWorkspaceMemberRole:
+UPDATE SQLWorkspaceMember
+SET role = ?
+WHERE userID = ?;
+
+selectAllWorkspaceMembersInfo:
+SELECT SQLWorkspaceMember.*
+FROM SQLWorkspaceMember;
+
+removeWorkspaceMember:
+DELETE FROM SQLWorkspaceMember
+WHERE userID = ?;
+
+removeAllWorkspaceMembers:
+DELETE FROM SQLWorkspaceMember;

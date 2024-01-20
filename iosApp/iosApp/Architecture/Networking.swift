@@ -13,13 +13,16 @@ import Shared
 class Networking {
     static let api: API = {
         let fmapi = FunnelminkAPI(
-            baseURL: Properties.baseURL
+            baseURL: Properties.baseURL,
+            databaseDriver: DatabaseDriver(),
+            cacheThreshold: 60 * 5 // 5 minutes
         )
         
         fmapi.onAuthFailure = { _ in
             Task { @MainActor in
                 do {
-                    Networking.api.token = try await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true).token
+                    guard let token = try await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true).token else { throw "Your session has expired. Please log in again." }
+                    try Networking.api.refreshToken(token: token)
                 } catch {
                     AppState.shared.prompt = "Your session has expired. Please log in again."
                 }

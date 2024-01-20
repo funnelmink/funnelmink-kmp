@@ -54,30 +54,29 @@ struct TaskDetailView: View {
                     Text(body)
                         .padding(.horizontal)
                 }
-                
             }
+            WarningAlertButton(warningMessage: "Delete task?") {
+                Task {
+                    do {
+                        try await Networking.api.deleteTask(id: task.id)
+                        navigation.popSegue()
+                    } catch {
+                        appState.error = error
+                    }
+                }
+            } label: {
+                Text("Delete task")
+                    .foregroundStyle(.red)
+            }
+            .padding()
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
-                Menu {
-                    Button {
-                        navigation.presentSheet(.editTask(task))
-                    } label: {
-                        Text("Edit task")
-                    }
-                    Button("Delete task", role: .destructive) {
-                        Task {
-                            do {
-                                try await Networking.api.deleteTask(id: task.id)
-                                navigation.popSegue()
-                            } catch {
-                                appState.error = error
-                            }
-                        }
-                    }
+                Button {
+                    navigation.presentSheet(.editTask(task))
                 } label: {
-                    Label("Options", systemImage: "ellipsis.circle")
+                    Text("Edit")
                 }
             }
         }

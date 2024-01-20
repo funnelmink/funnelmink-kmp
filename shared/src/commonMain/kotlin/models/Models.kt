@@ -11,10 +11,19 @@ import kotlinx.serialization.encoding.Encoder
 @Serializable
 data class Contact(
     val id: String,
-    val name: String,
-    val emails: List<String>? = null,
-    val phoneNumbers: List<String>? = null,
-    val jobTitle: String? = null,
+    val firstName: String,
+    val lastName: String? = null,
+    val emails: List<String>,
+    val phoneNumbers: List<String>,
+    val companyName: String? = null,
+)
+
+@Serializable
+data class User(
+    val id: String,
+    val username: String,
+    val email: String,
+    val isDevAccount: Boolean
 )
 
 @Serializable
@@ -38,6 +47,7 @@ data class Workspace(
 
 @Serializable
 data class WorkspaceMember(
+    val id: String,
     val userID: String,
     val username: String,
     //    @SerialName("avatar_url") val avatarURL: String? = null,

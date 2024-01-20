@@ -45,7 +45,7 @@ struct WorkspacesView: View {
         }
         .padding()
         .multilineTextAlignment(.center)
-        .task {
+        .loggedTask {
             // grab workspaces
             await viewModel.fetchWorkspaces()
             
@@ -127,15 +127,26 @@ struct WorkspacesView: View {
     @ViewBuilder
     var otherOptions: some View {
         VStack {
-            if !viewModel.workspaces.isEmpty {
+            if viewModel.workspaces.isEmpty {
+                Button("Create a new workspace") {
+                    navigation.presentSheet(.createWorkspace(viewModel))
+                }
+                Button("Join an existing one") {
+                    navigation.presentSheet(.joinExistingWorkspace)
+                }
+                Text("or")
+                Button("Sign into a different account") {
+                    appState.signOut()
+                }
+            } else {
                 Text("You can also")
-            }
-            Button("Create a new workspace") {
-                navigation.presentSheet(.createWorkspace(viewModel))
-            }
-            Text("or")
-            Button("Join an existing one") {
-                navigation.presentSheet(.joinExistingWorkspace)
+                Button("Create a new workspace") {
+                    navigation.presentSheet(.createWorkspace(viewModel))
+                }
+                Text("or")
+                Button("Join an existing one") {
+                    navigation.presentSheet(.joinExistingWorkspace)
+                }
             }
         }
     }

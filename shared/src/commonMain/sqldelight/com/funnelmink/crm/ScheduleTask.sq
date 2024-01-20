@@ -1,0 +1,37 @@
+CREATE TABLE SQLScheduleTask(
+    id TEXT PRIMARY KEY,
+    title TEXT NOT NULL,
+    body TEXT,
+    priority INTEGER NOT NULL,
+    isComplete INTEGER NOT NULL,
+    scheduledDate TEXT
+);
+
+insertScheduleTask:
+INSERT INTO SQLScheduleTask(id, title, body, priority, isComplete, scheduledDate)
+VALUES(?, ?, ?, ?, ?, ?);
+
+selectScheduleTaskById:
+SELECT *
+FROM SQLScheduleTask
+WHERE id = ?;
+
+selectAllScheduleTasksInfo:
+SELECT SQLScheduleTask.*
+FROM SQLScheduleTask;
+
+updateScheduleTask:
+UPDATE SQLScheduleTask
+SET title = ?,
+    body = ?,
+    priority = ?,
+    isComplete = ?,
+    scheduledDate = ?
+WHERE id = ?;
+
+removeTask:
+DELETE FROM SQLScheduleTask
+WHERE id = ?;
+
+removeAllScheduleTasks:
+DELETE FROM SQLScheduleTask;

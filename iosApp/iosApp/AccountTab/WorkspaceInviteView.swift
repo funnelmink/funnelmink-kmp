@@ -42,7 +42,7 @@ struct WorkspaceInviteView: View {
             }
             .padding(.vertical)
             AsyncButton {
-                guard Utilities.validation.isEmail(input: inviteEmailAddress) else {
+                guard Validator.isValidEmail(inviteEmailAddress) else {
                     AppState.shared.prompt = "Please enter a valid email address."
                     return
                 }

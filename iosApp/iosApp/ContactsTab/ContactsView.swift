@@ -20,14 +20,14 @@ struct ContactsView: View {
         } else {
             var results: [String: [Contact]] = [:]
             for (key, value) in groupedContacts {
-                results[key] = value.filter { $0.name.lowercased().contains(searchText.lowercased()) }
+                results[key] = value.filter { ($0.firstName + ($0.lastName ?? "")).lowercased().contains(searchText.lowercased()) }
             }
-            return results   
+            return results
         }
     }
     
     private var groupedContacts: [String: [Contact]] {
-        Dictionary(grouping: viewModel.contacts, by: { String($0.name.prefix(1)) })
+        Dictionary(grouping: viewModel.contacts, by: { String($0.firstName.prefix(1)) })
     }
     
     private var sortedGroupKeys: [String] {
@@ -53,7 +53,7 @@ struct ContactsView: View {
                         Button(action: {
                             nav.performSegue(.contactView(contact))
                         }, label: {
-                            CustomCell(title: contact.name, cellType: .navigation)
+                            CustomCell(title: contact.firstName + " " + (contact.lastName ?? ""), cellType: .navigation)
                                 .foregroundStyle(Color.primary)
                         })
                     }

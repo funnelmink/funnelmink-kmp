@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinSerialization)
     alias(libs.plugins.skie)
+    alias(libs.plugins.sqldelight)
     alias(libs.plugins.versionChecker)
 }
 
@@ -27,6 +28,7 @@ kotlin {
             baseName = "Shared"
             isStatic = true
             freeCompilerArgs += "-Xbinary=bundleId=com.funnelmink.crm.dev" // TODO: dynamic bundle id
+            freeCompilerArgs += "-Xexpect-actual-classes"
         }
     }
     
@@ -36,12 +38,16 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.datetime)
+            implementation(libs.sqldelight)
         }
         androidMain.dependencies {
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.sqldelight.android)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.sqldelight.darwin)
         }
     }
 }
@@ -51,5 +57,13 @@ android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+}
+
+sqldelight {
+    databases {
+        create("FunnelminkCache") {
+            packageName.set("com.funnelmink.crm")
+        }
     }
 }

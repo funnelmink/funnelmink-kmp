@@ -19,11 +19,9 @@ struct ContactView: View {
     
     var contact: Contact
     var initials: String {
-        let fullName = contact.name
-        let nameComponents = fullName.split(separator: " ")
         
-        if let firstNameInitial = nameComponents.first?.first,
-           let lastNameInitial = nameComponents.last?.first {
+        if let firstNameInitial = contact.firstName.first,
+           let lastNameInitial = contact.lastName?.first {
             return String(firstNameInitial) + String(lastNameInitial)
         } else {
             return ""
@@ -50,29 +48,29 @@ struct ContactView: View {
                 Text(initials)
                     .bold().font(.system(size: 80))
             }
-            Text(contact.name)
+            Text(contact.firstName + " " + (contact.lastName ?? ""))
                 .bold()
                 .font(.title)
-            Text(contact.jobTitle ?? "")
+            Text(contact.companyName ?? "")
                 .foregroundStyle(.secondary)
         }
         Spacer()
         ScrollView {
             Button(action: {
-                guard let phoneNumber = contact.phoneNumbers?.first else { return }
+//                guard let phoneNumber = contact.phoneNumbers.first else { return }
                 showingActionSheet = true
             }, label: {
-                CustomCell(title: "Phone", subtitle: contact.phoneNumbers?.first, icon: "phone" ,cellType: .iconAction)
+                CustomCell(title: "Phone", subtitle: contact.phoneNumbers.first, icon: "phone" ,cellType: .iconAction)
                     .padding()
             })
             .foregroundStyle(.primary)
             .actionSheet(isPresented: $showingActionSheet) {
                         ActionSheet(
                             title: Text("Contact"),
-                            message: Text("Call \(contact.phoneNumbers?.first ?? "")?"),
+                            message: Text("Call \(contact.phoneNumbers.first ?? "")?"),
                             buttons: [
                                 .default(Text("Call")) {
-                                    guard let phoneNumber = contact.phoneNumbers?.first else { return }
+                                    guard let phoneNumber = contact.phoneNumbers.first else { return }
                                     makeCall(phoneNumber: phoneNumber)
                                 },
                                 .cancel()
@@ -82,7 +80,7 @@ struct ContactView: View {
             Button(action: {
                 // present a banner to send an email
             }, label: {
-                CustomCell(title: "Email", subtitle: contact.emails?.first, icon: "envelope" ,cellType: .iconAction)
+                CustomCell(title: "Email", subtitle: contact.emails.first, icon: "envelope" ,cellType: .iconAction)
                     .padding()
             })
             .foregroundStyle(.primary)
@@ -105,5 +103,5 @@ struct ContactEvent {
 }
 
 #Preview {
-    ContactView(contact: Contact(id: "", name: "Jeremy Warren", emails: ["jeddynwarren@gmail.com"], phoneNumbers: ["(801) 226-8345"], jobTitle: "Funnelmink"))
+    ContactView(contact: Contact(id: "", firstName: "Jeremy", lastName: "Warren", emails: ["jeddynwarren@gmail.com"], phoneNumbers: ["(801) 226-8345"], companyName: "Funnelmink"))
 }

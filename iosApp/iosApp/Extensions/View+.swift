@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Shared
 import SwiftUI
 
 struct MinkCard: ViewModifier {
@@ -27,5 +28,13 @@ struct MinkCard: ViewModifier {
 extension View {
     func maxReadableWidth() -> some View {
         self.frame(maxWidth: .maximumReadableWidth)
+    }
+    
+    func loggedTask(id: String = #fileID, action: @escaping () async -> Void) -> some View{
+        self.task {
+            // Drop the `funnelmink/` and `.swift` from each file ID
+            Logger.view("\(id.dropFirst(11).dropLast(6))")
+            await action()
+        }
     }
 }
