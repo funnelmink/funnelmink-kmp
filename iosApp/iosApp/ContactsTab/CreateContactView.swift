@@ -56,7 +56,7 @@ struct CreateContactView: View {
     }
     
     var body: some View {
-        VStack {
+        ScrollView {
             HStack {
                 Button(action: {
                     nav.dismissModal()
@@ -102,15 +102,21 @@ struct CreateContactView: View {
             VStack {
                 HStack {
                     CustomTextField(text: $firstName, placeholder: "First", style: .text)
+                        .autocorrectionDisabled()
                     CustomTextField(text: $lastName, placeholder: "Last", style: .text)
+                        .autocorrectionDisabled()
                 }
                 .padding(.horizontal)
                 CustomTextField(text: $businessName, placeholder: "Company", style: .text)
                     .padding(.horizontal)
+                    .autocorrectionDisabled()
                 CustomTextField(text: $email, placeholder: "Email", style: .email)
                     .padding(.horizontal)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
                 CustomTextField(text: $address, placeholder: "Address", style: .text)
                     .padding(.horizontal)
+                    .autocorrectionDisabled()
                 CustomTextField(text: $phoneNumber, placeholder: "Phone Number", style: .phone)
                     .padding(.horizontal)
                     .onChange(of: phoneNumber) { newValue in

@@ -45,25 +45,33 @@ struct ContactsView: View {
         }
     }
     
+    @ViewBuilder
     var body: some View {
-        List {
-            ForEach(sortedGroupKeys, id: \.self) { key in
-                Section(header: Text(key)) {
-                    ForEach(filteredContacts[key] ?? [], id: \.id) { contact in
-                        Button(action: {
-                            nav.performSegue(.contactView(contact))
-                        }, label: {
-                            CustomCell(title: contact.firstName + " " + (contact.lastName ?? ""), cellType: .navigation)
-                                .foregroundStyle(Color.primary)
-                        })
-                    }
-                    .onDelete { offsets in
-                        deleteContact(at: offsets, from: key)
+        Group {
+            if !viewModel.contacts.isEmpty {
+                List {
+                    ForEach(sortedGroupKeys, id: \.self) { key in
+                        Section(header: Text(key)) {
+                            ForEach(filteredContacts[key] ?? [], id: \.id) { contact in
+                                Button(action: {
+                                    nav.performSegue(.contactView(contact))
+                                }, label: {
+                                    CustomCell(title: contact.firstName + " " + (contact.lastName ?? ""), cellType: .navigation)
+                                        .foregroundStyle(Color.primary)
+                                })
+                            }
+                            .onDelete { offsets in
+                                deleteContact(at: offsets, from: key)
+                            }
+                        }
                     }
                 }
+                .searchable(text: $searchText)
+            } else {
+                CustomEmptyView(type: .contacts, lottieAnimation: "ContactsLottie")
             }
+            
         }
-        .searchable(text: $searchText)
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
