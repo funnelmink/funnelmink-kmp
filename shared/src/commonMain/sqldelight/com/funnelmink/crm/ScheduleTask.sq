@@ -4,12 +4,13 @@ CREATE TABLE SQLScheduleTask(
     body TEXT,
     priority INTEGER NOT NULL,
     isComplete INTEGER NOT NULL,
-    scheduledDate TEXT
+    scheduledDate TEXT,
+    updatedAt TEXT NOT NULL
 );
 
 insertScheduleTask:
-INSERT INTO SQLScheduleTask(id, title, body, priority, isComplete, scheduledDate)
-VALUES(?, ?, ?, ?, ?, ?);
+INSERT INTO SQLScheduleTask(id, title, body, priority, isComplete, scheduledDate, updatedAt)
+VALUES(?, ?, ?, ?, ?, ?, ?);
 
 selectScheduleTaskById:
 SELECT *
@@ -34,7 +35,8 @@ SET title = ?,
     body = ?,
     priority = ?,
     isComplete = ?,
-    scheduledDate = ?
+    scheduledDate = ?,
+    updatedAt = ?
 WHERE id = ?;
 
 removeTask:

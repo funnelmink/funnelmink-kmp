@@ -227,14 +227,14 @@ class FunnelminkAPI(
         val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Put) {
             setBody(body)
         }
-        cache.updateTask(task)
+        cache.replaceTask(task)
         return task
     }
 
     @Throws(Exception::class)
     override suspend fun toggleTaskCompletion(id: String, isComplete: Boolean): ScheduleTask {
         val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks/$id/toggle/$isComplete", HttpMethod.Put)
-        cache.updateTask(task)
+        cache.replaceTask(task)
         return task
     }
 

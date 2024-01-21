@@ -110,7 +110,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             task.body,
             task.priority.toLong(),
             toLong(task.isComplete),
-            task.scheduledDate
+            task.scheduledDate,
+            task.updatedAt
         )
     }
 
@@ -119,12 +120,13 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         val cached = taskDB.selectScheduleTaskById(id).executeAsOneOrNull() ?: return null
 
         return mapTask(
-            id = cached.id,
-            title = cached.title,
-            body = cached.body,
-            priority = cached.priority,
-            isComplete = cached.isComplete,
-            scheduledDate = cached.scheduledDate
+            cached.id,
+            cached.title,
+            cached.body,
+            cached.priority,
+            cached.isComplete,
+            cached.scheduledDate,
+            cached.updatedAt
         )
     }
 
@@ -155,15 +157,11 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun updateTask(task: ScheduleTask) {
-        taskDB.updateScheduleTask(
-            task.title,
-            task.body,
-            task.priority.toLong(),
-            toLong(task.isComplete),
-            task.scheduledDate,
-            task.id
-        )
+    fun replaceTask(task: ScheduleTask) {
+        taskDB.transaction {
+            taskDB.removeTask(task.id)
+            insertTask(task)
+        }
     }
 
     @Throws(Exception::class)
@@ -182,7 +180,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         body: String?,
         priority: Long,
         isComplete: Long,
-        scheduledDate: String?
+        scheduledDate: String?,
+        updatedAt: String
     ): ScheduleTask {
         return ScheduleTask(
             id,
@@ -190,7 +189,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             body,
             priority.toInt(),
             toBool(isComplete),
-            scheduledDate
+            scheduledDate,
+            updatedAt
         )
     }
 

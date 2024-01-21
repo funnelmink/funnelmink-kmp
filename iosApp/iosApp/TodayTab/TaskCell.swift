@@ -42,7 +42,8 @@ struct TaskCell: View {
                 body: nil,
                 priority: 1,
                 isComplete: false,
-                scheduledDate: "2021-01-11"
+                scheduledDate: "2021-01-11",
+                updatedAt: .loremDate
             )
         ){}
         TaskCell(
@@ -52,7 +53,8 @@ struct TaskCell: View {
                 body: "talk about some freaking thing",
                 priority: 2,
                 isComplete: false,
-                scheduledDate: "2021-01-11"
+                scheduledDate: "2021-01-11",
+                updatedAt: .loremDate
             )
         ){}
         TaskCell(
@@ -62,7 +64,8 @@ struct TaskCell: View {
                 body: "talk about some freaking thing",
                 priority: 3,
                 isComplete: true,
-                scheduledDate: "2021-01-11"
+                scheduledDate: "2021-01-11",
+                updatedAt: .loremDate
             )
         ){}
         TaskCell(
@@ -72,7 +75,8 @@ struct TaskCell: View {
                 body: "talk about some freaking thing",
                 priority: 0,
                 isComplete: false,
-                scheduledDate: "2021-01-11"
+                scheduledDate: "2021-01-11",
+                updatedAt: .loremDate
             )
         ){}
     }

@@ -71,7 +71,10 @@ class TodayViewModel: ViewModel {
     @MainActor
     func getCompletedTasks() async {
         do {
-            state.completedTasks = try await Networking.api.getCompletedTasks()
+            state.completedTasks = try await Networking
+                .api
+                .getCompletedTasks()
+                .sorted { ($0.updatedAt.toDate() ?? Date()) < ($1.updatedAt.toDate() ?? Date()) }
         } catch {
             AppState.shared.error = error
         }
@@ -80,23 +83,9 @@ class TodayViewModel: ViewModel {
     @MainActor
     func toggleIsComplete(for task: ScheduleTask) async {
         do {
-            let updated = try await Networking.api.toggleTaskCompletion(id: task.id, isComplete: !task.isComplete)
-            updateTask(updated)
+            _ = try await Networking.api.toggleTaskCompletion(id: task.id, isComplete: !task.isComplete)
         } catch {
             AppState.shared.error = error
-        }
-    }
-    
-    private func updateTask(_ task: ScheduleTask) {
-        for section in state.tasksByDate.keys {
-            if let index = state.tasksByDate[section]?.firstIndex(where: { $0.id == task.id }) {
-                state.tasksByDate[section]?[index] = task
-            }
-        }
-        for section in state.tasksByPriority.keys {
-            if let index = state.tasksByPriority[section]?.firstIndex(where: { $0.id == task.id }) {
-                state.tasksByPriority[section]?[index] = task
-            }
         }
     }
 }

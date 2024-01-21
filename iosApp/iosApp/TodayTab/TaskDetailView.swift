@@ -98,7 +98,8 @@ struct TaskDetailView: View {
             body: .loremLong,
             priority: 2,
             isComplete: false,
-            scheduledDate: .loremDate
+            scheduledDate: .loremDate,
+            updatedAt: .loremDate
         )
     )
 }
