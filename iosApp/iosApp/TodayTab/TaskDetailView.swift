@@ -12,7 +12,7 @@ import SwiftUI
 struct TaskDetailView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
-    let task: ScheduleTask
+    @State var task: ScheduleTask
     var body: some View {
         VStack {
             HStack {
@@ -74,7 +74,13 @@ struct TaskDetailView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    navigation.presentSheet(.editTask(task))
+                    navigation.presentSheet(.editTask(task)) {
+                        Task {
+                            if let task = try? await Networking.api.getTask(id: task.id) {
+                                self.task = task
+                            }
+                        }
+                    }
                 } label: {
                     Text("Edit")
                 }

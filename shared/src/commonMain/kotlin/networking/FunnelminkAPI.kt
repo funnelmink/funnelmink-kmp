@@ -244,6 +244,16 @@ class FunnelminkAPI(
         cache.deleteTask(id)
     }
 
+    @Throws(Exception::class)
+    override suspend fun getTask(id: String): ScheduleTask? {
+        val cached = cache.selectTask(id)
+        if (cached != null) {
+            Utilities.logger.info("Returned task $id from cache")
+            return cached
+        }
+        return genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Get)
+    }
+
     // ------------------------------------------------------------------------
     // Users
     // ------------------------------------------------------------------------

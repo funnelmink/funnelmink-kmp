@@ -51,6 +51,7 @@ interface API {
     // tasks
     @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): ScheduleTask
     @Throws(Exception::class) suspend fun deleteTask(id: String)
+    @Throws(Exception::class) suspend fun getTask(id: String): ScheduleTask?
     @Throws(Exception::class) suspend fun getTasks(): List<ScheduleTask>
     @Throws(Exception::class) suspend fun getCompletedTasks(): List<ScheduleTask>
     @Throws(Exception::class) suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask
