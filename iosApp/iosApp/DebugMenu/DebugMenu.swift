@@ -28,6 +28,7 @@ struct DebugMenu: View {
                     Spacer()
                     backButton.hidden()
                 }
+                .padding(.horizontal)
                 switch selection {
                 case .logs: LogsView()
                 case .featureFlags: FeatureFlagsView()
@@ -39,7 +40,6 @@ struct DebugMenu: View {
                     }
                 }
             }
-            .padding()
         }
         .foregroundStyle(.white)
     }
