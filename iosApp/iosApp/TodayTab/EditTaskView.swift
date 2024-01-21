@@ -40,8 +40,9 @@ struct EditTaskView: View {
                 }
                 
                 Section("DESCRIPTION") {
-                    TextField("", text: $taskBody, prompt: Text("(Optional)").foregroundColor(.gray))
-                        .frame(minHeight: 44)
+                    TextEditor(text: $taskBody)
+                        .multilineTextAlignment(.leading)
+                        .maxReadableWidth()
                 }
                 
                 

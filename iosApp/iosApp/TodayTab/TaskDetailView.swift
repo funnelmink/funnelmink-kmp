@@ -17,8 +17,7 @@ struct TaskDetailView: View {
         VStack {
             HStack {
                 Text(task.title)
-                    .font(.title)
-                    .fontWeight(.bold)
+                    .font(.title2.bold())
                     .padding(.top)
                     .strikethrough(task.isComplete)
                 Spacer()
@@ -53,6 +52,8 @@ struct TaskDetailView: View {
                     Divider()
                     Text(body)
                         .padding(.horizontal)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
             WarningAlertButton(warningMessage: "Delete task?") {
