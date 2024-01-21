@@ -19,7 +19,6 @@ class TodayViewModel: ViewModel {
         var tasksByDate: [Date: [ScheduleTask]] = [:]
         var tasksByPriority: [Int32: [ScheduleTask]] = [:]
         var completedTasks: [ScheduleTask] = []
-        var displayCompletedTasks = false
     }
     
     init() {
@@ -54,19 +53,10 @@ class TodayViewModel: ViewModel {
         return state.completedTasks.filter { $0.description.lowercased().contains(searchText.lowercased()) }
     }
     
-    func toggleDisplayCompletedTasks() {
-        state.displayCompletedTasks.toggle()
-        if state.displayCompletedTasks {
-            Task {
-                await getCompletedTasks()
-            }
-        }
-    }
-    
     @MainActor
     func getTasks() async {
         do {
-            let tasks = try await Networking.api.getTasks(date: nil, priority: nil, limit: nil, offset: nil, isComplete: false)
+            let tasks = try await Networking.api.getTasks()
             
             state.tasksByDate = Dictionary(
                 grouping: tasks,
@@ -81,7 +71,10 @@ class TodayViewModel: ViewModel {
     @MainActor
     func getCompletedTasks() async {
         do {
-            state.completedTasks = try await Networking.api.getTasks(date: nil, priority: nil, limit: nil, offset: nil, isComplete: true)
+            state.completedTasks = try await Networking
+                .api
+                .getCompletedTasks()
+                .sorted { ($0.updatedAt.toDate() ?? Date()) < ($1.updatedAt.toDate() ?? Date()) }
         } catch {
             AppState.shared.error = error
         }
@@ -90,23 +83,9 @@ class TodayViewModel: ViewModel {
     @MainActor
     func toggleIsComplete(for task: ScheduleTask) async {
         do {
-            let updated = try await Networking.api.toggleTaskCompletion(id: task.id, isComplete: !task.isComplete)
-            updateTask(updated)
+            _ = try await Networking.api.toggleTaskCompletion(id: task.id, isComplete: !task.isComplete)
         } catch {
             AppState.shared.error = error
-        }
-    }
-    
-    private func updateTask(_ task: ScheduleTask) {
-        for section in state.tasksByDate.keys {
-            if let index = state.tasksByDate[section]?.firstIndex(where: { $0.id == task.id }) {
-                state.tasksByDate[section]?[index] = task
-            }
-        }
-        for section in state.tasksByPriority.keys {
-            if let index = state.tasksByPriority[section]?.firstIndex(where: { $0.id == task.id }) {
-                state.tasksByPriority[section]?[index] = task
-            }
         }
     }
 }

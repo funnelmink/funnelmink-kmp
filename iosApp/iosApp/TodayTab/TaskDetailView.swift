@@ -12,13 +12,12 @@ import SwiftUI
 struct TaskDetailView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
-    let task: ScheduleTask
+    @State var task: ScheduleTask
     var body: some View {
         VStack {
             HStack {
                 Text(task.title)
-                    .font(.title)
-                    .fontWeight(.bold)
+                    .font(.title2.bold())
                     .padding(.top)
                     .strikethrough(task.isComplete)
                 Spacer()
@@ -53,6 +52,8 @@ struct TaskDetailView: View {
                     Divider()
                     Text(body)
                         .padding(.horizontal)
+                        .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
             }
             WarningAlertButton(warningMessage: "Delete task?") {
@@ -74,7 +75,13 @@ struct TaskDetailView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    navigation.presentSheet(.editTask(task))
+                    navigation.presentSheet(.editTask(task)) {
+                        Task {
+                            if let task = try? await Networking.api.getTask(id: task.id) {
+                                self.task = task
+                            }
+                        }
+                    }
                 } label: {
                     Text("Edit")
                 }
@@ -91,7 +98,8 @@ struct TaskDetailView: View {
             body: .loremLong,
             priority: 2,
             isComplete: false,
-            scheduledDate: .loremDate
+            scheduledDate: .loremDate,
+            updatedAt: .loremDate
         )
     )
 }

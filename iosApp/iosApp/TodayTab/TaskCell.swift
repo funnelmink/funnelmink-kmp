@@ -23,12 +23,13 @@ struct TaskCell: View {
                     Text(body)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
+                        .lineLimit(1)
                 }
             }
-            .frame(height: 44)
+            .frame(minHeight: 44)
         }
-        .lineLimit(1)
-        .frame(height: 44)
+        .lineLimit(5)
+        .frame(minHeight: 44)
     }
 }
 
@@ -41,7 +42,8 @@ struct TaskCell: View {
                 body: nil,
                 priority: 1,
                 isComplete: false,
-                scheduledDate: "2021-01-11"
+                scheduledDate: "2021-01-11",
+                updatedAt: .loremDate
             )
         ){}
         TaskCell(
@@ -51,7 +53,8 @@ struct TaskCell: View {
                 body: "talk about some freaking thing",
                 priority: 2,
                 isComplete: false,
-                scheduledDate: "2021-01-11"
+                scheduledDate: "2021-01-11",
+                updatedAt: .loremDate
             )
         ){}
         TaskCell(
@@ -61,7 +64,8 @@ struct TaskCell: View {
                 body: "talk about some freaking thing",
                 priority: 3,
                 isComplete: true,
-                scheduledDate: "2021-01-11"
+                scheduledDate: "2021-01-11",
+                updatedAt: .loremDate
             )
         ){}
         TaskCell(
@@ -71,7 +75,8 @@ struct TaskCell: View {
                 body: "talk about some freaking thing",
                 priority: 0,
                 isComplete: false,
-                scheduledDate: "2021-01-11"
+                scheduledDate: "2021-01-11",
+                updatedAt: .loremDate
             )
         ){}
     }

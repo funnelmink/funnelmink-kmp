@@ -66,6 +66,7 @@ struct AccountView: View {
                 )
             }
         }
+        .scrollIndicators(.never)
         .tint(.primary)
         .navigationTitle("Account")
     }

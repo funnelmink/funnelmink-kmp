@@ -36,6 +36,7 @@ data class ScheduleTask(
     val priority: Int,
     val isComplete: Boolean,
     val scheduledDate: String? = null,
+    val updatedAt: String,
 )
 
 @Serializable
