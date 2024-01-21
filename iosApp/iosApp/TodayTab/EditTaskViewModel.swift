@@ -24,10 +24,11 @@ class EditTaskViewModel: ViewModel {
             state.creationErrorMessage = "Task name cannot be empty."
             return
         }
-        if !Validator.isValidName(title) {
-            state.creationErrorMessage = "`\(title)` is not a valid Task name."
-            return
-        }
+        // TODO: validation
+//        if !Validator.isValidName(title) {
+//            state.creationErrorMessage = "`\(title)` is not a valid Task name."
+//            return
+//        }
         do {
             let body = CreateTaskRequest(
                 title: title,
@@ -49,10 +50,10 @@ class EditTaskViewModel: ViewModel {
             state.creationErrorMessage = "Task name cannot be empty."
             return
         }
-        if !Validator.isValidName(title) {
-            state.creationErrorMessage = "`\(title)` is not a valid Task name."
-            return
-        }
+//        if !Validator.isValidName(title) {
+//            state.creationErrorMessage = "`\(title)` is not a valid Task name."
+//            return
+//        }
         do {
             let body = UpdateTaskRequest(
                 title: title,

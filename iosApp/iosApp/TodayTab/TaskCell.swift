@@ -23,12 +23,13 @@ struct TaskCell: View {
                     Text(body)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
+                        .lineLimit(1)
                 }
             }
-            .frame(height: 44)
+            .frame(minHeight: 44)
         }
-        .lineLimit(1)
-        .frame(height: 44)
+        .lineLimit(5)
+        .frame(minHeight: 44)
     }
 }
 
