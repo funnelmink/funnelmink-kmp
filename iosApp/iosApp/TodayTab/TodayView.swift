@@ -60,17 +60,7 @@ struct TodayView: View {
             Section(header: Text(title)
                 .foregroundStyle(title == "No Deadline" ? .gray : title.contains("Today") ? .blue : section < Date() ? .red : .gray)
             ) {
-                ForEach(viewModel.tasksByDateSearchResults[section] ?? [], id: \.id) { task in
-                    Button {
-                        navigation.performSegue(.taskDetails(task))
-                    } label: {
-                        TaskCell(task: task) {
-                            Task {
-                                await viewModel.toggleIsComplete(for: task)
-                            }
-                        }
-                    }
-                }
+                ForEach(viewModel.tasksByDateSearchResults[section] ?? [], id: \.id, content: cell)
             }
         }
     }
@@ -78,17 +68,7 @@ struct TodayView: View {
     var tasksByPriority: some View {
         ForEach(viewModel.tasksByPrioritySearchResults.keys.sorted(by: >), id: \.self) { section in
             Section(header: Text(section.priorityName)) {
-                ForEach(viewModel.tasksByPrioritySearchResults[section] ?? [], id: \.id) { task in
-                    Button {
-                        navigation.performSegue(.taskDetails(task))
-                    } label: {
-                        TaskCell(task: task) {
-                            Task {
-                                await viewModel.toggleIsComplete(for: task)
-                            }
-                        }
-                    }
-                }
+                ForEach(viewModel.tasksByPrioritySearchResults[section] ?? [], id: \.id, content: cell)
             }
         }
     }
@@ -114,14 +94,17 @@ struct TodayView: View {
     
     @ViewBuilder
     var completed: some View {
-        ForEach(viewModel.completedTasksSearchResults, id: \.id) { task in
-            Button {
-                navigation.performSegue(.taskDetails(task))
-            } label: {
-                TaskCell(task: task) {
-                    Task {
-                        await viewModel.toggleIsComplete(for: task)
-                    }
+        ForEach(viewModel.completedTasksSearchResults, id: \.id, content: cell)
+    }
+    
+    func cell(_ task: ScheduleTask) -> some View {
+        Button {
+            navigation.performSegue(.taskDetails(task))
+        } label: {
+            TaskCell(task: task) {
+                Task {
+                    await viewModel.toggleIsComplete(for: task)
+                    await getTasks()
                 }
             }
         }
