@@ -16,9 +16,17 @@ SELECT *
 FROM SQLScheduleTask
 WHERE id = ?;
 
-selectAllScheduleTasksInfo:
-SELECT SQLScheduleTask.*
-FROM SQLScheduleTask;
+selectAllCompleteTasks:
+SELECT * FROM SQLScheduleTask WHERE isComplete = 1;
+
+selectAllIncompleteTasks:
+SELECT * FROM SQLScheduleTask WHERE isComplete = 0;
+
+deleteAllCompleteTasks:
+DELETE FROM SQLScheduleTask WHERE isComplete = 1;
+
+deleteAllIncompleteTasks:
+DELETE FROM SQLScheduleTask WHERE isComplete = 0;
 
 updateScheduleTask:
 UPDATE SQLScheduleTask

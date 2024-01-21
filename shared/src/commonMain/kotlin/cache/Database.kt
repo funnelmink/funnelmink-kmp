@@ -103,12 +103,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun replaceAllTasks(tasks: List<ScheduleTask>) {
-        deleteAllTasks()
-        tasks.forEach(::insertTask)
-    }
-
-    @Throws(Exception::class)
     fun insertTask(task: ScheduleTask) {
         taskDB.insertScheduleTask(
             task.id,
@@ -135,8 +129,29 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun selectAllTasks(): List<ScheduleTask> {
-        return taskDB.selectAllScheduleTasksInfo(::mapTask).executeAsList()
+    fun selectAllCompleteTasks(): List<ScheduleTask> {
+        return taskDB.selectAllCompleteTasks(::mapTask).executeAsList()
+    }
+
+    @Throws(Exception::class)
+    fun selectAllIncompleteTasks(): List<ScheduleTask> {
+        return taskDB.selectAllIncompleteTasks(::mapTask).executeAsList()
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllCompleteTasks(tasks: List<ScheduleTask>) {
+        taskDB.transaction {
+            taskDB.deleteAllCompleteTasks()
+            tasks.forEach(::insertTask)
+        }
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllIncompleteTasks(tasks: List<ScheduleTask>) {
+        taskDB.transaction {
+            taskDB.deleteAllIncompleteTasks()
+            tasks.forEach(::insertTask)
+        }
     }
 
     @Throws(Exception::class)

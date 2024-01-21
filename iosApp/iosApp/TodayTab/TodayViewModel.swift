@@ -19,7 +19,6 @@ class TodayViewModel: ViewModel {
         var tasksByDate: [Date: [ScheduleTask]] = [:]
         var tasksByPriority: [Int32: [ScheduleTask]] = [:]
         var completedTasks: [ScheduleTask] = []
-        var displayCompletedTasks = false
     }
     
     init() {
@@ -54,19 +53,10 @@ class TodayViewModel: ViewModel {
         return state.completedTasks.filter { $0.description.lowercased().contains(searchText.lowercased()) }
     }
     
-    func toggleDisplayCompletedTasks() {
-        state.displayCompletedTasks.toggle()
-        if state.displayCompletedTasks {
-            Task {
-                await getCompletedTasks()
-            }
-        }
-    }
-    
     @MainActor
     func getTasks() async {
         do {
-            let tasks = try await Networking.api.getTasks(date: nil, priority: nil, limit: nil, offset: nil, isComplete: false)
+            let tasks = try await Networking.api.getTasks()
             
             state.tasksByDate = Dictionary(
                 grouping: tasks,
@@ -81,7 +71,7 @@ class TodayViewModel: ViewModel {
     @MainActor
     func getCompletedTasks() async {
         do {
-            state.completedTasks = try await Networking.api.getTasks(date: nil, priority: nil, limit: nil, offset: nil, isComplete: true)
+            state.completedTasks = try await Networking.api.getCompletedTasks()
         } catch {
             AppState.shared.error = error
         }

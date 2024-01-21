@@ -13,19 +13,19 @@ struct TodayView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = TodayViewModel()
     
-    @AppStorage(.storage.todaySortOrder) var sortOrder: SortOrder = .date
-    @AppStorage(.storage.todayIsSearchable) var isSearchable = false
+    @AppStorage(.storage.todaySelection) var selection: Selection = .date
     
     @ViewBuilder
     var body: some View {
         ZStack {
-            switch (isSearchable, viewModel.displayCompletedTasks) {
-            case (true, true): searchableCompleted
-            case (false, true): vanillaCompleted
-                
-            case (true, false): searchableList
-            case (false, false): vanillaList
+            List {
+                switch selection {
+                case .date: tasksByDate
+                case .priority: tasksByPriority
+                case .completed: completed
+                }
             }
+            .searchable(text: $viewModel.searchText)
             VStack {
                 Spacer()
                 HStack {
@@ -36,42 +36,19 @@ struct TodayView: View {
         }
         .tint(.primary)
         .scrollIndicators(.never)
-        .navigationTitle(viewModel.state.displayCompletedTasks ? "Completed" : "Tasks")
+        .navigationTitle(selection == .completed ? "Completed" : "Tasks")
         .loggedTask {
-            await viewModel.getTasks()
+            await getTasks()
+        }
+        .onChange(of: selection) { _ in
+            Task { await getTasks() }
         }
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Menu {
-                    Button {
-                        viewModel.toggleDisplayCompletedTasks()
-                    } label: {
-                        if viewModel.displayCompletedTasks {
-                            Label("Show completed tasks", systemImage: "checkmark")
-                        } else {
-                            Text("Show completed tasks")
-                        }
-                    }
-                    Button {
-                        isSearchable.toggle()
-                    } label: {
-                        if isSearchable {
-                            Label("Display search bar", systemImage: "checkmark")
-                        } else {
-                            Text("Display search bar")
-                        }
-                    }
-                } label: {
-                    Label("Options", systemImage: "ellipsis.circle")
-                }
-            }
-            if !viewModel.state.displayCompletedTasks {
-                ToolbarItem(placement: .principal) {
-                    Picker("Sort Order", selection: $sortOrder) {
-                        Text("By Date").tag(SortOrder.date)
-                        Text("By Priority").tag(SortOrder.priority)
-                    }
-                    .pickerStyle(.segmented)
+            ToolbarItem {
+                Picker("Sort Order", selection: $selection) {
+                    Text("By Date").tag(Selection.date)
+                    Text("By Priority").tag(Selection.priority)
+                    Text("Completed").tag(Selection.completed)
                 }
             }
         }
@@ -135,61 +112,33 @@ struct TodayView: View {
         .padding()
     }
     
-    var vanillaList: some View {
-        List {
-            switch sortOrder {
-            case .date: tasksByDate
-            case .priority: tasksByPriority
-            }
-        }
-    }
-    
-    var searchableList: some View {
-        List {
-            switch sortOrder {
-            case .date: tasksByDate
-            case .priority: tasksByPriority
-            }
-        }
-        .searchable(text: $viewModel.searchText)
-    }
-    
-    var vanillaCompleted: some View {
-        List {
-            ForEach(viewModel.completedTasksSearchResults, id: \.id) { task in
-                Button {
-                    navigation.performSegue(.taskDetails(task))
-                } label: {
-                    TaskCell(task: task) {
-                        Task {
-                            await viewModel.toggleIsComplete(for: task)
-                        }
+    @ViewBuilder
+    var completed: some View {
+        ForEach(viewModel.completedTasksSearchResults, id: \.id) { task in
+            Button {
+                navigation.performSegue(.taskDetails(task))
+            } label: {
+                TaskCell(task: task) {
+                    Task {
+                        await viewModel.toggleIsComplete(for: task)
                     }
                 }
             }
         }
     }
     
-    var searchableCompleted: some View {
-        List {
-            ForEach(viewModel.completedTasksSearchResults, id: \.id) { task in
-                Button {
-                    navigation.performSegue(.taskDetails(task))
-                } label: {
-                    TaskCell(task: task) {
-                        Task {
-                            await viewModel.toggleIsComplete(for: task)
-                        }
-                    }
-                }
-            }
+    func getTasks() async {
+        if selection == .completed {
+            await viewModel.getCompletedTasks()
+        } else {
+            await viewModel.getTasks()
         }
-        .searchable(text: $viewModel.searchText)
     }
     
-    enum SortOrder: Int, Identifiable {
+    enum Selection: Int, Identifiable, Equatable {
         case date
         case priority
+        case completed
         
         var id: Int { rawValue }
     }

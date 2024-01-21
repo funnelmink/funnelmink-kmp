@@ -167,38 +167,54 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getTasks(
-        date: String?,
-        priority: Int?,
-        limit: Int?,
-        offset: Int?,
-        isComplete: Boolean
-    ): List<ScheduleTask> {
+    override suspend fun getTasks(): List<ScheduleTask> {
         val cacheKey = "getTasks"
         try {
             if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllTasks()
+                val cached = cache.selectAllIncompleteTasks()
                 if (cached.isNotEmpty()) {
                     Utilities.logger.info("Retrieved ${cached.size} tasks from cache")
                     return cached
                 }
             }
-            val fetched: List<ScheduleTask> = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Get) {
-                date?.let { parameter("date", it) }
-                priority?.let { parameter("priority", it) }
-                limit?.let { parameter("limit", it) }
-                offset?.let { parameter("offset", it) }
-                parameter("isComplete", isComplete)
-            }
-            cache.replaceAllTasks(fetched)
+            val fetched: List<ScheduleTask> = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Get)
+            cache.replaceAllIncompleteTasks(fetched)
             Utilities.logger.info("Cached ${fetched.size} tasks")
             cacheInvalidator.updateTimestamp(cacheKey)
             return fetched
         } catch (e: Exception) {
             // Fallback to cached data if a network request fails
-            val cached = cache.selectAllTasks()
+            val cached = cache.selectAllIncompleteTasks()
             if (cached.isNotEmpty()) {
                 Utilities.logger.warn("Failed to fetch Tasks. Returned ${cached.size} tasks from cache")
+                return cached
+            } else {
+                throw e // Re-throw the exception if there's no cached data
+            }
+        }
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getCompletedTasks(): List<ScheduleTask> {
+        val cacheKey = "getCompletedTasks"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllCompleteTasks()
+                if (cached.isNotEmpty()) {
+                    Utilities.logger.info("Retrieved ${cached.size} completed tasks from cache")
+                    return cached
+                }
+            }
+            val fetched: List<ScheduleTask> = genericRequest("$baseURL/v1/workspace/tasks/complete", HttpMethod.Get)
+            cache.replaceAllCompleteTasks(fetched)
+            Utilities.logger.info("Cached ${fetched.size} completed tasks")
+            cacheInvalidator.updateTimestamp(cacheKey)
+            return fetched
+        } catch (e: Exception) {
+            // Fallback to cached data if a network request fails
+            val cached = cache.selectAllCompleteTasks()
+            if (cached.isNotEmpty()) {
+                Utilities.logger.warn("Failed to fetch completed Tasks. Returned ${cached.size} completed tasks from cache")
                 return cached
             } else {
                 throw e // Re-throw the exception if there's no cached data
