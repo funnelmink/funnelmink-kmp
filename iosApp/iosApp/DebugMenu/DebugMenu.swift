@@ -38,6 +38,7 @@ struct DebugMenu: View {
                             .padding(.top)
                         menuButton(title: "Feature Flags", selection: .featureFlags)
                     }
+                    .padding(.horizontal)
                 }
             }
         }
