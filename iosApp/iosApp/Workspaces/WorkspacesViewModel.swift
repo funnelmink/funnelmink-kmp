@@ -7,7 +7,6 @@ class WorkspacesViewModel: ViewModel {
     struct State: Hashable {
         var didError = false
         var workspaces: [Workspace] = []
-        var creationErrorMessage: String?
     }
 
     @MainActor
@@ -17,20 +16,19 @@ class WorkspacesViewModel: ViewModel {
             state.workspaces = try await Networking.api.getWorkspaces()
         } catch {
             state.didError = true
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
 
     @MainActor
     func createWorkspace(name: String, onSuccess: () -> Void) async {
-        state.creationErrorMessage = nil
         do {
             if name.isEmpty {
-                state.creationErrorMessage = "Workspace name cannot be empty."
+                Toast.warn("Workspace name cannot be empty.")
                 return
             }
             if !Validator.isValidName(name) {
-                state.creationErrorMessage = "\(name) contains invalid characters."
+                Toast.warn("\(name) contains invalid characters.")
                 return
             }
             let body = CreateWorkspaceRequest(name: name)
@@ -39,7 +37,7 @@ class WorkspacesViewModel: ViewModel {
             AppState.shared.signIntoWorkspace(workspace)
             onSuccess()
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
     
@@ -49,7 +47,7 @@ class WorkspacesViewModel: ViewModel {
             try await Networking.api.inviteUserToWorkspace(email: email)
             onSuccess()
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
     
@@ -63,7 +61,7 @@ class WorkspacesViewModel: ViewModel {
             state.workspaces.append(workspace)
             onSuccess()
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
     
@@ -74,7 +72,7 @@ class WorkspacesViewModel: ViewModel {
             state.workspaces.removeAll { $0.id == id }
             onSuccess()
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
 }

@@ -15,14 +15,7 @@ final class AppState: ObservableObject {
     @Published var user: Shared.User?
     @Published var workspace: Workspace?
     @Published var hasInitialized = false
-    
-    // TODO: replace this nonsense with Logging and Toasts. Toast automatically logs to console (toast: )
-    /// only displays an alert to devs
-    @Published var error: Error?
-    
-    /// displays an alert to the user
-    @Published var prompt: String?
-    
+
     var isWorkspaceOwner: Bool { workspace?.role == .owner }
     
     @MainActor
@@ -39,7 +32,7 @@ final class AppState: ObservableObject {
                 }
             }
         } catch {
-            self.error = error
+            Logger.logWarning(error)
         }
         hasInitialized = true
     }
@@ -53,7 +46,7 @@ final class AppState: ObservableObject {
             UserDefaults.standard.removeObject(forKey: "userID")
             UserDefaults.standard.removeObject(forKey: "workspaceID")
         } catch {
-            self.error = error
+            Logger.logWarning(error)
         }
     }
     
@@ -70,7 +63,7 @@ final class AppState: ObservableObject {
             }
 #endif
         } catch {
-            self.error = error
+            Logger.logWarning(error)
         }
     }
     
@@ -81,11 +74,7 @@ final class AppState: ObservableObject {
             self.workspace = workspace
             try Networking.api.signIntoWorkspace(workspace: workspace)
         } catch {
-            self.error = error
+            Logger.logError(error)
         }
-    }
-    
-    func todo() {
-        error = "TODO"
     }
 }

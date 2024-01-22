@@ -29,7 +29,7 @@ struct LoginView: View {
             
             // https://firebase.google.com/docs/auth/ios/apple
             Button {
-                appState.todo()
+                Toast.error("TODO")
             } label: {
                 HStack {
                     Text("")
@@ -63,8 +63,8 @@ struct LoginView: View {
 
             Spacer()
             HStack(spacing: 24) {
-                Button("Privacy Policy") { appState.todo() }
-                Button("Terms of Service") { appState.todo() }
+                Button("Privacy Policy") { Toast.error("TODO") }
+                Button("Terms of Service") { Toast.error("TODO") }
             }
             .font(.callout.bold())
         }

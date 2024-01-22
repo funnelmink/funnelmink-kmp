@@ -40,7 +40,7 @@ class WorkspaceSettingsViewModel: ViewModel {
         do {
             state.workspaceMembers = try await Networking.api.getWorkspaceMembers()
         } catch {
-            AppState.shared.error = error
+            Toast.error(error)
         }
     }
     
@@ -49,7 +49,7 @@ class WorkspaceSettingsViewModel: ViewModel {
         if AppState.shared.isWorkspaceOwner {
             let owners = state.workspaceMembers.filter { $0.role == .owner }
             guard owners.count > 1 else {
-                AppState.shared.prompt = "You can't leave the workspace because you are the only owner. Please promote another member to owner before leaving."
+                Toast.warn("You can't leave the workspace because you are the only owner.\nPlease promote another member before leaving.")
                 return
             }
         }
@@ -59,25 +59,25 @@ class WorkspaceSettingsViewModel: ViewModel {
             AppState.shared.workspace = nil
             state.workspaceMembers = []
         } catch {
-            AppState.shared.error = error
+            Toast.error(error)
         }
     }
     
     @MainActor
     func removeMemberFromWorkspace(id: String) async {
         guard AppState.shared.isWorkspaceOwner else {
-            AppState.shared.error = "You must be an owner to remove members."
+            Toast.warn("You must be an owner to remove members.")
             return
         }
         guard id != AppState.shared.user?.id else {
-            AppState.shared.error = "You can't remove yourself."
+            Toast.warn("You can't remove yourself.")
             return
         }
         do {
             try await Networking.api.removeMemberFromWorkspace(userID: id)
             state.workspaceMembers.removeAll(where: { $0.userID == id })
         } catch {
-            AppState.shared.error = error
+            Toast.error(error)
         }
     }
     
@@ -90,7 +90,7 @@ class WorkspaceSettingsViewModel: ViewModel {
                     state.workspaceMembers[index].role = role
                 }
             } catch {
-                AppState.shared.error = error
+                Toast.error(error)
             }
         }
     }
@@ -103,7 +103,7 @@ class WorkspaceSettingsViewModel: ViewModel {
                 state.workspaceMembers[index].role = .member
             }
         } catch {
-            AppState.shared.error = error
+            Toast.error(error)
         }
     }
     
@@ -115,7 +115,7 @@ class WorkspaceSettingsViewModel: ViewModel {
                 state.workspaceMembers.remove(at: index)
             }
         } catch {
-            AppState.shared.error = error
+            Toast.error(error)
         }
     }
     
@@ -126,7 +126,7 @@ class WorkspaceSettingsViewModel: ViewModel {
             AppState.shared.workspace = nil
             state.workspaceMembers = []
         } catch {
-            AppState.shared.error = error
+            Toast.error(error)
         }
     }
     
@@ -134,11 +134,11 @@ class WorkspaceSettingsViewModel: ViewModel {
     func updateWorkspace(name: String) async {
         guard name != AppState.shared.workspace?.name else { return }
         if name.isEmpty {
-            AppState.shared.prompt = "Name cannot be empty."
+            Toast.warn("Name cannot be empty.")
             return
         }
         if !Validator.isValidName(name) {
-            AppState.shared.prompt = "`\(name)` is not a valid name"
+            Toast.warn("`\(name)` is not a valid name")
             return
         }
         
@@ -147,7 +147,7 @@ class WorkspaceSettingsViewModel: ViewModel {
             let workspace = try await Networking.api.updateWorkspace(body: body)
             AppState.shared.workspace = workspace
         } catch {
-            AppState.shared.error = error
+            Toast.error(error)
         }
     }
 }

@@ -75,7 +75,7 @@ struct TodayView: View {
     
     var addTaskFAB: some View {
         Button {
-            navigation.presentSheet(.createTask) {
+            navigation.modalSheet(.createTask) {
                 Task {
                     await viewModel.getTasks()
                 }
@@ -99,7 +99,7 @@ struct TodayView: View {
     
     func cell(_ task: ScheduleTask) -> some View {
         Button {
-            navigation.performSegue(.taskDetails(task))
+            navigation.segue(.taskDetails(task))
         } label: {
             TaskCell(task: task) {
                 Task {

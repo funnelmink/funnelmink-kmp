@@ -51,7 +51,7 @@ struct ContactsView: View {
                 Section(header: Text(key)) {
                     ForEach(filteredContacts[key] ?? [], id: \.id) { contact in
                         Button(action: {
-                            nav.performSegue(.contactView(contact))
+                            nav.segue(.contactView(contact))
                         }, label: {
                             CustomCell(title: contact.firstName + " " + (contact.lastName ?? ""), cellType: .navigation)
                                 .foregroundStyle(Color.primary)
@@ -67,7 +67,7 @@ struct ContactsView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    nav.presentSheet(.createContact) {
+                    nav.modalSheet(.createContact) {
                         Task {
                             await viewModel.getContacts()
                         }

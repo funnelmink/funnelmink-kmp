@@ -51,7 +51,7 @@ struct WorkspacesView: View {
             
             // if they don't have any, force them to create one? (TODO: button that lets them to join an existing?)
             if viewModel.workspaces.isEmpty && !viewModel.didError {
-                navigation.presentSheet(.createWorkspace(viewModel))
+                navigation.modalSheet(.createWorkspace(viewModel))
                 
                 // if they're a member of exactly one workspace, sign them in automatically
             } else if viewModel.workspaces.count == 1,
@@ -129,10 +129,10 @@ struct WorkspacesView: View {
         VStack {
             if viewModel.workspaces.isEmpty {
                 Button("Create a new workspace") {
-                    navigation.presentSheet(.createWorkspace(viewModel))
+                    navigation.modalSheet(.createWorkspace(viewModel))
                 }
                 Button("Join an existing one") {
-                    navigation.presentSheet(.joinExistingWorkspace)
+                    navigation.modalSheet(.joinExistingWorkspace)
                 }
                 Text("or")
                 Button("Sign into a different account") {
@@ -141,11 +141,11 @@ struct WorkspacesView: View {
             } else {
                 Text("You can also")
                 Button("Create a new workspace") {
-                    navigation.presentSheet(.createWorkspace(viewModel))
+                    navigation.modalSheet(.createWorkspace(viewModel))
                 }
                 Text("or")
                 Button("Join an existing one") {
-                    navigation.presentSheet(.joinExistingWorkspace)
+                    navigation.modalSheet(.joinExistingWorkspace)
                 }
             }
         }

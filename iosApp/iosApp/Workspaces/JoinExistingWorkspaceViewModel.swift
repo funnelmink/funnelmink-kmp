@@ -20,8 +20,7 @@ class JoinExistingWorkspaceViewModel: ViewModel {
         do {
             try await Networking.api.requestWorkspaceMembership(name: name)
         } catch {
-            AppState.shared.error = error
-            // TODO: if the error is 404, set AppState.shared.prompt = "Workspace not found"
+            Toast.warn(error)
         }
     }
 }

@@ -28,7 +28,7 @@ struct TaskDetailView: View {
                             _ = try await Networking.api.toggleTaskCompletion(id: task.id, isComplete: !task.isComplete)
                             navigation.popSegue()
                         } catch {
-                            appState.error = error
+                            Toast.error(error)
                         }
                     }
                 }
@@ -62,7 +62,7 @@ struct TaskDetailView: View {
                         try await Networking.api.deleteTask(id: task.id)
                         navigation.popSegue()
                     } catch {
-                        appState.error = error
+                        Toast.warn(error)
                     }
                 }
             } label: {
@@ -75,7 +75,7 @@ struct TaskDetailView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    navigation.presentSheet(.editTask(task)) {
+                    navigation.modalSheet(.editTask(task)) {
                         Task {
                             if let task = try? await Networking.api.getTask(id: task.id) {
                                 self.task = task

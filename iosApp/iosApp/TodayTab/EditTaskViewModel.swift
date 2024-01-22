@@ -14,14 +14,12 @@ class EditTaskViewModel: ViewModel {
     
     struct State: Hashable {
         var task: ScheduleTask?
-        var creationErrorMessage: String?
     }
     
     @MainActor
     func createTask(title: String, priority: Int32, body: String?, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
-        state.creationErrorMessage = nil
         if title.isEmpty {
-            state.creationErrorMessage = "Task name cannot be empty."
+            Toast.error("Pretend success!")
             return
         }
         // TODO: validation
@@ -39,15 +37,14 @@ class EditTaskViewModel: ViewModel {
             _ = try await Networking.api.createTask(body: body)
             onSuccess()
         } catch {
-            state.creationErrorMessage = "\(error)"
+            Toast.error(error)
         }
     }
     
     @MainActor
     func updateTask(id: String, title: String, priority: Int32, isComplete: Bool,  body: String?, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
-        state.creationErrorMessage = nil
         if title.isEmpty {
-            state.creationErrorMessage = "Task name cannot be empty."
+            Toast.error("Task name cannot be empty.")
             return
         }
 //        if !Validator.isValidName(title) {
@@ -65,7 +62,7 @@ class EditTaskViewModel: ViewModel {
             _ = try await Networking.api.updateTask(id: id, body: body)
             onSuccess()
         } catch {
-            state.creationErrorMessage = "\(error)"
+            Toast.error(error)
         }
     }
 }

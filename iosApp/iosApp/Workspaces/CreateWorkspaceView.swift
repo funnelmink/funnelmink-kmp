@@ -20,14 +20,7 @@ struct CreateWorkspaceView: View {
                 .font(.largeTitle)
             Text("Usually named after your organization, team or company.")
                 .foregroundStyle(.secondary)
-            Color // use Color.clear instead of Spacer on this view because they're allowed to have overlays
-                .clear
-                .overlay {
-                    if let errorMessage = viewModel.creationErrorMessage {
-                        Text(errorMessage)
-                            .foregroundStyle(.red)
-                    }
-                }
+            Spacer()
             VStack(spacing: 4) {
                 HStack {
                     Text("Workspace name")
@@ -60,7 +53,7 @@ struct CreateWorkspaceView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 4))
             }
             .multilineTextAlignment(.leading)
-            Color.clear
+            Spacer()
         }
         .padding()
         .multilineTextAlignment(.center)
