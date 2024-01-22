@@ -46,7 +46,7 @@ struct WorkspaceSettingsView: View {
                     }
                     
                     Button("Upgrade to premium") {
-                        appState.todo()
+                        Toast.error("TODO")
                         //                        navigation.externalDeeplink(to: .funnelminkStripe)
                     }
                     

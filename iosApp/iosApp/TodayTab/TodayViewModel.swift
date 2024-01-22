@@ -64,7 +64,7 @@ class TodayViewModel: ViewModel {
             )
             state.tasksByPriority = Dictionary(grouping: tasks, by: { $0.priority })
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
     
@@ -76,7 +76,7 @@ class TodayViewModel: ViewModel {
                 .getCompletedTasks()
                 .sorted { ($0.updatedAt.toDate() ?? Date()) < ($1.updatedAt.toDate() ?? Date()) }
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
     
@@ -85,7 +85,7 @@ class TodayViewModel: ViewModel {
         do {
             _ = try await Networking.api.toggleTaskCompletion(id: task.id, isComplete: !task.isComplete)
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
 }

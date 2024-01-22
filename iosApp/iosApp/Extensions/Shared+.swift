@@ -14,9 +14,19 @@ extension Logger {
         Utilities.shared.logger.log(level: .warn, message: message)
     }
     
+    /// Things that can happen, but we prefer they don't. Request failed, user entered invalid data, etc.
+    static func logWarning(_ error: Error) {
+        Utilities.shared.logger.log(level: .error, message: error.localizedDescription)
+    }
+    
     /// Critical error. Things that should never happen. When we find these, we fix them.
     static func logError(_ message: String) {
         Utilities.shared.logger.log(level: .error, message: message)
+    }
+    
+    /// Critical error. Things that should never happen. When we find these, we fix them.
+    static func logError(_ error: Error) {
+        Utilities.shared.logger.log(level: .error, message: error.localizedDescription)
     }
     
     /// Only used when the user visits a new view.

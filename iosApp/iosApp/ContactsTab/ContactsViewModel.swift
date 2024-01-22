@@ -21,7 +21,7 @@ class ContactsViewModel: ViewModel {
         do {
             state.contacts = try await Networking.api.getContacts()
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
     
@@ -57,7 +57,7 @@ class ContactsViewModel: ViewModel {
             _ = try await Networking.api.createContact(body: body)
             onSuccess()
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
     
@@ -75,7 +75,7 @@ class ContactsViewModel: ViewModel {
             
             _ = try await Networking.api.updateContact(id: "", body: body)
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
     
@@ -84,7 +84,7 @@ class ContactsViewModel: ViewModel {
         do {
             try await Networking.api.deleteContact(id: id)
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
     

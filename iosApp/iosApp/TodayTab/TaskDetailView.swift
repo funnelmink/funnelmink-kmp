@@ -28,7 +28,7 @@ struct TaskDetailView: View {
                             _ = try await Networking.api.toggleTaskCompletion(id: task.id, isComplete: !task.isComplete)
                             navigation.popSegue()
                         } catch {
-                            appState.error = error
+                            Toast.error(error)
                         }
                     }
                 }
@@ -62,7 +62,7 @@ struct TaskDetailView: View {
                         try await Networking.api.deleteTask(id: task.id)
                         navigation.popSegue()
                     } catch {
-                        appState.error = error
+                        Toast.warn(error)
                     }
                 }
             } label: {

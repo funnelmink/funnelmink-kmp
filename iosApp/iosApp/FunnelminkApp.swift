@@ -83,21 +83,6 @@ fileprivate struct FunnelminkAppContents: View {
         )
         .environmentObject(navigation)
         .environmentObject(appState)
-        .alert(
-            appState.error?.localizedDescription ?? "",
-            isPresented: Binding(
-                get: { appState.error != nil },
-                set: { _ in appState.error = nil }
-            )
-        ) { }
-        .alert(
-            appState.prompt ?? "",
-            isPresented: Binding(
-                get: { appState.prompt != nil },
-                set: { _ in appState.prompt = nil }
-            )
-        ) {
-        }
         .toasted()
     }
 }

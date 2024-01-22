@@ -93,6 +93,30 @@ extension View {
 struct Toast: Hashable, Equatable {
     let message: String
     let type: ToastType
+    
+    static func info(_ message: String) {
+        Navigation.shared.toast(message)
+    }
+    
+    static func success(_ message: String) {
+        Navigation.shared.toast(message, type: .success)
+    }
+    
+    static func error(_ message: String) {
+        Navigation.shared.toast(message, type: .error)
+    }
+    
+    static func error(_ error: Error) {
+        Navigation.shared.toast(error.localizedDescription, type: .error)
+    }
+    
+    static func warn(_ message: String) {
+        Navigation.shared.toast(message, type: .warn)
+    }
+    
+    static func warn(_ error: Error) {
+        Navigation.shared.toast(error.localizedDescription, type: .warn)
+    }
 }
 
 enum ToastType {
@@ -116,6 +140,19 @@ enum ToastType {
         case .error: return .red
         case .info: return .blue
         case .warn: return .yellow
+        }
+    }
+}
+
+extension Navigation {
+    func toast(_ message: String, type: ToastType = .info) {
+        let toast = Toast(message: message, type: type)
+        withAnimation {
+            if _state._sheet != nil || _state._fullscreen != nil {
+                _state._modalToast = toast
+            } else {
+                _state._toast = toast
+            }
         }
     }
 }

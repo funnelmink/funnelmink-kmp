@@ -80,17 +80,6 @@ class Navigation: ObservableObject {
         }
     }
     
-    func toast(_ message: String, type: ToastType = .info) {
-        let toast = Toast(message: message, type: type)
-        withAnimation {
-            if _state._sheet != nil || _state._fullscreen != nil {
-                _state._modalToast = toast
-            } else {
-                _state._toast = toast
-            }
-        }
-    }
-    
     func modalSheet(_ modal: Modal, onDismiss: (() -> Void)? = nil) {
         var state = _state
         state._fullscreen = nil
