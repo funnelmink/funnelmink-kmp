@@ -11,7 +11,9 @@ import SwiftUI
 
 struct ToastView: View {
     @ObservedObject var navigation = Navigation.shared
+    
     @State private var isVisible = false
+    
     let autoDismissDelay: TimeInterval = 2
     let toast: Toast
     
@@ -38,15 +40,17 @@ struct ToastView: View {
             withAnimation(.easeInOut(duration: 0.5)) {
                 isVisible = true
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + autoDismissDelay) {
+            navigation._state._dismissTask = Task {
+                // Wait for the specified delay
+                try await Task.sleep(for: .seconds(autoDismissDelay))
+                
                 withAnimation(.easeInOut(duration: 0.5)) {
                     isVisible = false
                 }
                 // After animation completes, remove the toast
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    navigation._state._toast = nil
-                    navigation._state._modalToast = nil
-                }
+                try await Task.sleep(for: .seconds(0.5))
+                navigation._state._toast = nil
+                navigation._state._modalToast = nil
             }
         }
     }
@@ -146,6 +150,7 @@ enum ToastType {
 
 extension Navigation {
     func toast(_ message: String, type: ToastType = .info) {
+        _state._dismissTask?.cancel()
         let toast = Toast(message: message, type: type)
         withAnimation {
             if _state._sheet != nil || _state._fullscreen != nil {

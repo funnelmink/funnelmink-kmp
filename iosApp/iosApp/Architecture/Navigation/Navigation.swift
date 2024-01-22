@@ -16,6 +16,7 @@ class Navigation: ObservableObject {
     var _onModalDismiss: (() -> Void)?
     
     struct State: Hashable, Equatable {
+        var _dismissTask: Task<Void, Error>?
         var _selectedTab = FunnelMinkTab.today
         
         // navigation stack for each tab
