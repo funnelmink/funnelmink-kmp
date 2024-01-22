@@ -14,35 +14,50 @@ struct ToastView: View {
     let toast: Toast
     var body: some View {
         VStack {
-            Button {
+            HStack {
+                Image(systemName: toast.type.icon)
+                    .foregroundColor(toast.type.iconColor)
+                Text(toast.message)
+                    .foregroundStyle(.primary)
+            }
+            .padding()
+            .background(.ultraThinMaterial)
+            .clipShape(Capsule())
+            .onTapGesture {
                 navigation._state._toast = nil
                 navigation._state._modalToast = nil
-            } label: {
-                HStack {
-                    Image(systemName: toast.type.icon)
-                        .foregroundColor(toast.type.iconColor)
-                    Text(toast.message)
-                        .foregroundStyle(.primary)
-                }
-                .padding()
-                .padding(.horizontal)
-                .background(.regularMaterial)
-                .clipShape(Capsule())
             }
             Spacer()
         }
+        .padding()
     }
 }
 
 struct Toasted: ViewModifier {
     @ObservedObject var navigation = Navigation.shared
     let isPresented: Bool
+    @ViewBuilder
     func body(content: Content) -> some View {
+        if isPresented {
+            modalToastView(content)
+        } else {
+            toastView(content)
+        }
+    }
+    
+    func toastView(_ content: Content) -> some View {
         ZStack {
             content
-            if isPresented, let toast = navigation._state._modalToast {
+            if let toast = navigation._state._toast {
                 ToastView(toast: toast)
-            } else if let toast = navigation._state._toast {
+            }
+        }
+    }
+    
+    func modalToastView(_ content: Content) -> some View {
+        ZStack {
+            content
+            if let toast = navigation._state._modalToast {
                 ToastView(toast: toast)
             }
         }
