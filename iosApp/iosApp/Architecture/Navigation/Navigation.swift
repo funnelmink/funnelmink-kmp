@@ -47,7 +47,7 @@ class Navigation: ObservableObject {
         }
     }
     
-    func performSegue(_ segue: Segue) {
+    func segue(_ segue: Segue) {
         switch _state._selectedTab.rawValue {
         case 0: _state._0.append(segue)
         case 1: _state._1.append(segue)
@@ -69,7 +69,7 @@ class Navigation: ObservableObject {
         }
     }
     
-    func popToRoot() {
+    func popSegueToRoot() {
         switch _state._selectedTab.rawValue {
         case 0: _state._0 = []
         case 1: _state._1 = []
@@ -80,7 +80,7 @@ class Navigation: ObservableObject {
         }
     }
     
-    func presentToast(_ message: String, type: ToastType = .info) {
+    func toast(_ message: String, type: ToastType = .info) {
         let toast = Toast(message: message, type: type)
         if _state._sheet != nil || _state._fullscreen != nil {
             _state._modalToast = toast
@@ -89,7 +89,7 @@ class Navigation: ObservableObject {
         }
     }
     
-    func presentSheet(_ modal: Modal, onDismiss: (() -> Void)? = nil) {
+    func modalSheet(_ modal: Modal, onDismiss: (() -> Void)? = nil) {
         var state = _state
         state._fullscreen = nil
         state._sheet = modal
@@ -97,7 +97,7 @@ class Navigation: ObservableObject {
         _state = state
     }
     
-    func presentFullscreen(_ modal: Modal, onDismiss: (() -> Void)? = nil) {
+    func modalFullscreen(_ modal: Modal, onDismiss: (() -> Void)? = nil) {
         var state = _state
         state._sheet = nil
         state._fullscreen = modal

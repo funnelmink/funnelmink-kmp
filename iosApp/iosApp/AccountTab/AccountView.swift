@@ -24,7 +24,7 @@ struct AccountView: View {
                     }
                 }
                 Button {
-                    navigation.performSegue(.workspaceSettings)
+                    navigation.segue(.workspaceSettings)
                 } label: {
                     HStack {
                         VStack(alignment: .leading) {

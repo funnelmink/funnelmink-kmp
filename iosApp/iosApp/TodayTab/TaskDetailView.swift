@@ -75,7 +75,7 @@ struct TaskDetailView: View {
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    navigation.presentSheet(.editTask(task)) {
+                    navigation.modalSheet(.editTask(task)) {
                         Task {
                             if let task = try? await Networking.api.getTask(id: task.id) {
                                 self.task = task
