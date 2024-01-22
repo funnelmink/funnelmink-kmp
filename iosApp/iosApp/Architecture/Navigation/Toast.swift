@@ -11,14 +11,18 @@ import SwiftUI
 
 struct ToastView: View {
     @ObservedObject var navigation = Navigation.shared
+    @State private var isVisible = false
+    let autoDismissDelay: TimeInterval = 2
     let toast: Toast
+    
     var body: some View {
         VStack {
             HStack {
                 Image(systemName: toast.type.icon)
                     .foregroundColor(toast.type.iconColor)
                 Text(toast.message)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(.secondary)
+                    .bold()
             }
             .padding()
             .background(.ultraThinMaterial)
@@ -30,6 +34,21 @@ struct ToastView: View {
             Spacer()
         }
         .padding()
+        .onAppear {
+            withAnimation(.easeInOut(duration: 0.5)) {
+                isVisible = true
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + autoDismissDelay) {
+                withAnimation(.easeInOut(duration: 0.5)) {
+                    isVisible = false
+                }
+                // After animation completes, remove the toast
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    navigation._state._toast = nil
+                    navigation._state._modalToast = nil
+                }
+            }
+        }
     }
 }
 

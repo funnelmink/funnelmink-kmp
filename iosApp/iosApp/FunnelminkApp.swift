@@ -57,8 +57,7 @@ fileprivate struct FunnelminkAppContents: View {
             VStack {
                 HStack {
                     Button {
-//                        navigation.modalFullscreen(.debugMenu)
-                        navigation.toast("Let's make a toast")
+                        navigation.modalFullscreen(.debugMenu)
                     } label: {
                         Image(systemName: "apple.terminal.fill")
                             .renderingMode(.original)

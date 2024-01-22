@@ -92,28 +92,27 @@ struct EditTaskView: View {
                 
             }
             AsyncButton {
-                navigation.toast("Task created!", type: .success)
-//                if let task = task {
-//                    await viewModel.updateTask(
-//                        id: task.id,
-//                        title: taskName,
-//                        priority: priority,
-//                        isComplete: task.isComplete,
-//                        body: taskBody,
-//                        scheduledDate: date?.iso8601()
-//                    ) {
-//                        navigation.dismissModal()
-//                    }
-//                } else {
-//                    await viewModel.createTask(
-//                        title: taskName,
-//                        priority: priority,
-//                        body: taskBody,
-//                        scheduledDate: date?.iso8601()
-//                    ) {
-//                        navigation.dismissModal()
-//                    }
-//                }
+                if let task = task {
+                    await viewModel.updateTask(
+                        id: task.id,
+                        title: taskName,
+                        priority: priority,
+                        isComplete: task.isComplete,
+                        body: taskBody,
+                        scheduledDate: date?.iso8601()
+                    ) {
+                        navigation.dismissModal()
+                    }
+                } else {
+                    await viewModel.createTask(
+                        title: taskName,
+                        priority: priority,
+                        body: taskBody,
+                        scheduledDate: date?.iso8601()
+                    ) {
+                        navigation.dismissModal()
+                    }
+                }
             } label: {
                 Text(task == nil ? "Create" : "Update")
                     .frame(height: 52)

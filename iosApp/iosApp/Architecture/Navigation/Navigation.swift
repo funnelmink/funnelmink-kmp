@@ -82,10 +82,12 @@ class Navigation: ObservableObject {
     
     func toast(_ message: String, type: ToastType = .info) {
         let toast = Toast(message: message, type: type)
-        if _state._sheet != nil || _state._fullscreen != nil {
-            _state._modalToast = toast
-        } else {
-            _state._toast = toast
+        withAnimation {
+            if _state._sheet != nil || _state._fullscreen != nil {
+                _state._modalToast = toast
+            } else {
+                _state._toast = toast
+            }
         }
     }
     
