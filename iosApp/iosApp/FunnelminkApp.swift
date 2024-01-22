@@ -25,7 +25,7 @@ fileprivate struct FunnelminkAppContents: View {
             } else if appState.user != nil {
                 // Logged in and has joined a Workspace
                 if let workspace = appState.workspace {
-                    TabView(selection: $navigation._selectedTab) {
+                    TabView(selection: $navigation._state._selectedTab) {
                         ForEach(FunnelMinkTab.allCases) { tab in
                             NavigationStack(path: navigation._path(for: tab)) {
                                 tab.root.navigationDestination(for: Segue.self) { $0.view }
@@ -44,7 +44,7 @@ fileprivate struct FunnelminkAppContents: View {
 
                 // Not logged in
             } else {
-                NavigationStack(path: $navigation._unauthenticated) {
+                NavigationStack(path: $navigation._state._unauthenticated) {
                     LoginView()
                         .navigationDestination(for: UnauthenticatedSegue.self) {
                             $0.view
@@ -71,12 +71,12 @@ fileprivate struct FunnelminkAppContents: View {
         }
         .tint(.accentColor)
         .sheet(
-            item: $navigation._sheet,
+            item: $navigation._state._sheet,
             onDismiss: navigation._onModalDismiss,
             content: { $0.view }
         )
         .fullScreenCover(
-            item: $navigation._fullscreen,
+            item: $navigation._state._fullscreen,
             onDismiss: navigation._onModalDismiss,
             content: { $0.view }
         )

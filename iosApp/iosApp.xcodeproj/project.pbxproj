@@ -74,6 +74,7 @@
 		0D012E942B477FFC00658153 /* GoogleService-Info-PROD.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E922B477FFC00658153 /* GoogleService-Info-PROD.plist */; };
 		0D012E9A2B47877B00658153 /* ProdEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */; };
 		0D012E9B2B47877B00658153 /* LocalEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */; };
+		0D45D80A2B5E01A100591524 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45D8092B5E01A100591524 /* Toast.swift */; };
 		0D5987372B5607DF00327504 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5987362B5607DF00327504 /* TaskDetailView.swift */; };
 		0D5987392B561FCD00327504 /* TaskCompletionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5987382B561FCD00327504 /* TaskCompletionButton.swift */; };
 		0D73AB132B54DAF30026EC4D /* Int32+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AB122B54DAF30026EC4D /* Int32+.swift */; };
@@ -177,6 +178,7 @@
 		0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ProdEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LocalEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E9C2B47878F00658153 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		0D45D8092B5E01A100591524 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		0D5987362B5607DF00327504 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		0D5987382B561FCD00327504 /* TaskCompletionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCompletionButton.swift; sourceTree = "<group>"; };
 		0D73AB122B54DAF30026EC4D /* Int32+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int32+.swift"; sourceTree = "<group>"; };
@@ -386,15 +388,12 @@
 		0D012E412B477E3900658153 /* Architecture */ = {
 			isa = PBXGroup;
 			children = (
-				0D012E432B477E3900658153 /* Properties.swift */,
-				0D012E442B477E3900658153 /* Navigation.swift */,
-				0D012E462B477E3900658153 /* Networking.swift */,
-				0D012E472B477E3900658153 /* ViewModel.swift */,
-				0D012E482B477E3900658153 /* ExternalDeeplink.swift */,
 				0D012E4A2B477E3900658153 /* AppDelegate.swift */,
-				1FCB7D2C21891A9AE2804154 /* Modal.swift */,
-				1FCB72AEE522D13EAC8565D2 /* Segue.swift */,
 				1FCB7D6AC6CEDB402D6F242A /* AppState.swift */,
+				0D012E462B477E3900658153 /* Networking.swift */,
+				0D012E432B477E3900658153 /* Properties.swift */,
+				0D012E472B477E3900658153 /* ViewModel.swift */,
+				0D45D8082B5E018A00591524 /* Navigation */,
 			);
 			path = Architecture;
 			sourceTree = "<group>";
@@ -482,6 +481,18 @@
 				1FCB729289973E82B53DC6AE /* WorkspacesViewModel.swift */,
 			);
 			path = Workspaces;
+			sourceTree = "<group>";
+		};
+		0D45D8082B5E018A00591524 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				0D012E442B477E3900658153 /* Navigation.swift */,
+				0D012E482B477E3900658153 /* ExternalDeeplink.swift */,
+				1FCB7D2C21891A9AE2804154 /* Modal.swift */,
+				1FCB72AEE522D13EAC8565D2 /* Segue.swift */,
+				0D45D8092B5E01A100591524 /* Toast.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 		0DBF9CAD2B5A16C20045AC44 /* DebugMenu */ = {
@@ -820,6 +831,7 @@
 				0D012E7F2B477E3A00658153 /* WorkspaceSettingsView.swift in Sources */,
 				1F022A3B2B49159100966345 /* CustomButton.swift in Sources */,
 				1FA27F7A2B5978F300A447C3 /* TimelineView.swift in Sources */,
+				0D45D80A2B5E01A100591524 /* Toast.swift in Sources */,
 				1F022A3D2B49159100966345 /* CustomCell.swift in Sources */,
 				0D012E6A2B477E3A00658153 /* String+.swift in Sources */,
 				0D012E8B2B477E3A00658153 /* JoinExistingWorkspaceView.swift in Sources */,
