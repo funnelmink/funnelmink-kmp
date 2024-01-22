@@ -53,10 +53,12 @@ fileprivate struct FunnelminkAppContents: View {
             }
         }
         .overlay {
+            // TODO: hide this conditionally
             VStack {
                 HStack {
                     Button {
-                        navigation.modalFullscreen(.debugMenu)
+//                        navigation.modalFullscreen(.debugMenu)
+                        navigation.toast("Let's make a toast")
                     } label: {
                         Image(systemName: "apple.terminal.fill")
                             .renderingMode(.original)
@@ -97,6 +99,7 @@ fileprivate struct FunnelminkAppContents: View {
             )
         ) {
         }
+        .toasted()
     }
 }
 

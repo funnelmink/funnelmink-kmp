@@ -43,6 +43,6 @@ enum Modal: Identifiable {
             case .debugMenu: DebugMenu()
             }
         }
-        // TODO: toast modifier, bound to navigation.modalToast
+        .toasted() // modals exist in a separate window. this modifier lets them display toasts anyways
     }
 }

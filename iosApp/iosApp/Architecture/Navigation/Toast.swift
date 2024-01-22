@@ -9,24 +9,50 @@
 import Foundation
 import SwiftUI
 
-struct Toasty: ViewModifier {
+struct ToastView: View {
+    @ObservedObject var navigation = Navigation.shared
+    let toast: Toast
+    var body: some View {
+        VStack {
+            Button {
+                navigation._state._toast = nil
+                navigation._state._modalToast = nil
+            } label: {
+                HStack {
+                    Image(systemName: toast.type.icon)
+                        .foregroundColor(toast.type.iconColor)
+                    Text(toast.message)
+                        .foregroundStyle(.primary)
+                }
+                .padding()
+                .padding(.horizontal)
+                .background(.regularMaterial)
+                .clipShape(Capsule())
+            }
+            Spacer()
+        }
+    }
+}
+
+struct Toasted: ViewModifier {
+    @ObservedObject var navigation = Navigation.shared
+    let isPresented: Bool
     func body(content: Content) -> some View {
         ZStack {
             content
-//            if toastManager.isPresenting {
-//                ToastView() // Your custom toast view
-//                    .animation(.default)
-//                    .transition(.move(edge: .top))
-//                    // Additional logic for dismissal and animation
-//            }
+            if isPresented, let toast = navigation._state._modalToast {
+                ToastView(toast: toast)
+            } else if let toast = navigation._state._toast {
+                ToastView(toast: toast)
+            }
         }
     }
 }
 
 extension View {
-    /// Modifies the view to be able to display toasts
-    func toasty() -> some View {
-        self.modifier(Toasty())
+    /// Enables the view to display toasts
+    func toasted(isPresented: Bool = false) -> some View {
+        self.modifier(Toasted(isPresented: isPresented))
     }
 }
 
