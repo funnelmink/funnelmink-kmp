@@ -75,6 +75,7 @@ final class AppState: ObservableObject {
             try Networking.api.signIntoWorkspace(workspace: workspace)
         } catch {
             Logger.logError(error)
+            Toast.error("\(error)\n\nPlease uninstall and reinstall the app. Sorry for the inconvenience!")
         }
     }
 }
