@@ -500,7 +500,10 @@ class FunnelminkAPI(
             try {
                 val message = jsonDecoder.decodeFromString<APIError>(responseBody).message
                 when (response.status) {
-                    HttpStatusCode.Unauthorized -> onAuthFailure?.invoke(message)
+                    HttpStatusCode.Unauthorized -> {
+                        onAuthFailure?.invoke(message)
+                        // TODO: retry after refreshing the token? Maybe the closure should return a bool (if success)
+                    }
                     HttpStatusCode.BadRequest -> onBadRequest?.invoke(message)
                     HttpStatusCode.NotFound -> onMissing?.invoke(message)
                     HttpStatusCode.InternalServerError -> onServerError?.invoke(message)
