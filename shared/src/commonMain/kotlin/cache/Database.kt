@@ -6,12 +6,61 @@ import models.*
 
 internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val database = FunnelminkCache(databaseDriverFactory.createDriver())
+    private val activityDB = database.activityQueries
     private val contactDB = database.contactQueries
     private val taskDB = database.scheduleTaskQueries
     private val userDB = database.userQueries
     private val workspaceDB = database.workspaceQueries
     private val workspaceMemberDB = database.workspaceMemberQueries
 
+    // ------------------------------------------------------------------------
+    // Activities
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertActivityForRecord(activity: ActivityRecord, recordID: String) {
+        activityDB.insertActivity(
+            activity.id,
+            activity.createdAt,
+            activity.details,
+            activity.memberID,
+            activity.type.typeName,
+            recordID
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllActivitiesForRecord(id: String): List<ActivityRecord> {
+        return activityDB.selectAllActivitiesForRecord(id, ::mapActivity).executeAsList()
+    }
+
+    @Throws(Exception::class)
+    fun updateActivity(activity: ActivityRecord) {
+        activityDB.updateActivityDetails(activity.details, activity.id)
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllActivitiesForRecord(id: String, activities: List<ActivityRecord>) {
+        activityDB.transaction {
+            activityDB.removeAllActivitiesForRecord(id)
+            activities.forEach { insertActivityForRecord(it, id) }
+        }
+    }
+
+    @Throws(Exception::class)
+    fun deleteActivity(id: String) {
+        activityDB.removeActivity(id)
+    }
+
+    @Throws(Exception::class)
+    private fun mapActivity(id: String, createdAt: String, details: String?, memberID: String, type: String, recordID: String): ActivityRecord {
+        return ActivityRecord(id, createdAt, details, memberID, ActivityRecordType.fromTypeName(type))
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllActivities() {
+        activityDB.removeAllActivities()
+    }
 
     // ------------------------------------------------------------------------
     // Contacts
@@ -395,6 +444,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     @Throws(Exception::class)
     fun clearAllDatabases() {
+        deleteAllActivities()
         deleteAllContacts()
         deleteAllTasks()
         deleteAllWorkspaces()

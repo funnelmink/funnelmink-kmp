@@ -44,6 +44,7 @@ interface API {
     // contacts
     @Throws(Exception::class) suspend fun createContact(body: CreateContactRequest): Contact
     @Throws(Exception::class) suspend fun deleteContact(id: String)
+    @Throws(Exception::class) suspend fun getContactActivities(id: String): List<ActivityRecord>
     @Throws(Exception::class) suspend fun getContactDetails(id: String): Contact
     @Throws(Exception::class) suspend fun getContacts(): List<Contact>
     @Throws(Exception::class) suspend fun updateContact(id: String, body: UpdateContactRequest): Contact
