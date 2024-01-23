@@ -93,6 +93,17 @@ class FunnelminkAPI(
     }
 
     // ------------------------------------------------------------------------
+    // Activities
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun createActivity(subtype: ActivitySubtype, body: CreateActivityRequest) {
+        genericRequest<Unit>("$baseURL/v1/activities/${subtype.typeName}", HttpMethod.Post) {
+            setBody(body)
+        }
+    }
+
+    // ------------------------------------------------------------------------
     // Contacts
     // ------------------------------------------------------------------------
 

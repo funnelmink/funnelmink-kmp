@@ -76,3 +76,13 @@ data class APIError(
     val message: String,
     val code: Int,
 )
+
+enum class ActivitySubtype(val typeName: String) {
+    Contact("contact")
+}
+
+@Serializable
+data class CreateActivityRequest(
+    val type: ActivityRecordType,
+    val details: String?,
+)

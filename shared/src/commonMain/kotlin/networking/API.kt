@@ -41,6 +41,9 @@ interface API {
     // (you need to be signed into a workspace. will fail if `workspaceID == nil`)
     // ------------------------------------------------------------------------
 
+    // activities
+    @Throws(Exception::class) suspend fun createActivity(subtype: ActivitySubtype, body: CreateActivityRequest)
+
     // contacts
     @Throws(Exception::class) suspend fun createContact(body: CreateContactRequest): Contact
     @Throws(Exception::class) suspend fun deleteContact(id: String)
