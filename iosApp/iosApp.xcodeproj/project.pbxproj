@@ -104,6 +104,7 @@
 		1FCB7A42AD73B432D0CFDFA6 /* ContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7369E081C256A2F111A5 /* ContactsViewModel.swift */; };
 		1FCB7BF596E9F1D2939A3E34 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7D6AC6CEDB402D6F242A /* AppState.swift */; };
 		1FCB7CD17EFAA37FE7FA338F /* Shared+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */; };
+		1FCB7D042F2C82CA13D88884 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7097FD586CA3E01B3C36 /* Double+.swift */; };
 		1FCB7F4778BB0D8858D5D07F /* ContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7CE3EF7820D5DFDFD6ED /* ContactsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -200,6 +201,7 @@
 		1FA27F752B53151400A447C3 /* CreateContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContactView.swift; sourceTree = "<group>"; };
 		1FA27F772B536DE600A447C3 /* ContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactView.swift; sourceTree = "<group>"; };
 		1FA27F792B5978F300A447C3 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
+		1FCB7097FD586CA3E01B3C36 /* Double+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Shared+.swift"; sourceTree = "<group>"; };
 		1FCB729289973E82B53DC6AE /* WorkspacesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspacesViewModel.swift; sourceTree = "<group>"; };
 		1FCB72AEE522D13EAC8565D2 /* Segue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
@@ -381,6 +383,7 @@
 				0D012E402B477E3900658153 /* SwiftUI+.swift */,
 				0D012E3F2B477E3900658153 /* View+.swift */,
 				0D73AB122B54DAF30026EC4D /* Int32+.swift */,
+				1FCB7097FD586CA3E01B3C36 /* Double+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -856,6 +859,7 @@
 				1FCB73F124945A937ECDAC6F /* WorkspacesView.swift in Sources */,
 				1FCB781F978049D634870A8C /* WorkspacesViewModel.swift in Sources */,
 				1FCB7BF596E9F1D2939A3E34 /* AppState.swift in Sources */,
+				1FCB7D042F2C82CA13D88884 /* Double+.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

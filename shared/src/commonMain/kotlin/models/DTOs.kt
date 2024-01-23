@@ -9,7 +9,15 @@ data class CreateContactRequest(
     val emails: List<String>,
     val phoneNumbers: List<String>,
     val companyName: String? = null,
-    val isOrganization: Boolean
+    val isOrganization: Boolean,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val street1: String? = null,
+    val street2: String? = null,
+    val city: String? = null,
+    val state: String? = null,
+    val country: String? = null,
+    val zip: String? = null,
 )
 
 @Serializable
@@ -19,7 +27,15 @@ data class UpdateContactRequest(
     val emails: List<String>,
     val phoneNumbers: List<String>,
     val companyName: String? = null,
-    val isOrganization: Boolean
+    val isOrganization: Boolean,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val street1: String? = null,
+    val street2: String? = null,
+    val city: String? = null,
+    val state: String? = null,
+    val country: String? = null,
+    val zip: String? = null,
 )
 
 @Serializable

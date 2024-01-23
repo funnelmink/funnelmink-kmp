@@ -103,5 +103,23 @@ struct ContactEvent {
 }
 
 #Preview {
-    ContactView(contact: Contact(id: "", firstName: "Jeremy", lastName: "Warren", emails: ["jeddynwarren@gmail.com"], phoneNumbers: ["(801) 226-8345"], companyName: "Funnelmink", isOrganization: false))
+    ContactView(
+        contact: Contact(
+            id: "",
+            firstName: "Jeremy",
+            lastName: "Warren",
+            emails: ["jeddynwarren@gmail.com"],
+            phoneNumbers: ["(801) 226-8345"],
+            companyName: "Funnelmink",
+            isOrganization: false,
+            latitude: 38.465636,
+            longitude: -66.813608,
+            street1: "891 N 800 E",
+            street2: nil,
+            city: "Orem",
+            state: "UT",
+            country: "US",
+            zip: "84097"
+        )
+    )
 }

@@ -5,13 +5,21 @@ CREATE TABLE SQLContact (
     emails TEXT NOT NULL, -- Storing emails as a comma-separated string
     phoneNumbers TEXT NOT NULL, -- Storing phone numbers as a comma-separated string
     companyName TEXT,
-    isOrganization INTEGER NOT NULL
+    isOrganization INTEGER NOT NULL,
+    latitude TEXT,
+    longitude TEXT,
+    street1 TEXT,
+    street2 TEXT,
+    city TEXT,
+    state TEXT,
+    country TEXT,
+    zip TEXT
 );
 
 
 insertContact:
-INSERT INTO SQLContact(id, firstName, lastName, emails, phoneNumbers, companyName, isOrganization)
-VALUES(?, ?, ?, ?, ?, ?, ?);
+INSERT INTO SQLContact(id, firstName, lastName, emails, phoneNumbers, companyName, isOrganization, latitude, longitude, street1, street2, city, state, country, zip)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 selectContactById:
 SELECT *
@@ -29,7 +37,15 @@ SET firstName = ?,
     emails = ?,
     phoneNumbers = ?,
     companyName = ?,
-    isOrganization = ?
+    isOrganization = ?,
+    latitude = ?,
+    longitude = ?,
+    street1 = ?,
+    street2 = ?,
+    city = ?,
+    state = ?,
+    country = ?,
+    zip = ?
 WHERE id = ?;
 
 removeContact:
