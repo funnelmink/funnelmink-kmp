@@ -85,4 +85,5 @@ enum class ActivitySubtype(val typeName: String) {
 data class CreateActivityRequest(
     val type: ActivityRecordType,
     val details: String?,
+    val parentID: String
 )
