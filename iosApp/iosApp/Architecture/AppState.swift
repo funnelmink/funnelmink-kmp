@@ -64,6 +64,7 @@ final class AppState: ObservableObject {
 #endif
         } catch {
             Logger.logWarning(error)
+            Toast.error("\(error)\n\nPlease uninstall and reinstall the app. Sorry for the inconvenience!")
         }
     }
     
