@@ -97,6 +97,7 @@
 		1FA27F7C2B5CAA9F00A447C3 /* CustomEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F7B2B5CAA9F00A447C3 /* CustomEmptyView.swift */; };
 		1FA27F7F2B5CAD7700A447C3 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1FA27F7E2B5CAD7700A447C3 /* Lottie */; };
 		1FA27F822B5CAFF200A447C3 /* ContactsLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 1FA27F812B5CAFF200A447C3 /* ContactsLottie.json */; };
+		1FA27F842B5EE80E00A447C3 /* TasksLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 1FA27F832B5EE80E00A447C3 /* TasksLottie.json */; };
 		1FCB70600327C8D33AEA3E90 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7D2C21891A9AE2804154 /* Modal.swift */; };
 		1FCB73F124945A937ECDAC6F /* WorkspacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7C4E3E93CDD70AD8DCC1 /* WorkspacesView.swift */; };
 		1FCB74155DEADF4A32FAA4E4 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7A3AB02D5F9F52C1AB1F /* LoginViewModel.swift */; };
@@ -203,6 +204,7 @@
 		1FA27F792B5978F300A447C3 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		1FA27F7B2B5CAA9F00A447C3 /* CustomEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomEmptyView.swift; sourceTree = "<group>"; };
 		1FA27F812B5CAFF200A447C3 /* ContactsLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ContactsLottie.json; sourceTree = "<group>"; };
+		1FA27F832B5EE80E00A447C3 /* TasksLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TasksLottie.json; sourceTree = "<group>"; };
 		1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Shared+.swift"; sourceTree = "<group>"; };
 		1FCB729289973E82B53DC6AE /* WorkspacesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspacesViewModel.swift; sourceTree = "<group>"; };
 		1FCB72AEE522D13EAC8565D2 /* Segue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 			isa = PBXGroup;
 			children = (
 				1FA27F812B5CAFF200A447C3 /* ContactsLottie.json */,
+				1FA27F832B5EE80E00A447C3 /* TasksLottie.json */,
 			);
 			path = LottieFiles;
 			sourceTree = "<group>";
@@ -772,6 +775,7 @@
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
 				0DBB674F2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig in Resources */,
 				0D012E8E2B477E9000658153 /* Assets.xcassets in Resources */,
+				1FA27F842B5EE80E00A447C3 /* TasksLottie.json in Resources */,
 				0D012E9A2B47877B00658153 /* ProdEnvironment.xcconfig in Resources */,
 				1FA27F822B5CAFF200A447C3 /* ContactsLottie.json in Resources */,
 				0D012DF52B477D1D00658153 /* gRPCCertificates-Cpp.bundle in Resources */,
