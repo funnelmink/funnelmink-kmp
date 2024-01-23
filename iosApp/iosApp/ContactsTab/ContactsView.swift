@@ -70,12 +70,11 @@ struct ContactsView: View {
             } else {
                 CustomEmptyView(type: .contacts, lottieAnimation: "ContactsLottie")
             }
-            
         }
         .toolbar {
             ToolbarItem(placement: .primaryAction) {
                 Button {
-                    nav.presentSheet(.createContact) {
+                    nav.modalSheet(.createContact) {
                         Task {
                             await viewModel.getContacts()
                         }

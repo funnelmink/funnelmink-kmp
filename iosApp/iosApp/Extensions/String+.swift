@@ -39,7 +39,6 @@ extension String {
     }
     
     struct AppStorage {
-        let todaySortOrder = "todaySortOrder"
-        let todayIsSearchable = "todayIsSearchable"
+        let todaySelection = "todaySelection"
     }
 }

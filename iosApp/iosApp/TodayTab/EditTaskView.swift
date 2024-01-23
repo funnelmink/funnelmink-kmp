@@ -24,10 +24,6 @@ struct EditTaskView: View {
                 .font(.title)
                 .fontWeight(.bold)
                 .padding(.top)
-            if let errorMessage = viewModel.creationErrorMessage {
-                Text(errorMessage)
-                    .foregroundStyle(.red)
-            }
             List {
                 Section("TITLE") {
                     TextField(
@@ -40,8 +36,9 @@ struct EditTaskView: View {
                 }
                 
                 Section("DESCRIPTION") {
-                    TextField("", text: $taskBody, prompt: Text("(Optional)").foregroundColor(.gray))
-                        .frame(minHeight: 44)
+                    TextEditor(text: $taskBody)
+                        .multilineTextAlignment(.leading)
+                        .maxReadableWidth()
                 }
                 
                 

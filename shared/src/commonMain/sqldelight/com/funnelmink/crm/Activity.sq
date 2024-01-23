@@ -1,0 +1,33 @@
+CREATE TABLE SQLActivity (
+    id TEXT PRIMARY KEY,
+    createdAt TEXT NOT NULL,
+    details TEXT,
+    memberID TEXT NOT NULL,
+    type TEXT NOT NULL,
+    recordID TEXT NOT NULL
+);
+
+insertActivity:
+INSERT INTO SQLActivity(id, createdAt, details, memberID, type, recordID)
+VALUES(?, ?, ?, ?, ?, ?);
+
+selectAllActivitiesForRecord:
+SELECT *
+FROM SQLActivity
+WHERE recordID = ?;
+
+updateActivityDetails:
+UPDATE SQLActivity
+SET details = ?
+WHERE id = ?;
+
+removeActivity:
+DELETE FROM SQLActivity
+WHERE id = ?;
+
+removeAllActivitiesForRecord:
+DELETE FROM SQLActivity
+WHERE recordID = ?;
+
+removeAllActivities:
+DELETE FROM SQLActivity;

@@ -24,7 +24,7 @@ struct AccountView: View {
                     }
                 }
                 Button {
-                    navigation.performSegue(.workspaceSettings)
+                    navigation.segue(.workspaceSettings)
                 } label: {
                     HStack {
                         VStack(alignment: .leading) {
@@ -66,6 +66,7 @@ struct AccountView: View {
                 )
             }
         }
+        .scrollIndicators(.never)
         .tint(.primary)
         .navigationTitle("Account")
     }

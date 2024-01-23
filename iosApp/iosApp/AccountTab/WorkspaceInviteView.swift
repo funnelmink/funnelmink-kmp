@@ -43,7 +43,7 @@ struct WorkspaceInviteView: View {
             .padding(.vertical)
             AsyncButton {
                 guard Validator.isValidEmail(inviteEmailAddress) else {
-                    AppState.shared.prompt = "Please enter a valid email address."
+                    Toast.warn("Please enter a valid email address.")
                     return
                 }
                 

@@ -42,11 +42,11 @@ struct WorkspaceSettingsView: View {
                 }
                 Section("DANGER ZONE") {
                     Button("Invite new members") {
-                        navigation.presentSheet(.inviteToWorkspace)
+                        navigation.modalSheet(.inviteToWorkspace)
                     }
                     
                     Button("Upgrade to premium") {
-                        appState.todo()
+                        Toast.error("TODO")
                         //                        navigation.externalDeeplink(to: .funnelminkStripe)
                     }
                     
@@ -68,7 +68,7 @@ struct WorkspaceSettingsView: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button {
-                        navigation.presentSheet(.selectWorkspace)
+                        navigation.modalSheet(.selectWorkspace)
                     } label: {
                         Text("Change workspace")
                     }

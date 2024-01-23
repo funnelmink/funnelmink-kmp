@@ -21,10 +21,13 @@ class Networking {
         fmapi.onAuthFailure = { _ in
             Task { @MainActor in
                 do {
-                    guard let token = try await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true).token else { throw "Your session has expired. Please log in again." }
+                    guard let token = try await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true).token else {
+                        Toast.error("Your session has expired. Please log in again.")
+                        return
+                    }
                     try Networking.api.refreshToken(token: token)
                 } catch {
-                    AppState.shared.prompt = "Your session has expired. Please log in again."
+                    Toast.error("Your session has expired. Please log in again.")
                 }
             }
         }
@@ -32,25 +35,25 @@ class Networking {
         // TODO: all of the following will also need to be surfaced to the user
         fmapi.onBadRequest = { message in
             Task { @MainActor in
-                AppState.shared.error = message
+                Toast.error(message)
             }
         }
         
         fmapi.onDecodingError = { message in
             Task { @MainActor in
-                AppState.shared.error = message
+                Toast.error(message)
             }
         }
         
         fmapi.onMissing = { message in
             Task { @MainActor in
-                AppState.shared.error = message
+                Toast.error(message)
             }
         }
         
         fmapi.onServerError = { message in
             Task { @MainActor in
-                AppState.shared.error = message
+                Toast.error(message)
             }
         }
         

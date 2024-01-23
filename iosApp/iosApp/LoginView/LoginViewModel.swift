@@ -51,11 +51,11 @@ class LoginViewModel: ViewModel {
                     let user = try await Networking.api.createUser(body: body)
                     AppState.shared.signIn(user: user, token: token)
                 } catch {
-                    AppState.shared.error = error
+                    Toast.warn(error)
                 }
             }
         } catch {
-            AppState.shared.error = error
+            Toast.warn(error)
         }
     }
 }

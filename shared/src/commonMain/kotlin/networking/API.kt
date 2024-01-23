@@ -41,9 +41,13 @@ interface API {
     // (you need to be signed into a workspace. will fail if `workspaceID == nil`)
     // ------------------------------------------------------------------------
 
+    // activities
+    @Throws(Exception::class) suspend fun createActivity(subtype: ActivitySubtype, body: CreateActivityRequest)
+
     // contacts
     @Throws(Exception::class) suspend fun createContact(body: CreateContactRequest): Contact
     @Throws(Exception::class) suspend fun deleteContact(id: String)
+    @Throws(Exception::class) suspend fun getContactActivities(id: String): List<ActivityRecord>
     @Throws(Exception::class) suspend fun getContactDetails(id: String): Contact
     @Throws(Exception::class) suspend fun getContacts(): List<Contact>
     @Throws(Exception::class) suspend fun updateContact(id: String, body: UpdateContactRequest): Contact
@@ -51,7 +55,9 @@ interface API {
     // tasks
     @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): ScheduleTask
     @Throws(Exception::class) suspend fun deleteTask(id: String)
-    @Throws(Exception::class) suspend fun getTasks(date: String?, priority: Int?, limit: Int?, offset: Int?, isComplete: Boolean): List<ScheduleTask>
+    @Throws(Exception::class) suspend fun getTask(id: String): ScheduleTask?
+    @Throws(Exception::class) suspend fun getTasks(): List<ScheduleTask>
+    @Throws(Exception::class) suspend fun getCompletedTasks(): List<ScheduleTask>
     @Throws(Exception::class) suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask
     @Throws(Exception::class) suspend fun toggleTaskCompletion(id: String, isComplete: Boolean) : ScheduleTask
 

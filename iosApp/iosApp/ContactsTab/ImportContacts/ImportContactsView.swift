@@ -41,7 +41,7 @@ struct ImportContactsView: View {
                             Text(contact.phoneNumber)
                         }
                         Spacer()
-                        Button("Import") { appState.todo() }
+                        Button("Import") { Toast.error("TODO") }
                     }
                 }
                 .listStyle(.inset)
