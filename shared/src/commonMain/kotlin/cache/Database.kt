@@ -6,12 +6,61 @@ import models.*
 
 internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val database = FunnelminkCache(databaseDriverFactory.createDriver())
+    private val activityDB = database.activityQueries
     private val contactDB = database.contactQueries
     private val taskDB = database.scheduleTaskQueries
     private val userDB = database.userQueries
     private val workspaceDB = database.workspaceQueries
     private val workspaceMemberDB = database.workspaceMemberQueries
 
+    // ------------------------------------------------------------------------
+    // Activities
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertActivityForRecord(activity: ActivityRecord, recordID: String) {
+        activityDB.insertActivity(
+            activity.id,
+            activity.createdAt,
+            activity.details,
+            activity.memberID,
+            activity.type.typeName,
+            recordID
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllActivitiesForRecord(id: String): List<ActivityRecord> {
+        return activityDB.selectAllActivitiesForRecord(id, ::mapActivity).executeAsList()
+    }
+
+    @Throws(Exception::class)
+    fun updateActivity(activity: ActivityRecord) {
+        activityDB.updateActivityDetails(activity.details, activity.id)
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllActivitiesForRecord(id: String, activities: List<ActivityRecord>) {
+        activityDB.transaction {
+            activityDB.removeAllActivitiesForRecord(id)
+            activities.forEach { insertActivityForRecord(it, id) }
+        }
+    }
+
+    @Throws(Exception::class)
+    fun deleteActivity(id: String) {
+        activityDB.removeActivity(id)
+    }
+
+    @Throws(Exception::class)
+    private fun mapActivity(id: String, createdAt: String, details: String?, memberID: String, type: String, recordID: String): ActivityRecord {
+        return ActivityRecord(id, createdAt, details, memberID, ActivityRecordType.fromTypeName(type))
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllActivities() {
+        activityDB.removeAllActivities()
+    }
 
     // ------------------------------------------------------------------------
     // Contacts
@@ -26,7 +75,15 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             contact.emails.joinToString(separator = ","),
             contact.phoneNumbers.joinToString(separator = ","),
             contact.companyName,
-            toLong(contact.isOrganization)
+            toLong(contact.isOrganization),
+            contact.latitude?.toString(),
+            contact.longitude?.toString(),
+            contact.street1,
+            contact.street2,
+            contact.city,
+            contact.state,
+            contact.country,
+            contact.zip
         )
     }
 
@@ -40,7 +97,15 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             cached.emails,
             cached.phoneNumbers,
             cached.companyName,
-            cached.isOrganization
+            cached.isOrganization,
+            cached.latitude,
+            cached.longitude,
+            cached.street1,
+            cached.street2,
+            cached.city,
+            cached.state,
+            cached.country,
+            cached.zip
         )
     }
 
@@ -58,6 +123,14 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             contact.phoneNumbers.joinToString(separator = ","),
             contact.companyName,
             toLong(contact.isOrganization),
+            contact.latitude?.toString(),
+            contact.longitude?.toString(),
+            contact.street1,
+            contact.street2,
+            contact.city,
+            contact.state,
+            contact.country,
+            contact.zip,
             contact.id
         )
     }
@@ -85,7 +158,15 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         emails: String,
         phoneNumbers: String,
         companyName: String?,
-        isOrganization: Long
+        isOrganization: Long,
+        latitude: String?,
+        longitude: String?,
+        street1: String?,
+        street2: String?,
+        city: String?,
+        state: String?,
+        country: String?,
+        zip: String?
     ): Contact {
         return Contact(
             id,
@@ -94,7 +175,15 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             emails.takeIf { it.isNotBlank() }?.split(",") ?: emptyList(),
             phoneNumbers.takeIf { it.isNotBlank() }?.split(",") ?: emptyList(),
             companyName,
-            toBool(isOrganization)
+            toBool(isOrganization),
+            latitude?.toDoubleOrNull(),
+            longitude?.toDoubleOrNull(),
+            street1,
+            street2,
+            city,
+            state,
+            country,
+            zip
         )
     }
 
@@ -355,6 +444,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     @Throws(Exception::class)
     fun clearAllDatabases() {
+        deleteAllActivities()
         deleteAllContacts()
         deleteAllTasks()
         deleteAllWorkspaces()

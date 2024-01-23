@@ -26,7 +26,23 @@ class ContactsViewModel: ViewModel {
     }
     
     @MainActor
-    func createContact(firstName: String, lastName: String, emails: [String], phoneNumbers: [String], companyName: String, isOrganization: Bool, onSuccess: @escaping () -> Void) async {
+    func createContact(
+        firstName: String,
+        lastName: String,
+        emails: [String],
+        phoneNumbers: [String],
+        companyName: String,
+        isOrganization: Bool,
+        latitude: Double?,
+        longitude: Double?,
+        street1: String?,
+        street2: String?,
+        city: String?,
+        state: String?,
+        country: String?,
+        zip: String?,
+        onSuccess: @escaping () -> Void
+    ) async {
         do {
             let body = CreateContactRequest(
                 firstName: firstName,
@@ -34,7 +50,15 @@ class ContactsViewModel: ViewModel {
                 emails: emails,
                 phoneNumbers: phoneNumbers,
                 companyName: companyName,
-                isOrganization: isOrganization
+                isOrganization: isOrganization,
+                latitude: latitude?.kotlinValue,
+                longitude: longitude?.kotlinValue,
+                street1: street1,
+                street2: street2,
+                city: city,
+                state: state,
+                country: country,
+                zip: zip
             )
 //            if !Utilities.validation.isName(input: body.name) {
 //                throw "\(body.name) contains invalid characters"
@@ -70,7 +94,15 @@ class ContactsViewModel: ViewModel {
                 emails: [],         //  [String]
                 phoneNumbers: [],   //  [String]
                 companyName: nil,       //  String?
-                isOrganization: false
+                isOrganization: false,
+                latitude: nil,
+                longitude: nil,
+                street1: nil,
+                street2: nil,
+                city: nil,
+                state: nil,
+                country: nil,
+                zip: nil
             )
             
             _ = try await Networking.api.updateContact(id: "", body: body)
