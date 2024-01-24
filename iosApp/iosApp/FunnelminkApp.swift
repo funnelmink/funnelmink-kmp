@@ -53,9 +53,9 @@ fileprivate struct FunnelminkAppContents: View {
             }
         }
         .overlay {
-            // TODO: hide this conditionally
+            // TODO: hide this conditionally (.hidden)
             VStack {
-                HStack {
+                HStack(spacing: 0) {
                     Button {
                         navigation.modalFullscreen(.debugMenu)
                     } label: {
@@ -65,6 +65,11 @@ fileprivate struct FunnelminkAppContents: View {
                     }
                     .padding(.leading, 64)
                     .padding(.top, 8)
+                    if FeatureFlags.isOverridingRemoteConfig {
+                        Image(systemName: "flag.fill")
+                            .foregroundColor(.purple)
+                            .font(.caption)
+                    }
                     Spacer()
                 }
                 Spacer()

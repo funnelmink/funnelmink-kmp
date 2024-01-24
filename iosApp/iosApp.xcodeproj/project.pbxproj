@@ -88,6 +88,8 @@
 		0DCC163A2B511A2C008F705B /* EditTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC16392B511A2C008F705B /* EditTaskViewModel.swift */; };
 		0DCC163C2B5249DC008F705B /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC163B2B5249DC008F705B /* Date+.swift */; };
 		0DCC163E2B524AE2008F705B /* DateFormatter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC163D2B524AE2008F705B /* DateFormatter+.swift */; };
+		0DE9E09D2B60CB7200B8288F /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E09C2B60CB7200B8288F /* FeatureFlags.swift */; };
+		0DE9E0A02B60D6BF00B8288F /* DebugDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E09F2B60D6BF00B8288F /* DebugDivider.swift */; };
 		1F022A3B2B49159100966345 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A372B49159100966345 /* CustomButton.swift */; };
 		1F022A3C2B49159100966345 /* CustomAccordion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A382B49159100966345 /* CustomAccordion.swift */; };
 		1F022A3D2B49159100966345 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A392B49159100966345 /* CustomCell.swift */; };
@@ -194,6 +196,8 @@
 		0DCC16392B511A2C008F705B /* EditTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskViewModel.swift; sourceTree = "<group>"; };
 		0DCC163B2B5249DC008F705B /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		0DCC163D2B524AE2008F705B /* DateFormatter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+.swift"; sourceTree = "<group>"; };
+		0DE9E09C2B60CB7200B8288F /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
+		0DE9E09F2B60D6BF00B8288F /* DebugDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugDivider.swift; sourceTree = "<group>"; };
 		1F022A372B49159100966345 /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		1F022A382B49159100966345 /* CustomAccordion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAccordion.swift; sourceTree = "<group>"; };
 		1F022A392B49159100966345 /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
@@ -502,10 +506,20 @@
 			isa = PBXGroup;
 			children = (
 				0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */,
-				0DBF9CB02B5A35F20045AC44 /* LogsView.swift */,
+				0DE9E09C2B60CB7200B8288F /* FeatureFlags.swift */,
 				0DBF9CB22B5A35FB0045AC44 /* FeatureFlagsView.swift */,
+				0DBF9CB02B5A35F20045AC44 /* LogsView.swift */,
+				0DE9E09E2B60D6B500B8288F /* Components */,
 			);
 			path = DebugMenu;
+			sourceTree = "<group>";
+		};
+		0DE9E09E2B60D6B500B8288F /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				0DE9E09F2B60D6BF00B8288F /* DebugDivider.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		1FCB73951508CB9D7232AE9F /* xcschemes */ = {
@@ -823,6 +837,7 @@
 				0D012E782B477E3A00658153 /* AppDelegate.swift in Sources */,
 				0D012E672B477E3A00658153 /* FunnelsView.swift in Sources */,
 				1FA27F782B536DE600A447C3 /* ContactView.swift in Sources */,
+				0DE9E09D2B60CB7200B8288F /* FeatureFlags.swift in Sources */,
 				0DCC16362B50DC9D008F705B /* TaskCell.swift in Sources */,
 				0D012E792B477E3A00658153 /* InboxView.swift in Sources */,
 				0D012E682B477E3A00658153 /* TodayView.swift in Sources */,
@@ -858,6 +873,7 @@
 				1FCB74155DEADF4A32FAA4E4 /* LoginViewModel.swift in Sources */,
 				1FCB73F124945A937ECDAC6F /* WorkspacesView.swift in Sources */,
 				1FCB781F978049D634870A8C /* WorkspacesViewModel.swift in Sources */,
+				0DE9E0A02B60D6BF00B8288F /* DebugDivider.swift in Sources */,
 				1FCB7BF596E9F1D2939A3E34 /* AppState.swift in Sources */,
 				1FCB7D042F2C82CA13D88884 /* Double+.swift in Sources */,
 			);
