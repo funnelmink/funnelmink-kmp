@@ -10,6 +10,12 @@ import FirebaseRemoteConfig
 import SwiftUI
 
 struct UpdateWallView: View {
+    @EnvironmentObject var appState: AppState
+    var isSkippable: Bool {
+        guard let minRequired = rc["iOS_updateWall_minVersionRequired"].stringValue, !minRequired.isEmpty else { return false }
+        return !(Properties.appVersion.compare(minRequired, options: .numeric) == .orderedAscending)
+        
+    }
     let rc = RemoteConfig.remoteConfig()
     var title: String { rc["iOS_updateWall_title"].stringValue ?? "funnelmink just got even better" }
     var message: String { rc["iOS_updateWall_body"].stringValue ?? "Tap the button to update to the latest version!" }
@@ -38,8 +44,7 @@ struct UpdateWallView: View {
             Spacer()
             
             Button {
-                guard let url = URL(string: buttonURL) else { return }
-                UIApplication.shared.open(url)
+                Navigation.shared.externalDeeplink(to: buttonURL)
             } label: {
                 Text(buttonTitle)
                     .frame(height: 52)
@@ -49,12 +54,18 @@ struct UpdateWallView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 4))
             }
             .padding()
+            if isSkippable {
+                Button {
+                    appState.shouldPresentUpdateWall = false
+                } label: {
+                    Text("Later")
+                        .bold()
+                        .foregroundStyle(.secondary)
+                }
+                .padding(.bottom)
+            }
             
             Spacer()
         }
     }
-}
-
-#Preview {
-    UpdateWallView()
 }

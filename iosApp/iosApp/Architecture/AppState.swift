@@ -15,11 +15,15 @@ final class AppState: ObservableObject {
     @Published var user: Shared.User?
     @Published var workspace: Workspace?
     @Published var hasInitialized = false
+    @Published var shouldPresentUpdateWall = false
+    @Published var shouldPresentWhatsNew = false
 
     var isWorkspaceOwner: Bool { workspace?.role == .owner }
     
     @MainActor
-    func configure(token: String?) {
+    func configure(token: String?, updateWall: Bool, whatsNew: Bool) {
+        shouldPresentUpdateWall = updateWall
+        shouldPresentWhatsNew = whatsNew
         do {
             if let token,
                let uid = UserDefaults.standard.string(forKey: "userID"),

@@ -22,6 +22,10 @@ fileprivate struct FunnelminkAppContents: View {
             if !appState.hasInitialized {
                 // Loading screen
                 Color.white.overlay { Image("logo") }
+            } else if appState.shouldPresentUpdateWall {
+                UpdateWallView()
+            } else if appState.shouldPresentWhatsNew {
+                WhatsNewView()
             } else if appState.user != nil {
                 // Logged in and has joined a Workspace
                 if let workspace = appState.workspace {
@@ -39,7 +43,7 @@ fileprivate struct FunnelminkAppContents: View {
 
                     // Logged in but no Workspaces
                 } else {
-                    WorkspacesView()
+                    WorkspacesView() // TODO: pass in whether or not the user has the option to log out
                 }
 
                 // Not logged in

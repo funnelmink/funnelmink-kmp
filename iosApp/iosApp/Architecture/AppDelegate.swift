@@ -15,6 +15,7 @@ import Shared
 import SwiftUI
 
 final class AppDelegate: NSObject, UIApplicationDelegate {
+    private lazy var rc = RemoteConfig.remoteConfig()
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         #if DEBUG
         print("🪲 DEBUG BUILD 🪲")
@@ -34,7 +35,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             // pause until all async requests have finished
             let (token, _) = try await (tokenRequest, remoteConfig)
             
-            AppState.shared.configure(token: token)
+            AppState.shared.configure(token: token, updateWall: displayUpdateWall(), whatsNew: displayWhatsNew())
         }
         return true
     }
@@ -46,11 +47,31 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 
 extension AppDelegate {
     private func setUpRemoteConfig() async throws {
-        let rc = RemoteConfig.remoteConfig()
         let settings = RemoteConfigSettings()
         settings.minimumFetchInterval = 0
         rc.configSettings = settings
         
         _ = try await rc.fetchAndActivate()
+    }
+    
+    private func displayUpdateWall() -> Bool {
+        guard let minRequired = rc["iOS_updateWall_minVersionRequired"].stringValue,
+              let minSuggested = rc["iOS_updateWall_minVersionSuggested"].stringValue,
+              !minRequired.isEmpty
+        else { return false }
+        
+        let currentVersion = Properties.appVersion
+        
+        if currentVersion.compare(minRequired, options: .numeric) == .orderedAscending {
+            return true
+        } else if currentVersion.compare(minSuggested, options: .numeric) == .orderedAscending {
+            return true
+        }
+        return false
+    }
+    
+    private func displayWhatsNew() -> Bool {
+        // TODO: json array of what's new views. they're displayed as a carousel?
+        return false
     }
 }
