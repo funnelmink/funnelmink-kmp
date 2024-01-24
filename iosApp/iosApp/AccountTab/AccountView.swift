@@ -45,9 +45,7 @@ struct AccountView: View {
             }
             
             Section {
-                if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
-                    infoRow(name: "App version:", value: version)
-                }
+                infoRow(name: "App version:", value: Properties.appVersion)
                 infoRow(name: "iOS version:", value: UIDevice.current.systemVersion)
                 if let id = appState.user?.id {
                     infoRow(name: "User:", value: id, font: .caption)
@@ -85,14 +83,14 @@ struct AccountView: View {
     }
     
     private func infoRow(name: String, value: String, font: Font = .caption2) -> some View {
-        // TODO: toast "copied to clipboard"
         Button {
             UIPasteboard.general.string = """
-                App version: \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "")
+                App version: \(Properties.appVersion)
                 iOS version: \(UIDevice.current.systemVersion)
                 User ID: \(appState.user?.id ?? "")
                 Workspace ID: \(appState.workspace?.id ?? "")
                 """
+            Toast.info("Copied to clipboard")
         } label: {
             HStack {
                 Text(name)
