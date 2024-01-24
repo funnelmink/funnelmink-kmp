@@ -32,7 +32,7 @@ final class AppState: ObservableObject {
                 }
             }
         } catch {
-            Logger.logWarning(error)
+            Logger.warning(error)
         }
         hasInitialized = true
     }
@@ -46,7 +46,7 @@ final class AppState: ObservableObject {
             UserDefaults.standard.removeObject(forKey: "userID")
             UserDefaults.standard.removeObject(forKey: "workspaceID")
         } catch {
-            Logger.logWarning(error)
+            Logger.warning(error)
         }
     }
     
@@ -63,7 +63,7 @@ final class AppState: ObservableObject {
             }
 #endif
         } catch {
-            Logger.logWarning(error)
+            Logger.warning(error)
             Toast.error("\(error)\n\nPlease uninstall and reinstall the app. Sorry for the inconvenience!")
         }
     }
@@ -75,7 +75,7 @@ final class AppState: ObservableObject {
             self.workspace = workspace
             try Networking.api.signIntoWorkspace(workspace: workspace)
         } catch {
-            Logger.logError(error)
+            Logger.error(error)
             Toast.error("\(error)\n\nPlease uninstall and reinstall the app. Sorry for the inconvenience!")
         }
     }

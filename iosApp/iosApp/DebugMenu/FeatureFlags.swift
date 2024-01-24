@@ -26,7 +26,7 @@ enum FeatureFlags: String, CaseIterable {
             return Self.defaults.bool(forKey: "FeatureFlags.\(rawValue)")
         }
         #endif
-        return Self.remoteConfig["iOS.\(rawValue)"].boolValue
+        return Self.remoteConfig["iOS_\(rawValue)"].boolValue
     }
     
     func set(_ isEnabled: Bool) {
@@ -35,26 +35,8 @@ enum FeatureFlags: String, CaseIterable {
         #endif
     }
     
-    static let remoteConfig = RemoteConfig.remoteConfig()
+    static private let remoteConfig = RemoteConfig.remoteConfig()
     
     // share the same UserDefaults between `funnelmink` and `funnelmink dev`
     static let defaults = UserDefaults(suiteName: "group.com.funnelmink.crm")!
-    
-    // TODO: is this correct?
-    static func setup() {
-        let settings = RemoteConfigSettings()
-        settings.minimumFetchInterval = 0
-        remoteConfig.configSettings = settings
-        remoteConfig.setDefaults(fromPlist: "RemoteConfigDefaults")
-    }
-    
-    // TODO: is this needed?
-//    static func fetch() async {
-//        do {
-//            try await remoteConfig.fetchAndActivate()
-//        } catch {
-//            print(error.localizedDescription)
-//        }
-//    }
-//
 }

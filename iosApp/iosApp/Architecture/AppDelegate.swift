@@ -9,6 +9,7 @@
 import Foundation
 import FirebaseAuth
 import FirebaseCore
+import FirebaseRemoteConfig
 import GoogleSignIn
 import Shared
 import SwiftUI
@@ -24,15 +25,32 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             Utilities.shared.logger.setIsLoggingEnabled(value: true)
         }
         #endif
-//        setupInjectionForDebugBuilds()
         FirebaseApp.configure()
         Task {
-            AppState.shared.configure(token: try await Auth.auth().currentUser?.getIDToken())
+            // fire all async requests at the same time
+            async let tokenRequest = Auth.auth().currentUser?.getIDToken()
+            async let remoteConfig: Void = setUpRemoteConfig()
+            
+            // pause until all async requests have finished
+            let (token, _) = try await (tokenRequest, remoteConfig)
+            
+            AppState.shared.configure(token: token)
         }
         return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return GIDSignIn.sharedInstance.handle(url)
+    }
+}
+
+extension AppDelegate {
+    private func setUpRemoteConfig() async throws {
+        let rc = RemoteConfig.remoteConfig()
+        let settings = RemoteConfigSettings()
+        settings.minimumFetchInterval = 0
+        rc.configSettings = settings
+        
+        _ = try await rc.fetchAndActivate()
     }
 }
