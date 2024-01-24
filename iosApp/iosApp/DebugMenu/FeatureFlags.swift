@@ -26,7 +26,7 @@ enum FeatureFlags: String, CaseIterable {
             return Self.defaults.bool(forKey: "FeatureFlags.\(rawValue)")
         }
         #endif
-        return Self.remoteConfig["iOS_\(rawValue)"].boolValue
+        return Self.remoteConfig["iOS_ff_\(rawValue)"].boolValue
     }
     
     func set(_ isEnabled: Bool) {
