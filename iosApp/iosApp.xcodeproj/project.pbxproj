@@ -90,6 +90,8 @@
 		0DCC163E2B524AE2008F705B /* DateFormatter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC163D2B524AE2008F705B /* DateFormatter+.swift */; };
 		0DE9E09D2B60CB7200B8288F /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E09C2B60CB7200B8288F /* FeatureFlags.swift */; };
 		0DE9E0A02B60D6BF00B8288F /* DebugDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E09F2B60D6BF00B8288F /* DebugDivider.swift */; };
+		0DE9E0A22B60DDAC00B8288F /* UpdateWallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E0A12B60DDAC00B8288F /* UpdateWallView.swift */; };
+		0DE9E0A42B60DDBA00B8288F /* WhatsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E0A32B60DDBA00B8288F /* WhatsNewView.swift */; };
 		1F022A3B2B49159100966345 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A372B49159100966345 /* CustomButton.swift */; };
 		1F022A3C2B49159100966345 /* CustomAccordion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A382B49159100966345 /* CustomAccordion.swift */; };
 		1F022A3D2B49159100966345 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A392B49159100966345 /* CustomCell.swift */; };
@@ -198,6 +200,8 @@
 		0DCC163D2B524AE2008F705B /* DateFormatter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+.swift"; sourceTree = "<group>"; };
 		0DE9E09C2B60CB7200B8288F /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 		0DE9E09F2B60D6BF00B8288F /* DebugDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugDivider.swift; sourceTree = "<group>"; };
+		0DE9E0A12B60DDAC00B8288F /* UpdateWallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateWallView.swift; sourceTree = "<group>"; };
+		0DE9E0A32B60DDBA00B8288F /* WhatsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewView.swift; sourceTree = "<group>"; };
 		1F022A372B49159100966345 /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		1F022A382B49159100966345 /* CustomAccordion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAccordion.swift; sourceTree = "<group>"; };
 		1F022A392B49159100966345 /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
@@ -509,6 +513,8 @@
 				0DE9E09C2B60CB7200B8288F /* FeatureFlags.swift */,
 				0DBF9CB22B5A35FB0045AC44 /* FeatureFlagsView.swift */,
 				0DBF9CB02B5A35F20045AC44 /* LogsView.swift */,
+				0DE9E0A12B60DDAC00B8288F /* UpdateWallView.swift */,
+				0DE9E0A32B60DDBA00B8288F /* WhatsNewView.swift */,
 				0DE9E09E2B60D6B500B8288F /* Components */,
 			);
 			path = DebugMenu;
@@ -843,6 +849,7 @@
 				0D012E682B477E3A00658153 /* TodayView.swift in Sources */,
 				0DBF9CAF2B5A16C20045AC44 /* DebugMenu.swift in Sources */,
 				0D012E712B477E3A00658153 /* Properties.swift in Sources */,
+				0DE9E0A22B60DDAC00B8288F /* UpdateWallView.swift in Sources */,
 				0D012E7C2B477E3A00658153 /* LoginBackgroundGradient.swift in Sources */,
 				0D5987392B561FCD00327504 /* TaskCompletionButton.swift in Sources */,
 				0D012E722B477E3A00658153 /* Navigation.swift in Sources */,
@@ -870,6 +877,7 @@
 				0DBF9CB32B5A35FB0045AC44 /* FeatureFlagsView.swift in Sources */,
 				1FCB7A42AD73B432D0CFDFA6 /* ContactsViewModel.swift in Sources */,
 				1FCB79C3ED66D7BBCE68DE3B /* AccountView.swift in Sources */,
+				0DE9E0A42B60DDBA00B8288F /* WhatsNewView.swift in Sources */,
 				1FCB74155DEADF4A32FAA4E4 /* LoginViewModel.swift in Sources */,
 				1FCB73F124945A937ECDAC6F /* WorkspacesView.swift in Sources */,
 				1FCB781F978049D634870A8C /* WorkspacesViewModel.swift in Sources */,
