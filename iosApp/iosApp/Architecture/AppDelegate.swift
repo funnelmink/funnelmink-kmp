@@ -35,7 +35,13 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
             // pause until all async requests have finished
             let (token, _) = try await (tokenRequest, remoteConfig)
             
-            AppState.shared.configure(token: token, updateWall: displayUpdateWall(), whatsNew: displayWhatsNew())
+            AppState
+                .shared
+                .configure(
+                    token: token,
+                    updateWall: shouldDisplayUpdateWall(),
+                    whatsNew: shouldDisplayWhatsNew()
+                )
         }
         return true
     }
@@ -54,7 +60,7 @@ extension AppDelegate {
         _ = try await rc.fetchAndActivate()
     }
     
-    private func displayUpdateWall() -> Bool {
+    private func shouldDisplayUpdateWall() -> Bool {
         guard let minRequired = rc["iOS_updateWall_minVersionRequired"].stringValue,
               let minSuggested = rc["iOS_updateWall_minVersionSuggested"].stringValue,
               !minRequired.isEmpty
@@ -70,8 +76,9 @@ extension AppDelegate {
         return false
     }
     
-    private func displayWhatsNew() -> Bool {
-        // TODO: json array of what's new views. they're displayed as a carousel?
-        return false
+    private func shouldDisplayWhatsNew() -> Bool {
+        let whatsNewVersion = rc["iOS_whatsNew_version"].numberValue.intValue
+        let viewedVersion = UserDefaults.standard.integer(forKey: "iOS_whatsNew_version")
+        return whatsNewVersion > viewedVersion
     }
 }
