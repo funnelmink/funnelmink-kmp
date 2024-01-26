@@ -11,7 +11,7 @@ import SwiftUI
 
 // MARK: - Views
 
-struct KanbanView: View {
+struct KanbanView<Kanban: KanbanViewModel>: View {
     @ObservedObject var kanban: Kanban
     var body: some View {
         GeometryReader { o_o in
@@ -31,7 +31,7 @@ struct KanbanView: View {
     }
 }
 
-struct KanbanColumnView: View {
+struct KanbanColumnView<Kanban: KanbanViewModel>: View {
     @ObservedObject var kanban: Kanban
     @ObservedObject var column: KanbanColumn
     var body: some View {
@@ -111,16 +111,12 @@ struct KanbanCardView: View {
 
 // MARK: - Business Logic
 
-class Kanban: ObservableObject {
-    @Published var columns: [KanbanColumn]
-    
-    init(columns: [KanbanColumn]) {
-        self.columns = columns
-    }
+protocol KanbanViewModel: ObservableObject {
+    var columns: [KanbanColumn] { get set }
 }
 
 struct KanbanDropDelegate: DropDelegate {
-    let kanban: Kanban
+    let kanban: any KanbanViewModel
     let destinationColumn: KanbanColumn
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
