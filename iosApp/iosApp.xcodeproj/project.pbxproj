@@ -74,6 +74,7 @@
 		0D012E942B477FFC00658153 /* GoogleService-Info-PROD.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E922B477FFC00658153 /* GoogleService-Info-PROD.plist */; };
 		0D012E9A2B47877B00658153 /* ProdEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */; };
 		0D012E9B2B47877B00658153 /* LocalEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */; };
+		0D3E40422B640F130096E222 /* Kanban.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E40412B640F130096E222 /* Kanban.swift */; };
 		0D45D80A2B5E01A100591524 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45D8092B5E01A100591524 /* Toast.swift */; };
 		0D5987372B5607DF00327504 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5987362B5607DF00327504 /* TaskDetailView.swift */; };
 		0D5987392B561FCD00327504 /* TaskCompletionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5987382B561FCD00327504 /* TaskCompletionButton.swift */; };
@@ -185,6 +186,7 @@
 		0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ProdEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LocalEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E9C2B47878F00658153 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		0D3E40412B640F130096E222 /* Kanban.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kanban.swift; sourceTree = "<group>"; };
 		0D45D8092B5E01A100591524 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		0D5987362B5607DF00327504 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		0D5987382B561FCD00327504 /* TaskCompletionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCompletionButton.swift; sourceTree = "<group>"; };
@@ -462,6 +464,7 @@
 				1FA27F792B5978F300A447C3 /* TimelineView.swift */,
 				0D012E5A2B477E3A00658153 /* WarningAlertButton.swift */,
 				0DE9E0A82B62072300B8288F /* Carousel.swift */,
+				0D3E40412B640F130096E222 /* Kanban.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -849,6 +852,7 @@
 				0DCC16382B50E184008F705B /* EditTaskView.swift in Sources */,
 				0DBF9CB12B5A35F20045AC44 /* LogsView.swift in Sources */,
 				0D012E7D2B477E3A00658153 /* AccountViewModel.swift in Sources */,
+				0D3E40422B640F130096E222 /* Kanban.swift in Sources */,
 				0D012E6D2B477E3A00658153 /* Color+.swift in Sources */,
 				0D012E752B477E3A00658153 /* ViewModel.swift in Sources */,
 				0D012E782B477E3A00658153 /* AppDelegate.swift in Sources */,

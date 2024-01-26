@@ -23,11 +23,25 @@ struct FunnelsView: View {
             GeometryReader { geo in
                 let itemWidth = geo.size.width * 0.8
                 Carousel(index: $index, isDragging: $isDragging, items: 0..<3, itemWidth: itemWidth) { i in
-                    [Color.blue, .red, .green][i]
-                        .aspectRatio(0.66, contentMode: .fit)
-                        .frame(width: itemWidth)
-                        .padding()
+                    ScrollView {
+                        ForEach(0..<10, id: \.self) { j in
+                            ZStack {
+                                Color.gray.overlay(
+                                    Text("\(i) - \(j)")
+                                )
+                                .aspectRatio(2.4, contentMode: .fit)
+                            }
+                            .onDrag {
+                                isDragging = true
+                                return NSItemProvider(object: String(j) as NSString)
+                            }
+                        }
+                    }
+                    .scrollIndicators(.never)
+                    .frame(width: itemWidth - 32)
+                    .padding(.horizontal, 16)
                 }
+                .clipped()
             }
         }
         .navigationTitle("Funnels")
