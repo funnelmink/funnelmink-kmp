@@ -8,6 +8,10 @@ import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
+// ------------------------------------------------------------------------
+// MARK: - Models
+// ------------------------------------------------------------------------
+
 @Serializable
 data class ActivityRecord(
     val id: String,
@@ -15,6 +19,11 @@ data class ActivityRecord(
     val details: String? = null,
     val memberID: String,
     val type: ActivityRecordType,
+)
+
+@Serializable
+data class Case(
+    val id: String,
 )
 
 @Serializable
@@ -37,16 +46,32 @@ data class Contact(
 )
 
 @Serializable
-data class User(
+data class Funnel(
     val id: String,
-    val username: String,
-    val email: String,
-    val isDevAccount: Boolean
+    val name: String,
+    val type: FunnelType,
+    val stages: List<FunnelStage>
 )
 
 @Serializable
+data class FunnelStage(
+    val id: String,
+    val name: String,
+)
+
+@Serializable
+data class Lead(
+    val id: String,
+    )
+
+@Serializable
+data class Opportunity(
+    val id: String,
+)
+
+// Can't name it `Task` because it's taken by Swift concurrency
+@Serializable
 data class ScheduleTask(
-    // Can't name it `Task` because it's taken by Swift concurrency
     val id: String,
     val title: String,
     val body: String? = null,
@@ -54,6 +79,14 @@ data class ScheduleTask(
     val isComplete: Boolean,
     val scheduledDate: String? = null,
     val updatedAt: String,
+)
+
+@Serializable
+data class User(
+    val id: String,
+    val username: String,
+    val email: String,
+    val isDevAccount: Boolean
 )
 
 @Serializable
@@ -75,7 +108,7 @@ data class WorkspaceMember(
 )
 
 // ------------------------------------------------------------------------
-// Enums
+// MARK: - Enums
 // ------------------------------------------------------------------------
 
 @Serializable(with = ActivityRecordTypeSerializer::class)
@@ -94,6 +127,19 @@ enum class ActivityRecordType(val typeName: String) {
     }
 }
 
+@Serializable(with = FunnelTypeSerializer::class)
+enum class FunnelType(val typeName: String) {
+    Case("CASE"),
+    Lead("LEAD"),
+    Opportunity("OPPORTUNITY");
+
+    companion object {
+        fun fromTypeName(typeName: String): FunnelType =
+            entries.find { it.typeName == typeName }
+                    ?: throw IllegalArgumentException("Type not found for name: $typeName")
+    }
+}
+
 @Serializable(with = WorkspaceMembershipRoleSerializer::class)
 enum class WorkspaceMembershipRole(val roleName: String) {
     Owner("OWNER"),
@@ -109,22 +155,8 @@ enum class WorkspaceMembershipRole(val roleName: String) {
 }
 
 // ------------------------------------------------------------------------
-// Enum Serializers
+// MARK: - Enum Serializers
 // ------------------------------------------------------------------------
-
-object WorkspaceMembershipRoleSerializer : KSerializer<WorkspaceMembershipRole> {
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor("WorkspaceMembershipRole", PrimitiveKind.STRING)
-
-    override fun serialize(encoder: Encoder, value: WorkspaceMembershipRole) {
-        encoder.encodeString(value.roleName)
-    }
-
-    override fun deserialize(decoder: Decoder): WorkspaceMembershipRole {
-        val roleName = decoder.decodeString()
-        return WorkspaceMembershipRole.fromRoleName(roleName)
-    }
-}
 
 object ActivityRecordTypeSerializer : KSerializer<ActivityRecordType> {
     override val descriptor: SerialDescriptor =
@@ -137,5 +169,33 @@ object ActivityRecordTypeSerializer : KSerializer<ActivityRecordType> {
     override fun deserialize(decoder: Decoder): ActivityRecordType {
         val typeName = decoder.decodeString()
         return ActivityRecordType.fromTypeName(typeName)
+    }
+}
+
+object FunnelTypeSerializer : KSerializer<ActivityRecordType> {
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("FunnelType", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: FunnelType) {
+        encoder.encodeString(value.typeName)
+    }
+
+    override fun deserialize(decoder: Decoder): FunnelType {
+        val typeName = decoder.decodeString()
+        return FunnelType.fromTypeName(typeName)
+    }
+}
+
+object WorkspaceMembershipRoleSerializer : KSerializer<WorkspaceMembershipRole> {
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("WorkspaceMembershipRole", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: WorkspaceMembershipRole) {
+        encoder.encodeString(value.roleName)
+    }
+
+    override fun deserialize(decoder: Decoder): WorkspaceMembershipRole {
+        val roleName = decoder.decodeString()
+        return WorkspaceMembershipRole.fromRoleName(roleName)
     }
 }

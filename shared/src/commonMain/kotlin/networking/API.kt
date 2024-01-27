@@ -20,7 +20,7 @@ interface API {
     @Throws(Exception::class) fun getCachedWorkspace(id: String): Workspace?
 
     // ------------------------------------------------------------------------
-    // Auth-Only Endpoints
+    // MARK: - Auth-Only Endpoints
     // (you only need a firebase account. will fail if `token == nil`)
     // ------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ interface API {
 
 
     // ------------------------------------------------------------------------
-    // Workspace Members-only Endpoints
+    // MARK: - Workspace Members-only Endpoints
     // (you need to be signed into a workspace. will fail if `workspaceID == nil`)
     // ------------------------------------------------------------------------
 
@@ -67,7 +67,7 @@ interface API {
 
 
     // ------------------------------------------------------------------------
-    // Workspace Owners-only Endpoints
+    // MARK: - Workspace Owners-only Endpoints
     // (you need to be signed into a workspace and be an owner)
     // ------------------------------------------------------------------------
 
