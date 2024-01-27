@@ -90,6 +90,23 @@
 		0DCC163A2B511A2C008F705B /* EditTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC16392B511A2C008F705B /* EditTaskViewModel.swift */; };
 		0DCC163C2B5249DC008F705B /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC163B2B5249DC008F705B /* Date+.swift */; };
 		0DCC163E2B524AE2008F705B /* DateFormatter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC163D2B524AE2008F705B /* DateFormatter+.swift */; };
+		0DD312A22B648CA50003F9C9 /* CacheInvalidator.kt in Resources */ = {isa = PBXBuildFile; fileRef = 0DD3128A2B648CA50003F9C9 /* CacheInvalidator.kt */; };
+		0DD312A32B648CA50003F9C9 /* DatabaseDriver.kt in Resources */ = {isa = PBXBuildFile; fileRef = 0DD3128B2B648CA50003F9C9 /* DatabaseDriver.kt */; };
+		0DD312A42B648CA50003F9C9 /* Database.kt in Resources */ = {isa = PBXBuildFile; fileRef = 0DD3128C2B648CA50003F9C9 /* Database.kt */; };
+		0DD312A52B648CA50003F9C9 /* API.kt in Resources */ = {isa = PBXBuildFile; fileRef = 0DD3128E2B648CA50003F9C9 /* API.kt */; };
+		0DD312A62B648CA50003F9C9 /* FunnelminkAPI.kt in Resources */ = {isa = PBXBuildFile; fileRef = 0DD3128F2B648CA50003F9C9 /* FunnelminkAPI.kt */; };
+		0DD312A72B648CA50003F9C9 /* Models.kt in Resources */ = {isa = PBXBuildFile; fileRef = 0DD312912B648CA50003F9C9 /* Models.kt */; };
+		0DD312A82B648CA50003F9C9 /* DTOs.kt in Resources */ = {isa = PBXBuildFile; fileRef = 0DD312922B648CA50003F9C9 /* DTOs.kt */; };
+		0DD312A92B648CA50003F9C9 /* Utilities.kt in Resources */ = {isa = PBXBuildFile; fileRef = 0DD312942B648CA50003F9C9 /* Utilities.kt */; };
+		0DD312AA2B648CA50003F9C9 /* Localizer.kt in Resources */ = {isa = PBXBuildFile; fileRef = 0DD312952B648CA50003F9C9 /* Localizer.kt */; };
+		0DD312AB2B648CA50003F9C9 /* Validator.kt in Resources */ = {isa = PBXBuildFile; fileRef = 0DD312962B648CA50003F9C9 /* Validator.kt */; };
+		0DD312AC2B648CA50003F9C9 /* Logger.kt in Resources */ = {isa = PBXBuildFile; fileRef = 0DD312972B648CA50003F9C9 /* Logger.kt */; };
+		0DD312AD2B648CA50003F9C9 /* User.sq in Resources */ = {isa = PBXBuildFile; fileRef = 0DD3129C2B648CA50003F9C9 /* User.sq */; };
+		0DD312AE2B648CA50003F9C9 /* Activity.sq in Resources */ = {isa = PBXBuildFile; fileRef = 0DD3129D2B648CA50003F9C9 /* Activity.sq */; };
+		0DD312AF2B648CA50003F9C9 /* WorkspaceMember.sq in Resources */ = {isa = PBXBuildFile; fileRef = 0DD3129E2B648CA50003F9C9 /* WorkspaceMember.sq */; };
+		0DD312B02B648CA50003F9C9 /* ScheduleTask.sq in Resources */ = {isa = PBXBuildFile; fileRef = 0DD3129F2B648CA50003F9C9 /* ScheduleTask.sq */; };
+		0DD312B12B648CA50003F9C9 /* Workspace.sq in Resources */ = {isa = PBXBuildFile; fileRef = 0DD312A02B648CA50003F9C9 /* Workspace.sq */; };
+		0DD312B22B648CA50003F9C9 /* Contact.sq in Resources */ = {isa = PBXBuildFile; fileRef = 0DD312A12B648CA50003F9C9 /* Contact.sq */; };
 		0DE9E09D2B60CB7200B8288F /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E09C2B60CB7200B8288F /* FeatureFlags.swift */; };
 		0DE9E0A02B60D6BF00B8288F /* DebugDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E09F2B60D6BF00B8288F /* DebugDivider.swift */; };
 		0DE9E0A22B60DDAC00B8288F /* UpdateWallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E0A12B60DDAC00B8288F /* UpdateWallView.swift */; };
@@ -203,6 +220,23 @@
 		0DCC16392B511A2C008F705B /* EditTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskViewModel.swift; sourceTree = "<group>"; };
 		0DCC163B2B5249DC008F705B /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		0DCC163D2B524AE2008F705B /* DateFormatter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+.swift"; sourceTree = "<group>"; };
+		0DD3128A2B648CA50003F9C9 /* CacheInvalidator.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CacheInvalidator.kt; sourceTree = "<group>"; };
+		0DD3128B2B648CA50003F9C9 /* DatabaseDriver.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DatabaseDriver.kt; sourceTree = "<group>"; };
+		0DD3128C2B648CA50003F9C9 /* Database.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Database.kt; sourceTree = "<group>"; };
+		0DD3128E2B648CA50003F9C9 /* API.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = API.kt; sourceTree = "<group>"; };
+		0DD3128F2B648CA50003F9C9 /* FunnelminkAPI.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = FunnelminkAPI.kt; sourceTree = "<group>"; };
+		0DD312912B648CA50003F9C9 /* Models.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Models.kt; sourceTree = "<group>"; };
+		0DD312922B648CA50003F9C9 /* DTOs.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = DTOs.kt; sourceTree = "<group>"; };
+		0DD312942B648CA50003F9C9 /* Utilities.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Utilities.kt; sourceTree = "<group>"; };
+		0DD312952B648CA50003F9C9 /* Localizer.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Localizer.kt; sourceTree = "<group>"; };
+		0DD312962B648CA50003F9C9 /* Validator.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Validator.kt; sourceTree = "<group>"; };
+		0DD312972B648CA50003F9C9 /* Logger.kt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Logger.kt; sourceTree = "<group>"; };
+		0DD3129C2B648CA50003F9C9 /* User.sq */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = User.sq; sourceTree = "<group>"; };
+		0DD3129D2B648CA50003F9C9 /* Activity.sq */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Activity.sq; sourceTree = "<group>"; };
+		0DD3129E2B648CA50003F9C9 /* WorkspaceMember.sq */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = WorkspaceMember.sq; sourceTree = "<group>"; };
+		0DD3129F2B648CA50003F9C9 /* ScheduleTask.sq */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = ScheduleTask.sq; sourceTree = "<group>"; };
+		0DD312A02B648CA50003F9C9 /* Workspace.sq */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Workspace.sq; sourceTree = "<group>"; };
+		0DD312A12B648CA50003F9C9 /* Contact.sq */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Contact.sq; sourceTree = "<group>"; };
 		0DE9E09C2B60CB7200B8288F /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 		0DE9E09F2B60D6BF00B8288F /* DebugDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugDivider.swift; sourceTree = "<group>"; };
 		0DE9E0A12B60DDAC00B8288F /* UpdateWallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateWallView.swift; sourceTree = "<group>"; };
@@ -528,6 +562,111 @@
 			path = DebugMenu;
 			sourceTree = "<group>";
 		};
+		0DD312862B648C330003F9C9 /* sharedKotlin */ = {
+			isa = PBXGroup;
+			children = (
+				0DD312872B648CA50003F9C9 /* commonMain */,
+			);
+			path = sharedKotlin;
+			sourceTree = "<group>";
+		};
+		0DD312872B648CA50003F9C9 /* commonMain */ = {
+			isa = PBXGroup;
+			children = (
+				0DD312882B648CA50003F9C9 /* kotlin */,
+				0DD312982B648CA50003F9C9 /* sqldelight */,
+			);
+			name = commonMain;
+			path = ../../shared/src/commonMain;
+			sourceTree = "<group>";
+		};
+		0DD312882B648CA50003F9C9 /* kotlin */ = {
+			isa = PBXGroup;
+			children = (
+				0DD312892B648CA50003F9C9 /* cache */,
+				0DD3128D2B648CA50003F9C9 /* networking */,
+				0DD312902B648CA50003F9C9 /* models */,
+				0DD312932B648CA50003F9C9 /* utilities */,
+			);
+			path = kotlin;
+			sourceTree = "<group>";
+		};
+		0DD312892B648CA50003F9C9 /* cache */ = {
+			isa = PBXGroup;
+			children = (
+				0DD3128A2B648CA50003F9C9 /* CacheInvalidator.kt */,
+				0DD3128B2B648CA50003F9C9 /* DatabaseDriver.kt */,
+				0DD3128C2B648CA50003F9C9 /* Database.kt */,
+			);
+			path = cache;
+			sourceTree = "<group>";
+		};
+		0DD3128D2B648CA50003F9C9 /* networking */ = {
+			isa = PBXGroup;
+			children = (
+				0DD3128E2B648CA50003F9C9 /* API.kt */,
+				0DD3128F2B648CA50003F9C9 /* FunnelminkAPI.kt */,
+			);
+			path = networking;
+			sourceTree = "<group>";
+		};
+		0DD312902B648CA50003F9C9 /* models */ = {
+			isa = PBXGroup;
+			children = (
+				0DD312912B648CA50003F9C9 /* Models.kt */,
+				0DD312922B648CA50003F9C9 /* DTOs.kt */,
+			);
+			path = models;
+			sourceTree = "<group>";
+		};
+		0DD312932B648CA50003F9C9 /* utilities */ = {
+			isa = PBXGroup;
+			children = (
+				0DD312942B648CA50003F9C9 /* Utilities.kt */,
+				0DD312952B648CA50003F9C9 /* Localizer.kt */,
+				0DD312962B648CA50003F9C9 /* Validator.kt */,
+				0DD312972B648CA50003F9C9 /* Logger.kt */,
+			);
+			path = utilities;
+			sourceTree = "<group>";
+		};
+		0DD312982B648CA50003F9C9 /* sqldelight */ = {
+			isa = PBXGroup;
+			children = (
+				0DD312992B648CA50003F9C9 /* com */,
+			);
+			path = sqldelight;
+			sourceTree = "<group>";
+		};
+		0DD312992B648CA50003F9C9 /* com */ = {
+			isa = PBXGroup;
+			children = (
+				0DD3129A2B648CA50003F9C9 /* funnelmink */,
+			);
+			path = com;
+			sourceTree = "<group>";
+		};
+		0DD3129A2B648CA50003F9C9 /* funnelmink */ = {
+			isa = PBXGroup;
+			children = (
+				0DD3129B2B648CA50003F9C9 /* crm */,
+			);
+			path = funnelmink;
+			sourceTree = "<group>";
+		};
+		0DD3129B2B648CA50003F9C9 /* crm */ = {
+			isa = PBXGroup;
+			children = (
+				0DD3129C2B648CA50003F9C9 /* User.sq */,
+				0DD3129D2B648CA50003F9C9 /* Activity.sq */,
+				0DD3129E2B648CA50003F9C9 /* WorkspaceMember.sq */,
+				0DD3129F2B648CA50003F9C9 /* ScheduleTask.sq */,
+				0DD312A02B648CA50003F9C9 /* Workspace.sq */,
+				0DD312A12B648CA50003F9C9 /* Contact.sq */,
+			);
+			path = crm;
+			sourceTree = "<group>";
+		};
 		0DE9E09E2B60D6B500B8288F /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -656,11 +795,12 @@
 			isa = PBXGroup;
 			children = (
 				AB1DB47929225F7C00F7AF9C /* Configuration */,
+				42799AB246E5F90AF97AA0EF /* Frameworks */,
 				7555FF7D242A565900829871 /* iosApp */,
 				7555FF7C242A565900829871 /* Products */,
-				42799AB246E5F90AF97AA0EF /* Frameworks */,
-				1FCB773887B4EB1A9B688D7E /* xcuserdata */,
 				1FCB746924C37EA5AB8A0F89 /* project.xcworkspace */,
+				0DD312862B648C330003F9C9 /* sharedKotlin */,
+				1FCB773887B4EB1A9B688D7E /* xcuserdata */,
 			);
 			sourceTree = "<group>";
 		};
@@ -776,14 +916,31 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0DD312A52B648CA50003F9C9 /* API.kt in Resources */,
+				0DD312B02B648CA50003F9C9 /* ScheduleTask.sq in Resources */,
+				0DD312A32B648CA50003F9C9 /* DatabaseDriver.kt in Resources */,
+				0DD312AC2B648CA50003F9C9 /* Logger.kt in Resources */,
 				0D012E9B2B47877B00658153 /* LocalEnvironment.xcconfig in Resources */,
 				0D012E942B477FFC00658153 /* GoogleService-Info-PROD.plist in Resources */,
 				0D012DF62B477D1D00658153 /* GoogleSignIn.bundle in Resources */,
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
+				0DD312A42B648CA50003F9C9 /* Database.kt in Resources */,
+				0DD312AB2B648CA50003F9C9 /* Validator.kt in Resources */,
 				0DBB674F2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig in Resources */,
 				0D012E8E2B477E9000658153 /* Assets.xcassets in Resources */,
+				0DD312A72B648CA50003F9C9 /* Models.kt in Resources */,
+				0DD312AF2B648CA50003F9C9 /* WorkspaceMember.sq in Resources */,
+				0DD312AD2B648CA50003F9C9 /* User.sq in Resources */,
+				0DD312AA2B648CA50003F9C9 /* Localizer.kt in Resources */,
 				0D012E9A2B47877B00658153 /* ProdEnvironment.xcconfig in Resources */,
+				0DD312A62B648CA50003F9C9 /* FunnelminkAPI.kt in Resources */,
+				0DD312A22B648CA50003F9C9 /* CacheInvalidator.kt in Resources */,
+				0DD312A92B648CA50003F9C9 /* Utilities.kt in Resources */,
+				0DD312B22B648CA50003F9C9 /* Contact.sq in Resources */,
+				0DD312AE2B648CA50003F9C9 /* Activity.sq in Resources */,
 				0D012DF52B477D1D00658153 /* gRPCCertificates-Cpp.bundle in Resources */,
+				0DD312B12B648CA50003F9C9 /* Workspace.sq in Resources */,
+				0DD312A82B648CA50003F9C9 /* DTOs.kt in Resources */,
 				0D012E932B477FFC00658153 /* GoogleService-Info-DEV.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
