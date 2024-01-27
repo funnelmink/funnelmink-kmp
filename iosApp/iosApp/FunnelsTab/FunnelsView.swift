@@ -2,6 +2,7 @@ import SwiftUI
 
 struct FunnelsView: View {
     @StateObject var viewModel = FunnelsViewModel()
+    @AppStorage(.storage.funnelsPickerSelection) var selection = "Leads"
     @ViewBuilder
     var body: some View {
         if FeatureFlags.funnelsTestUI.isEnabled {
@@ -22,7 +23,22 @@ struct FunnelsView: View {
            Text("This is where some stuff goes")
             KanbanView(kanban: viewModel)
         }
+        .toolbar {
+            ToolbarItem {
+                Picker("Funnels", selection: $selection) {
+                    Text("Leads").tag("Leads")
+                }
+            }
+        }
         .navigationTitle("Funnels")
-        .loggedTask { /* TODO: attach the viewModel somehow */ }
+        .loggedTask {
+            do {
+                try await viewModel.fetch()
+                
+                // TODO: if !fetchedFunnels.contains(selection) { selection = "Leads" }
+            } catch {
+                Toast.error(error)
+            }
+        }
     }
 }

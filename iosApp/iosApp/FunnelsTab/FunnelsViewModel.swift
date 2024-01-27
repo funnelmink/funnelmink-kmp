@@ -15,4 +15,9 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
     struct State: Hashable {
         
     }
+    
+    func fetch() async throws {
+//        let funnels = try await FunnelMinkAPI.shared.funnels()
+//        columns = funnels.map { KanbanColumn(funnel: $0) }
+    }
 }

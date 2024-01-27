@@ -13,7 +13,7 @@ struct TodayView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = TodayViewModel()
     
-    @AppStorage(.storage.todaySelection) var selection: Selection = .date
+    @AppStorage(.storage.todayPickerSelection) var selection: Selection = .date
     
     @ViewBuilder
     var body: some View {
