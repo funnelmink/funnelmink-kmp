@@ -1,0 +1,45 @@
+CREATE TABLE SQLAccount (
+    id TEXT PRIMARY KEY,
+
+    address TEXT,
+    city TEXT,
+    country TEXT,
+    createdAt TEXT NOT NULL,
+    email TEXT,
+    latitude TEXT,
+    leadID TEXT,
+    longitude TEXT,
+    name TEXT,
+    notes TEXT,
+    phone TEXT,
+    state TEXT,
+    type TEXT NOT NULL,
+    updatedAt TEXT NOT NULL,
+    zip TEXT
+);
+
+
+insertAccount:
+INSERT INTO SQLAccount(id, address, city, country, createdAt, email, latitude, leadID, longitude, name, notes, phone, state, type, updatedAt, zip)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+selectAccountById:
+SELECT *
+FROM SQLAccount
+WHERE id = ?;
+
+selectAllAccountsInfo:
+SELECT SQLAccount.*
+FROM SQLAccount;
+
+updateAccount:
+UPDATE SQLAccount
+SET address = ?, city = ?, country = ?, createdAt = ?, email = ?, latitude = ?, leadID = ?, longitude = ?, name = ?, notes = ?, phone = ?, state = ?, type = ?, updatedAt = ?, zip = ?
+WHERE id = ?;
+
+removeAccount:
+DELETE FROM SQLAccount
+WHERE id = ?;
+
+removeAllAccounts:
+DELETE FROM SQLAccount;

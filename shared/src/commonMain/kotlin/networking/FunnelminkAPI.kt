@@ -111,7 +111,7 @@ class FunnelminkAPI(
         val account: Account = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Post) {
             setBody(body)
         }
-        cache.insertContact(account)
+        cache.insertAccount(account)
         return account
     }
 
@@ -161,19 +161,19 @@ class FunnelminkAPI(
         val cacheKey = "getContacts"
         try {
             if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllContacts()
+                val cached = cache.selectAllAccounts()
                 if (cached.isNotEmpty()) {
                     Utilities.logger.info("Retrieved ${cached.size} contacts from cache")
                     return cached
                 }
             }
             val fetched: List<Account> = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Get)
-            cache.replaceAllContacts(fetched)
+            cache.replaceAllAccounts(fetched)
             cacheInvalidator.updateTimestamp(cacheKey)
             Utilities.logger.info("Cached ${fetched.size} contacts")
             return fetched
         } catch (e: Exception) {
-            val cached = cache.selectAllContacts()
+            val cached = cache.selectAllAccounts()
             if (cached.isNotEmpty()) {
                 Utilities.logger.warn("Failed to fetch Contacts. Returned ${cached.size} contacts from cache")
                 return cached
@@ -188,7 +188,7 @@ class FunnelminkAPI(
         val account: Account = genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Put) {
             setBody(body)
         }
-        cache.updateContact(account)
+        cache.updateAccount(account)
         return account
     }
 

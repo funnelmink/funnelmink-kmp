@@ -6,12 +6,142 @@ import models.*
 
 internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val database = FunnelminkCache(databaseDriverFactory.createDriver())
+    private val accountDB = database.accountQueries
     private val activityDB = database.activityQueries
-    private val contactDB = database.contactQueries
     private val taskDB = database.scheduleTaskQueries
     private val userDB = database.userQueries
     private val workspaceDB = database.workspaceQueries
     private val workspaceMemberDB = database.workspaceMemberQueries
+
+    // ------------------------------------------------------------------------
+    // Accounts
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertAccount(account: Account) {
+        accountDB.insertAccount(
+            account.id,
+            account.address,
+            account.city,
+            account.country,
+            account.createdAt,
+            account.email,
+            account.latitude?.toString(),
+            account.leadID,
+            account.longitude?.toString(),
+            account.name,
+            account.notes,
+            account.phone,
+            account.state,
+            account.type.typeName,
+            account.updatedAt,
+            account.zip
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAccount(id: String): Account? {
+        val cached = accountDB.selectAccountById(id).executeAsOneOrNull() ?: return null
+        return mapAccount(
+            cached.id,
+            cached.address,
+            cached.city,
+            cached.country,
+            cached.createdAt,
+            cached.email,
+            cached.latitude,
+            cached.leadID,
+            cached.longitude,
+            cached.name,
+            cached.notes,
+            cached.phone,
+            cached.state,
+            cached.type,
+            cached.updatedAt,
+            cached.zip
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllAccounts(): List<Account> {
+        return accountDB.selectAllAccountsInfo(::mapAccount).executeAsList()
+    }
+
+    @Throws(Exception::class)
+    fun updateAccount(account: Account) {
+        accountDB.updateAccount(
+            account.address,
+            account.city,
+            account.country,
+            account.createdAt,
+            account.email,
+            account.latitude?.toString(),
+            account.leadID,
+            account.longitude?.toString(),
+            account.name,
+            account.notes,
+            account.phone,
+            account.state,
+            account.type.typeName,
+            account.updatedAt,
+            account.zip,
+            account.id
+        )
+    }
+
+    @Throws(Exception::class)
+    fun deleteAccount(id: String) {
+        accountDB.removeAccount(id)
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllAccounts(accounts: List<Account>) {
+        deleteAllAccounts()
+        accounts.forEach(::insertAccount)
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllAccounts() {
+        accountDB.removeAllAccounts()
+    }
+
+    private fun mapAccount(
+        id: String,
+        address: String?,
+        city: String?,
+        country: String?,
+        createdAt: String,
+        email: String?,
+        latitude: String?,
+        leadID: String?,
+        longitude: String?,
+        name: String?,
+        notes: String?,
+        phone: String?,
+        state: String?,
+        type: String,
+        updatedAt: String,
+        zip: String?
+    ): Account {
+        return Account(
+            id,
+            address,
+            city,
+            country,
+            createdAt,
+            email,
+            latitude?.toDouble(),
+            leadID,
+            longitude?.toDouble(),
+            name,
+            notes,
+            phone,
+            state,
+            AccountType.fromTypeName(type),
+            updatedAt,
+            zip
+        )
+    }
 
     // ------------------------------------------------------------------------
     // Activities
@@ -63,158 +193,33 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     // ------------------------------------------------------------------------
-    // Contacts
-    // ------------------------------------------------------------------------
-
-    @Throws(Exception::class)
-    fun insertContact(account: Account) {
-        contactDB.insertContact(
-            account.id,
-            account.firstName,
-            account.lastName,
-            account.emails.joinToString(separator = ","),
-            account.phoneNumbers.joinToString(separator = ","),
-            account.companyName,
-            toLong(account.isOrganization),
-            account.latitude?.toString(),
-            account.longitude?.toString(),
-            account.street1,
-            account.street2,
-            account.city,
-            account.state,
-            account.country,
-            account.zip
-        )
-    }
-
-    @Throws(Exception::class)
-    fun selectContact(id: String): Account? {
-        val cached = contactDB.selectContactById(id).executeAsOneOrNull() ?: return null
-        return mapContact(
-            cached.id,
-            cached.firstName,
-            cached.lastName,
-            cached.emails,
-            cached.phoneNumbers,
-            cached.companyName,
-            cached.isOrganization,
-            cached.latitude,
-            cached.longitude,
-            cached.street1,
-            cached.street2,
-            cached.city,
-            cached.state,
-            cached.country,
-            cached.zip
-        )
-    }
-
-    @Throws(Exception::class)
-    fun selectAllContacts(): List<Account> {
-        return contactDB.selectAllContactsInfo(::mapContact).executeAsList()
-    }
-
-    @Throws(Exception::class)
-    fun updateContact(account: Account) {
-        contactDB.updateContact(
-            account.firstName,
-            account.lastName,
-            account.emails.joinToString(separator = ","),
-            account.phoneNumbers.joinToString(separator = ","),
-            account.companyName,
-            toLong(account.isOrganization),
-            account.latitude?.toString(),
-            account.longitude?.toString(),
-            account.street1,
-            account.street2,
-            account.city,
-            account.state,
-            account.country,
-            account.zip,
-            account.id
-        )
-    }
-
-    @Throws(Exception::class)
-    fun deleteContact(id: String) {
-        contactDB.removeContact(id)
-    }
-
-    @Throws(Exception::class)
-    fun replaceAllContacts(accounts: List<Account>) {
-        deleteAllContacts()
-        accounts.forEach(::insertContact)
-    }
-
-    @Throws(Exception::class)
-    private fun deleteAllContacts() {
-        contactDB.removeAllContacts()
-    }
-
-    private fun mapContact(
-        id: String,
-        firstName: String,
-        lastName: String?,
-        emails: String,
-        phoneNumbers: String,
-        companyName: String?,
-        isOrganization: Long,
-        latitude: String?,
-        longitude: String?,
-        street1: String?,
-        street2: String?,
-        city: String?,
-        state: String?,
-        country: String?,
-        zip: String?
-    ): Account {
-        return Account(
-            id,
-            firstName,
-            lastName,
-            emails.takeIf { it.isNotBlank() }?.split(",") ?: emptyList(),
-            phoneNumbers.takeIf { it.isNotBlank() }?.split(",") ?: emptyList(),
-            companyName,
-            toBool(isOrganization),
-            latitude?.toDoubleOrNull(),
-            longitude?.toDoubleOrNull(),
-            street1,
-            street2,
-            city,
-            state,
-            country,
-            zip
-        )
-    }
-
-    // ------------------------------------------------------------------------
     // Tasks
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
     fun insertTask(task: TaskRecord) {
-        taskDB.insertScheduleTask(
+        taskDB.insertTask(
             task.id,
-            task.title,
             task.body,
-            task.priority.toLong(),
             toLong(task.isComplete),
+            task.priority.toLong(),
             task.scheduledDate,
+            task.title,
             task.updatedAt
         )
     }
 
     @Throws(Exception::class)
     fun selectTask(id: String): TaskRecord? {
-        val cached = taskDB.selectScheduleTaskById(id).executeAsOneOrNull() ?: return null
+        val cached = taskDB.selectTaskById(id).executeAsOneOrNull() ?: return null
 
         return mapTask(
             cached.id,
-            cached.title,
             cached.body,
-            cached.priority,
             cached.isComplete,
+            cached.priority,
             cached.scheduledDate,
+            cached.title,
             cached.updatedAt
         )
     }
@@ -260,25 +265,25 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     @Throws(Exception::class)
     private fun deleteAllTasks() {
-        taskDB.removeAllScheduleTasks()
+        taskDB.removeAllTasks()
     }
 
     private fun mapTask(
         id: String,
-        title: String,
         body: String?,
-        priority: Long,
         isComplete: Long,
+        priority: Long,
         scheduledDate: String?,
+        title: String,
         updatedAt: String
     ): TaskRecord {
         return TaskRecord(
             id,
-            title,
             body,
-            priority.toInt(),
             toBool(isComplete),
+            priority.toInt(),
             scheduledDate,
+            title,
             updatedAt
         )
     }
@@ -445,7 +450,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     @Throws(Exception::class)
     fun clearAllDatabases() {
         deleteAllActivities()
-        deleteAllContacts()
+        deleteAllAccounts()
         deleteAllTasks()
         deleteAllWorkspaces()
         deleteAllWorkspaceMembers()
