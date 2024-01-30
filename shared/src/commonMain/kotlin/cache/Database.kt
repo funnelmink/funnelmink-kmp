@@ -67,28 +67,28 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun insertContact(contact: Contact) {
+    fun insertContact(account: Account) {
         contactDB.insertContact(
-            contact.id,
-            contact.firstName,
-            contact.lastName,
-            contact.emails.joinToString(separator = ","),
-            contact.phoneNumbers.joinToString(separator = ","),
-            contact.companyName,
-            toLong(contact.isOrganization),
-            contact.latitude?.toString(),
-            contact.longitude?.toString(),
-            contact.street1,
-            contact.street2,
-            contact.city,
-            contact.state,
-            contact.country,
-            contact.zip
+            account.id,
+            account.firstName,
+            account.lastName,
+            account.emails.joinToString(separator = ","),
+            account.phoneNumbers.joinToString(separator = ","),
+            account.companyName,
+            toLong(account.isOrganization),
+            account.latitude?.toString(),
+            account.longitude?.toString(),
+            account.street1,
+            account.street2,
+            account.city,
+            account.state,
+            account.country,
+            account.zip
         )
     }
 
     @Throws(Exception::class)
-    fun selectContact(id: String): Contact? {
+    fun selectContact(id: String): Account? {
         val cached = contactDB.selectContactById(id).executeAsOneOrNull() ?: return null
         return mapContact(
             cached.id,
@@ -110,28 +110,28 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun selectAllContacts(): List<Contact> {
+    fun selectAllContacts(): List<Account> {
         return contactDB.selectAllContactsInfo(::mapContact).executeAsList()
     }
 
     @Throws(Exception::class)
-    fun updateContact(contact: Contact) {
+    fun updateContact(account: Account) {
         contactDB.updateContact(
-            contact.firstName,
-            contact.lastName,
-            contact.emails.joinToString(separator = ","),
-            contact.phoneNumbers.joinToString(separator = ","),
-            contact.companyName,
-            toLong(contact.isOrganization),
-            contact.latitude?.toString(),
-            contact.longitude?.toString(),
-            contact.street1,
-            contact.street2,
-            contact.city,
-            contact.state,
-            contact.country,
-            contact.zip,
-            contact.id
+            account.firstName,
+            account.lastName,
+            account.emails.joinToString(separator = ","),
+            account.phoneNumbers.joinToString(separator = ","),
+            account.companyName,
+            toLong(account.isOrganization),
+            account.latitude?.toString(),
+            account.longitude?.toString(),
+            account.street1,
+            account.street2,
+            account.city,
+            account.state,
+            account.country,
+            account.zip,
+            account.id
         )
     }
 
@@ -141,9 +141,9 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun replaceAllContacts(contacts: List<Contact>) {
+    fun replaceAllContacts(accounts: List<Account>) {
         deleteAllContacts()
-        contacts.forEach(::insertContact)
+        accounts.forEach(::insertContact)
     }
 
     @Throws(Exception::class)
@@ -167,8 +167,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         state: String?,
         country: String?,
         zip: String?
-    ): Contact {
-        return Contact(
+    ): Account {
+        return Account(
             id,
             firstName,
             lastName,
@@ -192,7 +192,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun insertTask(task: ScheduleTask) {
+    fun insertTask(task: TaskRecord) {
         taskDB.insertScheduleTask(
             task.id,
             task.title,
@@ -205,7 +205,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun selectTask(id: String): ScheduleTask? {
+    fun selectTask(id: String): TaskRecord? {
         val cached = taskDB.selectScheduleTaskById(id).executeAsOneOrNull() ?: return null
 
         return mapTask(
@@ -220,17 +220,17 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun selectAllCompleteTasks(): List<ScheduleTask> {
+    fun selectAllCompleteTasks(): List<TaskRecord> {
         return taskDB.selectAllCompleteTasks(::mapTask).executeAsList()
     }
 
     @Throws(Exception::class)
-    fun selectAllIncompleteTasks(): List<ScheduleTask> {
+    fun selectAllIncompleteTasks(): List<TaskRecord> {
         return taskDB.selectAllIncompleteTasks(::mapTask).executeAsList()
     }
 
     @Throws(Exception::class)
-    fun replaceAllCompleteTasks(tasks: List<ScheduleTask>) {
+    fun replaceAllCompleteTasks(tasks: List<TaskRecord>) {
         taskDB.transaction {
             taskDB.deleteAllCompleteTasks()
             tasks.forEach(::insertTask)
@@ -238,7 +238,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun replaceAllIncompleteTasks(tasks: List<ScheduleTask>) {
+    fun replaceAllIncompleteTasks(tasks: List<TaskRecord>) {
         taskDB.transaction {
             taskDB.deleteAllIncompleteTasks()
             tasks.forEach(::insertTask)
@@ -246,7 +246,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun replaceTask(task: ScheduleTask) {
+    fun replaceTask(task: TaskRecord) {
         taskDB.transaction {
             taskDB.removeTask(task.id)
             insertTask(task)
@@ -271,8 +271,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         isComplete: Long,
         scheduledDate: String?,
         updatedAt: String
-    ): ScheduleTask {
-        return ScheduleTask(
+    ): TaskRecord {
+        return TaskRecord(
             id,
             title,
             body,

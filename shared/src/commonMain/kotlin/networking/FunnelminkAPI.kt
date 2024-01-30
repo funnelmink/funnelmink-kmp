@@ -10,7 +10,6 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import io.ktor.util.reflect.*
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import utilities.*
@@ -108,12 +107,12 @@ class FunnelminkAPI(
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    override suspend fun createContact(body: CreateContactRequest): Contact {
-        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Post) {
+    override suspend fun createContact(body: CreateContactRequest): Account {
+        val account: Account = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Post) {
             setBody(body)
         }
-        cache.insertContact(contact)
-        return contact
+        cache.insertContact(account)
+        return account
     }
 
     @Throws(Exception::class)
@@ -150,13 +149,13 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getContactDetails(id: String): Contact {
+    override suspend fun getContactDetails(id: String): Account {
         // this is unused right now
         return genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
-    override suspend fun getContacts(): List<Contact> {
+    override suspend fun getContacts(): List<Account> {
         // TODO: one day this should return minimal information for each contact. Details should be requested by their own endpoint
         // Only if we notice it getting expensive and we feel it will save enough money to make it worth the effort
         val cacheKey = "getContacts"
@@ -168,7 +167,7 @@ class FunnelminkAPI(
                     return cached
                 }
             }
-            val fetched: List<Contact> = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Get)
+            val fetched: List<Account> = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Get)
             cache.replaceAllContacts(fetched)
             cacheInvalidator.updateTimestamp(cacheKey)
             Utilities.logger.info("Cached ${fetched.size} contacts")
@@ -185,12 +184,12 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun updateContact(id: String, body: UpdateContactRequest): Contact {
-        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Put) {
+    override suspend fun updateContact(id: String, body: UpdateContactRequest): Account {
+        val account: Account = genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Put) {
             setBody(body)
         }
-        cache.updateContact(contact)
-        return contact
+        cache.updateContact(account)
+        return account
     }
 
     // ------------------------------------------------------------------------
@@ -198,8 +197,8 @@ class FunnelminkAPI(
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    override suspend fun createTask(body: CreateTaskRequest): ScheduleTask {
-        val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Post) {
+    override suspend fun createTask(body: CreateTaskRequest): TaskRecord {
+        val task: TaskRecord = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Post) {
             setBody(body)
         }
         cache.insertTask(task)
@@ -207,7 +206,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getTasks(): List<ScheduleTask> {
+    override suspend fun getTasks(): List<TaskRecord> {
         val cacheKey = "getTasks"
         try {
             if (!cacheInvalidator.isStale(cacheKey)) {
@@ -217,7 +216,7 @@ class FunnelminkAPI(
                     return cached
                 }
             }
-            val fetched: List<ScheduleTask> = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Get)
+            val fetched: List<TaskRecord> = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Get)
             cache.replaceAllIncompleteTasks(fetched)
             Utilities.logger.info("Cached ${fetched.size} tasks")
             cacheInvalidator.updateTimestamp(cacheKey)
@@ -235,7 +234,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getCompletedTasks(): List<ScheduleTask> {
+    override suspend fun getCompletedTasks(): List<TaskRecord> {
         val cacheKey = "getCompletedTasks"
         try {
             if (!cacheInvalidator.isStale(cacheKey)) {
@@ -245,7 +244,7 @@ class FunnelminkAPI(
                     return cached
                 }
             }
-            val fetched: List<ScheduleTask> = genericRequest("$baseURL/v1/workspace/tasks/complete", HttpMethod.Get)
+            val fetched: List<TaskRecord> = genericRequest("$baseURL/v1/workspace/tasks/complete", HttpMethod.Get)
             cache.replaceAllCompleteTasks(fetched)
             Utilities.logger.info("Cached ${fetched.size} completed tasks")
             cacheInvalidator.updateTimestamp(cacheKey)
@@ -263,8 +262,8 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask {
-        val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Put) {
+    override suspend fun updateTask(id: String, body: UpdateTaskRequest): TaskRecord {
+        val task: TaskRecord = genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Put) {
             setBody(body)
         }
         cache.replaceTask(task)
@@ -272,8 +271,8 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun toggleTaskCompletion(id: String, isComplete: Boolean): ScheduleTask {
-        val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks/$id/toggle/$isComplete", HttpMethod.Put)
+    override suspend fun toggleTaskCompletion(id: String, isComplete: Boolean): TaskRecord {
+        val task: TaskRecord = genericRequest("$baseURL/v1/workspace/tasks/$id/toggle/$isComplete", HttpMethod.Put)
         cache.replaceTask(task)
         return task
     }
@@ -285,7 +284,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getTask(id: String): ScheduleTask? {
+    override suspend fun getTask(id: String): TaskRecord? {
         val cached = cache.selectTask(id)
         if (cached != null) {
             Utilities.logger.info("Returned task $id from cache")
@@ -488,8 +487,7 @@ class FunnelminkAPI(
         if (response.status.isSuccess()) {
             Utilities.logger.log(LogLevel.INFO, "✅ $responseBody")
             try {
-                val body = jsonDecoder.decodeFromString<T>(responseBody)
-                return body
+                return jsonDecoder.decodeFromString<T>(responseBody)
             } catch (e: SerializationException) {
                 Utilities.logger.warn(e.message.orEmpty())
                 onDecodingError?.invoke(e.message.orEmpty())

@@ -13,8 +13,41 @@ import kotlinx.serialization.encoding.Encoder
 // ------------------------------------------------------------------------
 
 @Serializable
+data class Account(
+    val id: String,
+
+    val address: String? = null,
+    val city: String? = null,
+    val country: String? = null,
+    val createdAt: String,
+    val email: String? = null,
+    val latitude: Double? = null,
+    val leadID: String? = null,
+    val longitude: Double? = null,
+    val name: String? = null,
+    val notes: String? = null,
+    val phone: String? = null,
+    val state: String? = null,
+    val type: AccountType,
+    val updatedAt: String,
+    val zip: String? = null,
+)
+
+@Serializable
+data class AccountContact(
+    val id: String,
+
+    val email: String? = null,
+    val name: String? = null,
+    val notes: String? = null,
+    val phone: String? = null,
+)
+
+
+@Serializable
 data class ActivityRecord(
     val id: String,
+
     val createdAt: String,
     val details: String? = null,
     val memberID: String,
@@ -24,60 +57,89 @@ data class ActivityRecord(
 @Serializable
 data class Case(
     val id: String,
-)
 
-@Serializable
-data class Contact(
-    val id: String,
-    val firstName: String,
-    val lastName: String? = null,
-    val emails: List<String>,
-    val phoneNumbers: List<String>,
-    val companyName: String? = null,
-    val isOrganization: Boolean,
-    val latitude: Double? = null,
-    val longitude: Double? = null,
-    val street1: String? = null,
-    val street2: String? = null,
-    val city: String? = null,
-    val state: String? = null,
-    val country: String? = null,
-    val zip: String? = null,
+    val assignedTo: String? = null,
+    val closedDate: String? = null,
+    val createdAt: String,
+    val description: String? = null,
+    val name: String,
+    val notes: String? = null,
+    val priority: Int,
+    val stage: String? = null,
+    val updatedAt: String,
+    val value: Double,
 )
 
 @Serializable
 data class Funnel(
     val id: String,
+
     val name: String,
+    val stages: List<FunnelStage>,
     val type: FunnelType,
-    val stages: List<FunnelStage>
 )
 
 @Serializable
 data class FunnelStage(
     val id: String,
+
     val name: String,
+    val order: Int,
 )
 
 @Serializable
 data class Lead(
     val id: String,
-    )
+
+    val address: String? = null,
+    val assignedTo: String? = null,
+    val city: String? = null,
+    val closedDate: String? = null,
+    val closedResult: LeadClosedResult? = null,
+    val company: String? = null,
+    val country: String? = null,
+    val createdAt: String,
+    val email: String? = null,
+    val jobTitle: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val name: String? = null,
+    val notes: String? = null,
+    val phone: String? = null,
+    val priority: Int,
+    val source: String? = null,
+    val stage: String? = null,
+    val state: String? = null,
+    val type: AccountType,
+    val updatedAt: String,
+    val zip: String? = null,
+)
 
 @Serializable
 data class Opportunity(
     val id: String,
+
+    val assignedTo: String? = null,
+    val closedDate: String? = null,
+    val createdAt: String,
+    val description: String? = null,
+    val name: String,
+    val notes: String? = null,
+    val priority: Int,
+    val stage: String? = null,
+    val updatedAt: String,
+    val value: Double,
 )
 
-// Can't name it `Task` because it's taken by Swift concurrency
 @Serializable
-data class ScheduleTask(
+data class TaskRecord(
     val id: String,
-    val title: String,
+
     val body: String? = null,
-    val priority: Int,
     val isComplete: Boolean,
+    val priority: Int,
     val scheduledDate: String? = null,
+    val title: String,
     val updatedAt: String,
 )
 
@@ -111,14 +173,26 @@ data class WorkspaceMember(
 // MARK: - Enums
 // ------------------------------------------------------------------------
 
+@Serializable(with = AccountTypeSerializer::class)
+enum class AccountType(val typeName: String) {
+    Individual("INDIVIDUAL"),
+    Organization("ORGANIZATION");
+
+    companion object {
+        fun fromTypeName(typeName: String): AccountType =
+            entries.find { it.typeName == typeName }
+                ?: throw IllegalArgumentException("Type not found for name: $typeName")
+    }
+}
+
 @Serializable(with = ActivityRecordTypeSerializer::class)
 enum class ActivityRecordType(val typeName: String) {
-    Email("email"),
-    Meeting("meeting"),
-    Note("note"),
-    PhoneCall("phoneCall"),
-    Update("update"),
-    TextMessage("textMessage");
+    Email("EMAIL"),
+    Meeting("MEETING"),
+    Note("NOTE"),
+    PhoneCall("PHONE_CALL"),
+    Update("UPDATE"),
+    TextMessage("TEXT_MESSAGE");
 
     companion object {
         fun fromTypeName(typeName: String): ActivityRecordType =
@@ -140,6 +214,18 @@ enum class FunnelType(val typeName: String) {
     }
 }
 
+@Serializable(with = LeadClosedResultSerializer::class)
+enum class LeadClosedResult(val resultName: String) {
+    Converted("CONVERTED"),
+    NotConverted("NOT_CONVERTED");
+
+    companion object {
+        fun fromResultName(resultName: String): LeadClosedResult =
+            entries.find { it.resultName == resultName }
+                ?: throw IllegalArgumentException("Result not found for name: $resultName")
+    }
+}
+
 @Serializable(with = WorkspaceMembershipRoleSerializer::class)
 enum class WorkspaceMembershipRole(val roleName: String) {
     Owner("OWNER"),
@@ -158,6 +244,19 @@ enum class WorkspaceMembershipRole(val roleName: String) {
 // MARK: - Enum Serializers
 // ------------------------------------------------------------------------
 
+object AccountTypeSerializer : KSerializer<AccountType> {
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("AccountType", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: AccountType) {
+        encoder.encodeString(value.typeName)
+    }
+
+    override fun deserialize(decoder: Decoder): AccountType {
+        val typeName = decoder.decodeString()
+        return AccountType.fromTypeName(typeName)
+    }
+}
 object ActivityRecordTypeSerializer : KSerializer<ActivityRecordType> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("ActivityRecordType", PrimitiveKind.STRING)
@@ -172,7 +271,7 @@ object ActivityRecordTypeSerializer : KSerializer<ActivityRecordType> {
     }
 }
 
-object FunnelTypeSerializer : KSerializer<ActivityRecordType> {
+object FunnelTypeSerializer : KSerializer<FunnelType> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("FunnelType", PrimitiveKind.STRING)
 
@@ -183,6 +282,20 @@ object FunnelTypeSerializer : KSerializer<ActivityRecordType> {
     override fun deserialize(decoder: Decoder): FunnelType {
         val typeName = decoder.decodeString()
         return FunnelType.fromTypeName(typeName)
+    }
+}
+
+object LeadClosedResultSerializer : KSerializer<LeadClosedResult> {
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("LeadClosedResult", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: LeadClosedResult) {
+        encoder.encodeString(value.resultName)
+    }
+
+    override fun deserialize(decoder: Decoder): LeadClosedResult {
+        val resultName = decoder.decodeString()
+        return LeadClosedResult.fromResultName(resultName)
     }
 }
 

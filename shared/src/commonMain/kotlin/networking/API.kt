@@ -41,25 +41,27 @@ interface API {
     // (you need to be signed into a workspace. will fail if `workspaceID == nil`)
     // ------------------------------------------------------------------------
 
+    // accounts
+
     // activities
     @Throws(Exception::class) suspend fun createActivity(subtype: ActivitySubtype, body: CreateActivityRequest)
 
     // contacts
-    @Throws(Exception::class) suspend fun createContact(body: CreateContactRequest): Contact
+    @Throws(Exception::class) suspend fun createContact(body: CreateContactRequest): Account
     @Throws(Exception::class) suspend fun deleteContact(id: String)
     @Throws(Exception::class) suspend fun getContactActivities(id: String): List<ActivityRecord>
-    @Throws(Exception::class) suspend fun getContactDetails(id: String): Contact
-    @Throws(Exception::class) suspend fun getContacts(): List<Contact>
-    @Throws(Exception::class) suspend fun updateContact(id: String, body: UpdateContactRequest): Contact
+    @Throws(Exception::class) suspend fun getContactDetails(id: String): Account
+    @Throws(Exception::class) suspend fun getContacts(): List<Account>
+    @Throws(Exception::class) suspend fun updateContact(id: String, body: UpdateContactRequest): Account
 
     // tasks
-    @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): ScheduleTask
+    @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): TaskRecord
     @Throws(Exception::class) suspend fun deleteTask(id: String)
-    @Throws(Exception::class) suspend fun getTask(id: String): ScheduleTask?
-    @Throws(Exception::class) suspend fun getTasks(): List<ScheduleTask>
-    @Throws(Exception::class) suspend fun getCompletedTasks(): List<ScheduleTask>
-    @Throws(Exception::class) suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask
-    @Throws(Exception::class) suspend fun toggleTaskCompletion(id: String, isComplete: Boolean) : ScheduleTask
+    @Throws(Exception::class) suspend fun getTask(id: String): TaskRecord?
+    @Throws(Exception::class) suspend fun getTasks(): List<TaskRecord>
+    @Throws(Exception::class) suspend fun getCompletedTasks(): List<TaskRecord>
+    @Throws(Exception::class) suspend fun updateTask(id: String, body: UpdateTaskRequest): TaskRecord
+    @Throws(Exception::class) suspend fun toggleTaskCompletion(id: String, isComplete: Boolean) : TaskRecord
 
     // workspaces
     @Throws(Exception::class) suspend fun getWorkspaceMembers(): List<WorkspaceMember>
