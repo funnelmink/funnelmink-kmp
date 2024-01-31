@@ -9,6 +9,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val accountDB = database.accountQueries
     private val accountContactDB = database.accountContactQueries
     private val activityDB = database.activityQueries
+    private val caseDB = database.caseRecordQueries
     private val taskDB = database.scheduleTaskQueries
     private val userDB = database.userQueries
     private val workspaceDB = database.workspaceQueries
@@ -245,6 +246,134 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     @Throws(Exception::class)
     private fun deleteAllActivities() {
         activityDB.removeAllActivities()
+    }
+
+    // ------------------------------------------------------------------------
+    // Cases
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+fun insertCase(case: Case, funnelID: String?, accountID: String?) {
+        caseDB.insertCase(
+            case.id,
+            case.assignedTo,
+            case.closedDate,
+            case.createdAt,
+            case.description,
+            case.name,
+            case.notes,
+            case.priority.toLong(),
+            case.stage,
+            case.updatedAt,
+            case.value.toString(),
+            funnelID,
+            accountID
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllCasesForAccount(id: String): List<Case> {
+        return caseDB.selectAllCasesForAccount(id).executeAsList().map {
+            mapCase(
+                it.id,
+                it.assignedTo,
+                it.closedDate,
+                it.createdAt,
+                it.description,
+                it.name,
+                it.notes,
+                it.priority.toInt(),
+                it.stage,
+                it.updatedAt,
+                it.value_?.toDouble() ?: 0.0
+            )
+
+        }
+    }
+
+    @Throws(Exception::class)
+    fun selectAllCasesForFunnel(id: String): List<Case> {
+        return caseDB.selectAllCasesForFunnel(id).executeAsList().map {
+            mapCase(
+                it.id,
+                it.assignedTo,
+                it.closedDate,
+                it.createdAt,
+                it.description,
+                it.name,
+                it.notes,
+                it.priority.toInt(),
+                it.stage,
+                it.updatedAt,
+                it.value_?.toDouble() ?: 0.0
+            )
+        }
+    }
+
+    @Throws(Exception::class)
+    fun updateCase(case: Case) {
+        caseDB.updateCase(
+            case.assignedTo,
+            case.closedDate,
+            case.createdAt,
+            case.description,
+            case.name,
+            case.notes,
+            case.priority.toLong(),
+            case.stage,
+            case.updatedAt,
+            case.value.toString(),
+            case.id
+        )
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllCasesForAccount(id: String, cases: List<Case>) {
+        caseDB.transaction {
+            caseDB.removeAllCasesForAccount(id)
+            cases.forEach { insertCase(it, null, id) }
+        }
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllCasesForFunnel(id: String, cases: List<Case>) {
+        caseDB.transaction {
+            caseDB.removeAllCasesForFunnel(id)
+            cases.forEach { insertCase(it, id, null) }
+        }
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllCases() {
+        caseDB.removeAllCases()
+    }
+
+    private fun mapCase(
+        id: String,
+        assignedTo: String?,
+        closedDate: String?,
+        createdAt: String,
+        description: String?,
+        name: String,
+        notes: String?,
+        priority: Int,
+        stage: String?,
+        updatedAt: String,
+        value: Double
+    ): Case {
+        return Case(
+            id,
+            assignedTo,
+            closedDate,
+            createdAt,
+            description,
+            name,
+            notes,
+            priority,
+            stage,
+            updatedAt,
+            value
+        )
     }
 
     // ------------------------------------------------------------------------
@@ -504,8 +633,10 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     @Throws(Exception::class)
     fun clearAllDatabases() {
-        deleteAllActivities()
         deleteAllAccounts()
+        deleteAllActivities()
+        deleteAllCases()
+        deleteAllContacts()
         deleteAllTasks()
         deleteAllWorkspaces()
         deleteAllWorkspaceMembers()

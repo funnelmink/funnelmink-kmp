@@ -4,17 +4,19 @@ CREATE TABLE SQLAccountContact (
     name TEXT,
     notes TEXT,
     phone TEXT,
-    account_id TEXT
+    accountId TEXT,
+
+    FOREIGN KEY(accountId) REFERENCES SQLAccount(id)
 );
 
 insertContact:
-INSERT INTO SQLAccountContact (id, email, name, notes, phone, account_id) VALUES (?, ?, ?, ?, ?, ?);
+INSERT INTO SQLAccountContact (id, email, name, notes, phone, accountId) VALUES (?, ?, ?, ?, ?, ?);
 
 selectAllContactsForAccount:
-SELECT * FROM SQLAccountContact WHERE account_id = ?;
+SELECT * FROM SQLAccountContact WHERE accountId = ?;
 
 removeAllContactsForAccount:
-DELETE FROM SQLAccountContact WHERE account_id = ?;
+DELETE FROM SQLAccountContact WHERE accountId = ?;
 
 removeContact:
 DELETE FROM SQLAccountContact WHERE id = ?;
