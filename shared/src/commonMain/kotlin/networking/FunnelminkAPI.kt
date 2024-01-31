@@ -92,6 +92,94 @@ class FunnelminkAPI(
     }
 
     // ------------------------------------------------------------------------
+    // Accounts
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun createAccount(body: CreateAccountRequest): Account {
+        val account: Account = genericRequest("$baseURL/v1/workspace/accounts", HttpMethod.Post) {
+            setBody(body)
+        }
+        cache.insertAccount(account)
+        return account
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteAccount(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/accounts/$id", HttpMethod.Delete)
+        cache.deleteTask(id)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getAccountActivities(id: String): List<ActivityRecord> {
+        val cacheKey = "getAccountActivities$id"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllActivitiesForRecord(id)
+                if (cached.isNotEmpty()) {
+                    Utilities.logger.info("Retrieved ${cached.size} activities for account $id from cache")
+                    return cached
+                }
+            }
+            val fetched: List<ActivityRecord> = genericRequest("$baseURL/v1/activities/account/$id", HttpMethod.Get)
+            cache.replaceAllActivitiesForRecord(id, fetched)
+            cacheInvalidator.updateTimestamp(cacheKey)
+            Utilities.logger.info("Cached ${fetched.size} activities for account $id")
+            return fetched
+        } catch (e: Exception) {
+            val cached = cache.selectAllActivitiesForRecord(id)
+            if (cached.isNotEmpty()) {
+                Utilities.logger.warn("Failed to fetch Activities. Returned ${cached.size} activities for account $id from cache")
+                return cached
+            } else {
+                throw e
+            }
+        }
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getAccountDetails(id: String): Account {
+        // this is unused right now
+        return genericRequest("$baseURL/v1/workspace/accounts/$id", HttpMethod.Get)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getAccounts(): List<Account> {
+        val cacheKey = "getAccounts"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllAccounts()
+                if (cached.isNotEmpty()) {
+                    Utilities.logger.info("Retrieved ${cached.size} accounts from cache")
+                    return cached
+                }
+            }
+            val fetched: List<Account> = genericRequest("$baseURL/v1/workspace/accounts", HttpMethod.Get)
+            cache.replaceAllAccounts(fetched)
+            cacheInvalidator.updateTimestamp(cacheKey)
+            Utilities.logger.info("Cached ${fetched.size} accounts")
+            return fetched
+        } catch (e: Exception) {
+            val cached = cache.selectAllAccounts()
+            if (cached.isNotEmpty()) {
+                Utilities.logger.warn("Failed to fetch Accounts. Returned ${cached.size} accounts from cache")
+                return cached
+            } else {
+                throw e
+            }
+        }
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateAccount(id: String, body: UpdateAccountRequest): Account {
+        val account: Account = genericRequest("$baseURL/v1/workspace/accounts/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.updateAccount(account)
+        return account
+    }
+
+    // ------------------------------------------------------------------------
     // Activities
     // ------------------------------------------------------------------------
 
@@ -100,96 +188,6 @@ class FunnelminkAPI(
         genericRequest<Unit>("$baseURL/v1/activities/${subtype.typeName}", HttpMethod.Post) {
             setBody(body)
         }
-    }
-
-    // ------------------------------------------------------------------------
-    // Contacts
-    // ------------------------------------------------------------------------
-
-    @Throws(Exception::class)
-    override suspend fun createContact(body: CreateContactRequest): Account {
-        val account: Account = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Post) {
-            setBody(body)
-        }
-        cache.insertAccount(account)
-        return account
-    }
-
-    @Throws(Exception::class)
-    override suspend fun deleteContact(id: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/contacts/$id", HttpMethod.Delete)
-        cache.deleteTask(id)
-    }
-
-    @Throws(Exception::class)
-    override suspend fun getContactActivities(id: String): List<ActivityRecord> {
-        val cacheKey = "getContactActivities$id"
-        try {
-            if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllActivitiesForRecord(id)
-                if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} activities for contact $id from cache")
-                    return cached
-                }
-            }
-            val fetched: List<ActivityRecord> = genericRequest("$baseURL/v1/activities/contact/$id", HttpMethod.Get)
-            cache.replaceAllActivitiesForRecord(id, fetched)
-            cacheInvalidator.updateTimestamp(cacheKey)
-            Utilities.logger.info("Cached ${fetched.size} activities for contact $id")
-            return fetched
-        } catch (e: Exception) {
-            val cached = cache.selectAllActivitiesForRecord(id)
-            if (cached.isNotEmpty()) {
-                Utilities.logger.warn("Failed to fetch Activities. Returned ${cached.size} activities for contact $id from cache")
-                return cached
-            } else {
-                throw e
-            }
-        }
-    }
-
-    @Throws(Exception::class)
-    override suspend fun getContactDetails(id: String): Account {
-        // this is unused right now
-        return genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Get)
-    }
-
-    @Throws(Exception::class)
-    override suspend fun getContacts(): List<Account> {
-        // TODO: one day this should return minimal information for each contact. Details should be requested by their own endpoint
-        // Only if we notice it getting expensive and we feel it will save enough money to make it worth the effort
-        val cacheKey = "getContacts"
-        try {
-            if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllAccounts()
-                if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} contacts from cache")
-                    return cached
-                }
-            }
-            val fetched: List<Account> = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Get)
-            cache.replaceAllAccounts(fetched)
-            cacheInvalidator.updateTimestamp(cacheKey)
-            Utilities.logger.info("Cached ${fetched.size} contacts")
-            return fetched
-        } catch (e: Exception) {
-            val cached = cache.selectAllAccounts()
-            if (cached.isNotEmpty()) {
-                Utilities.logger.warn("Failed to fetch Contacts. Returned ${cached.size} contacts from cache")
-                return cached
-            } else {
-                throw e
-            }
-        }
-    }
-
-    @Throws(Exception::class)
-    override suspend fun updateContact(id: String, body: UpdateContactRequest): Account {
-        val account: Account = genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Put) {
-            setBody(body)
-        }
-        cache.updateAccount(account)
-        return account
     }
 
     // ------------------------------------------------------------------------

@@ -42,17 +42,17 @@ interface API {
     // ------------------------------------------------------------------------
 
     // accounts
+    @Throws(Exception::class) suspend fun getAccounts(): List<Account>
+    @Throws(Exception::class) suspend fun createAccount(body: CreateAccountRequest): Account
+    @Throws(Exception::class) suspend fun deleteAccount(id: String)
+    @Throws(Exception::class) suspend fun getAccountActivities(id: String): List<ActivityRecord>
+    @Throws(Exception::class) suspend fun getAccountDetails(id: String): Account
+    @Throws(Exception::class) suspend fun updateAccount(id: String, body: UpdateAccountRequest): Account
 
     // activities
     @Throws(Exception::class) suspend fun createActivity(subtype: ActivitySubtype, body: CreateActivityRequest)
 
     // contacts
-    @Throws(Exception::class) suspend fun createContact(body: CreateContactRequest): Account
-    @Throws(Exception::class) suspend fun deleteContact(id: String)
-    @Throws(Exception::class) suspend fun getContactActivities(id: String): List<ActivityRecord>
-    @Throws(Exception::class) suspend fun getContactDetails(id: String): Account
-    @Throws(Exception::class) suspend fun getContacts(): List<Account>
-    @Throws(Exception::class) suspend fun updateContact(id: String, body: UpdateContactRequest): Account
 
     // tasks
     @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): TaskRecord

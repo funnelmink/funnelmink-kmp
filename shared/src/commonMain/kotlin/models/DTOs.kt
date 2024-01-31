@@ -3,39 +3,36 @@ package models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CreateContactRequest(
-    val firstName: String,
-    val lastName: String? = null,
-    val emails: List<String>,
-    val phoneNumbers: List<String>,
-    val companyName: String? = null,
-    val isOrganization: Boolean,
+data class CreateAccountRequest(
+    val name: String,
+    val email: String? = null,
+    val phone: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val street1: String? = null,
-    val street2: String? = null,
+    val address: String? = null,
     val city: String? = null,
     val state: String? = null,
     val country: String? = null,
     val zip: String? = null,
+    val notes: String? = null,
+    val type: AccountType,
+    val leadID: String? = null
 )
 
 @Serializable
-data class UpdateContactRequest(
-    val firstName: String,
-    val lastName: String? = null,
-    val emails: List<String>,
-    val phoneNumbers: List<String>,
-    val companyName: String? = null,
-    val isOrganization: Boolean,
+data class UpdateAccountRequest(
+    val name: String? = null,
+    val email: String? = null,
+    val phone: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val street1: String? = null,
-    val street2: String? = null,
+    val address: String? = null,
     val city: String? = null,
     val state: String? = null,
     val country: String? = null,
     val zip: String? = null,
+    val notes: String? = null,
+    val type: String? = null
 )
 
 @Serializable

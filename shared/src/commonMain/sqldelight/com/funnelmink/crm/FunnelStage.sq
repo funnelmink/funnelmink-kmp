@@ -1,0 +1,8 @@
+CREATE TABLE SQLFunnelStage (
+    id TEXT PRIMARY KEY,
+    funnelId TEXT NOT NULL,
+    name TEXT NOT NULL,
+    order_ INTEGER NOT NULL,
+
+    FOREIGN KEY (funnelId) REFERENCES SQLFunnel(id)
+);
