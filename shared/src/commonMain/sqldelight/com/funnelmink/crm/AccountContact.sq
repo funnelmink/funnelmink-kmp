@@ -1,0 +1,26 @@
+CREATE TABLE SQLAccountContact (
+    id TEXT PRIMARY KEY,
+    email TEXT,
+    name TEXT,
+    notes TEXT,
+    phone TEXT,
+    account_id TEXT
+);
+
+insertContact:
+INSERT INTO SQLAccountContact (id, email, name, notes, phone, account_id) VALUES (?, ?, ?, ?, ?, ?);
+
+selectAllContactsForAccount:
+SELECT * FROM SQLAccountContact WHERE account_id = ?;
+
+removeAllContactsForAccount:
+DELETE FROM SQLAccountContact WHERE account_id = ?;
+
+removeContact:
+DELETE FROM SQLAccountContact WHERE id = ?;
+
+updateContact:
+UPDATE SQLAccountContact SET email = ?, name = ?, notes = ?, phone = ? WHERE id = ?;
+
+removeAllContacts:
+DELETE FROM SQLAccountContact;

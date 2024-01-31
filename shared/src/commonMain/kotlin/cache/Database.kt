@@ -7,6 +7,7 @@ import models.*
 internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val database = FunnelminkCache(databaseDriverFactory.createDriver())
     private val accountDB = database.accountQueries
+    private val accountContactDB = database.accountContactQueries
     private val activityDB = database.activityQueries
     private val taskDB = database.scheduleTaskQueries
     private val userDB = database.userQueries
@@ -141,6 +142,60 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             updatedAt,
             zip
         )
+    }
+
+    // ------------------------------------------------------------------------
+    // Account Contact
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertAccountContact(contact: AccountContact, accountID: String) {
+        accountContactDB.insertContact(
+            contact.id,
+            contact.email,
+            contact.name,
+            contact.notes,
+            contact.phone,
+            accountID
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllContactsForAccount(id: String): List<AccountContact> {
+        return accountContactDB.selectAllContactsForAccount(id).executeAsList().map { mapContact(it.id, it.email, it.name, it.notes, it.phone, id)}
+    }
+
+    @Throws(Exception::class)
+    fun updateAccountContact(contact: AccountContact) {
+        accountContactDB.updateContact(
+            contact.email,
+            contact.name,
+            contact.notes,
+            contact.phone,
+            contact.id
+        )
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllContactsForAccount(id: String, contacts: List<AccountContact>) {
+        accountContactDB.transaction {
+            accountContactDB.removeAllContactsForAccount(id)
+            contacts.forEach { insertAccountContact(it, id) }
+        }
+    }
+
+    @Throws(Exception::class)
+    fun deleteContact(id: String) {
+        accountContactDB.removeContact(id)
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllContacts() {
+        accountContactDB.removeAllContacts()
+    }
+
+    private fun mapContact(id: String, email: String?, name: String?, notes: String?, phone: String?, accountID: String): AccountContact {
+        return AccountContact(id, email, name, notes, phone)
     }
 
     // ------------------------------------------------------------------------
