@@ -75,7 +75,6 @@ data class Funnel(
     val id: String,
 
     val name: String,
-    val stages: List<FunnelStage>,
     val type: FunnelType,
 )
 

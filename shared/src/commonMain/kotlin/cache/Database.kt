@@ -10,6 +10,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val accountContactDB = database.accountContactQueries
     private val activityDB = database.activityQueries
     private val caseDB = database.caseRecordQueries
+    private val funnelsDB = database.funnelQueries
     private val taskDB = database.scheduleTaskQueries
     private val userDB = database.userQueries
     private val workspaceDB = database.workspaceQueries
@@ -391,6 +392,73 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     // ------------------------------------------------------------------------
+    // Funnels
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertFunnel(funnel: Funnel) {
+        funnelsDB.insertFunnel(
+            funnel.id,
+            funnel.name,
+            funnel.type.typeName
+        )
+    }
+
+    @Throws(Exception::class)
+    fun replaceFunnel(funnel: Funnel) {
+        funnelsDB.transaction {
+            funnelsDB.removeFunnel(funnel.id)
+            insertFunnel(funnel)
+        }
+    }
+
+    @Throws(Exception::class)
+    fun selectFunnel(id: String): Funnel? {
+        val cached = funnelsDB.selectFunnel(id).executeAsOneOrNull() ?: return null
+        return mapFunnel(cached.id, cached.name, cached.type)
+    }
+
+    @Throws(Exception::class)
+    fun selectAllFunnels(): List<Funnel> {
+        return funnelsDB.selectAllFunnels(::mapFunnel).executeAsList()
+    }
+
+    @Throws(Exception::class)
+    fun updateFunnel(funnel: Funnel) {
+        funnelsDB.updateFunnel(
+            funnel.name,
+            funnel.type.typeName,
+            funnel.id
+        )
+    }
+
+    @Throws(Exception::class)
+    fun deleteFunnel(id: String) {
+        funnelsDB.removeFunnel(id)
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllFunnels(funnels: List<Funnel>) {
+        funnelsDB.transaction {
+            funnelsDB.removeAllFunnels()
+            funnels.forEach(::insertFunnel)
+        }
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllFunnels() {
+        funnelsDB.removeAllFunnels()
+    }
+
+    private fun mapFunnel(id: String, name: String, type: String): Funnel {
+        return Funnel(
+            id,
+            name,
+            FunnelType.fromTypeName(type)
+        )
+    }
+
+    // ------------------------------------------------------------------------
     // Tasks
     // ------------------------------------------------------------------------
 
@@ -651,6 +719,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         deleteAllActivities()
         deleteAllCases()
         deleteAllContacts()
+        deleteAllFunnels()
         deleteAllTasks()
         deleteAllWorkspaces()
         deleteAllWorkspaceMembers()

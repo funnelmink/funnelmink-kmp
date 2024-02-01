@@ -246,6 +246,80 @@ class FunnelminkAPI(
     }
 
     // ------------------------------------------------------------------------
+    // Funnels
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun getFunnels(): List<Funnel> {
+        val cacheKey = "getFunnels"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllFunnels()
+                if (cached.isNotEmpty()) {
+                    Utilities.logger.info("Retrieved ${cached.size} funnels from cache")
+                    return cached
+                }
+            }
+            val fetched: List<Funnel> = genericRequest("$baseURL/v1/workspace/funnels", HttpMethod.Get)
+            cache.replaceAllFunnels(fetched)
+            cacheInvalidator.updateTimestamp(cacheKey)
+            Utilities.logger.info("Cached ${fetched.size} funnels")
+            return fetched
+        } catch (e: Exception) {
+            val cached = cache.selectAllFunnels()
+            if (cached.isNotEmpty()) {
+                Utilities.logger.warn("Failed to fetch Funnels. Returned ${cached.size} funnels from cache")
+                return cached
+            } else {
+                throw e
+            }
+        }
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getFunnel(id: String): Funnel {
+        val cached = cache.selectFunnel(id)
+        if (cached != null) {
+            Utilities.logger.info("Returned funnel $id from cache")
+            return cached
+        }
+        return genericRequest("$baseURL/v1/workspace/funnels/$id", HttpMethod.Get)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun createDefaultFunnels() {
+        genericRequest<Unit>("$baseURL/v1/workspace/funnels/createDefaultFunnels", HttpMethod.Post)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun createFunnel(body: CreateFunnelRequest): Funnel {
+        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/funnels", HttpMethod.Post) {
+            setBody(body)
+        }
+        cache.insertFunnel(funnel)
+        return funnel
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateFunnel(id: String, body: UpdateFunnelRequest): Funnel {
+        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/funnels/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.replaceFunnel(funnel)
+        return funnel
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteFunnel(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/funnels/$id", HttpMethod.Delete)
+        cache.deleteFunnel(id)
+    }
+
+    // ------------------------------------------------------------------------
+    // Funnel Stages
+    // ------------------------------------------------------------------------
+
+    // ------------------------------------------------------------------------
     // Tasks
     // ------------------------------------------------------------------------
 
