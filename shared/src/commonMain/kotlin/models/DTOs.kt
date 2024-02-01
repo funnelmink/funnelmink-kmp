@@ -32,7 +32,7 @@ data class UpdateAccountRequest(
     val country: String? = null,
     val zip: String? = null,
     val notes: String? = null,
-    val type: String? = null
+    val type: AccountType? = null
 )
 
 @Serializable

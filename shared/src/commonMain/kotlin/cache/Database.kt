@@ -121,7 +121,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         latitude: String?,
         leadID: String?,
         longitude: String?,
-        name: String?,
+        name: String,
         notes: String?,
         phone: String?,
         state: String?,

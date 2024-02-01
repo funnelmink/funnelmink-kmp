@@ -16,9 +16,9 @@ class TodayViewModel: ViewModel {
     private var subscriptions = Set<AnyCancellable>()
     
     struct State: Hashable {
-        var tasksByDate: [Date: [ScheduleTask]] = [:]
-        var tasksByPriority: [Int32: [ScheduleTask]] = [:]
-        var completedTasks: [ScheduleTask] = []
+        var tasksByDate: [Date: [TaskRecord]] = [:]
+        var tasksByPriority: [Int32: [TaskRecord]] = [:]
+        var completedTasks: [TaskRecord] = []
     }
     
     init() {
@@ -32,23 +32,23 @@ class TodayViewModel: ViewModel {
             .store(in: &subscriptions)
     }
     
-    var tasksByDateSearchResults: [Date: [ScheduleTask]] {
+    var tasksByDateSearchResults: [Date: [TaskRecord]] {
         if searchText.isEmpty { return state.tasksByDate }
-        var results: [Date: [ScheduleTask]] = [:]
+        var results: [Date: [TaskRecord]] = [:]
         for (key, value) in state.tasksByDate {
             results[key] = value.filter { $0.description.lowercased().contains(searchText.lowercased()) }
         }
         return results
     }
-    var tasksByPrioritySearchResults: [Int32: [ScheduleTask]] {
+    var tasksByPrioritySearchResults: [Int32: [TaskRecord]] {
         if searchText.isEmpty { return state.tasksByPriority }
-        var results: [Int32: [ScheduleTask]] = [:]
+        var results: [Int32: [TaskRecord]] = [:]
         for (key, value) in state.tasksByPriority {
             results[key] = value.filter { $0.description.lowercased().contains(searchText.lowercased()) }
         }
         return results
     }
-    var completedTasksSearchResults: [ScheduleTask] {
+    var completedTasksSearchResults: [TaskRecord] {
         if searchText.isEmpty { return state.completedTasks }
         return state.completedTasks.filter { $0.description.lowercased().contains(searchText.lowercased()) }
     }
@@ -81,7 +81,7 @@ class TodayViewModel: ViewModel {
     }
     
     @MainActor
-    func toggleIsComplete(for task: ScheduleTask) async {
+    func toggleIsComplete(for task: TaskRecord) async {
         do {
             _ = try await Networking.api.toggleTaskCompletion(id: task.id, isComplete: !task.isComplete)
         } catch {

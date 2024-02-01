@@ -10,7 +10,7 @@ import Shared
 import SwiftUI
 
 struct TaskCompletionButton: View {
-    let task: ScheduleTask
+    let task: TaskRecord
     let onTap: () -> Void
     var body: some View {
         Button {

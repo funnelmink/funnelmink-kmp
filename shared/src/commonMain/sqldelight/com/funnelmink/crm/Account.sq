@@ -9,7 +9,7 @@ CREATE TABLE SQLAccount (
     latitude TEXT,
     leadID TEXT,
     longitude TEXT,
-    name TEXT,
+    name TEXT NOT NULL,
     notes TEXT,
     phone TEXT,
     state TEXT,

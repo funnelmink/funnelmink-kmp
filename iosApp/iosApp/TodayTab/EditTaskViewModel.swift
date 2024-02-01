@@ -13,7 +13,7 @@ class EditTaskViewModel: ViewModel {
     @Published var state = State()
     
     struct State: Hashable {
-        var task: ScheduleTask?
+        var task: TaskRecord?
     }
     
     @MainActor

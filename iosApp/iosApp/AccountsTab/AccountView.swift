@@ -1,5 +1,5 @@
 //
-//  ContactView.swift
+//  AccountView.swift
 //  iosApp
 //
 //  Created by Jeremy Warren on 1/13/24.
@@ -10,19 +10,17 @@ import SwiftUI
 import Shared
 import UIKit
 
-struct ContactView: View {
+struct AccountView: View {
     @EnvironmentObject var nav: Navigation
-    @StateObject var viewModel = ContactsViewModel()
+    @StateObject var viewModel = AccountsViewModel()
     @State private var isAnimating: Bool = false
     @State private var showingActionSheet = false
-    @State
     
-    var contact: Contact
+    var account: Account
     var initials: String {
         
-        if let firstNameInitial = contact.firstName.first,
-           let lastNameInitial = contact.lastName?.first {
-            return String(firstNameInitial) + String(lastNameInitial)
+        if let initial = account.name.first {
+            return String(initial)
         } else {
             return ""
         }
@@ -48,29 +46,28 @@ struct ContactView: View {
                 Text(initials)
                     .bold().font(.system(size: 80))
             }
-            Text(contact.firstName + " " + (contact.lastName ?? ""))
+            Text(account.name)
                 .bold()
                 .font(.title)
-            Text(contact.companyName ?? "")
+            Text(account.name) // accounts don't have a company name anymore because they *are* the company
                 .foregroundStyle(.secondary)
         }
         Spacer()
         ScrollView {
             Button(action: {
-//                guard let phoneNumber = contact.phoneNumbers.first else { return }
                 showingActionSheet = true
             }, label: {
-                CustomCell(title: "Phone", subtitle: contact.phoneNumbers.first, icon: "phone" ,cellType: .iconAction)
+                CustomCell(title: "Phone", subtitle: account.phone, icon: "phone" ,cellType: .iconAction)
                     .padding()
             })
             .foregroundStyle(.primary)
             .actionSheet(isPresented: $showingActionSheet) {
                         ActionSheet(
-                            title: Text("Contact"),
-                            message: Text("Call \(contact.phoneNumbers.first ?? "")?"),
+                            title: Text("Account"),
+                            message: Text("Call \(account.phone ?? "")?"),
                             buttons: [
                                 .default(Text("Call")) {
-                                    guard let phoneNumber = contact.phoneNumbers.first else { return }
+                                    guard let phoneNumber = account.phone else { return }
                                     makeCall(phoneNumber: phoneNumber)
                                 },
                                 .cancel()
@@ -80,7 +77,7 @@ struct ContactView: View {
             Button(action: {
                 // present a banner to send an email
             }, label: {
-                CustomCell(title: "Email", subtitle: contact.emails.first, icon: "envelope" ,cellType: .iconAction)
+                CustomCell(title: "Email", subtitle: account.email, icon: "envelope" ,cellType: .iconAction)
                     .padding()
             })
             .foregroundStyle(.primary)
@@ -96,30 +93,4 @@ struct ContactView: View {
         
         
     }
-}
-
-struct ContactEvent {
-    
-}
-
-#Preview {
-    ContactView(
-        contact: Contact(
-            id: "",
-            firstName: "Jeremy",
-            lastName: "Warren",
-            emails: ["jeddynwarren@gmail.com"],
-            phoneNumbers: ["(801) 226-8345"],
-            companyName: "Funnelmink",
-            isOrganization: false,
-            latitude: 38.465636,
-            longitude: -66.813608,
-            street1: "891 N 800 E",
-            street2: nil,
-            city: "Orem",
-            state: "UT",
-            country: "US",
-            zip: "84097"
-        )
-    )
 }

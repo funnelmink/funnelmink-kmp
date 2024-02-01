@@ -1,9 +1,9 @@
 import SwiftUI
 
-struct AccountView: View {
+struct ProfileView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
-    @StateObject var viewModel = AccountViewModel()
+    @StateObject var viewModel = ProfileViewModel()
     var body: some View {
         List {
             Section {
@@ -66,7 +66,7 @@ struct AccountView: View {
         }
         .scrollIndicators(.never)
         .tint(.primary)
-        .navigationTitle("Account")
+        .navigationTitle("Profile")
     }
     
     private var chevron: some View {
@@ -104,6 +104,6 @@ struct AccountView: View {
 }
 
 #Preview {
-    AccountView()
+    ProfileView()
         .environmentObject(AppState())
 }

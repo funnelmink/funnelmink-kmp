@@ -99,10 +99,10 @@ fileprivate struct FunnelminkAppContents: View {
 enum FunnelMinkTab: Int, Identifiable, CaseIterable {
     // The order of the cases determines the order of the tabs
     case today // today at a glance. Todoist
-    case contacts // quick find a contact. send invoice. send business card. Apple Contacts
+    case accounts // quick find an account. send invoice. send business card. Apple Contacts
     case funnels // leads and other - Jira
     case inbox // would be really cool to make this its own email client
-    case account // settings, profile, etc. Apple Settings
+    case profile // settings, profile, etc. Apple Settings
     
     var id: Int {
         rawValue
@@ -112,10 +112,10 @@ enum FunnelMinkTab: Int, Identifiable, CaseIterable {
     var root: some View {
         switch self {
         case .today: TodayView()
-        case .contacts: ContactsView()
+        case .accounts: AccountsView()
         case .funnels: FunnelsView()
         case .inbox: InboxView()
-        case .account: AccountView()
+        case .profile: ProfileView()
         }
     }
 
@@ -123,10 +123,10 @@ enum FunnelMinkTab: Int, Identifiable, CaseIterable {
     var tabItem: some View {
         switch self {
         case .today: Label("Today", systemImage: "\(String(format: "%02d", Calendar.current.component(.day, from: .init()))).square.fill")
-        case .contacts: Label("Contacts", systemImage: "circle.hexagongrid")
+        case .accounts: Label("Accounts", systemImage: "circle.hexagongrid")
         case .funnels: Label("Funnels", image: "funnels.icon")
         case .inbox: Label("Inbox", systemImage: "envelope")
-        case .account: Label("Account", systemImage: "person")
+        case .profile: Label("Profile", systemImage: "person")
         }
     }
 }

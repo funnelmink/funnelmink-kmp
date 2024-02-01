@@ -10,7 +10,7 @@ import Shared
 import SwiftUI
 
 struct TaskCell: View {
-    let task: ScheduleTask
+    let task: TaskRecord
     let onTapIsComplete: () -> Void
     
     var body: some View {
@@ -30,54 +30,5 @@ struct TaskCell: View {
         }
         .lineLimit(5)
         .frame(minHeight: 44)
-    }
-}
-
-#Preview {
-    List {
-        TaskCell(
-            task: ScheduleTask(
-                id: "a",
-                title: "Window and mail",
-                body: nil,
-                priority: 1,
-                isComplete: false,
-                scheduledDate: "2021-01-11",
-                updatedAt: .loremDate
-            )
-        ){}
-        TaskCell(
-            task: ScheduleTask(
-                id: "b",
-                title: "funnelmink daily update",
-                body: "talk about some freaking thing",
-                priority: 2,
-                isComplete: false,
-                scheduledDate: "2021-01-11",
-                updatedAt: .loremDate
-            )
-        ){}
-        TaskCell(
-            task: ScheduleTask(
-                id: "c",
-                title: "funnelmink daily update",
-                body: "talk about some freaking thing",
-                priority: 3,
-                isComplete: true,
-                scheduledDate: "2021-01-11",
-                updatedAt: .loremDate
-            )
-        ){}
-        TaskCell(
-            task: ScheduleTask(
-                id: "d",
-                title: "funnelmink daily update",
-                body: "talk about some freaking thing",
-                priority: 0,
-                isComplete: false,
-                scheduledDate: "2021-01-11",
-                updatedAt: .loremDate
-            )
-        ){}
     }
 }

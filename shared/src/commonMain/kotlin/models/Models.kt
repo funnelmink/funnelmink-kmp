@@ -24,7 +24,7 @@ data class Account(
     val latitude: Double? = null,
     val leadID: String? = null,
     val longitude: Double? = null,
-    val name: String? = null,
+    val name: String,
     val notes: String? = null,
     val phone: String? = null,
     val state: String? = null,
