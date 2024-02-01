@@ -319,6 +319,39 @@ class FunnelminkAPI(
     // Funnel Stages
     // ------------------------------------------------------------------------
 
+    @Throws(Exception::class)
+    override suspend fun createFunnelStage(funnelID: String, body: CreateFunnelStageRequest): FunnelStage {
+        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/funnelstages/$funnelID/", HttpMethod.Post) {
+            setBody(body)
+        }
+        cache.insertFunnelStage(stage, funnelID)
+        return stage
+    }
+
+    @Throws(Exception::class)
+    override suspend fun reorderFunnelStages(funnelID: String, body: ReorderFunnelStagesRequest) {
+        genericRequest<Unit>("$baseURL/v1/workspace/funnelstages/$funnelID/reorder", HttpMethod.Put) {
+            setBody(body)
+        }
+
+        cache.deleteAllFunnelStagesForFunnel(funnelID)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateFunnelStage(id: String, body: UpdateFunnelStageRequest): FunnelStage {
+        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/funnelstages/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.replaceFunnelStage(stage)
+        return stage
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteFunnelStage(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/funnelstages/$id", HttpMethod.Delete)
+        cache.deleteFunnelStage(id)
+    }
+
     // ------------------------------------------------------------------------
     // Tasks
     // ------------------------------------------------------------------------

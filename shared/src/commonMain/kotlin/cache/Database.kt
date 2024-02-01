@@ -11,6 +11,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val activityDB = database.activityQueries
     private val caseDB = database.caseRecordQueries
     private val funnelsDB = database.funnelQueries
+    private val funnelStageDB = database.funnelStageQueries
     private val taskDB = database.scheduleTaskQueries
     private val userDB = database.userQueries
     private val workspaceDB = database.workspaceQueries
@@ -459,6 +460,44 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     // ------------------------------------------------------------------------
+    // Funnel Stages
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertFunnelStage(stage: FunnelStage, funnelID: String) {
+        funnelStageDB.insertFunnelStage(
+            stage.id,
+            funnelID,
+            stage.name,
+            stage.order.toLong(),
+        )
+    }
+
+    @Throws(Exception::class)
+    fun replaceFunnelStage(stage: FunnelStage) {
+        funnelStageDB.transaction {
+            val cached = funnelStageDB.selectStage(stage.id).executeAsOneOrNull()
+            funnelStageDB.deleteFunnelStage(stage.id)
+            cached?.funnelId?.let { insertFunnelStage(stage, it) }
+        }
+    }
+
+    @Throws(Exception::class)
+    fun deleteAllFunnelStagesForFunnel(id: String) {
+        funnelStageDB.deleteAllStagesForFunnel(id)
+    }
+
+    @Throws(Exception::class)
+    fun deleteFunnelStage(id: String) {
+        funnelStageDB.deleteFunnelStage(id)
+    }
+
+    @Throws(Exception::class)
+    fun deleteAllFunnelStages() {
+        funnelStageDB.deleteAllStages()
+    }
+
+    // ------------------------------------------------------------------------
     // Tasks
     // ------------------------------------------------------------------------
 
@@ -720,6 +759,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         deleteAllCases()
         deleteAllContacts()
         deleteAllFunnels()
+        deleteAllFunnelStages()
         deleteAllTasks()
         deleteAllWorkspaces()
         deleteAllWorkspaceMembers()

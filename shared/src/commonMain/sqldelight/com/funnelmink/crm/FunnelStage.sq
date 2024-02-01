@@ -6,3 +6,33 @@ CREATE TABLE SQLFunnelStage (
 
     FOREIGN KEY (funnelId) REFERENCES SQLFunnel(id)
 );
+
+insertFunnelStage:
+INSERT INTO SQLFunnelStage (id, funnelId, name, order_)
+VALUES (?, ?, ?, ?);
+
+deleteFunnelStage:
+DELETE FROM SQLFunnelStage
+WHERE id = ?;
+
+selectAllStagesForFunnel:
+SELECT id, funnelId, name, order_
+FROM SQLFunnelStage
+WHERE funnelId = ?;
+
+selectStage:
+SELECT id, funnelId, name, order_
+FROM SQLFunnelStage
+WHERE id = ?;
+
+updateFunnelStage:
+UPDATE SQLFunnelStage
+SET name = ?, order_ = ?
+WHERE id = ?;
+
+deleteAllStagesForFunnel:
+DELETE FROM SQLFunnelStage
+WHERE funnelId = ?;
+
+deleteAllStages:
+DELETE FROM SQLFunnelStage;
