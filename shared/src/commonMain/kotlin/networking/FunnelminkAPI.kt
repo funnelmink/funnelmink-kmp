@@ -10,7 +10,6 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import io.ktor.util.reflect.*
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import utilities.*
@@ -93,6 +92,94 @@ class FunnelminkAPI(
     }
 
     // ------------------------------------------------------------------------
+    // Accounts
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun createAccount(body: CreateAccountRequest): Account {
+        val account: Account = genericRequest("$baseURL/v1/workspace/accounts", HttpMethod.Post) {
+            setBody(body)
+        }
+        cache.insertAccount(account)
+        return account
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteAccount(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/accounts/$id", HttpMethod.Delete)
+        cache.deleteTask(id)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getAccountActivities(id: String): List<ActivityRecord> {
+        val cacheKey = "getAccountActivities$id"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllActivitiesForRecord(id)
+                if (cached.isNotEmpty()) {
+                    Utilities.logger.info("Retrieved ${cached.size} activities for account $id from cache")
+                    return cached
+                }
+            }
+            val fetched: List<ActivityRecord> = genericRequest("$baseURL/v1/activities/account/$id", HttpMethod.Get)
+            cache.replaceAllActivitiesForRecord(id, fetched)
+            cacheInvalidator.updateTimestamp(cacheKey)
+            Utilities.logger.info("Cached ${fetched.size} activities for account $id")
+            return fetched
+        } catch (e: Exception) {
+            val cached = cache.selectAllActivitiesForRecord(id)
+            if (cached.isNotEmpty()) {
+                Utilities.logger.warn("Failed to fetch Activities. Returned ${cached.size} activities for account $id from cache")
+                return cached
+            } else {
+                throw e
+            }
+        }
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getAccountDetails(id: String): Account {
+        // this is unused right now
+        return genericRequest("$baseURL/v1/workspace/accounts/$id", HttpMethod.Get)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getAccounts(): List<Account> {
+        val cacheKey = "getAccounts"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllAccounts()
+                if (cached.isNotEmpty()) {
+                    Utilities.logger.info("Retrieved ${cached.size} accounts from cache")
+                    return cached
+                }
+            }
+            val fetched: List<Account> = genericRequest("$baseURL/v1/workspace/accounts", HttpMethod.Get)
+            cache.replaceAllAccounts(fetched)
+            cacheInvalidator.updateTimestamp(cacheKey)
+            Utilities.logger.info("Cached ${fetched.size} accounts")
+            return fetched
+        } catch (e: Exception) {
+            val cached = cache.selectAllAccounts()
+            if (cached.isNotEmpty()) {
+                Utilities.logger.warn("Failed to fetch Accounts. Returned ${cached.size} accounts from cache")
+                return cached
+            } else {
+                throw e
+            }
+        }
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateAccount(id: String, body: UpdateAccountRequest): Account {
+        val account: Account = genericRequest("$baseURL/v1/workspace/accounts/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.updateAccount(account)
+        return account
+    }
+
+    // ------------------------------------------------------------------------
     // Activities
     // ------------------------------------------------------------------------
 
@@ -103,45 +190,85 @@ class FunnelminkAPI(
         }
     }
 
+    @Throws(Exception::class)
+    override suspend fun getActivitiesForRecord(id: String, subtype: ActivitySubtype): List<ActivityRecord> {
+        return genericRequest("$baseURL/v1/activities/$subtype/$id", HttpMethod.Get)
+    }
+
     // ------------------------------------------------------------------------
-    // Contacts
+    // Cases
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    override suspend fun createContact(body: CreateContactRequest): Contact {
-        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Post) {
+    override suspend fun assignCaseToMember(id: String, memberID: String): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$id/assignMember/$memberID", HttpMethod.Put)
+        cache.replaceCase(case)
+        return case
+    }
+
+    @Throws(Exception::class)
+    override suspend fun assignCaseToFunnelStage(id: String, stageID: String): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$id/assignStage/$stageID", HttpMethod.Put)
+        cache.replaceCase(case)
+        return case
+    }
+
+    @Throws(Exception::class)
+    override suspend fun createCase(body: CreateCaseRequest, stageID: String, funnelID: String, accountID: String?): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$funnelID/$stageID", HttpMethod.Post) {
+            setBody(body)
+            accountID?.let { parameter("accountID", it) }
+        }
+        cache.insertCase(case, funnelID, accountID)
+        return case
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateCase(id: String, body: UpdateCaseRequest): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$id", HttpMethod.Put) {
             setBody(body)
         }
-        cache.insertContact(contact)
-        return contact
+        cache.replaceCase(case)
+        return case
     }
 
     @Throws(Exception::class)
-    override suspend fun deleteContact(id: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/contacts/$id", HttpMethod.Delete)
-        cache.deleteTask(id)
+    override suspend fun deleteCase(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/cases/$id", HttpMethod.Delete)
+        cache.deleteCase(id)
     }
 
     @Throws(Exception::class)
-    override suspend fun getContactActivities(id: String): List<ActivityRecord> {
-        val cacheKey = "getContactActivities$id"
+    override suspend fun closeCase(id: String): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$id/close", HttpMethod.Put)
+        cache.replaceCase(case)
+        return case
+    }
+
+    // ------------------------------------------------------------------------
+    // Funnels
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun getFunnels(): List<Funnel> {
+        val cacheKey = "getFunnels"
         try {
             if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllActivitiesForRecord(id)
+                val cached = cache.selectAllFunnels()
                 if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} activities for contact $id from cache")
+                    Utilities.logger.info("Retrieved ${cached.size} funnels from cache")
                     return cached
                 }
             }
-            val fetched: List<ActivityRecord> = genericRequest("$baseURL/v1/activities/contact/$id", HttpMethod.Get)
-            cache.replaceAllActivitiesForRecord(id, fetched)
+            val fetched: List<Funnel> = genericRequest("$baseURL/v1/workspace/funnels", HttpMethod.Get)
+            cache.replaceAllFunnels(fetched)
             cacheInvalidator.updateTimestamp(cacheKey)
-            Utilities.logger.info("Cached ${fetched.size} activities for contact $id")
+            Utilities.logger.info("Cached ${fetched.size} funnels")
             return fetched
         } catch (e: Exception) {
-            val cached = cache.selectAllActivitiesForRecord(id)
+            val cached = cache.selectAllFunnels()
             if (cached.isNotEmpty()) {
-                Utilities.logger.warn("Failed to fetch Activities. Returned ${cached.size} activities for contact $id from cache")
+                Utilities.logger.warn("Failed to fetch Funnels. Returned ${cached.size} funnels from cache")
                 return cached
             } else {
                 throw e
@@ -150,33 +277,119 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getContactDetails(id: String): Contact {
-        // this is unused right now
-        return genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Get)
+    override suspend fun getFunnel(id: String): Funnel {
+        val cached = cache.selectFunnel(id)
+        if (cached != null) {
+            Utilities.logger.info("Returned funnel $id from cache")
+            return cached
+        }
+        return genericRequest("$baseURL/v1/workspace/funnels/$id", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
-    override suspend fun getContacts(): List<Contact> {
-        // TODO: one day this should return minimal information for each contact. Details should be requested by their own endpoint
-        // Only if we notice it getting expensive and we feel it will save enough money to make it worth the effort
-        val cacheKey = "getContacts"
+    override suspend fun createDefaultFunnels() {
+        genericRequest<Unit>("$baseURL/v1/workspace/funnels/createDefaultFunnels", HttpMethod.Post)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun createFunnel(body: CreateFunnelRequest): Funnel {
+        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/funnels", HttpMethod.Post) {
+            setBody(body)
+        }
+        cache.insertFunnel(funnel)
+        return funnel
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateFunnel(id: String, body: UpdateFunnelRequest): Funnel {
+        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/funnels/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.replaceFunnel(funnel)
+        return funnel
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteFunnel(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/funnels/$id", HttpMethod.Delete)
+        cache.deleteFunnel(id)
+    }
+
+    // ------------------------------------------------------------------------
+    // Funnel Stages
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun createFunnelStage(funnelID: String, body: CreateFunnelStageRequest): FunnelStage {
+        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/funnelstages/$funnelID/", HttpMethod.Post) {
+            setBody(body)
+        }
+        cache.insertFunnelStage(stage, funnelID)
+        return stage
+    }
+
+    @Throws(Exception::class)
+    override suspend fun reorderFunnelStages(funnelID: String, body: ReorderFunnelStagesRequest) {
+        genericRequest<Unit>("$baseURL/v1/workspace/funnelstages/$funnelID/reorder", HttpMethod.Put) {
+            setBody(body)
+        }
+
+        cache.deleteAllFunnelStagesForFunnel(funnelID)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateFunnelStage(id: String, body: UpdateFunnelStageRequest): FunnelStage {
+        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/funnelstages/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.replaceFunnelStage(stage)
+        return stage
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteFunnelStage(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/funnelstages/$id", HttpMethod.Delete)
+        cache.deleteFunnelStage(id)
+    }
+
+    // ------------------------------------------------------------------------
+    // Leads
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun assignLeadToMember(id: String, memberID: String): Lead {
+        val lead: Lead = genericRequest("$baseURL/v1/workspace/leads/$id/assignMember/$memberID", HttpMethod.Put)
+        cache.replaceLead(lead)
+        return lead
+    }
+
+    @Throws(Exception::class)
+    override suspend fun assignLeadToFunnelStage(id: String, stageID: String): Lead {
+        val lead: Lead = genericRequest("$baseURL/v1/workspace/leads/$id/assignStage/$stageID", HttpMethod.Put)
+        cache.replaceLead(lead)
+        return lead
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getLeads(): List<Lead> {
+        val cacheKey = "getLeads"
         try {
             if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllContacts()
+                val cached = cache.selectAllLeads()
                 if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} contacts from cache")
+                    Utilities.logger.info("Retrieved ${cached.size} leads from cache")
                     return cached
                 }
             }
-            val fetched: List<Contact> = genericRequest("$baseURL/v1/workspace/contacts", HttpMethod.Get)
-            cache.replaceAllContacts(fetched)
+            val fetched: List<Lead> = genericRequest("$baseURL/v1/workspace/leads", HttpMethod.Get)
+            cache.replaceAllLeads(fetched)
             cacheInvalidator.updateTimestamp(cacheKey)
-            Utilities.logger.info("Cached ${fetched.size} contacts")
+            Utilities.logger.info("Cached ${fetched.size} leads")
             return fetched
         } catch (e: Exception) {
-            val cached = cache.selectAllContacts()
+            val cached = cache.selectAllLeads()
             if (cached.isNotEmpty()) {
-                Utilities.logger.warn("Failed to fetch Contacts. Returned ${cached.size} contacts from cache")
+                Utilities.logger.warn("Failed to fetch Leads. Returned ${cached.size} leads from cache")
                 return cached
             } else {
                 throw e
@@ -185,12 +398,77 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun updateContact(id: String, body: UpdateContactRequest): Contact {
-        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Put) {
+    override suspend fun createLead(body: CreateLeadRequest): Lead {
+        val lead: Lead = genericRequest("$baseURL/v1/workspace/leads", HttpMethod.Post) {
             setBody(body)
         }
-        cache.updateContact(contact)
-        return contact
+        cache.insertLead(lead)
+        return lead
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateLead(id: String, body: UpdateLeadRequest): Lead {
+        val lead: Lead = genericRequest("$baseURL/v1/workspace/leads/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.replaceLead(lead)
+        return lead
+    }
+
+    @Throws(Exception::class)
+    override suspend fun convertLead(id: String, wasSuccessfulConversion: Boolean) {
+        genericRequest<Unit>("$baseURL/v1/workspace/leads/$id/convert", HttpMethod.Put) {
+            parameter("closedResult", if (wasSuccessfulConversion) "CONVERTED" else "NOT_CONVERTED")
+        }
+        cache.deleteLead(id)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteLead(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/leads/$id", HttpMethod.Delete)
+        cache.deleteLead(id)
+    }
+
+    // ------------------------------------------------------------------------
+    // Opportunities
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun assignOpportunityToMember(id: String, memberID: String): Opportunity {
+        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities/$id/assignMember/$memberID", HttpMethod.Put)
+        cache.replaceOpportunity(opportunity)
+        return opportunity
+    }
+
+    @Throws(Exception::class)
+    override suspend fun assignOpportunityToFunnelStage(id: String, stageID: String): Opportunity {
+        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities/$id/assignStage/$stageID", HttpMethod.Put)
+        cache.replaceOpportunity(opportunity)
+        return opportunity
+    }
+
+    @Throws(Exception::class)
+    override suspend fun createOpportunity(body: CreateOpportunityRequest, funnelID: String, accountID: String?): Opportunity {
+        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities", HttpMethod.Post) {
+            setBody(body)
+        }
+        cache.insertOpportunity(opportunity, funnelID, accountID)
+        return opportunity
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateOpportunity(id: String, body: UpdateOpportunityRequest): Opportunity {
+        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.replaceOpportunity(opportunity)
+        return opportunity
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteOpportunity(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/opportunities/$id", HttpMethod.Delete)
+        cache.deleteOpportunity(id)
     }
 
     // ------------------------------------------------------------------------
@@ -198,8 +476,8 @@ class FunnelminkAPI(
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    override suspend fun createTask(body: CreateTaskRequest): ScheduleTask {
-        val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Post) {
+    override suspend fun createTask(body: CreateTaskRequest): TaskRecord {
+        val task: TaskRecord = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Post) {
             setBody(body)
         }
         cache.insertTask(task)
@@ -207,7 +485,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getTasks(): List<ScheduleTask> {
+    override suspend fun getTasks(): List<TaskRecord> {
         val cacheKey = "getTasks"
         try {
             if (!cacheInvalidator.isStale(cacheKey)) {
@@ -217,7 +495,7 @@ class FunnelminkAPI(
                     return cached
                 }
             }
-            val fetched: List<ScheduleTask> = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Get)
+            val fetched: List<TaskRecord> = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Get)
             cache.replaceAllIncompleteTasks(fetched)
             Utilities.logger.info("Cached ${fetched.size} tasks")
             cacheInvalidator.updateTimestamp(cacheKey)
@@ -235,7 +513,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getCompletedTasks(): List<ScheduleTask> {
+    override suspend fun getCompletedTasks(): List<TaskRecord> {
         val cacheKey = "getCompletedTasks"
         try {
             if (!cacheInvalidator.isStale(cacheKey)) {
@@ -245,7 +523,7 @@ class FunnelminkAPI(
                     return cached
                 }
             }
-            val fetched: List<ScheduleTask> = genericRequest("$baseURL/v1/workspace/tasks/complete", HttpMethod.Get)
+            val fetched: List<TaskRecord> = genericRequest("$baseURL/v1/workspace/tasks/complete", HttpMethod.Get)
             cache.replaceAllCompleteTasks(fetched)
             Utilities.logger.info("Cached ${fetched.size} completed tasks")
             cacheInvalidator.updateTimestamp(cacheKey)
@@ -263,8 +541,8 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun updateTask(id: String, body: UpdateTaskRequest): ScheduleTask {
-        val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Put) {
+    override suspend fun updateTask(id: String, body: UpdateTaskRequest): TaskRecord {
+        val task: TaskRecord = genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Put) {
             setBody(body)
         }
         cache.replaceTask(task)
@@ -272,8 +550,8 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun toggleTaskCompletion(id: String, isComplete: Boolean): ScheduleTask {
-        val task: ScheduleTask = genericRequest("$baseURL/v1/workspace/tasks/$id/toggle/$isComplete", HttpMethod.Put)
+    override suspend fun toggleTaskCompletion(id: String, isComplete: Boolean): TaskRecord {
+        val task: TaskRecord = genericRequest("$baseURL/v1/workspace/tasks/$id/toggle/$isComplete", HttpMethod.Put)
         cache.replaceTask(task)
         return task
     }
@@ -285,7 +563,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getTask(id: String): ScheduleTask? {
+    override suspend fun getTask(id: String): TaskRecord? {
         val cached = cache.selectTask(id)
         if (cached != null) {
             Utilities.logger.info("Returned task $id from cache")
@@ -488,8 +766,7 @@ class FunnelminkAPI(
         if (response.status.isSuccess()) {
             Utilities.logger.log(LogLevel.INFO, "✅ $responseBody")
             try {
-                val body = jsonDecoder.decodeFromString<T>(responseBody)
-                return body
+                return jsonDecoder.decodeFromString<T>(responseBody)
             } catch (e: SerializationException) {
                 Utilities.logger.warn(e.message.orEmpty())
                 onDecodingError?.invoke(e.message.orEmpty())
@@ -500,7 +777,10 @@ class FunnelminkAPI(
             try {
                 val message = jsonDecoder.decodeFromString<APIError>(responseBody).message
                 when (response.status) {
-                    HttpStatusCode.Unauthorized -> onAuthFailure?.invoke(message)
+                    HttpStatusCode.Unauthorized -> {
+                        onAuthFailure?.invoke(message)
+                        // TODO: retry after refreshing the token? Maybe the closure should return a bool (if success)
+                    }
                     HttpStatusCode.BadRequest -> onBadRequest?.invoke(message)
                     HttpStatusCode.NotFound -> onMissing?.invoke(message)
                     HttpStatusCode.InternalServerError -> onServerError?.invoke(message)

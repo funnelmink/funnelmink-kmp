@@ -30,19 +30,28 @@ struct DebugMenu: View {
                 }
                 .padding(.horizontal)
                 switch selection {
-                case .logs: LogsView()
+                case .debugMenu: debugMenuView
                 case .featureFlags: FeatureFlagsView()
-                case .debugMenu:
-                    ScrollView {
-                        menuButton(title: "Logs", selection: .logs)
-                            .padding(.top)
-                        menuButton(title: "Feature Flags", selection: .featureFlags)
-                    }
-                    .padding(.horizontal)
+                case .logs: LogsView()
+                case .updateWall: UpdateWallView()
+                case .whatsNew: WhatsNewView()
                 }
             }
         }
         .foregroundStyle(.white)
+    }
+    
+    var debugMenuView: some View {
+        ScrollView {
+            VStack {
+                menuButton(title: "Feature Flags", selection: .featureFlags)
+                menuButton(title: "Logs", selection: .logs)
+                menuButton(title: "Update Wall", selection: .updateWall)
+                menuButton(title: "What's New", selection: .whatsNew)
+            }
+            .padding(.top)
+        }
+        .padding(.horizontal)
     }
     
     @ViewBuilder
@@ -74,9 +83,11 @@ struct DebugMenu: View {
     }
     
     enum Selection: String, Identifiable {
-        case logs = "Logs"
-        case featureFlags = "Feature Flags"
         case debugMenu = "Debug Menu"
+        case featureFlags = "Feature Flags"
+        case logs = "Logs"
+        case updateWall = "Update Wall"
+        case whatsNew = "What's New"
         var id: String { rawValue }
     }
 }

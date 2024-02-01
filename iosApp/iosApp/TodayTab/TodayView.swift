@@ -13,7 +13,7 @@ struct TodayView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = TodayViewModel()
     
-    @AppStorage(.storage.todaySelection) var selection: Selection = .date
+    @AppStorage(.storage.todayPickerSelection) var selection: Selection = .date
     
     @ViewBuilder
     var body: some View {
@@ -97,7 +97,7 @@ struct TodayView: View {
         ForEach(viewModel.completedTasksSearchResults, id: \.id, content: cell)
     }
     
-    func cell(_ task: ScheduleTask) -> some View {
+    func cell(_ task: TaskRecord) -> some View {
         Button {
             navigation.segue(.taskDetails(task))
         } label: {

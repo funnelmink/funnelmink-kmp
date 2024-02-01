@@ -16,7 +16,7 @@ struct EditTaskView: View {
     @State var taskBody = ""
     @State var priority: Int32 = 0
     @State var date: Date?
-    var task: ScheduleTask?
+    var task: TaskRecord?
     
     var body: some View {
         VStack {

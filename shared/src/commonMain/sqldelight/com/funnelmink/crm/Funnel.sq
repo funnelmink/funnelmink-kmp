@@ -1,0 +1,23 @@
+CREATE TABLE SQLFunnel (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL
+);
+
+insertFunnel:
+INSERT INTO SQLFunnel (id, name, type) VALUES (?, ?, ?);
+
+selectFunnel:
+SELECT * FROM SQLFunnel WHERE id = ?;
+
+removeFunnel:
+DELETE FROM SQLFunnel WHERE id = ?;
+
+updateFunnel:
+UPDATE SQLFunnel SET name = ?, type = ? WHERE id = ?;
+
+selectAllFunnels:
+SELECT * FROM SQLFunnel;
+
+removeAllFunnels:
+DELETE FROM SQLFunnel;

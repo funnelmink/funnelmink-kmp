@@ -28,7 +28,7 @@ struct ToastView: View {
             }
             .padding()
             .background(.ultraThinMaterial)
-            .clipShape(Capsule())
+            .clipShape(RoundedRectangle(cornerRadius: 12))
             .onTapGesture {
                 navigation._state._toast = nil
                 navigation._state._modalToast = nil

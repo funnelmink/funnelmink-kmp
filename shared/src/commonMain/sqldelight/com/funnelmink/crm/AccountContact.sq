@@ -1,0 +1,28 @@
+CREATE TABLE SQLAccountContact (
+    id TEXT PRIMARY KEY,
+    email TEXT,
+    name TEXT,
+    notes TEXT,
+    phone TEXT,
+    accountId TEXT,
+
+    FOREIGN KEY(accountId) REFERENCES SQLAccount(id)
+);
+
+insertContact:
+INSERT INTO SQLAccountContact (id, email, name, notes, phone, accountId) VALUES (?, ?, ?, ?, ?, ?);
+
+selectAllContactsForAccount:
+SELECT * FROM SQLAccountContact WHERE accountId = ?;
+
+removeAllContactsForAccount:
+DELETE FROM SQLAccountContact WHERE accountId = ?;
+
+removeContact:
+DELETE FROM SQLAccountContact WHERE id = ?;
+
+updateContact:
+UPDATE SQLAccountContact SET email = ?, name = ?, notes = ?, phone = ? WHERE id = ?;
+
+removeAllContacts:
+DELETE FROM SQLAccountContact;

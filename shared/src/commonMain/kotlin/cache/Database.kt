@@ -6,12 +6,202 @@ import models.*
 
 internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val database = FunnelminkCache(databaseDriverFactory.createDriver())
+    private val accountDB = database.accountQueries
+    private val accountContactDB = database.accountContactQueries
     private val activityDB = database.activityQueries
-    private val contactDB = database.contactQueries
+    private val caseDB = database.caseRecordQueries
+    private val funnelsDB = database.funnelQueries
+    private val funnelStageDB = database.funnelStageQueries
+    private val leadDB = database.leadQueries
+    private val opportunityDB = database.opportunityQueries
     private val taskDB = database.scheduleTaskQueries
     private val userDB = database.userQueries
     private val workspaceDB = database.workspaceQueries
     private val workspaceMemberDB = database.workspaceMemberQueries
+
+    // ------------------------------------------------------------------------
+    // Accounts
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertAccount(account: Account) {
+        accountDB.insertAccount(
+            account.id,
+            account.address,
+            account.city,
+            account.country,
+            account.createdAt,
+            account.email,
+            account.latitude?.toString(),
+            account.leadID,
+            account.longitude?.toString(),
+            account.name,
+            account.notes,
+            account.phone,
+            account.state,
+            account.type.typeName,
+            account.updatedAt,
+            account.zip
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAccount(id: String): Account? {
+        val cached = accountDB.selectAccountById(id).executeAsOneOrNull() ?: return null
+        return mapAccount(
+            cached.id,
+            cached.address,
+            cached.city,
+            cached.country,
+            cached.createdAt,
+            cached.email,
+            cached.latitude,
+            cached.leadID,
+            cached.longitude,
+            cached.name,
+            cached.notes,
+            cached.phone,
+            cached.state,
+            cached.type,
+            cached.updatedAt,
+            cached.zip
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllAccounts(): List<Account> {
+        return accountDB.selectAllAccountsInfo(::mapAccount).executeAsList()
+    }
+
+    @Throws(Exception::class)
+    fun updateAccount(account: Account) {
+        accountDB.updateAccount(
+            account.address,
+            account.city,
+            account.country,
+            account.createdAt,
+            account.email,
+            account.latitude?.toString(),
+            account.leadID,
+            account.longitude?.toString(),
+            account.name,
+            account.notes,
+            account.phone,
+            account.state,
+            account.type.typeName,
+            account.updatedAt,
+            account.zip,
+            account.id
+        )
+    }
+
+    @Throws(Exception::class)
+    fun deleteAccount(id: String) {
+        accountDB.removeAccount(id)
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllAccounts(accounts: List<Account>) {
+        deleteAllAccounts()
+        accounts.forEach(::insertAccount)
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllAccounts() {
+        accountDB.removeAllAccounts()
+    }
+
+    private fun mapAccount(
+        id: String,
+        address: String?,
+        city: String?,
+        country: String?,
+        createdAt: String,
+        email: String?,
+        latitude: String?,
+        leadID: String?,
+        longitude: String?,
+        name: String,
+        notes: String?,
+        phone: String?,
+        state: String?,
+        type: String,
+        updatedAt: String,
+        zip: String?
+    ): Account {
+        return Account(
+            id,
+            address,
+            city,
+            country,
+            createdAt,
+            email,
+            latitude?.toDouble(),
+            leadID,
+            longitude?.toDouble(),
+            name,
+            notes,
+            phone,
+            state,
+            AccountType.fromTypeName(type),
+            updatedAt,
+            zip
+        )
+    }
+
+    // ------------------------------------------------------------------------
+    // Account Contact
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertAccountContact(contact: AccountContact, accountID: String) {
+        accountContactDB.insertContact(
+            contact.id,
+            contact.email,
+            contact.name,
+            contact.notes,
+            contact.phone,
+            accountID
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllContactsForAccount(id: String): List<AccountContact> {
+        return accountContactDB.selectAllContactsForAccount(id).executeAsList().map { mapContact(it.id, it.email, it.name, it.notes, it.phone, id)}
+    }
+
+    @Throws(Exception::class)
+    fun updateAccountContact(contact: AccountContact) {
+        accountContactDB.updateContact(
+            contact.email,
+            contact.name,
+            contact.notes,
+            contact.phone,
+            contact.id
+        )
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllContactsForAccount(id: String, contacts: List<AccountContact>) {
+        accountContactDB.transaction {
+            accountContactDB.removeAllContactsForAccount(id)
+            contacts.forEach { insertAccountContact(it, id) }
+        }
+    }
+
+    @Throws(Exception::class)
+    fun deleteContact(id: String) {
+        accountContactDB.removeContact(id)
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllContacts() {
+        accountContactDB.removeAllContacts()
+    }
+
+    private fun mapContact(id: String, email: String?, name: String?, notes: String?, phone: String?, accountID: String): AccountContact {
+        return AccountContact(id, email, name, notes, phone)
+    }
 
     // ------------------------------------------------------------------------
     // Activities
@@ -63,128 +253,375 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     // ------------------------------------------------------------------------
-    // Contacts
+    // Cases
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun insertContact(contact: Contact) {
-        contactDB.insertContact(
-            contact.id,
-            contact.firstName,
-            contact.lastName,
-            contact.emails.joinToString(separator = ","),
-            contact.phoneNumbers.joinToString(separator = ","),
-            contact.companyName,
-            toLong(contact.isOrganization),
-            contact.latitude?.toString(),
-            contact.longitude?.toString(),
-            contact.street1,
-            contact.street2,
-            contact.city,
-            contact.state,
-            contact.country,
-            contact.zip
+    fun insertCase(case: CaseRecord, funnelID: String?, accountID: String?) {
+        caseDB.insertCase(
+            case.id,
+            case.assignedTo,
+            case.closedDate,
+            case.createdAt,
+            case.description,
+            case.name,
+            case.notes,
+            case.priority.toLong(),
+            case.stage,
+            case.updatedAt,
+            case.value.toString(),
+            funnelID,
+            accountID
         )
     }
 
     @Throws(Exception::class)
-    fun selectContact(id: String): Contact? {
-        val cached = contactDB.selectContactById(id).executeAsOneOrNull() ?: return null
-        return mapContact(
-            cached.id,
-            cached.firstName,
-            cached.lastName,
-            cached.emails,
-            cached.phoneNumbers,
-            cached.companyName,
-            cached.isOrganization,
-            cached.latitude,
-            cached.longitude,
-            cached.street1,
-            cached.street2,
-            cached.city,
-            cached.state,
-            cached.country,
-            cached.zip
+    fun replaceCase(case: CaseRecord) {
+        caseDB.transaction {
+            val cached = caseDB.selectCaseById(case.id).executeAsOneOrNull()
+            caseDB.removeCase(case.id)
+            insertCase(case, cached?.funnelId, cached?.accountId)
+        }
+    }
+
+    @Throws(Exception::class)
+    fun selectAllCasesForAccount(id: String): List<CaseRecord> {
+        return caseDB.selectAllCasesForAccount(id).executeAsList().map {
+            mapCase(
+                it.id,
+                it.assignedTo,
+                it.closedDate,
+                it.createdAt,
+                it.description,
+                it.name,
+                it.notes,
+                it.priority.toInt(),
+                it.stage,
+                it.updatedAt,
+                it.value_?.toDouble() ?: 0.0
+            )
+
+        }
+    }
+
+    @Throws(Exception::class)
+    fun selectAllCasesForFunnel(id: String): List<CaseRecord> {
+        return caseDB.selectAllCasesForFunnel(id).executeAsList().map {
+            mapCase(
+                it.id,
+                it.assignedTo,
+                it.closedDate,
+                it.createdAt,
+                it.description,
+                it.name,
+                it.notes,
+                it.priority.toInt(),
+                it.stage,
+                it.updatedAt,
+                it.value_?.toDouble() ?: 0.0
+            )
+        }
+    }
+
+    @Throws(Exception::class)
+    fun updateCase(case: CaseRecord) {
+        caseDB.updateCase(
+            case.assignedTo,
+            case.closedDate,
+            case.createdAt,
+            case.description,
+            case.name,
+            case.notes,
+            case.priority.toLong(),
+            case.stage,
+            case.updatedAt,
+            case.value.toString(),
+            case.id
         )
     }
 
     @Throws(Exception::class)
-    fun selectAllContacts(): List<Contact> {
-        return contactDB.selectAllContactsInfo(::mapContact).executeAsList()
+    fun replaceAllCasesForAccount(id: String, cases: List<CaseRecord>) {
+        caseDB.transaction {
+            caseDB.removeAllCasesForAccount(id)
+            cases.forEach { insertCase(it, null, id) }
+        }
     }
 
     @Throws(Exception::class)
-    fun updateContact(contact: Contact) {
-        contactDB.updateContact(
-            contact.firstName,
-            contact.lastName,
-            contact.emails.joinToString(separator = ","),
-            contact.phoneNumbers.joinToString(separator = ","),
-            contact.companyName,
-            toLong(contact.isOrganization),
-            contact.latitude?.toString(),
-            contact.longitude?.toString(),
-            contact.street1,
-            contact.street2,
-            contact.city,
-            contact.state,
-            contact.country,
-            contact.zip,
-            contact.id
-        )
+    fun replaceAllCasesForFunnel(id: String, cases: List<CaseRecord>) {
+        caseDB.transaction {
+            caseDB.removeAllCasesForFunnel(id)
+            cases.forEach { insertCase(it, id, null) }
+        }
     }
 
     @Throws(Exception::class)
-    fun deleteContact(id: String) {
-        contactDB.removeContact(id)
+    fun deleteCase(id: String) {
+        caseDB.removeCase(id)
     }
 
     @Throws(Exception::class)
-    fun replaceAllContacts(contacts: List<Contact>) {
-        deleteAllContacts()
-        contacts.forEach(::insertContact)
+    private fun deleteAllCases() {
+        caseDB.removeAllCases()
     }
 
-    @Throws(Exception::class)
-    private fun deleteAllContacts() {
-        contactDB.removeAllContacts()
-    }
-
-    private fun mapContact(
+    private fun mapCase(
         id: String,
-        firstName: String,
-        lastName: String?,
-        emails: String,
-        phoneNumbers: String,
-        companyName: String?,
-        isOrganization: Long,
-        latitude: String?,
-        longitude: String?,
-        street1: String?,
-        street2: String?,
-        city: String?,
-        state: String?,
-        country: String?,
-        zip: String?
-    ): Contact {
-        return Contact(
+        assignedTo: String?,
+        closedDate: String?,
+        createdAt: String,
+        description: String?,
+        name: String,
+        notes: String?,
+        priority: Int,
+        stage: String?,
+        updatedAt: String,
+        value: Double
+    ): CaseRecord {
+        return CaseRecord(
             id,
-            firstName,
-            lastName,
-            emails.takeIf { it.isNotBlank() }?.split(",") ?: emptyList(),
-            phoneNumbers.takeIf { it.isNotBlank() }?.split(",") ?: emptyList(),
-            companyName,
-            toBool(isOrganization),
-            latitude?.toDoubleOrNull(),
-            longitude?.toDoubleOrNull(),
-            street1,
-            street2,
-            city,
-            state,
-            country,
-            zip
+            assignedTo,
+            closedDate,
+            createdAt,
+            description,
+            name,
+            notes,
+            priority,
+            stage,
+            updatedAt,
+            value
         )
+    }
+
+    // ------------------------------------------------------------------------
+    // Funnels
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertFunnel(funnel: Funnel) {
+        funnelsDB.insertFunnel(
+            funnel.id,
+            funnel.name,
+            funnel.type.typeName
+        )
+    }
+
+    @Throws(Exception::class)
+    fun replaceFunnel(funnel: Funnel) {
+        funnelsDB.transaction {
+            funnelsDB.removeFunnel(funnel.id)
+            insertFunnel(funnel)
+        }
+    }
+
+    @Throws(Exception::class)
+    fun selectFunnel(id: String): Funnel? {
+        val cached = funnelsDB.selectFunnel(id).executeAsOneOrNull() ?: return null
+        return mapFunnel(cached.id, cached.name, cached.type)
+    }
+
+    @Throws(Exception::class)
+    fun selectAllFunnels(): List<Funnel> {
+        return funnelsDB.selectAllFunnels(::mapFunnel).executeAsList()
+    }
+
+    @Throws(Exception::class)
+    fun updateFunnel(funnel: Funnel) {
+        funnelsDB.updateFunnel(
+            funnel.name,
+            funnel.type.typeName,
+            funnel.id
+        )
+    }
+
+    @Throws(Exception::class)
+    fun deleteFunnel(id: String) {
+        funnelsDB.removeFunnel(id)
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllFunnels(funnels: List<Funnel>) {
+        funnelsDB.transaction {
+            funnelsDB.removeAllFunnels()
+            funnels.forEach(::insertFunnel)
+        }
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllFunnels() {
+        funnelsDB.removeAllFunnels()
+    }
+
+    private fun mapFunnel(id: String, name: String, type: String): Funnel {
+        return Funnel(
+            id,
+            name,
+            FunnelType.fromTypeName(type)
+        )
+    }
+
+    // ------------------------------------------------------------------------
+    // Funnel Stages
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertFunnelStage(stage: FunnelStage, funnelID: String) {
+        funnelStageDB.insertFunnelStage(
+            stage.id,
+            funnelID,
+            stage.name,
+            stage.order.toLong(),
+        )
+    }
+
+    @Throws(Exception::class)
+    fun replaceFunnelStage(stage: FunnelStage) {
+        funnelStageDB.transaction {
+            val cached = funnelStageDB.selectStage(stage.id).executeAsOneOrNull()
+            funnelStageDB.deleteFunnelStage(stage.id)
+            cached?.funnelId?.let { insertFunnelStage(stage, it) }
+        }
+    }
+
+    @Throws(Exception::class)
+    fun deleteAllFunnelStagesForFunnel(id: String) {
+        funnelStageDB.deleteAllStagesForFunnel(id)
+    }
+
+    @Throws(Exception::class)
+    fun deleteFunnelStage(id: String) {
+        funnelStageDB.deleteFunnelStage(id)
+    }
+
+    @Throws(Exception::class)
+    fun deleteAllFunnelStages() {
+        funnelStageDB.deleteAllStages()
+    }
+
+    // ------------------------------------------------------------------------
+    // Opportunities
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertOpportunity(opportunity: Opportunity, funnelID: String?, accountID: String?) {
+        opportunityDB.insertOpportunity(
+            opportunity.id,
+            opportunity.assignedTo,
+            opportunity.closedDate,
+            opportunity.createdAt,
+            opportunity.description,
+            opportunity.name,
+            opportunity.notes,
+            opportunity.priority.toLong(),
+            opportunity.stage,
+            opportunity.updatedAt,
+            opportunity.value.toString(),
+            funnelID,
+            accountID
+        )
+    }
+
+    @Throws(Exception::class)
+    fun replaceOpportunity(opportunity: Opportunity) {
+        opportunityDB.transaction {
+            val cached = opportunityDB.getOpportunity(opportunity.id).executeAsOneOrNull()
+            opportunityDB.deleteOpportunity(opportunity.id)
+            insertOpportunity(opportunity, cached?.funnelId, cached?.accountId)
+        }
+    }
+
+    @Throws(Exception::class)
+    fun selectAllOpportunitiesForAccount(id: String): List<Opportunity> {
+        return opportunityDB.getAllOpportunitiesForAccount(id).executeAsList().map {
+            mapOpportunity(
+                it.id,
+                it.assignedTo,
+                it.closedDate,
+                it.createdAt,
+                it.description,
+                it.name,
+                it.notes,
+                it.priority.toInt(),
+                it.stage,
+                it.updatedAt,
+                it.value_?.toDouble() ?: 0.0
+            )
+        }
+    }
+
+    private fun mapOpportunity(
+        id: String,
+        assignedTo: String?,
+        closedDate: String?,
+        createdAt: String,
+        description: String?,
+        name: String,
+        notes: String?,
+        priority: Int,
+        stage: String?,
+        updatedAt: String,
+        value: Double
+    ): Opportunity {
+        return Opportunity(
+            id,
+            assignedTo,
+            closedDate,
+            createdAt,
+            description,
+            name,
+            notes,
+            priority,
+            stage,
+            updatedAt,
+            value
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllOpportunitiesForFunnel(id: String): List<Opportunity> {
+        return opportunityDB.getAllOpportunitiesForFunnel(id).executeAsList().map {
+            mapOpportunity(
+                it.id,
+                it.assignedTo,
+                it.closedDate,
+                it.createdAt,
+                it.description,
+                it.name,
+                it.notes,
+                it.priority.toInt(),
+                it.stage,
+                it.updatedAt,
+                it.value_?.toDouble() ?: 0.0
+            )
+        }
+    }
+
+    @Throws(Exception::class)
+    fun updateOpportunity(opportunity: Opportunity) {
+        opportunityDB.updateOpportunity(
+            opportunity.assignedTo,
+            opportunity.closedDate,
+            opportunity.createdAt,
+            opportunity.description,
+            opportunity.name,
+            opportunity.notes,
+            opportunity.priority.toLong(),
+            opportunity.stage,
+            opportunity.updatedAt,
+            opportunity.value.toString(),
+            opportunity.id
+        )
+    }
+
+    @Throws(Exception::class)
+    fun deleteOpportunity(id: String) {
+        opportunityDB.deleteOpportunity(id)
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllOpportunities() {
+        opportunityDB.removeAllOpportunities()
     }
 
     // ------------------------------------------------------------------------
@@ -192,45 +629,45 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun insertTask(task: ScheduleTask) {
-        taskDB.insertScheduleTask(
+    fun insertTask(task: TaskRecord) {
+        taskDB.insertTask(
             task.id,
-            task.title,
             task.body,
-            task.priority.toLong(),
             toLong(task.isComplete),
+            task.priority.toLong(),
             task.scheduledDate,
+            task.title,
             task.updatedAt
         )
     }
 
     @Throws(Exception::class)
-    fun selectTask(id: String): ScheduleTask? {
-        val cached = taskDB.selectScheduleTaskById(id).executeAsOneOrNull() ?: return null
+    fun selectTask(id: String): TaskRecord? {
+        val cached = taskDB.selectTaskById(id).executeAsOneOrNull() ?: return null
 
         return mapTask(
             cached.id,
-            cached.title,
             cached.body,
-            cached.priority,
             cached.isComplete,
+            cached.priority,
             cached.scheduledDate,
+            cached.title,
             cached.updatedAt
         )
     }
 
     @Throws(Exception::class)
-    fun selectAllCompleteTasks(): List<ScheduleTask> {
+    fun selectAllCompleteTasks(): List<TaskRecord> {
         return taskDB.selectAllCompleteTasks(::mapTask).executeAsList()
     }
 
     @Throws(Exception::class)
-    fun selectAllIncompleteTasks(): List<ScheduleTask> {
+    fun selectAllIncompleteTasks(): List<TaskRecord> {
         return taskDB.selectAllIncompleteTasks(::mapTask).executeAsList()
     }
 
     @Throws(Exception::class)
-    fun replaceAllCompleteTasks(tasks: List<ScheduleTask>) {
+    fun replaceAllCompleteTasks(tasks: List<TaskRecord>) {
         taskDB.transaction {
             taskDB.deleteAllCompleteTasks()
             tasks.forEach(::insertTask)
@@ -238,7 +675,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun replaceAllIncompleteTasks(tasks: List<ScheduleTask>) {
+    fun replaceAllIncompleteTasks(tasks: List<TaskRecord>) {
         taskDB.transaction {
             taskDB.deleteAllIncompleteTasks()
             tasks.forEach(::insertTask)
@@ -246,7 +683,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun replaceTask(task: ScheduleTask) {
+    fun replaceTask(task: TaskRecord) {
         taskDB.transaction {
             taskDB.removeTask(task.id)
             insertTask(task)
@@ -260,27 +697,202 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     @Throws(Exception::class)
     private fun deleteAllTasks() {
-        taskDB.removeAllScheduleTasks()
+        taskDB.removeAllTasks()
     }
 
     private fun mapTask(
         id: String,
-        title: String,
         body: String?,
-        priority: Long,
         isComplete: Long,
+        priority: Long,
         scheduledDate: String?,
+        title: String,
         updatedAt: String
-    ): ScheduleTask {
-        return ScheduleTask(
+    ): TaskRecord {
+        return TaskRecord(
             id,
-            title,
             body,
-            priority.toInt(),
             toBool(isComplete),
+            priority.toInt(),
             scheduledDate,
+            title,
             updatedAt
         )
+    }
+
+    // ------------------------------------------------------------------------
+    // Leads
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertLead(lead: Lead) {
+        leadDB.insertLead(
+            lead.id,
+            lead.address,
+            lead.assignedTo,
+            lead.city,
+            lead.closedDate,
+            lead.closedResult?.resultName,
+            lead.company,
+            lead.country,
+            lead.createdAt,
+            lead.email,
+            lead.jobTitle,
+            lead.latitude,
+            lead.longitude,
+            lead.name,
+            lead.notes,
+            lead.phone,
+            lead.priority.toLong(),
+            lead.source,
+            lead.stage,
+            lead.state,
+            lead.type.typeName,
+            lead.updatedAt,
+            lead.zip
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectLead(id: String): Lead? {
+        val cached = leadDB.getLead(id).executeAsOneOrNull() ?: return null
+        return mapLead(
+            cached.id,
+            cached.address,
+            cached.assignedTo,
+            cached.city,
+            cached.closedDate,
+            cached.closedResult,
+            cached.company,
+            cached.country,
+            cached.createdAt,
+            cached.email,
+            cached.jobTitle,
+            cached.latitude,
+            cached.longitude,
+            cached.name.orEmpty(),
+            cached.notes,
+            cached.phone,
+            cached.priority,
+            cached.source,
+            cached.stage,
+            cached.state,
+            cached.type,
+            cached.updatedAt,
+            cached.zip
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllLeads(): List<Lead> {
+        return leadDB.getAllLeads(::mapLead).executeAsList()
+    }
+
+    @Throws(Exception::class)
+    fun updateLead(lead: Lead) {
+        leadDB.updateLead(
+            lead.address,
+            lead.assignedTo,
+            lead.city,
+            lead.closedDate,
+            lead.closedResult?.resultName,
+            lead.company,
+            lead.country,
+            lead.createdAt,
+            lead.email,
+            lead.jobTitle,
+            lead.latitude,
+            lead.longitude,
+            lead.name,
+            lead.notes,
+            lead.phone,
+            lead.priority.toLong(),
+            lead.source,
+            lead.stage,
+            lead.state,
+            lead.type.typeName,
+            lead.updatedAt,
+            lead.zip,
+            lead.id
+        )
+    }
+
+    @Throws(Exception::class)
+    fun deleteLead(id: String) {
+        leadDB.deleteLead(id)
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllLeads() {
+        leadDB.removeAllLeads()
+    }
+
+    private fun mapLead(
+        id: String,
+        address: String?,
+        assignedTo: String?,
+        city: String?,
+        closedDate: String?,
+        closedResult: String?,
+        company: String?,
+        country: String?,
+        createdAt: String,
+        email: String?,
+        jobTitle: String?,
+        latitude: Double?,
+        longitude: Double?,
+        name: String?,
+        notes: String?,
+        phone: String?,
+        priority: Long,
+        source: String?,
+        stage: String?,
+        state: String?,
+        type: String,
+        updatedAt: String,
+        zip: String?
+    ): Lead {
+        return Lead(
+            id,
+            address,
+            assignedTo,
+            city,
+            closedDate,
+            closedResult?.let { LeadClosedResult.fromResultName(it) },
+            company,
+            country,
+            createdAt,
+            email,
+            jobTitle,
+            latitude,
+            longitude,
+            name,
+            notes,
+            phone,
+            priority.toInt(),
+            source,
+            stage,
+            state,
+            AccountType.fromTypeName(type),
+            updatedAt,
+            zip
+        )
+    }
+
+    @Throws(Exception::class)
+    fun replaceLead(lead: Lead) {
+        leadDB.transaction {
+            leadDB.deleteLead(lead.id)
+            insertLead(lead)
+        }
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllLeads(leads: List<Lead>) {
+        leadDB.transaction {
+            leadDB.removeAllLeads()
+            leads.forEach(::insertLead)
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -444,8 +1056,14 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     @Throws(Exception::class)
     fun clearAllDatabases() {
+        deleteAllAccounts()
         deleteAllActivities()
+        deleteAllCases()
         deleteAllContacts()
+        deleteAllFunnels()
+        deleteAllFunnelStages()
+        deleteAllLeads()
+        deleteAllOpportunities()
         deleteAllTasks()
         deleteAllWorkspaces()
         deleteAllWorkspaceMembers()

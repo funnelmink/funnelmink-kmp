@@ -14,14 +14,14 @@ enum Modal: Identifiable {
     case importContacts
     
     case createTask
-    case editTask(ScheduleTask)
+    case editTask(TaskRecord)
     
     // TODO: maybe don't depend on this viewmodel
     case createWorkspace(WorkspacesViewModel)
     case inviteToWorkspace
     case joinExistingWorkspace
     case selectWorkspace
-    case createContact
+    case createAccount
 
     case debugMenu
     
@@ -39,7 +39,7 @@ enum Modal: Identifiable {
             case .inviteToWorkspace: WorkspaceInviteView()
             case .joinExistingWorkspace: JoinExistingWorkspaceView()
             case .selectWorkspace: WorkspacesView()
-            case .createContact: CreateContactView()
+            case .createAccount: CreateAccountView()
             case .debugMenu: DebugMenu()
             }
         }

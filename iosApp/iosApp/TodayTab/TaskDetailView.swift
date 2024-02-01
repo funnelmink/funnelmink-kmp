@@ -12,7 +12,7 @@ import SwiftUI
 struct TaskDetailView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
-    @State var task: ScheduleTask
+    @State var task: TaskRecord
     var body: some View {
         VStack {
             HStack {
@@ -88,18 +88,4 @@ struct TaskDetailView: View {
             }
         }
     }
-}
-
-#Preview {
-    TaskDetailView(
-        task: ScheduleTask(
-            id: "",
-            title: .loremShort,
-            body: .loremLong,
-            priority: 2,
-            isComplete: false,
-            scheduledDate: .loremDate,
-            updatedAt: .loremDate
-        )
-    )
 }
