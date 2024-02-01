@@ -253,7 +253,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-fun insertCase(case: Case, funnelID: String?, accountID: String?) {
+    fun insertCase(case: CaseRecord, funnelID: String?, accountID: String?) {
         caseDB.insertCase(
             case.id,
             case.assignedTo,
@@ -272,7 +272,16 @@ fun insertCase(case: Case, funnelID: String?, accountID: String?) {
     }
 
     @Throws(Exception::class)
-    fun selectAllCasesForAccount(id: String): List<Case> {
+    fun replaceCase(case: CaseRecord) {
+        caseDB.transaction {
+            val cached = caseDB.selectCaseById(case.id).executeAsOneOrNull()
+            caseDB.removeCase(case.id)
+            insertCase(case, cached?.funnelId, cached?.accountId)
+        }
+    }
+
+    @Throws(Exception::class)
+    fun selectAllCasesForAccount(id: String): List<CaseRecord> {
         return caseDB.selectAllCasesForAccount(id).executeAsList().map {
             mapCase(
                 it.id,
@@ -292,7 +301,7 @@ fun insertCase(case: Case, funnelID: String?, accountID: String?) {
     }
 
     @Throws(Exception::class)
-    fun selectAllCasesForFunnel(id: String): List<Case> {
+    fun selectAllCasesForFunnel(id: String): List<CaseRecord> {
         return caseDB.selectAllCasesForFunnel(id).executeAsList().map {
             mapCase(
                 it.id,
@@ -311,7 +320,7 @@ fun insertCase(case: Case, funnelID: String?, accountID: String?) {
     }
 
     @Throws(Exception::class)
-    fun updateCase(case: Case) {
+    fun updateCase(case: CaseRecord) {
         caseDB.updateCase(
             case.assignedTo,
             case.closedDate,
@@ -328,7 +337,7 @@ fun insertCase(case: Case, funnelID: String?, accountID: String?) {
     }
 
     @Throws(Exception::class)
-    fun replaceAllCasesForAccount(id: String, cases: List<Case>) {
+    fun replaceAllCasesForAccount(id: String, cases: List<CaseRecord>) {
         caseDB.transaction {
             caseDB.removeAllCasesForAccount(id)
             cases.forEach { insertCase(it, null, id) }
@@ -336,11 +345,16 @@ fun insertCase(case: Case, funnelID: String?, accountID: String?) {
     }
 
     @Throws(Exception::class)
-    fun replaceAllCasesForFunnel(id: String, cases: List<Case>) {
+    fun replaceAllCasesForFunnel(id: String, cases: List<CaseRecord>) {
         caseDB.transaction {
             caseDB.removeAllCasesForFunnel(id)
             cases.forEach { insertCase(it, id, null) }
         }
+    }
+
+    @Throws(Exception::class)
+    fun deleteCase(id: String) {
+        caseDB.removeCase(id)
     }
 
     @Throws(Exception::class)
@@ -360,8 +374,8 @@ fun insertCase(case: Case, funnelID: String?, accountID: String?) {
         stage: String?,
         updatedAt: String,
         value: Double
-    ): Case {
-        return Case(
+    ): CaseRecord {
+        return CaseRecord(
             id,
             assignedTo,
             closedDate,

@@ -26,8 +26,8 @@ VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 updateCase:
 UPDATE SQLCaseRecord SET assignedTo = ?, closedDate = ?, createdAt = ?, description = ?, name = ?, notes = ?, priority = ?, stage = ?, updatedAt = ?, value = ? WHERE id = ?;
 
-deleteCase:
-DELETE FROM SQLCaseRecord WHERE id = ?;
+selectCaseById:
+SELECT * FROM SQLCaseRecord WHERE id = ?;
 
 selectAllCasesForFunnel:
 SELECT * FROM SQLCaseRecord WHERE funnelId = ?;
@@ -40,6 +40,9 @@ DELETE FROM SQLCaseRecord WHERE funnelId = ?;
 
 removeAllCasesForAccount:
 DELETE FROM SQLCaseRecord WHERE accountId = ?;
+
+removeCase:
+DELETE FROM SQLCaseRecord WHERE id = ?;
 
 removeAllCases:
 DELETE FROM SQLCaseRecord;

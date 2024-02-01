@@ -36,6 +36,118 @@ data class UpdateAccountRequest(
 )
 
 @Serializable
+data class CreateCaseRequest(
+    val name: String,
+    val description: String? = null,
+    val notes: String? = null,
+    val priority: Int? = null,
+    val value: Double? = null
+)
+
+@Serializable
+data class UpdateCaseRequest(
+    val name: String? = null,
+    val description: String? = null,
+    val notes: String? = null,
+    val priority: Int? = null,
+    val value: Double? = null
+)
+
+@Serializable
+data class CreateLeadRequest(
+    val name: String,
+    val email: String? = null,
+    val phone: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val address: String? = null,
+    val city: String? = null,
+    val state: String? = null,
+    val country: String? = null,
+    val zip: String? = null,
+    val notes: String? = null,
+    val company: String? = null,
+    val jobTitle: String? = null,
+    val priority: Int? = null,
+    val source: String? = null,
+    val accountID: String? = null,
+    val assignedTo: String? = null,
+    val funnelID: String? = null,
+    val stageID: String? = null
+)
+
+@Serializable
+data class UpdateLeadRequest(
+    val name: String? = null,
+    val email: String? = null,
+    val phone: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val address: String? = null,
+    val city: String? = null,
+    val state: String? = null,
+    val country: String? = null,
+    val zip: String? = null,
+    val notes: String? = null,
+    val company: String? = null,
+    val jobTitle: String? = null,
+    val priority: Int? = null,
+    val source: String? = null,
+    val accountID: String? = null,
+    val assignedTo: String? = null,
+    val funnelID: String? = null,
+    val stageID: String? = null
+)
+
+@Serializable
+data class CreateOpportunityRequest(
+    val name: String,
+    val description: String? = null,
+    val value: Double? = null,
+    val priority: Int? = null,
+    val notes: String? = null,
+    val accountID: String,
+    val stageID: String,
+    val assignedToID: String? = null
+)
+
+@Serializable
+data class UpdateOpportunityRequest(
+    val name: String,
+    val description: String? = null,
+    val value: Double? = null,
+    val priority: Int? = null,
+    val notes: String? = null,
+)
+
+@Serializable
+data class CreateFunnelRequest(
+    val name: String,
+    val type: String,
+    val stages: List<String>
+)
+
+@Serializable
+data class UpdateFunnelRequest(
+    val name: String,
+)
+
+@Serializable
+data class CreateFunnelStageRequest(
+    val name: String,
+)
+
+@Serializable
+data class ReorderFunnelStagesRequest(
+    val stageIDs: List<String>,
+)
+
+@Serializable
+data class UpdateFunnelStageRequest(
+    val name: String,
+)
+
+@Serializable
 data class CreateUserRequest(
     val id: String,
     val username: String,

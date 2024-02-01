@@ -55,7 +55,7 @@ data class ActivityRecord(
 )
 
 @Serializable
-data class Case(
+data class CaseRecord(
     val id: String,
 
     val assignedTo: String? = null,

@@ -190,6 +190,61 @@ class FunnelminkAPI(
         }
     }
 
+    @Throws(Exception::class)
+    override suspend fun getActivitiesForRecord(id: String, subtype: ActivitySubtype): List<ActivityRecord> {
+        return genericRequest("$baseURL/v1/activities/$subtype/$id", HttpMethod.Get)
+    }
+
+    // ------------------------------------------------------------------------
+    // Cases
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun assignCaseToMember(id: String, memberID: String): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$id/assignMember/$memberID", HttpMethod.Put)
+        cache.replaceCase(case)
+        return case
+    }
+
+    @Throws(Exception::class)
+    override suspend fun assignCaseToFunnelStage(id: String, stageID: String): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$id/assignStage/$stageID", HttpMethod.Put)
+        cache.replaceCase(case)
+        return case
+    }
+
+    @Throws(Exception::class)
+    override suspend fun createCase(body: CreateCaseRequest, stageID: String, funnelID: String, accountID: String?): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$funnelID/$stageID", HttpMethod.Post) {
+            setBody(body)
+            accountID?.let { parameter("accountID", it) }
+        }
+        cache.insertCase(case, funnelID, accountID)
+        return case
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateCase(id: String, body: UpdateCaseRequest): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.replaceCase(case)
+        return case
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteCase(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/cases/$id", HttpMethod.Delete)
+        cache.deleteCase(id)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun closeCase(id: String): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$id/close", HttpMethod.Put)
+        cache.replaceCase(case)
+        return case
+    }
+
     // ------------------------------------------------------------------------
     // Tasks
     // ------------------------------------------------------------------------
