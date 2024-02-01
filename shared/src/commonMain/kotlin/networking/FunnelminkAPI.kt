@@ -430,6 +430,48 @@ class FunnelminkAPI(
     }
 
     // ------------------------------------------------------------------------
+    // Opportunities
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun assignOpportunityToMember(id: String, memberID: String): Opportunity {
+        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities/$id/assignMember/$memberID", HttpMethod.Put)
+        cache.replaceOpportunity(opportunity)
+        return opportunity
+    }
+
+    @Throws(Exception::class)
+    override suspend fun assignOpportunityToFunnelStage(id: String, stageID: String): Opportunity {
+        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities/$id/assignStage/$stageID", HttpMethod.Put)
+        cache.replaceOpportunity(opportunity)
+        return opportunity
+    }
+
+    @Throws(Exception::class)
+    override suspend fun createOpportunity(body: CreateOpportunityRequest, funnelID: String, accountID: String?): Opportunity {
+        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities", HttpMethod.Post) {
+            setBody(body)
+        }
+        cache.insertOpportunity(opportunity, funnelID, accountID)
+        return opportunity
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateOpportunity(id: String, body: UpdateOpportunityRequest): Opportunity {
+        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.replaceOpportunity(opportunity)
+        return opportunity
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteOpportunity(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/opportunities/$id", HttpMethod.Delete)
+        cache.deleteOpportunity(id)
+    }
+
+    // ------------------------------------------------------------------------
     // Tasks
     // ------------------------------------------------------------------------
 

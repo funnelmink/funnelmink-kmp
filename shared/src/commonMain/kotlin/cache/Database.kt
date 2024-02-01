@@ -13,6 +13,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val funnelsDB = database.funnelQueries
     private val funnelStageDB = database.funnelStageQueries
     private val leadDB = database.leadQueries
+    private val opportunityDB = database.opportunityQueries
     private val taskDB = database.scheduleTaskQueries
     private val userDB = database.userQueries
     private val workspaceDB = database.workspaceQueries
@@ -499,6 +500,131 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     // ------------------------------------------------------------------------
+    // Opportunities
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertOpportunity(opportunity: Opportunity, funnelID: String?, accountID: String?) {
+        opportunityDB.insertOpportunity(
+            opportunity.id,
+            opportunity.assignedTo,
+            opportunity.closedDate,
+            opportunity.createdAt,
+            opportunity.description,
+            opportunity.name,
+            opportunity.notes,
+            opportunity.priority.toLong(),
+            opportunity.stage,
+            opportunity.updatedAt,
+            opportunity.value.toString(),
+            funnelID,
+            accountID
+        )
+    }
+
+    @Throws(Exception::class)
+    fun replaceOpportunity(opportunity: Opportunity) {
+        opportunityDB.transaction {
+            val cached = opportunityDB.getOpportunity(opportunity.id).executeAsOneOrNull()
+            opportunityDB.deleteOpportunity(opportunity.id)
+            insertOpportunity(opportunity, cached?.funnelId, cached?.accountId)
+        }
+    }
+
+    @Throws(Exception::class)
+    fun selectAllOpportunitiesForAccount(id: String): List<Opportunity> {
+        return opportunityDB.getAllOpportunitiesForAccount(id).executeAsList().map {
+            mapOpportunity(
+                it.id,
+                it.assignedTo,
+                it.closedDate,
+                it.createdAt,
+                it.description,
+                it.name,
+                it.notes,
+                it.priority.toInt(),
+                it.stage,
+                it.updatedAt,
+                it.value_?.toDouble() ?: 0.0
+            )
+        }
+    }
+
+    private fun mapOpportunity(
+        id: String,
+        assignedTo: String?,
+        closedDate: String?,
+        createdAt: String,
+        description: String?,
+        name: String,
+        notes: String?,
+        priority: Int,
+        stage: String?,
+        updatedAt: String,
+        value: Double
+    ): Opportunity {
+        return Opportunity(
+            id,
+            assignedTo,
+            closedDate,
+            createdAt,
+            description,
+            name,
+            notes,
+            priority,
+            stage,
+            updatedAt,
+            value
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllOpportunitiesForFunnel(id: String): List<Opportunity> {
+        return opportunityDB.getAllOpportunitiesForFunnel(id).executeAsList().map {
+            mapOpportunity(
+                it.id,
+                it.assignedTo,
+                it.closedDate,
+                it.createdAt,
+                it.description,
+                it.name,
+                it.notes,
+                it.priority.toInt(),
+                it.stage,
+                it.updatedAt,
+                it.value_?.toDouble() ?: 0.0
+            )
+        }
+    }
+
+    @Throws(Exception::class)
+    fun updateOpportunity(opportunity: Opportunity) {
+        opportunityDB.updateOpportunity(
+            opportunity.assignedTo,
+            opportunity.closedDate,
+            opportunity.createdAt,
+            opportunity.description,
+            opportunity.name,
+            opportunity.notes,
+            opportunity.priority.toLong(),
+            opportunity.stage,
+            opportunity.updatedAt,
+            opportunity.value.toString(),
+            opportunity.id
+        )
+    }
+
+    @Throws(Exception::class)
+    fun deleteOpportunity(id: String) {
+        opportunityDB.deleteOpportunity(id)
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllOpportunities() {
+        opportunityDB.removeAllOpportunities()
+    }
+
+    // ------------------------------------------------------------------------
     // Tasks
     // ------------------------------------------------------------------------
 
@@ -936,6 +1062,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         deleteAllContacts()
         deleteAllFunnels()
         deleteAllFunnelStages()
+        deleteAllLeads()
+        deleteAllOpportunities()
         deleteAllTasks()
         deleteAllWorkspaces()
         deleteAllWorkspaceMembers()
