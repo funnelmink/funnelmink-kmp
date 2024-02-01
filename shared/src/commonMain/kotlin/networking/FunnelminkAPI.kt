@@ -353,6 +353,83 @@ class FunnelminkAPI(
     }
 
     // ------------------------------------------------------------------------
+    // Leads
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun assignLeadToMember(id: String, memberID: String): Lead {
+        val lead: Lead = genericRequest("$baseURL/v1/workspace/leads/$id/assignMember/$memberID", HttpMethod.Put)
+        cache.replaceLead(lead)
+        return lead
+    }
+
+    @Throws(Exception::class)
+    override suspend fun assignLeadToFunnelStage(id: String, stageID: String): Lead {
+        val lead: Lead = genericRequest("$baseURL/v1/workspace/leads/$id/assignStage/$stageID", HttpMethod.Put)
+        cache.replaceLead(lead)
+        return lead
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getLeads(): List<Lead> {
+        val cacheKey = "getLeads"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllLeads()
+                if (cached.isNotEmpty()) {
+                    Utilities.logger.info("Retrieved ${cached.size} leads from cache")
+                    return cached
+                }
+            }
+            val fetched: List<Lead> = genericRequest("$baseURL/v1/workspace/leads", HttpMethod.Get)
+            cache.replaceAllLeads(fetched)
+            cacheInvalidator.updateTimestamp(cacheKey)
+            Utilities.logger.info("Cached ${fetched.size} leads")
+            return fetched
+        } catch (e: Exception) {
+            val cached = cache.selectAllLeads()
+            if (cached.isNotEmpty()) {
+                Utilities.logger.warn("Failed to fetch Leads. Returned ${cached.size} leads from cache")
+                return cached
+            } else {
+                throw e
+            }
+        }
+    }
+
+    @Throws(Exception::class)
+    override suspend fun createLead(body: CreateLeadRequest): Lead {
+        val lead: Lead = genericRequest("$baseURL/v1/workspace/leads", HttpMethod.Post) {
+            setBody(body)
+        }
+        cache.insertLead(lead)
+        return lead
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateLead(id: String, body: UpdateLeadRequest): Lead {
+        val lead: Lead = genericRequest("$baseURL/v1/workspace/leads/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.replaceLead(lead)
+        return lead
+    }
+
+    @Throws(Exception::class)
+    override suspend fun convertLead(id: String, wasSuccessfulConversion: Boolean) {
+        genericRequest<Unit>("$baseURL/v1/workspace/leads/$id/convert", HttpMethod.Put) {
+            parameter("closedResult", if (wasSuccessfulConversion) "CONVERTED" else "NOT_CONVERTED")
+        }
+        cache.deleteLead(id)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteLead(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/leads/$id", HttpMethod.Delete)
+        cache.deleteLead(id)
+    }
+
+    // ------------------------------------------------------------------------
     // Tasks
     // ------------------------------------------------------------------------
 

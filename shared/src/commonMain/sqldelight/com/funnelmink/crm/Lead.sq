@@ -1,0 +1,48 @@
+CREATE TABLE SQLLead (
+    id TEXT PRIMARY KEY,
+    address TEXT,
+    assignedTo TEXT,
+    city TEXT,
+    closedDate TEXT,
+    closedResult TEXT,
+    company TEXT,
+    country TEXT,
+    createdAt TEXT NOT NULL,
+    email TEXT,
+    jobTitle TEXT,
+    latitude REAL,
+    longitude REAL,
+    name TEXT,
+    notes TEXT,
+    phone TEXT,
+    priority INTEGER NOT NULL,
+    source TEXT,
+    stage TEXT,
+    state TEXT,
+    type TEXT NOT NULL,
+    updatedAt TEXT NOT NULL,
+    zip TEXT
+);
+
+insertLead:
+INSERT INTO SQLLead (id, address, assignedTo, city, closedDate, closedResult, company, country, createdAt, email, jobTitle, latitude, longitude, name, notes, phone, priority, source, stage, state, type, updatedAt, zip)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+updateLead:
+UPDATE SQLLead
+SET address = ?, assignedTo = ?, city = ?, closedDate = ?, closedResult = ?, company = ?, country = ?, createdAt = ?, email = ?, jobTitle = ?, latitude = ?, longitude = ?, name = ?, notes = ?, phone = ?, priority = ?, source = ?, stage = ?, state = ?, type = ?, updatedAt = ?, zip = ?
+WHERE id = ?;
+
+deleteLead:
+DELETE FROM SQLLead
+WHERE id = ?;
+
+getLead:
+SELECT * FROM SQLLead
+WHERE id = ?;
+
+getAllLeads:
+SELECT * FROM SQLLead;
+
+removeAllLeads:
+DELETE FROM SQLLead;

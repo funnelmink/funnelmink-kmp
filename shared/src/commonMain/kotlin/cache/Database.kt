@@ -12,6 +12,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val caseDB = database.caseRecordQueries
     private val funnelsDB = database.funnelQueries
     private val funnelStageDB = database.funnelStageQueries
+    private val leadDB = database.leadQueries
     private val taskDB = database.scheduleTaskQueries
     private val userDB = database.userQueries
     private val workspaceDB = database.workspaceQueries
@@ -591,6 +592,181 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             title,
             updatedAt
         )
+    }
+
+    // ------------------------------------------------------------------------
+    // Leads
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    fun insertLead(lead: Lead) {
+        leadDB.insertLead(
+            lead.id,
+            lead.address,
+            lead.assignedTo,
+            lead.city,
+            lead.closedDate,
+            lead.closedResult?.resultName,
+            lead.company,
+            lead.country,
+            lead.createdAt,
+            lead.email,
+            lead.jobTitle,
+            lead.latitude,
+            lead.longitude,
+            lead.name,
+            lead.notes,
+            lead.phone,
+            lead.priority.toLong(),
+            lead.source,
+            lead.stage,
+            lead.state,
+            lead.type.typeName,
+            lead.updatedAt,
+            lead.zip
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectLead(id: String): Lead? {
+        val cached = leadDB.getLead(id).executeAsOneOrNull() ?: return null
+        return mapLead(
+            cached.id,
+            cached.address,
+            cached.assignedTo,
+            cached.city,
+            cached.closedDate,
+            cached.closedResult,
+            cached.company,
+            cached.country,
+            cached.createdAt,
+            cached.email,
+            cached.jobTitle,
+            cached.latitude,
+            cached.longitude,
+            cached.name.orEmpty(),
+            cached.notes,
+            cached.phone,
+            cached.priority,
+            cached.source,
+            cached.stage,
+            cached.state,
+            cached.type,
+            cached.updatedAt,
+            cached.zip
+        )
+    }
+
+    @Throws(Exception::class)
+    fun selectAllLeads(): List<Lead> {
+        return leadDB.getAllLeads(::mapLead).executeAsList()
+    }
+
+    @Throws(Exception::class)
+    fun updateLead(lead: Lead) {
+        leadDB.updateLead(
+            lead.address,
+            lead.assignedTo,
+            lead.city,
+            lead.closedDate,
+            lead.closedResult?.resultName,
+            lead.company,
+            lead.country,
+            lead.createdAt,
+            lead.email,
+            lead.jobTitle,
+            lead.latitude,
+            lead.longitude,
+            lead.name,
+            lead.notes,
+            lead.phone,
+            lead.priority.toLong(),
+            lead.source,
+            lead.stage,
+            lead.state,
+            lead.type.typeName,
+            lead.updatedAt,
+            lead.zip,
+            lead.id
+        )
+    }
+
+    @Throws(Exception::class)
+    fun deleteLead(id: String) {
+        leadDB.deleteLead(id)
+    }
+
+    @Throws(Exception::class)
+    private fun deleteAllLeads() {
+        leadDB.removeAllLeads()
+    }
+
+    private fun mapLead(
+        id: String,
+        address: String?,
+        assignedTo: String?,
+        city: String?,
+        closedDate: String?,
+        closedResult: String?,
+        company: String?,
+        country: String?,
+        createdAt: String,
+        email: String?,
+        jobTitle: String?,
+        latitude: Double?,
+        longitude: Double?,
+        name: String?,
+        notes: String?,
+        phone: String?,
+        priority: Long,
+        source: String?,
+        stage: String?,
+        state: String?,
+        type: String,
+        updatedAt: String,
+        zip: String?
+    ): Lead {
+        return Lead(
+            id,
+            address,
+            assignedTo,
+            city,
+            closedDate,
+            closedResult?.let { LeadClosedResult.fromResultName(it) },
+            company,
+            country,
+            createdAt,
+            email,
+            jobTitle,
+            latitude,
+            longitude,
+            name,
+            notes,
+            phone,
+            priority.toInt(),
+            source,
+            stage,
+            state,
+            AccountType.fromTypeName(type),
+            updatedAt,
+            zip
+        )
+    }
+
+    @Throws(Exception::class)
+    fun replaceLead(lead: Lead) {
+        leadDB.transaction {
+            leadDB.deleteLead(lead.id)
+            insertLead(lead)
+        }
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllLeads(leads: List<Lead>) {
+        leadDB.transaction {
+            leadDB.removeAllLeads()
+            leads.forEach(::insertLead)
+        }
     }
 
     // ------------------------------------------------------------------------
