@@ -1,0 +1,48 @@
+CREATE TABLE SQLCaseRecord (
+    id TEXT PRIMARY KEY,
+    assignedTo TEXT,
+    closedDate TEXT,
+    createdAt TEXT NOT NULL,
+    description TEXT,
+    name TEXT NOT NULL,
+    notes TEXT,
+    priority INTEGER NOT NULL,
+    stage TEXT,
+    updatedAt TEXT NOT NULL,
+    value TEXT,
+
+    funnelId TEXT,
+    accountId TEXT,
+
+    FOREIGN KEY (funnelId) REFERENCES SQLFunnel(id),
+    FOREIGN KEY (accountId) REFERENCES SQLAccount(id)
+);
+
+insertCase:
+INSERT INTO SQLCaseRecord (id, assignedTo, closedDate, createdAt, description, name, notes, priority, stage, updatedAt, value, funnelId, accountId)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+
+updateCase:
+UPDATE SQLCaseRecord SET assignedTo = ?, closedDate = ?, createdAt = ?, description = ?, name = ?, notes = ?, priority = ?, stage = ?, updatedAt = ?, value = ? WHERE id = ?;
+
+selectCaseById:
+SELECT * FROM SQLCaseRecord WHERE id = ?;
+
+selectAllCasesForFunnel:
+SELECT * FROM SQLCaseRecord WHERE funnelId = ?;
+
+selectAllCasesForAccount:
+SELECT * FROM SQLCaseRecord WHERE accountId = ?;
+
+removeAllCasesForFunnel:
+DELETE FROM SQLCaseRecord WHERE funnelId = ?;
+
+removeAllCasesForAccount:
+DELETE FROM SQLCaseRecord WHERE accountId = ?;
+
+removeCase:
+DELETE FROM SQLCaseRecord WHERE id = ?;
+
+removeAllCases:
+DELETE FROM SQLCaseRecord;

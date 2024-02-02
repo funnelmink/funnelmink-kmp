@@ -12,21 +12,21 @@ import Shared
 
 enum Segue: NavigationSegue {
     case home
-    case contacts
+    case accounts
     
-    case taskDetails(ScheduleTask)
+    case taskDetails(TaskRecord)
     
     case workspaceSettings
-    case contactView(Contact)
+    case accountView(Account)
     
     @ViewBuilder
     var view: some View {
         switch self {
         case .home: Text("HOME")
-        case .contacts: ContactsView()
+        case .accounts: AccountsView()
         case let .taskDetails(task): TaskDetailView(task: task)
         case .workspaceSettings: WorkspaceSettingsView()
-        case let .contactView(contact): ContactView(contact: contact)
+        case let .accountView(account): AccountView(account: account)
         }
     }
 }

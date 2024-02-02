@@ -11,6 +11,9 @@ import SwiftUI
 
 class Navigation: ObservableObject {
     static let shared = Navigation()
+    private init() {
+        _state._selectedTab = .init(rawValue: UserDefaults.standard.integer(forKey: "Navigation._state._selectedTab")) ?? .today
+    }
     
     @Published var _state = State()
     var _onModalDismiss: (() -> Void)?

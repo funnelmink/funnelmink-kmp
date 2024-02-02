@@ -1,5 +1,5 @@
 //
-//  AccountViewModel.swift
+//  ProfileViewModel.swift
 //  funnelmink
 //
 //  Created by Jared Warren on 12/29/23.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class AccountViewModel: ViewModel {
+class ProfileViewModel: ViewModel {
     @Published var state = State()
     
     struct State: Hashable {

@@ -5,27 +5,27 @@ import Shared
 
 extension Logger {
     /// Standard informational message.
-    static func log(_ message: String) {
+    static func info(_ message: String) {
         Utilities.shared.logger.log(level: .info, message: message)
     }
     
     /// Things that can happen, but we prefer they don't. Request failed, user entered invalid data, etc.
-    static func logWarning(_ message: String) {
+    static func warning(_ message: String) {
         Utilities.shared.logger.log(level: .warn, message: message)
     }
     
     /// Things that can happen, but we prefer they don't. Request failed, user entered invalid data, etc.
-    static func logWarning(_ error: Error) {
+    static func warning(_ error: Error) {
         Utilities.shared.logger.log(level: .error, message: error.localizedDescription)
     }
     
     /// Critical error. Things that should never happen. When we find these, we fix them.
-    static func logError(_ message: String) {
+    static func error(_ message: String) {
         Utilities.shared.logger.log(level: .error, message: message)
     }
     
     /// Critical error. Things that should never happen. When we find these, we fix them.
-    static func logError(_ error: Error) {
+    static func error(_ error: Error) {
         Utilities.shared.logger.log(level: .error, message: error.localizedDescription)
     }
     

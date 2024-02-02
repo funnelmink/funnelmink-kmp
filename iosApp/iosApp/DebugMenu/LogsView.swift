@@ -16,8 +16,7 @@ struct LogsView: View {
             ScrollView {
                 VStack(alignment: .leading) {
                     ForEach(logs, id: \.id) { log in
-                        Color.gray.frame(height: 0.5)
-                            .padding(.horizontal)
+                        DebugDivider()
                         Text(log.message)
                             .foregroundStyle(
                                 log.level == .info ? .white :

@@ -1,5 +1,5 @@
 //
-//  CreateContactView.swift
+//  CreateAccountView.swift
 //  iosApp
 //
 //  Created by Jeremy Warren on 1/13/24.
@@ -9,12 +9,11 @@
 import SwiftUI
 import Shared
 
-struct CreateContactView: View {
+struct CreateAccountView: View {
     @EnvironmentObject var nav: Navigation
-    @StateObject var viewModel = ContactsViewModel()
-    @State var firstName: String = ""
-    @State var lastName: String = ""
-    @State var businessName: String = ""
+    @StateObject var viewModel = AccountsViewModel()
+    @State var name = ""
+    @State var businessName: String = "" // This is going away (the account is the company)
     @State var email: String = ""
     @State var address: String = ""
     @State var phoneNumber: String = ""
@@ -23,25 +22,28 @@ struct CreateContactView: View {
     @State var jobTitle: String = ""
     @State var isIndividual: Bool = true
     
-    func addContact() {
+    func addAccount() {
         Task {
-            await viewModel.createContact(
-                firstName: firstName,
-                lastName: lastName,
-                emails: [email],
-                phoneNumbers: [phoneNumber],
-                companyName: businessName,
-                isOrganization: !isIndividual,
-                latitude: nil,
-                longitude: nil,
-                street1: nil,
-                street2: nil,
-                city: nil,
-                state: nil,
-                country: nil,
-                zip: nil
-            ) {
+            do {
+                // TODO: update this to use the new createAccount method
+                try await viewModel.createAccount(
+                    name: name,
+                    email: email,
+                    phone: phoneNumber,
+                    latitude: nil,
+                    longitude: nil,
+                    address: address,
+                    city: nil,
+                    state: nil,
+                    country: nil,
+                    zip: nil,
+                    notes: nil,
+                    type: isIndividual ? .individual : .organization,
+                    leadID: nil
+                )
                 nav.dismissModal()
+            } catch {
+                Toast.error(error)
             }
         }
     }
@@ -80,7 +82,7 @@ struct CreateContactView: View {
                 })
                 Spacer()
                 Button(action: {
-                    addContact()
+                    addAccount()
                 }, label: {
                     Text("Done")
                 })
@@ -116,9 +118,7 @@ struct CreateContactView: View {
             }
             VStack {
                 HStack {
-                    CustomTextField(text: $firstName, placeholder: "First", style: .text)
-                        .autocorrectionDisabled()
-                    CustomTextField(text: $lastName, placeholder: "Last", style: .text)
+                    CustomTextField(text: $name, placeholder: "Name", style: .text)
                         .autocorrectionDisabled()
                 }
                 .padding(.horizontal)
@@ -145,5 +145,5 @@ struct CreateContactView: View {
 }
 
 #Preview {
-    CreateContactView()
+    CreateAccountView()
 }

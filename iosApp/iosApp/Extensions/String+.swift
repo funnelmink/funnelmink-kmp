@@ -39,6 +39,7 @@ extension String {
     }
     
     struct AppStorage {
-        let todaySelection = "todaySelection"
+        let funnelsPickerSelection = "funnelsPickerSelection"
+        let todayPickerSelection = "todayPickerSelection"
     }
 }

@@ -15,11 +15,15 @@ final class AppState: ObservableObject {
     @Published var user: Shared.User?
     @Published var workspace: Workspace?
     @Published var hasInitialized = false
+    @Published var shouldPresentUpdateWall = false
+    @Published var shouldPresentWhatsNew = false
 
     var isWorkspaceOwner: Bool { workspace?.role == .owner }
     
     @MainActor
-    func configure(token: String?) {
+    func configure(token: String?, updateWall: Bool, whatsNew: Bool) {
+        shouldPresentUpdateWall = updateWall
+        shouldPresentWhatsNew = whatsNew
         do {
             if let token,
                let uid = UserDefaults.standard.string(forKey: "userID"),
@@ -32,7 +36,7 @@ final class AppState: ObservableObject {
                 }
             }
         } catch {
-            Logger.logWarning(error)
+            Logger.warning(error)
         }
         hasInitialized = true
     }
@@ -46,7 +50,7 @@ final class AppState: ObservableObject {
             UserDefaults.standard.removeObject(forKey: "userID")
             UserDefaults.standard.removeObject(forKey: "workspaceID")
         } catch {
-            Logger.logWarning(error)
+            Logger.warning(error)
         }
     }
     
@@ -63,7 +67,8 @@ final class AppState: ObservableObject {
             }
 #endif
         } catch {
-            Logger.logWarning(error)
+            Logger.warning(error)
+            Toast.error("\(error)\n\nPlease uninstall and reinstall the app. Sorry for the inconvenience!")
         }
     }
     
@@ -74,7 +79,8 @@ final class AppState: ObservableObject {
             self.workspace = workspace
             try Networking.api.signIntoWorkspace(workspace: workspace)
         } catch {
-            Logger.logError(error)
+            Logger.error(error)
+            Toast.error("\(error)\n\nPlease uninstall and reinstall the app. Sorry for the inconvenience!")
         }
     }
 }

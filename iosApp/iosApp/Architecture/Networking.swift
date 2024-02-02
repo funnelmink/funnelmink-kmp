@@ -32,7 +32,6 @@ class Networking {
             }
         }
         
-        // TODO: all of the following will also need to be surfaced to the user
         fmapi.onBadRequest = { message in
             Task { @MainActor in
                 Toast.error(message)
@@ -53,7 +52,19 @@ class Networking {
         
         fmapi.onServerError = { message in
             Task { @MainActor in
-                Toast.error(message)
+                if message.contains("ID token has expired") {
+                    do {
+                        guard let token = try await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true).token else {
+                            Toast.error("Your session has expired. Please log in again.")
+                            return
+                        }
+                        try Networking.api.refreshToken(token: token)
+                    } catch {
+                        Toast.error("Your session has expired. Please log in again.")
+                    }
+                } else {
+                    Toast.error(message)
+                }
             }
         }
         
