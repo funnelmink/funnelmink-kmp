@@ -190,6 +190,14 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
+    fun replaceAccountContact(contact: AccountContact, accountID: String) {
+        accountContactDB.transaction {
+            accountContactDB.removeContact(contact.id)
+            insertAccountContact(contact, accountID)
+        }
+    }
+
+    @Throws(Exception::class)
     fun deleteContact(id: String) {
         accountContactDB.removeContact(id)
     }

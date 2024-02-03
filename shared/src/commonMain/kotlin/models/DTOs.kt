@@ -36,6 +36,24 @@ data class UpdateAccountRequest(
 )
 
 @Serializable
+data class CreateAccountContactRequest(
+    val name: String,
+    val email: String? = null,
+    val phone: String? = null,
+    val jobTitle: String? = null,
+    val notes: String? = null,
+)
+
+@Serializable
+data class UpdateAccountContactRequest(
+    val name: String? = null,
+    val email: String? = null,
+    val phone: String? = null,
+    val jobTitle: String? = null,
+    val notes: String? = null,
+)
+
+@Serializable
 data class CreateCaseRequest(
     val name: String,
     val description: String? = null,
@@ -187,7 +205,10 @@ data class APIError(
 )
 
 enum class ActivitySubtype(val typeName: String) {
-    Contact("contact")
+    Account("account"),
+    Case("case"),
+    Lead("lead"),
+    Opportunity("opportunity"),
 }
 
 @Serializable

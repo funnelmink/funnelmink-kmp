@@ -54,7 +54,9 @@ interface API {
     @Throws(Exception::class) suspend fun getActivitiesForRecord(id: String, subtype: ActivitySubtype): List<ActivityRecord>
 
     // account contacts
-    // (contacts are nested under accounts. no endpoints are implemented yet though)
+    @Throws(Exception::class) suspend fun createAccountContact(accountID: String, body: CreateAccountContactRequest): AccountContact
+    @Throws(Exception::class) suspend fun updateAccountContact(accountID: String, id: String, body: UpdateAccountContactRequest): AccountContact
+    @Throws(Exception::class) suspend fun deleteAccountContact(accountID: String, id: String)
 
     // cases
     @Throws(Exception::class) suspend fun assignCaseToMember(id: String, memberID: String): CaseRecord
