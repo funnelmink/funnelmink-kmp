@@ -21,18 +21,14 @@ enum FeatureFlags: String, CaseIterable {
     }
     
     var isEnabled: Bool {
-        #if DEBUG
         if Self.isOverridingRemoteConfig {
             return Self.defaults.bool(forKey: "FeatureFlags.\(rawValue)")
         }
-        #endif
         return Self.remoteConfig["iOS_ff_\(rawValue)"].boolValue
     }
     
     func set(_ isEnabled: Bool) {
-        #if DEBUG
         Self.defaults.set(isEnabled, forKey: "FeatureFlags.\(rawValue)")
-        #endif
     }
     
     static private let remoteConfig = RemoteConfig.remoteConfig()

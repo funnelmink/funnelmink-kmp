@@ -180,6 +180,34 @@ class FunnelminkAPI(
     }
 
     // ------------------------------------------------------------------------
+    // Account Contacts
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun createAccountContact(accountID: String, body: CreateAccountContactRequest): AccountContact {
+        val contact: AccountContact = genericRequest("$baseURL/v1/workspace/accounts/$accountID/contacts", HttpMethod.Post) {
+            setBody(body)
+        }
+        cache.insertAccountContact(contact, accountID)
+        return contact
+    }
+
+    @Throws(Exception::class)
+    override suspend fun updateAccountContact(accountID: String, id: String, body: UpdateAccountContactRequest): AccountContact {
+        val contact: AccountContact = genericRequest("$baseURL/v1/workspace/accounts/$accountID/contacts/$id", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.replaceAccountContact(contact, accountID)
+        return contact
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteAccountContact(accountID: String, id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/accounts/$accountID/contacts/$id", HttpMethod.Delete)
+        cache.deleteContact(id)
+    }
+
+    // ------------------------------------------------------------------------
     // Activities
     // ------------------------------------------------------------------------
 

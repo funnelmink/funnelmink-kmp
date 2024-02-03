@@ -12,9 +12,8 @@ import Shared
 struct CreateAccountView: View {
     @EnvironmentObject var nav: Navigation
     @StateObject var viewModel = AccountsViewModel()
-    @State var firstName: String = ""
-    @State var lastName: String = ""
-    @State var businessName: String = ""
+    @State var name = ""
+    @State var businessName: String = "" // This is going away (the account is the company)
     @State var email: String = ""
     @State var address: String = ""
     @State var phoneNumber: String = ""
@@ -28,7 +27,7 @@ struct CreateAccountView: View {
             do {
                 // TODO: update this to use the new createAccount method
                 try await viewModel.createAccount(
-                    name: "\(firstName) \(lastName)",
+                    name: name,
                     email: email,
                     phone: phoneNumber,
                     latitude: nil,
@@ -74,7 +73,7 @@ struct CreateAccountView: View {
     }
     
     var body: some View {
-        VStack {
+        ScrollView {
             HStack {
                 Button(action: {
                     nav.dismissModal()
@@ -119,16 +118,20 @@ struct CreateAccountView: View {
             }
             VStack {
                 HStack {
-                    CustomTextField(text: $firstName, placeholder: "First", style: .text)
-                    CustomTextField(text: $lastName, placeholder: "Last", style: .text)
+                    CustomTextField(text: $name, placeholder: "Name", style: .text)
+                        .autocorrectionDisabled()
                 }
                 .padding(.horizontal)
                 CustomTextField(text: $businessName, placeholder: "Company", style: .text)
                     .padding(.horizontal)
+                    .autocorrectionDisabled()
                 CustomTextField(text: $email, placeholder: "Email", style: .email)
                     .padding(.horizontal)
+                    .autocorrectionDisabled()
+                    .textInputAutocapitalization(.never)
                 CustomTextField(text: $address, placeholder: "Address", style: .text)
                     .padding(.horizontal)
+                    .autocorrectionDisabled()
                 CustomTextField(text: $phoneNumber, placeholder: "Phone Number", style: .phone)
                     .padding(.horizontal)
                     .onChange(of: phoneNumber) { newValue in
