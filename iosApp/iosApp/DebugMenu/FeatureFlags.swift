@@ -13,11 +13,7 @@ enum FeatureFlags: String, CaseIterable {
     case funnelsTestUI
     
     static var isOverridingRemoteConfig: Bool {
-        #if DEBUG
         defaults.bool(forKey: "FeatureFlags.isOverridingRemoteConfig")
-        #else
-        false
-        #endif
     }
     
     var isEnabled: Bool {
