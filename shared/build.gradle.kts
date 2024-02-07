@@ -26,8 +26,8 @@ kotlin {
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "Shared"
-            isStatic = true
-            freeCompilerArgs += "-Xbinary=bundleId=com.funnelmink.crm.dev" // TODO: dynamic bundle id
+            isStatic = false
+            freeCompilerArgs += "-Xbinary=bundleId=com.funnelmink.crm.shared"
             freeCompilerArgs += "-Xexpect-actual-classes"
         }
     }
