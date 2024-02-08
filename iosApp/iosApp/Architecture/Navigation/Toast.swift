@@ -98,26 +98,32 @@ struct Toast: Hashable, Equatable {
     let message: String
     let type: ToastType
     
+    /// Notify user
     static func info(_ message: String) {
         Navigation.shared.toast(message)
     }
     
+    /// Notify user of success
     static func success(_ message: String) {
         Navigation.shared.toast(message, type: .success)
     }
     
+    /// User did something wrong
     static func error(_ message: String) {
         Navigation.shared.toast(message, type: .error)
     }
     
+    /// User did something wrong
     static func error(_ error: Error) {
         Navigation.shared.toast(error.localizedDescription, type: .error)
     }
     
+    /// We did something wrong
     static func warn(_ message: String) {
         Navigation.shared.toast(message, type: .warn)
     }
     
+    /// We did something wrong
     static func warn(_ error: Error) {
         Navigation.shared.toast(error.localizedDescription, type: .warn)
     }
