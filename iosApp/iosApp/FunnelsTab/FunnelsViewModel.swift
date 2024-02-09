@@ -29,6 +29,7 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
     @MainActor
     func selectFunnel(_ funnel: Funnel) async throws {
         columns.removeAll()
+        self.state.selectedFunnel = funnel
         for stage in funnel.stages {
             var cards = [KanbanCard]()
             

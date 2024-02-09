@@ -4,6 +4,7 @@ struct FunnelsView: View {
     @StateObject var viewModel = FunnelsViewModel()
     @AppStorage(.storage.funnelsPickerSelection) var selection = "Leads"
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var navigation: Navigation
     
     @ViewBuilder
     var body: some View {
@@ -13,13 +14,13 @@ struct FunnelsView: View {
             MenuFAB(
                 items: [
                     .init(name: "New Case", iconName: "hazardsign") {
-                        
-                    },
-                    .init(name: "New Lead", iconName: "person") {
-                        
+                        navigation.modalSheet(.createCase)
                     },
                     .init(name: "New Opportunity", iconName: "moon.stars") {
-                        
+                        navigation.modalSheet(.createOpportunity)
+                    },
+                    .init(name: "New Lead", iconName: "person") {
+                        navigation.modalSheet(.createLead)
                     },
                 ]
             )
@@ -70,7 +71,7 @@ struct FunnelsView: View {
                 }
             }
         }
-        .navigationTitle("Funnels")
+        .navigationTitle(viewModel.selectedFunnel?.name ?? "Funnels")
         .loggedTask {
             do {
                 try await viewModel.setUp(initialSelection: selection)

@@ -25,6 +25,10 @@ enum Modal: Identifiable {
 
     case debugMenu
     
+    case createCase
+    case createLead
+    case createOpportunity
+    
     @ViewBuilder
     var view: some View {
         Group {
@@ -41,6 +45,10 @@ enum Modal: Identifiable {
             case .selectWorkspace: WorkspacesView()
             case .createAccount: CreateAccountView()
             case .debugMenu: DebugMenu()
+                
+            case .createCase: EditCaseView()
+            case .createLead: EditLeadView()
+            case .createOpportunity: EditOpportunityView()
             }
         }
         .toasted(isPresented: true) // modals exist in a separate window. this modifier lets them display toasts anyways
