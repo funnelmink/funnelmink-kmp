@@ -121,7 +121,7 @@ struct EditTaskView: View {
             .padding()
         }
         .multilineTextAlignment(.center)
-        .onAppear {
+        .loggedOnAppear {
             if let task = task {
                 taskName = task.title
                 priority = task.priority
