@@ -306,11 +306,11 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun getFunnel(id: String): Funnel {
-        val cached = cache.selectFunnel(id)
-        if (cached != null) {
-            Utilities.logger.info("Returned funnel $id from cache")
-            return cached
-        }
+//        val cached = cache.selectFunnel(id)
+//        if (cached != null) {
+//            Utilities.logger.info("Returned funnel $id from cache")
+//            return cached
+//        }
         return genericRequest("$baseURL/v1/workspace/funnels/$id", HttpMethod.Get)
     }
 

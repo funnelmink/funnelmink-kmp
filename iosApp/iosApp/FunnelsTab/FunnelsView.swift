@@ -65,7 +65,15 @@ struct FunnelsView: View {
                 Toast.error(error)
             }
         }
-        .onChange(of: selection, perform: viewModel.selectFunnel(_:))
+        .onChange(of: selection) { _ in
+            Task {
+                do {
+                    try await viewModel.selectFunnel(selection)
+                } catch {
+                    Toast.error(error)
+                }
+            }
+        }
     }
 }
 

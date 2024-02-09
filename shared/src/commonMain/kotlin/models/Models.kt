@@ -77,6 +77,9 @@ data class Funnel(
     val name: String,
     val type: FunnelType,
     val stages: List<FunnelStage>,
+    val cases: List<CaseRecord>,
+    val leads: List<Lead>,
+    val opportunities: List<Opportunity>,
 )
 
 @Serializable
@@ -103,7 +106,7 @@ data class Lead(
     val jobTitle: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val name: String? = null,
+    val name: String,
     val notes: String? = null,
     val phone: String? = null,
     val priority: Int,

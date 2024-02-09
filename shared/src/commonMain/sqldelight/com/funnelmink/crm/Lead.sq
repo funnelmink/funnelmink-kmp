@@ -12,7 +12,7 @@ CREATE TABLE SQLLead (
     jobTitle TEXT,
     latitude REAL,
     longitude REAL,
-    name TEXT,
+    name TEXT NOT NULL,
     notes TEXT,
     phone TEXT,
     priority INTEGER NOT NULL,

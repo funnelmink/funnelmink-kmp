@@ -446,13 +446,13 @@
 				0D012E3E2B477E3900658153 /* Color+.swift */,
 				0DCC163B2B5249DC008F705B /* Date+.swift */,
 				0DCC163D2B524AE2008F705B /* DateFormatter+.swift */,
+				1FCB7097FD586CA3E01B3C36 /* Double+.swift */,
 				0D012E3C2B477E3900658153 /* Gradient+.swift */,
+				0D73AB122B54DAF30026EC4D /* Int32+.swift */,
 				1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */,
 				0D012E3B2B477E3900658153 /* String+.swift */,
 				0D012E402B477E3900658153 /* SwiftUI+.swift */,
 				0D012E3F2B477E3900658153 /* View+.swift */,
-				0D73AB122B54DAF30026EC4D /* Int32+.swift */,
-				1FCB7097FD586CA3E01B3C36 /* Double+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";

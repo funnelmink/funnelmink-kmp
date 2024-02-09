@@ -466,6 +466,9 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             id,
             name,
             FunnelType.fromTypeName(type),
+            emptyList(),
+            emptyList(),
+            emptyList(),
             emptyList()
         )
     }
@@ -850,7 +853,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         jobTitle: String?,
         latitude: Double?,
         longitude: Double?,
-        name: String?,
+        name: String,
         notes: String?,
         phone: String?,
         priority: Long,
