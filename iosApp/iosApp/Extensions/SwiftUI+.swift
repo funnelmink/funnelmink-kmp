@@ -15,4 +15,20 @@ extension View {
             .environmentObject(AppState.shared)
             .environmentObject(Navigation.shared)
     }
+    
+    func discreteListRowStyle(backgroundColor: Color = Color(uiColor: .systemBackground)) -> some View {
+        self.modifier(ClearListRowModifier(backgroundColor: backgroundColor))
+    }
+}
+
+struct ClearListRowModifier: ViewModifier {
+    let backgroundColor: Color
+    func body(content: Content) -> some View {
+        content
+            .background(backgroundColor)
+            .listRowSpacing(0)
+            .listRowSeparator(.hidden)
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+    }
 }

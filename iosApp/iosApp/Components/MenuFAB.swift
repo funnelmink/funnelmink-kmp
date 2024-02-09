@@ -38,7 +38,7 @@ struct MenuFAB: View {
                     item.action()
                     appState.isFABExpanded.toggle()
                 } label: {
-                    LoginBackgroundGradient()
+                    FunnelminkGradient()
                         .mask {
                             HStack {
                                 Image(systemName: item.iconName)
@@ -66,8 +66,8 @@ struct MenuFAB: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
                     .padding()
-                    .frame(width: 44)
-                    .background(LoginBackgroundGradient())
+                    .frame(width: 50)
+                    .background(FunnelminkGradient())
                     .foregroundStyle(Color.white)
                     .clipShape(Circle())
                     .rotationEffect(appState.isFABExpanded ? .degrees(180) : .degrees(0))

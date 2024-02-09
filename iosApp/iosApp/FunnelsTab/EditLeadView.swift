@@ -39,11 +39,123 @@ struct EditLeadView: View {
     @State private var funnelID = ""
     @State private var stageID = ""
     
+    @State private var shouldDisplayRequiredIndicators = false
+    
     var lead: Lead?
     
     var body: some View {
         VStack {
-            
+            List {
+                Text(lead == nil ? "New Lead" : "Edit Lead")
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .discreteListRowStyle(backgroundColor: .clear)
+                Section {
+                    CustomTextField(
+                        text: $name,
+                        placeholder: "Name",
+                        style: .text
+                    )
+                    .autocorrectionDisabled()
+                    .discreteListRowStyle()
+                    .requiredIndicator(isVisible: shouldDisplayRequiredIndicators)
+                }
+                
+                Section("CONTACT INFORMATION") {
+                    CustomTextField(text: $email, placeholder: "Email", style: .email)
+                        .autocorrectionDisabled()
+                        .textInputAutocapitalization(.never)
+                        .discreteListRowStyle()
+                    CustomTextField(text: $phone, placeholder: "Phone", style: .phone)
+                        .onChange(of: phone) { newValue in
+                            phone = newValue.toPhoneNumber()
+                        }
+                        .discreteListRowStyle()
+                    CustomTextField(text: $company, placeholder: "Company", style: .text)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
+                    CustomTextField(text: $source, placeholder: "Source", style: .text)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
+                    
+                    // TODO: accounttype toggle
+                }
+                
+                Section("LOCATION INFORMATION") {
+                    CustomTextField(text: $address, placeholder: "Address", style: .text)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
+                    CustomTextField(text: $city, placeholder: "City", style: .text)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
+                    CustomTextField(text: $state, placeholder: "State", style: .text)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
+                    CustomTextField(text: $zip, placeholder: "Zip", style: .decimal)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
+                    CustomTextField(text: $country, placeholder: "Country", style: .text)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
+                }
+                
+                // TODO: lat/lon fields and a button that offers to fill them in based on the address
+                
+                // TODO: priority (look at task view)
+                
+                Section("JOB INFORMATION") {
+                    CustomTextField(text: $jobTitle, placeholder: "Job Title", style: .text)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
+                }
+                
+                // TODO: funnelID, stageID and assignedTo
+                Section("LEAD MANAGEMENT") {
+                    CustomTextField(text: $assignedTo, placeholder: "Assigned To", style: .text)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
+                }
+                // TODO: add a way to dismiss the keyboard
+                
+                Section("NOTES") {
+                    TextEditor(text: $notes)
+                        .frame(minHeight: 100)
+                        .discreteListRowStyle()
+                }
+            }
+            AsyncButton {
+                // TODO: NEXT! Implement Lead creation!
+//                if let task = task {
+//                    await viewModel.updateTask(
+//                        id: task.id,
+//                        title: taskName,
+//                        priority: priority,
+//                        isComplete: task.isComplete,
+//                        body: taskBody,
+//                        scheduledDate: date?.iso8601()
+//                    ) {
+//                        navigation.dismissModal()
+//                    }
+//                } else {
+//                    await viewModel.createTask(
+//                        title: taskName,
+//                        priority: priority,
+//                        body: taskBody,
+//                        scheduledDate: date?.iso8601()
+//                    ) {
+//                        navigation.dismissModal()
+//                    }
+//                }
+            } label: {
+                Text(lead == nil ? "Create" : "Update")
+                    .frame(height: 52)
+                    .maxReadableWidth()
+                    .background(FunnelminkGradient())
+                    .foregroundStyle(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 4))
+            }
+            .multilineTextAlignment(.leading)
+            .padding()
         }
         .loggedOnAppear {
             if let lead {
@@ -116,3 +228,4 @@ class EditLeadViewModel: ViewModel {
      val zip: String? = null,
  )
  */
+

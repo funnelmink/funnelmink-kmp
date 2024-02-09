@@ -56,7 +56,7 @@
 		0D012E782B477E3A00658153 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E4A2B477E3900658153 /* AppDelegate.swift */; };
 		0D012E792B477E3A00658153 /* InboxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E4C2B477E3900658153 /* InboxView.swift */; };
 		0D012E7B2B477E3A00658153 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E4F2B477E3900658153 /* LoginView.swift */; };
-		0D012E7C2B477E3A00658153 /* LoginBackgroundGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E512B477E3900658153 /* LoginBackgroundGradient.swift */; };
+		0D012E7C2B477E3A00658153 /* FunnelminkGradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E512B477E3900658153 /* FunnelminkGradient.swift */; };
 		0D012E7E2B477E3A00658153 /* WorkspaceInviteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E542B477E3A00658153 /* WorkspaceInviteView.swift */; };
 		0D012E7F2B477E3A00658153 /* WorkspaceSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E552B477E3A00658153 /* WorkspaceSettingsView.swift */; };
 		0D012E812B477E3A00658153 /* WorkspaceSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E572B477E3A00658153 /* WorkspaceSettingsViewModel.swift */; };
@@ -196,7 +196,7 @@
 		0D012E4A2B477E3900658153 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0D012E4C2B477E3900658153 /* InboxView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InboxView.swift; sourceTree = "<group>"; };
 		0D012E4F2B477E3900658153 /* LoginView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		0D012E512B477E3900658153 /* LoginBackgroundGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginBackgroundGradient.swift; sourceTree = "<group>"; };
+		0D012E512B477E3900658153 /* FunnelminkGradient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunnelminkGradient.swift; sourceTree = "<group>"; };
 		0D012E542B477E3A00658153 /* WorkspaceInviteView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceInviteView.swift; sourceTree = "<group>"; };
 		0D012E552B477E3A00658153 /* WorkspaceSettingsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceSettingsView.swift; sourceTree = "<group>"; };
 		0D012E572B477E3A00658153 /* WorkspaceSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceSettingsViewModel.swift; sourceTree = "<group>"; };
@@ -502,7 +502,7 @@
 		0D012E502B477E3900658153 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				0D012E512B477E3900658153 /* LoginBackgroundGradient.swift */,
+				0D012E512B477E3900658153 /* FunnelminkGradient.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1082,7 +1082,7 @@
 				0DBF9CAF2B5A16C20045AC44 /* DebugMenu.swift in Sources */,
 				0D012E712B477E3A00658153 /* Properties.swift in Sources */,
 				0DE9E0A22B60DDAC00B8288F /* UpdateWallView.swift in Sources */,
-				0D012E7C2B477E3A00658153 /* LoginBackgroundGradient.swift in Sources */,
+				0D012E7C2B477E3A00658153 /* FunnelminkGradient.swift in Sources */,
 				0D5987392B561FCD00327504 /* TaskCompletionButton.swift in Sources */,
 				0D77594E2B6B75C500A61BAC /* ImportContactsView.swift in Sources */,
 				0D012E722B477E3A00658153 /* Navigation.swift in Sources */,

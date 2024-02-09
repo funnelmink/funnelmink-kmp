@@ -47,7 +47,7 @@ struct JoinExistingWorkspaceView: View {
                 Text("Request")
                     .frame(height: 52)
                     .maxReadableWidth()
-                    .background(LoginBackgroundGradient())
+                    .background(FunnelminkGradient())
                     .foregroundStyle(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 4))
             }

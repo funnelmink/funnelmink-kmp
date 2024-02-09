@@ -90,7 +90,7 @@ struct TodayView: View {
                 .frame(width: 24, height: 24)
                 .padding()
                 .foregroundStyle(.white)
-                .background(LoginBackgroundGradient())
+                .background(FunnelminkGradient())
                 .clipShape(Circle())
         }
         .padding()
