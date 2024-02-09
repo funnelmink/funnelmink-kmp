@@ -91,6 +91,7 @@
 		0D7759432B6B732A00A61BAC /* CaseRecord.sq in Resources */ = {isa = PBXBuildFile; fileRef = 0D7759372B6B732A00A61BAC /* CaseRecord.sq */; };
 		0D77594E2B6B75C500A61BAC /* ImportContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7759482B6B75C500A61BAC /* ImportContactsView.swift */; };
 		0D77594F2B6B75C500A61BAC /* ImportContactsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7759492B6B75C500A61BAC /* ImportContactsVM.swift */; };
+		0D7972522B75E7E80048E942 /* MenuFAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972512B75E7E80048E942 /* MenuFAB.swift */; };
 		0DBB674F2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */; };
 		0DBF9CAF2B5A16C20045AC44 /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */; };
 		0DBF9CB12B5A35F20045AC44 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF9CB02B5A35F20045AC44 /* LogsView.swift */; };
@@ -230,6 +231,7 @@
 		0D7759372B6B732A00A61BAC /* CaseRecord.sq */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CaseRecord.sq; sourceTree = "<group>"; };
 		0D7759482B6B75C500A61BAC /* ImportContactsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportContactsView.swift; sourceTree = "<group>"; };
 		0D7759492B6B75C500A61BAC /* ImportContactsVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportContactsVM.swift; sourceTree = "<group>"; };
+		0D7972512B75E7E80048E942 /* MenuFAB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuFAB.swift; sourceTree = "<group>"; };
 		0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DevEnvironment.xcconfig; sourceTree = "<group>"; };
 		0DBB67562B4FA39B00CFE9A5 /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = "<group>"; };
 		0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugMenu.swift; sourceTree = "<group>"; };
@@ -520,6 +522,7 @@
 				0D3E40412B640F130096E222 /* Kanban.swift */,
 				1FA27F792B5978F300A447C3 /* TimelineView.swift */,
 				0D012E5A2B477E3A00658153 /* WarningAlertButton.swift */,
+				0D7972512B75E7E80048E942 /* MenuFAB.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1065,6 +1068,7 @@
 				0D012E792B477E3A00658153 /* InboxView.swift in Sources */,
 				0D012E682B477E3A00658153 /* TodayView.swift in Sources */,
 				0D3E40442B6413B20096E222 /* FunnelsViewModel.swift in Sources */,
+				0D7972522B75E7E80048E942 /* MenuFAB.swift in Sources */,
 				0DBF9CAF2B5A16C20045AC44 /* DebugMenu.swift in Sources */,
 				0D012E712B477E3A00658153 /* Properties.swift in Sources */,
 				0DE9E0A22B60DDAC00B8288F /* UpdateWallView.swift in Sources */,
