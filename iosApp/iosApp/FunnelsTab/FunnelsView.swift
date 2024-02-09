@@ -7,11 +7,26 @@ struct FunnelsView: View {
     
     @ViewBuilder
     var body: some View {
-        //        if FeatureFlags.funnelsTestUI.isEnabled {
-        funnelsTestUI
-        //        } else {
-        //            originalUI
-        //        }
+        ZStack {
+            //        if FeatureFlags.funnelsTestUI.isEnabled {
+            funnelsTestUI
+            MenuFAB(
+                items: [
+                    .init(name: "New Case", iconName: "hazardsign") {
+                        
+                    },
+                    .init(name: "New Lead", iconName: "person") {
+                        
+                    },
+                    .init(name: "New Opportunity", iconName: "moon.stars") {
+                        
+                    },
+                ]
+            )
+            //        } else {
+            //            originalUI
+            //        }
+        }
     }
     
     var originalUI: some View {

@@ -9,14 +9,35 @@
 import SwiftUI
 
 struct MenuFAB: View {
-    let menuItems: [MenuItem]
-    @State private var isExpanded = false
+    let items: [MenuFABItem]
+    @EnvironmentObject var appState: AppState
+
+    struct MenuFABItem {
+        let name: String
+        let iconName: String
+        let action: () -> Void
+    }
     
     var body: some View {
         VStack {
-            ForEach(menuItems.indices, id: \.self) { i in
-                let item = menuItems[i]
-                Button(action: item.action) {
+            Spacer()
+            HStack {
+                Spacer()
+                fab
+                .padding([.bottom, .trailing])
+            }
+        }
+    }
+    
+    
+    private var fab: some View {
+        VStack(alignment: .trailing) {
+            ForEach(items.indices, id: \.self) { i in
+                let item = items[i]
+                Button {
+                    item.action()
+                    appState.isFABExpanded.toggle()
+                } label: {
                     LoginBackgroundGradient()
                         .mask {
                             HStack {
@@ -25,22 +46,22 @@ struct MenuFAB: View {
                                     .frame(width: 20, height: 20)
                                 Text(item.name)
                             }
+                            .frame(maxWidth: .infinity, alignment: .trailing)
                             .bold()
                         }
-                        .frame(width: 120 ,height: 44)
+                        .frame(width: 200, height: 44)
                 }
-                .transition(.move(edge: .bottom))
-                .opacity(isExpanded ? 1 : 0)
-                .animation(.spring(), value: isExpanded)
+                .opacity(appState.isFABExpanded ? 1 : 0)
+                .animation(.spring(), value: appState.isFABExpanded)
             }
             
             
             Button(action: {
                 withAnimation {
-                    self.isExpanded.toggle()
+                    self.appState.isFABExpanded.toggle()
                 }
             }) {
-                Image(systemName: isExpanded ? "minus" : "plus")
+                Image(systemName: appState.isFABExpanded ? "minus" : "plus")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 20, height: 20)
@@ -49,38 +70,28 @@ struct MenuFAB: View {
                     .background(LoginBackgroundGradient())
                     .foregroundStyle(Color.white)
                     .clipShape(Circle())
-                    .rotationEffect(isExpanded ? .degrees(180) : .degrees(0))
-                    .animation(.spring(), value: isExpanded)
+                    .rotationEffect(appState.isFABExpanded ? .degrees(180) : .degrees(0))
+                    .animation(.spring(), value: appState.isFABExpanded)
             }
         }
-    }
-    struct MenuItem {
-        let name: String
-        let iconName: String
-        let action: () -> Void
+        .onDisappear {
+            appState.isFABExpanded = false
+        }
     }
 }
 
 
 #Preview {
-    Color.white.overlay {
-        VStack {
-            Spacer()
-            HStack {
-                Spacer()
-                MenuFAB(menuItems: [
-                    .init(name: "Add", iconName: "plus") {
-                        print("Add")
-                    },
-                    .init(name: "Edit", iconName: "pencil") {
-                        print("Edit")
-                    },
-                    .init(name: "Delete", iconName: "trash") {
-                        print("Delete")
-                    }
-                ])
-                .padding(.vertical)
-            }
+    MenuFAB(items: [
+        .init(name: "Add", iconName: "plus") {
+            print("Add")
+        },
+        .init(name: "Edit", iconName: "pencil") {
+            print("Edit")
+        },
+        .init(name: "Delete", iconName: "trash") {
+            print("Delete")
         }
-    }
+    ])
+    .withPreviewDependencies()
 }
