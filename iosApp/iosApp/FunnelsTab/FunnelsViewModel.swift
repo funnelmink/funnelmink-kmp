@@ -26,6 +26,7 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
     }
     
     func selectFunnel(_ funnel: Funnel) {
+        columns.removeAll()
         funnel.stages.forEach { stage in
             let column = KanbanColumn(
                 id: stage.id,
@@ -34,6 +35,11 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
             )
             columns.append(column)
         }
+    }
+    
+    func selectFunnel(_ name: String) {
+        guard let funnel = state.funnels.first(where: { $0.name == name }) else { return }
+        selectFunnel(funnel)
     }
     
     @MainActor

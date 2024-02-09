@@ -46,10 +46,11 @@ struct FunnelsView: View {
         }
         .toolbar {
             if !viewModel.funnels.isEmpty {
-                // TODO: this iterates over the actual funnels
                 ToolbarItem {
                     Picker("Funnels", selection: $selection) {
-                        Text("Leads").tag("Leads")
+                        ForEach(viewModel.funnels, id: \.self) { funnel in
+                            Text(funnel.name).tag(funnel.name)
+                        }
                     }
                 }
             }
@@ -64,6 +65,7 @@ struct FunnelsView: View {
                 Toast.error(error)
             }
         }
+        .onChange(of: selection, perform: viewModel.selectFunnel(_:))
     }
 }
 
