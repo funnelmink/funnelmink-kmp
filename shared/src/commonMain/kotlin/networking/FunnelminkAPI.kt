@@ -317,7 +317,7 @@ class FunnelminkAPI(
     @Throws(Exception::class)
     override suspend fun createDefaultFunnels() {
         genericRequest<Unit>("$baseURL/v1/workspace/owner/funnels/createDefaultFunnels", HttpMethod.Post) {
-            setBody("{}")
+            setBody("{}") // POST requests can't have empty bodies
         }
         cacheInvalidator.invalidate("getFunnels")
     }

@@ -76,6 +76,7 @@ data class Funnel(
 
     val name: String,
     val type: FunnelType,
+    val stages: List<FunnelStage>,
 )
 
 @Serializable

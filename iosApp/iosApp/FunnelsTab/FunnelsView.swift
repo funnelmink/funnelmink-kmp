@@ -57,7 +57,7 @@ struct FunnelsView: View {
         .navigationTitle("Funnels")
         .loggedTask {
             do {
-                try await viewModel.fetch()
+                try await viewModel.setUp(initialSelection: selection)
                 // TODO: if !fetchedFunnels.contains(selection) { selection = "Leads" }
                 // actually, `selection = funnels.first!.title`
             } catch {

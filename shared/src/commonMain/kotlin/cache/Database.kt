@@ -465,7 +465,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         return Funnel(
             id,
             name,
-            FunnelType.fromTypeName(type)
+            FunnelType.fromTypeName(type),
+            emptyList()
         )
     }
 

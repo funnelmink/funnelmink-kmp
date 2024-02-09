@@ -19,15 +19,27 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
     }
     
     @MainActor
-    func fetch() async throws {
-        let funnels = try await Networking.api.getFunnels()
-        columns = funnels.map { funnel in
-            KanbanColumn(
-                id: funnel.id,
-                title: funnel.name,
-                cards: [] // TODO: bruh
-            )
+    func setUp(initialSelection: String) async throws {
+        if !state.isInitialized {
+            try await fetchFunnels()
         }
+    }
+    
+    func selectFunnel(_ funnel: Funnel) {
+        funnel.stages.forEach { stage in
+            let column = KanbanColumn(
+                id: stage.id,
+                title: stage.name,
+                cards: [] // todo
+            )
+            columns.append(column)
+        }
+    }
+    
+    @MainActor
+    private func fetchFunnels() async throws {
+        let funnels = try await Networking.api.getFunnels()
+        selectFunnel(funnels.first!)
         var state = self.state
         state.funnels = funnels
         state.isInitialized = true
@@ -37,6 +49,6 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
     @MainActor
     func createDefaultFunnels() async throws {
         try await Networking.api.createDefaultFunnels()
-        try await fetch()
+        try await fetchFunnels()
     }
 }
