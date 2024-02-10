@@ -95,6 +95,7 @@
 		0D7972542B767CFD0048E942 /* EditLeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972532B767CFD0048E942 /* EditLeadView.swift */; };
 		0D7972562B767D070048E942 /* EditCaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972552B767D070048E942 /* EditCaseView.swift */; };
 		0D7972582B767D100048E942 /* EditOpportunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972572B767D100048E942 /* EditOpportunityView.swift */; };
+		0D79725A2B76E0840048E942 /* EditLeadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972592B76E0840048E942 /* EditLeadViewModel.swift */; };
 		0DBB674F2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */; };
 		0DBF9CAF2B5A16C20045AC44 /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */; };
 		0DBF9CB12B5A35F20045AC44 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF9CB02B5A35F20045AC44 /* LogsView.swift */; };
@@ -238,6 +239,7 @@
 		0D7972532B767CFD0048E942 /* EditLeadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLeadView.swift; sourceTree = "<group>"; };
 		0D7972552B767D070048E942 /* EditCaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCaseView.swift; sourceTree = "<group>"; };
 		0D7972572B767D100048E942 /* EditOpportunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOpportunityView.swift; sourceTree = "<group>"; };
+		0D7972592B76E0840048E942 /* EditLeadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLeadViewModel.swift; sourceTree = "<group>"; };
 		0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DevEnvironment.xcconfig; sourceTree = "<group>"; };
 		0DBB67562B4FA39B00CFE9A5 /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = "<group>"; };
 		0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugMenu.swift; sourceTree = "<group>"; };
@@ -429,6 +431,7 @@
 			children = (
 				0D7972552B767D070048E942 /* EditCaseView.swift */,
 				0D7972532B767CFD0048E942 /* EditLeadView.swift */,
+				0D7972592B76E0840048E942 /* EditLeadViewModel.swift */,
 				0D7972572B767D100048E942 /* EditOpportunityView.swift */,
 				0D012E362B477E3900658153 /* FunnelsView.swift */,
 				0D3E40432B6413B20096E222 /* FunnelsViewModel.swift */,
@@ -1061,6 +1064,7 @@
 				0DCC16342B50D26C008F705B /* TodayViewModel.swift in Sources */,
 				1F022A3C2B49159100966345 /* CustomAccordion.swift in Sources */,
 				1F022A3E2B49159100966345 /* CustomTextField.swift in Sources */,
+				0D79725A2B76E0840048E942 /* EditLeadViewModel.swift in Sources */,
 				0DCC163A2B511A2C008F705B /* EditTaskViewModel.swift in Sources */,
 				0D73AB132B54DAF30026EC4D /* Int32+.swift in Sources */,
 				0D012E742B477E3A00658153 /* Networking.swift in Sources */,

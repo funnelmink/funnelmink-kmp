@@ -315,6 +315,11 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
+    override suspend fun getFunnelsForType(funnelType: FunnelType): List<Funnel> {
+        return genericRequest("$baseURL/v1/workspace/funnels/$funnelType", HttpMethod.Get)
+    }
+
+    @Throws(Exception::class)
     override suspend fun createDefaultFunnels() {
         genericRequest<Unit>("$baseURL/v1/workspace/owner/funnels/createDefaultFunnels", HttpMethod.Post) {
             setBody("{}") // POST requests can't have empty bodies

@@ -42,6 +42,8 @@ struct EditLeadView: View {
     @State private var shouldDisplayRequiredIndicators = false
     
     var lead: Lead?
+    var initialFunnelD: String?
+    var initialStageID: String?
     
     var body: some View {
         VStack {
@@ -125,27 +127,73 @@ struct EditLeadView: View {
             }
             AsyncButton {
                 // TODO: NEXT! Implement Lead creation!
-//                if let task = task {
-//                    await viewModel.updateTask(
-//                        id: task.id,
-//                        title: taskName,
-//                        priority: priority,
-//                        isComplete: task.isComplete,
-//                        body: taskBody,
-//                        scheduledDate: date?.iso8601()
-//                    ) {
-//                        navigation.dismissModal()
-//                    }
-//                } else {
-//                    await viewModel.createTask(
-//                        title: taskName,
-//                        priority: priority,
-//                        body: taskBody,
-//                        scheduledDate: date?.iso8601()
-//                    ) {
-//                        navigation.dismissModal()
-//                    }
-//                }
+                do {
+                    if let lead {
+                        //                        try await viewModel.updateLead(
+                        //                            id: lead.id,
+                        //                            name: name,
+                        //                            email: email,
+                        //                            phone: phone,
+                        //                            company: company,
+                        //                            source: source,
+                        //                            address: address,
+                        //                            city: city,
+                        //                            state: state,
+                        //                            zip: zip,
+                        //                            country: country,
+                        //                            jobTitle: jobTitle,
+                        //                            assignedTo: assignedTo,
+                        //                            notes: notes
+                        //                        )
+                    } else {
+                        try await viewModel.createLead(
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            company: company,
+                            source: source,
+                            address: address,
+                            city: city,
+                            state: state,
+                            zip: zip,
+                            country: country,
+                            jobTitle: jobTitle,
+                            notes: notes,
+                            funnelID: funnelID,
+                            stageID: stageID,
+                            assignedTo: assignedTo,
+                            latitude: latitude,
+                            longitude: longitude,
+                            type: type,
+                            priority: priority
+                        )
+                    }
+                } catch {
+                    Toast.error(error)
+                    shouldDisplayRequiredIndicators = true
+                }
+                navigation.dismissModal()
+                //                if let task = task {
+                //                    await viewModel.updateTask(
+                //                        id: task.id,
+                //                        title: taskName,
+                //                        priority: priority,
+                //                        isComplete: task.isComplete,
+                //                        body: taskBody,
+                //                        scheduledDate: date?.iso8601()
+                //                    ) {
+                //                        navigation.dismissModal()
+                //                    }
+                //                } else {
+                //                    await viewModel.createTask(
+                //                        title: taskName,
+                //                        priority: priority,
+                //                        body: taskBody,
+                //                        scheduledDate: date?.iso8601()
+                //                    ) {
+                //                        navigation.dismissModal()
+                //                    }
+                //                }
             } label: {
                 Text(lead == nil ? "Create" : "Update")
                     .frame(height: 52)
@@ -157,7 +205,7 @@ struct EditLeadView: View {
             .multilineTextAlignment(.leading)
             .padding()
         }
-        .loggedOnAppear {
+        .loggedTask {
             if let lead {
                 self.address = lead.address ?? ""
                 self.assignedTo = lead.assignedTo ?? ""
@@ -181,6 +229,11 @@ struct EditLeadView: View {
                 self.updatedAt = lead.updatedAt
                 self.zip = lead.zip ?? ""
             }
+            do {
+                try await viewModel.setUp(funnelID: initialFunnelD, stageID: initialStageID, lead: lead)
+            } catch {
+                Toast.error(error)
+            }
         }
     }
 }
@@ -189,43 +242,3 @@ struct EditLeadView: View {
     EditLeadView()
         .withPreviewDependencies()
 }
-
-class EditLeadViewModel: ViewModel {
-    @Published var state = State()
-    
-    struct State: Hashable {
-    }
-}
-
-/*
- Kotlin definition of Lead
- 
- @Serializable
- data class Lead(
-     val id: String,
-
-     val address: String? = null,
-     val assignedTo: String? = null,
-     val city: String? = null,
-     val closedDate: String? = null,
-     val closedResult: LeadClosedResult? = null,
-     val company: String? = null,
-     val country: String? = null,
-     val createdAt: String,
-     val email: String? = null,
-     val jobTitle: String? = null,
-     val latitude: Double? = null,
-     val longitude: Double? = null,
-     val name: String,
-     val notes: String? = null,
-     val phone: String? = null,
-     val priority: Int,
-     val source: String? = null,
-     val stage: String? = null,
-     val state: String? = null,
-     val type: AccountType,
-     val updatedAt: String,
-     val zip: String? = null,
- )
- */
-

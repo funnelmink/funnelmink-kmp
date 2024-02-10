@@ -9,8 +9,7 @@ struct FunnelsView: View {
     @ViewBuilder
     var body: some View {
         ZStack {
-            //        if FeatureFlags.funnelsTestUI.isEnabled {
-            funnelsTestUI
+            kanbanView
             MenuFAB(
                 items: [
                     .init(name: "New Case", iconName: "hazardsign") {
@@ -24,9 +23,6 @@ struct FunnelsView: View {
                     },
                 ]
             )
-            //        } else {
-            //            originalUI
-            //        }
         }
     }
     
@@ -36,7 +32,7 @@ struct FunnelsView: View {
             .logged()
     }
     
-    var funnelsTestUI: some View {
+    var kanbanView: some View {
         VStack {
             if viewModel.isInitialized {
                 if viewModel.funnels.isEmpty {

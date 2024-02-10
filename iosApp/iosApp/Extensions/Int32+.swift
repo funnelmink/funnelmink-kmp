@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Shared
 import SwiftUI
 
 extension Int32 {
@@ -35,5 +36,14 @@ extension Int32 {
         case 3: return "Ultra"
         default: return "Low"
         }
+    }
+    
+    static var lowPriority: Int32 { 0 }
+    static var mediumPriority: Int32 { 1 }
+    static var highPriority: Int32 { 2 }
+    static var ultraPriority: Int32 { 3 }
+    
+    var kotlinValue: KotlinInt {
+        KotlinInt(int: self)
     }
 }
