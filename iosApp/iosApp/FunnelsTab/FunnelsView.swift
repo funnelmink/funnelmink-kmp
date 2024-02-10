@@ -19,7 +19,14 @@ struct FunnelsView: View {
                         navigation.modalSheet(.createOpportunity)
                     },
                     .init(name: "New Lead", iconName: "person") {
-                        navigation.modalSheet(.createLead)
+                        navigation
+                            .modalSheet(
+                                // TODO: detect automatically?
+                                .createLead(
+                                    funnelID: nil,
+                                    stageID: nil
+                                )
+                            )
                     },
                 ]
             )

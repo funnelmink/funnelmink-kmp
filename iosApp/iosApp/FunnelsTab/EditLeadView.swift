@@ -36,9 +36,6 @@ struct EditLeadView: View {
     @State private var updatedAt = ""
     @State private var zip = ""
     
-    @State private var funnelID = ""
-    @State private var stageID = ""
-    
     @State private var shouldDisplayRequiredIndicators = false
     
     var lead: Lead?
@@ -101,7 +98,6 @@ struct EditLeadView: View {
                         .discreteListRowStyle()
                 }
                 
-                // TODO: lat/lon fields and a button that offers to fill them in based on the address
                 Section("GEO LOCATION") {
                     CustomTextField(text: $latitude, placeholder: "Latitude", style: .decimal)
                         .autocorrectionDisabled()
@@ -121,8 +117,6 @@ struct EditLeadView: View {
                     .discreteListRowStyle(backgroundColor: .clear)
                 }
                 
-                // TODO: priority (look at task view)
-                
                 Section("JOB INFORMATION") {
                     CustomTextField(text: $jobTitle, placeholder: "Job Title", style: .text)
                         .autocorrectionDisabled()
@@ -134,6 +128,31 @@ struct EditLeadView: View {
                     CustomTextField(text: $assignedTo, placeholder: "Assigned To", style: .text)
                         .autocorrectionDisabled()
                         .discreteListRowStyle()
+                    
+                    Picker(selection: $priority, label: Text("Priority")) {
+                        ForEach(Int32(0)..<4, id: \.self) { prio in
+                            Label(" " + prio.priorityName, systemImage: prio.priorityIconName)
+                                .tag(prio)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .tint(priority.priorityColor)
+                    
+                    Picker(selection: $viewModel.state.selectedFunnel, label: Text("Funnel")) {
+                        ForEach(viewModel.state.funnels, id: \.self) { funnel in
+                            Text(funnel.name).tag(funnel.id)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    
+                    Picker(selection: $viewModel.state.selectedStage, label: Text("Stage")) {
+                        ForEach(viewModel.selectedFunnel.stages, id: \.self) { stage in
+                            Text(stage.name).tag(stage.id)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    
+                    
                 }
                 // TODO: add a way to dismiss the keyboard
                 
@@ -166,8 +185,6 @@ struct EditLeadView: View {
                             country: country,
                             jobTitle: jobTitle,
                             notes: notes,
-                            funnelID: funnelID,
-                            stageID: stageID,
                             assignedTo: assignedTo,
                             latitude: Double(latitude),
                             longitude: Double(longitude),
@@ -187,8 +204,6 @@ struct EditLeadView: View {
                             country: country,
                             jobTitle: jobTitle,
                             notes: notes,
-                            funnelID: funnelID,
-                            stageID: stageID,
                             assignedTo: assignedTo,
                             latitude: Double(latitude),
                             longitude: Double(longitude),

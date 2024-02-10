@@ -13,19 +13,29 @@ class EditLeadViewModel: ViewModel {
     @Published var state = State()
     
     struct State: Hashable {
-        var selectedFunnel: Funnel?
-        var selectedStage: FunnelStage?
+        var selectedFunnel: Funnel = Funnel(id: "", name: "", type: .lead, stages: [], cases: [], leads: [], opportunities: [])
+        var selectedStage: FunnelStage = FunnelStage(id: "", name: "", order: 0)
         var funnels: [Funnel] = []
     }
     
     @MainActor
     func setUp(funnelID: String?, stageID: String?, lead: Lead?) async throws {
         state.funnels = try await Networking.api.getFunnelsForType(funnelType: .lead)
-        if let funnelID {
-            state.selectedFunnel = state.funnels.first(where: { $0.id == funnelID })
-            if let stageID {
-                state.selectedStage = state.selectedFunnel?.stages.first(where: { $0.id == stageID })
-            }
+        guard !state.funnels.isEmpty else {
+            throw "No funnels found"
+        }
+        if let funnelID,
+           let funnel = state.funnels.first(where: { $0.id == funnelID }),
+           let stageID,
+           let stage = funnel.stages.first(where: { $0.id == stageID }) {
+            state.selectedFunnel = funnel
+            state.selectedStage = stage
+        } else if let funnel = state.funnels.first,
+                  let stage = funnel.stages.first {
+            state.selectedFunnel = funnel
+            state.selectedStage = stage
+        } else {
+            throw "No valid funnel found"
         }
     }
     
@@ -43,8 +53,6 @@ class EditLeadViewModel: ViewModel {
         country: String?,
         jobTitle: String?,
         notes: String?,
-        funnelID: String,
-        stageID: String,
         assignedTo: String?,
         latitude: Double?,
         longitude: Double?,
@@ -69,8 +77,8 @@ class EditLeadViewModel: ViewModel {
             source: source,
             accountID: nil,
             assignedTo: assignedTo,
-            funnelID: funnelID,
-            stageID: stageID
+            funnelID: self.state.selectedFunnel.id,
+            stageID: self.state.selectedStage.id
         )
         // don't need to store the result
         _ = try await Networking.api.createLead(body: body)
@@ -91,8 +99,6 @@ class EditLeadViewModel: ViewModel {
         country: String?,
         jobTitle: String?,
         notes: String?,
-        funnelID: String,
-        stageID: String,
         assignedTo: String?,
         latitude: Double?,
         longitude: Double?,
@@ -116,8 +122,8 @@ class EditLeadViewModel: ViewModel {
             source: source,
             accountID: nil,
             assignedTo: assignedTo,
-            funnelID: funnelID,
-            stageID: stageID
+            funnelID: self.state.selectedFunnel.id,
+            stageID: self.state.selectedStage.id
         )
         // don't need to store the result
         _ = try await Networking.api.updateLead(id: leadID, body: body)
