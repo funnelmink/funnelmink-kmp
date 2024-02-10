@@ -316,7 +316,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun getFunnelsForType(funnelType: FunnelType): List<Funnel> {
-        return genericRequest("$baseURL/v1/workspace/funnels/$funnelType", HttpMethod.Get)
+        return genericRequest("$baseURL/v1/workspace/funnels/${funnelType.typeName}", HttpMethod.Get)
     }
 
     @Throws(Exception::class)

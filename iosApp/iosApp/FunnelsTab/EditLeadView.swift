@@ -24,8 +24,8 @@ struct EditLeadView: View {
     @State private var createdAt = ""
     @State private var email = ""
     @State private var jobTitle = ""
-    @State private var latitude: Double?
-    @State private var longitude: Double?
+    @State private var latitude = ""
+    @State private var longitude = ""
     @State private var name = ""
     @State private var notes = ""
     @State private var phone = ""
@@ -102,6 +102,24 @@ struct EditLeadView: View {
                 }
                 
                 // TODO: lat/lon fields and a button that offers to fill them in based on the address
+                Section("GEO LOCATION") {
+                    CustomTextField(text: $latitude, placeholder: "Latitude", style: .decimal)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
+                    CustomTextField(text: $longitude, placeholder: "Longitude", style: .decimal)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
+                    Button {
+                        // TODO: implement a LocationCoordinator
+                        Toast.info("TODO")
+                    } label: {
+                        HStack {
+                            Spacer()
+                            Label("Use my current location", systemImage: "location.fill")
+                        }
+                    }
+                    .discreteListRowStyle(backgroundColor: .clear)
+                }
                 
                 // TODO: priority (look at task view)
                 
@@ -151,8 +169,8 @@ struct EditLeadView: View {
                             funnelID: funnelID,
                             stageID: stageID,
                             assignedTo: assignedTo,
-                            latitude: latitude,
-                            longitude: longitude,
+                            latitude: Double(latitude),
+                            longitude: Double(longitude),
                             priority: priority
                         )
                     } else {
@@ -172,8 +190,8 @@ struct EditLeadView: View {
                             funnelID: funnelID,
                             stageID: stageID,
                             assignedTo: assignedTo,
-                            latitude: latitude,
-                            longitude: longitude,
+                            latitude: Double(latitude),
+                            longitude: Double(longitude),
                             type: type,
                             priority: priority
                         )
@@ -206,8 +224,6 @@ struct EditLeadView: View {
                 self.createdAt = lead.createdAt
                 self.email = lead.email ?? ""
                 self.jobTitle = lead.jobTitle ?? ""
-                self.latitude = lead.latitude?.doubleValue
-                self.longitude = lead.longitude?.doubleValue
                 self.name = lead.name
                 self.notes = lead.notes ?? ""
                 self.phone = lead.phone ?? ""
@@ -217,6 +233,11 @@ struct EditLeadView: View {
                 self.type = lead.type
                 self.updatedAt = lead.updatedAt
                 self.zip = lead.zip ?? ""
+                
+                if let lat = lead.latitude, let lon = lead.longitude {
+                    self.latitude = "\(lat)"
+                    self.longitude = "\(lon)"
+                }
             }
             do {
                 try await viewModel.setUp(funnelID: initialFunnelD, stageID: initialStageID, lead: lead)
