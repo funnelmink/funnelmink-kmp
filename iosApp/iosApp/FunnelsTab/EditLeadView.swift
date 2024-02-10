@@ -76,8 +76,16 @@ struct EditLeadView: View {
                     CustomTextField(text: $source, placeholder: "Source", style: .text)
                         .autocorrectionDisabled()
                         .discreteListRowStyle()
+                    CustomTextField(text: $jobTitle, placeholder: "Job Title", style: .text)
+                        .autocorrectionDisabled()
+                        .discreteListRowStyle()
                     
-                    // TODO: accounttype toggle
+                    Picker(selection: $type, label: Text("Type").foregroundStyle(.secondary)) {
+                        ForEach(AccountType.allCases, id: \.typeName) { type in
+                            Label(" " + type.typeName.lowercased().capitalized, systemImage: type.iconName)
+                                .tag(type)
+                        }
+                    }
                 }
                 
                 Section("LOCATION INFORMATION") {
@@ -117,13 +125,6 @@ struct EditLeadView: View {
                     .discreteListRowStyle(backgroundColor: .clear)
                 }
                 
-                Section("JOB INFORMATION") {
-                    CustomTextField(text: $jobTitle, placeholder: "Job Title", style: .text)
-                        .autocorrectionDisabled()
-                        .discreteListRowStyle()
-                }
-                
-                // TODO: funnelID, stageID and assignedTo
                 Section("LEAD MANAGEMENT") {
                     CustomTextField(text: $assignedTo, placeholder: "Assigned To", style: .text)
                         .autocorrectionDisabled()
