@@ -49,9 +49,9 @@ struct EditLeadView: View {
         VStack {
             List {
                 Text(lead == nil ? "New Lead" : "Edit Lead")
-                    .font(.headline)
                     .fontWeight(.bold)
                     .discreteListRowStyle(backgroundColor: .clear)
+                    .frame(height: 1)
                 Section {
                     CustomTextField(
                         text: $name,
@@ -122,29 +122,39 @@ struct EditLeadView: View {
                 Section("NOTES") {
                     TextEditor(text: $notes)
                         .frame(minHeight: 100)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke()
+                                .foregroundStyle(.gray).opacity(0.4)
+                        }
+                        .padding(4)
                         .discreteListRowStyle()
                 }
             }
             AsyncButton {
-                // TODO: NEXT! Implement Lead creation!
                 do {
                     if let lead {
-                        //                        try await viewModel.updateLead(
-                        //                            id: lead.id,
-                        //                            name: name,
-                        //                            email: email,
-                        //                            phone: phone,
-                        //                            company: company,
-                        //                            source: source,
-                        //                            address: address,
-                        //                            city: city,
-                        //                            state: state,
-                        //                            zip: zip,
-                        //                            country: country,
-                        //                            jobTitle: jobTitle,
-                        //                            assignedTo: assignedTo,
-                        //                            notes: notes
-                        //                        )
+                        try await viewModel.updateLead(
+                            leadID: lead.id,
+                            name: name,
+                            email: email,
+                            phone: phone,
+                            company: company,
+                            source: source,
+                            address: address,
+                            city: city,
+                            state: state,
+                            zip: zip,
+                            country: country,
+                            jobTitle: jobTitle,
+                            notes: notes,
+                            funnelID: funnelID,
+                            stageID: stageID,
+                            assignedTo: assignedTo,
+                            latitude: latitude,
+                            longitude: longitude,
+                            priority: priority
+                        )
                     } else {
                         try await viewModel.createLead(
                             name: name,
@@ -173,27 +183,6 @@ struct EditLeadView: View {
                     shouldDisplayRequiredIndicators = true
                 }
                 navigation.dismissModal()
-                //                if let task = task {
-                //                    await viewModel.updateTask(
-                //                        id: task.id,
-                //                        title: taskName,
-                //                        priority: priority,
-                //                        isComplete: task.isComplete,
-                //                        body: taskBody,
-                //                        scheduledDate: date?.iso8601()
-                //                    ) {
-                //                        navigation.dismissModal()
-                //                    }
-                //                } else {
-                //                    await viewModel.createTask(
-                //                        title: taskName,
-                //                        priority: priority,
-                //                        body: taskBody,
-                //                        scheduledDate: date?.iso8601()
-                //                    ) {
-                //                        navigation.dismissModal()
-                //                    }
-                //                }
             } label: {
                 Text(lead == nil ? "Create" : "Update")
                     .frame(height: 52)
