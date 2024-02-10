@@ -212,11 +212,11 @@ struct EditLeadView: View {
                             priority: priority
                         )
                     }
+                    navigation.dismissModal()
                 } catch {
                     Toast.error(error)
                     shouldDisplayRequiredIndicators = true
                 }
-                navigation.dismissModal()
             } label: {
                 Text(lead == nil ? "Create" : "Update")
                     .frame(height: 52)

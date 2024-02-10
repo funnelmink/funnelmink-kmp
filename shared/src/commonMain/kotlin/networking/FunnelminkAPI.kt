@@ -811,7 +811,10 @@ class FunnelminkAPI(
         } else {
             Utilities.logger.log(LogLevel.WARN, "🆘 $responseBody")
             try {
-                val message = jsonDecoder.decodeFromString<APIError>(responseBody).message
+                var message = jsonDecoder.decodeFromString<APIError>(responseBody).message
+                if (message.startsWith("Expected start of object") == true) {
+                    message = responseBody
+                }
                 when (response.status) {
                     HttpStatusCode.Unauthorized -> {
                         onAuthFailure?.invoke(message)
@@ -821,10 +824,10 @@ class FunnelminkAPI(
                     HttpStatusCode.NotFound -> onMissing?.invoke(message)
                     HttpStatusCode.InternalServerError -> onServerError?.invoke(message)
                 }
-                throw RuntimeException("Unexpected server response: $responseBody")
+                throw RuntimeException(message)
             } catch (e: SerializationException) {
                 onServerError?.invoke(e.message.orEmpty())
-                throw e
+                throw RuntimeException(responseBody)
             }
         }
     }
