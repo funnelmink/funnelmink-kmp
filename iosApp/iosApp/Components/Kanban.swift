@@ -78,7 +78,9 @@ struct KanbanCardView: View {
             label(card.subtitleLabel)
                 .padding(.vertical, 1)
             HStack(spacing: 12) {
-                label(card.footerLabel)
+                if let footerLabel = card.footerLabel {
+                    label(footerLabel)
+                }
                 if let secondFooterLabel = card.secondFooterLabel {
                     label(secondFooterLabel)
                 }
@@ -178,7 +180,7 @@ struct KanbanCard: Identifiable, Codable {
     let id: String
     let title: String
     let subtitleLabel: Label
-    let footerLabel: Label
+    let footerLabel: Label?
     var secondFooterLabel: Label?
     let footerTrailingText: String
     

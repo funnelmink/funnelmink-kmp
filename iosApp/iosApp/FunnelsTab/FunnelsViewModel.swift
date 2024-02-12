@@ -32,10 +32,7 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
                         id: lead.id,
                         title: lead.name,
                         subtitleLabel: .init(iconName: "note.text", text: lead.notes ?? "--"),
-                        footerLabel: .init(
-                            iconName: "banknote",
-                            text: "$2000.00"
-                        ),
+                        footerLabel: nil,
                         secondFooterLabel: nil,
                         footerTrailingText: "",
                         columnID: lead.stageID ?? stage.id
