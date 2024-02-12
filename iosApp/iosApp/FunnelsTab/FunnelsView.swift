@@ -10,25 +10,7 @@ struct FunnelsView: View {
     var body: some View {
         ZStack {
             kanbanView
-            MenuFAB(
-                items: [
-                    .init(name: "New Case", iconName: "hazardsign") {
-                        navigation.modalSheet(.createCase)
-                    },
-                    .init(name: "New Opportunity", iconName: "moon.stars") {
-                        navigation.modalSheet(.createOpportunity)
-                    },
-                    .init(name: "New Lead", iconName: "person") {
-                        navigation
-                            .modalSheet(
-                                .createLead(
-                                    funnelID: nil,
-                                    stageID: nil
-                                )
-                            )
-                    },
-                ]
-            )
+            menuFABView
         }
     }
     
@@ -86,6 +68,28 @@ struct FunnelsView: View {
                 }
             }
         }
+    }
+    
+    var menuFABView: some View {
+        MenuFAB(
+            items: [
+                .init(name: "New Case", iconName: "hazardsign") {
+                    navigation.modalSheet(.createCase)
+                },
+                .init(name: "New Opportunity", iconName: "moon.stars") {
+                    navigation.modalSheet(.createOpportunity)
+                },
+                .init(name: "New Lead", iconName: "person") {
+                    navigation
+                        .modalSheet(
+                            .createLead(
+                                funnelID: nil,
+                                stageID: nil
+                            )
+                        )
+                },
+            ]
+        )
     }
 }
 
