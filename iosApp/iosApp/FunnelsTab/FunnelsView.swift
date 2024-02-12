@@ -32,7 +32,19 @@ struct FunnelsView: View {
                         Text("No funnels found. Ask the workspace owner to create them!")
                     }
                 } else {
-                    KanbanView(kanban: viewModel)
+                    KanbanView(kanban: viewModel) { card in
+                        switch viewModel.selectedFunnel?.type {
+                        case .lead:
+                            // TODO: lead details (show the history, etc)
+                            // From lead details, have the option to EditLead
+                            navigation.segue(.editLead(
+                                lead: viewModel.selectedFunnel?.leads.first(where: { $0.id == card.id }),
+                                funnelID: viewModel.selectedFunnel?.id,
+                                stageID: card.columnID
+                            ))
+                        default: print("TODO")
+                        }
+                    }
                 }
             } else {
                 ProgressView()
@@ -80,13 +92,7 @@ struct FunnelsView: View {
                     navigation.modalSheet(.createOpportunity)
                 },
                 .init(name: "New Lead", iconName: "person") {
-                    navigation
-                        .modalSheet(
-                            .createLead(
-                                funnelID: nil,
-                                stageID: nil
-                            )
-                        )
+                    navigation.modalSheet(.createLead)
                 },
             ]
         )

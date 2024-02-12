@@ -26,7 +26,7 @@ enum Modal: Identifiable {
     case debugMenu
     
     case createCase
-    case createLead(funnelID: String?, stageID: String?)
+    case createLead
     case createOpportunity
     
     @ViewBuilder
@@ -47,7 +47,7 @@ enum Modal: Identifiable {
             case .debugMenu: DebugMenu()
                 
             case .createCase: EditCaseView()
-            case let .createLead(funnelID, stageID): EditLeadView(initialFunnelD: funnelID, initialStageID: stageID)
+            case .createLead: EditLeadView()
             case .createOpportunity: EditOpportunityView()
             }
         }

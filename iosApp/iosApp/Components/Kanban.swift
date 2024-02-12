@@ -13,13 +13,14 @@ import SwiftUI
 
 struct KanbanView<Kanban: KanbanViewModel>: View {
     @ObservedObject var kanban: Kanban
+    let onCardTap: (KanbanCard) -> Void
     var body: some View {
         GeometryReader { o_o in
             ScrollView(.horizontal) {
                 HStack(spacing: 0) {
                     Spacer(minLength: o_o.size.width * 0.1)
                     ForEach(kanban.columns) { column in
-                        KanbanColumnView(kanban: kanban, column: column)
+                        KanbanColumnView(kanban: kanban, column: column, onCardTap: onCardTap)
                     }
                     .frame(width: o_o.size.width * 0.8)
                     Spacer(minLength: o_o.size.width * 0.1)
@@ -34,6 +35,7 @@ struct KanbanView<Kanban: KanbanViewModel>: View {
 struct KanbanColumnView<Kanban: KanbanViewModel>: View {
     @ObservedObject var kanban: Kanban
     @ObservedObject var column: KanbanColumn
+    let onCardTap: (KanbanCard) -> Void
     var body: some View {
         VStack(spacing: 0) {
             Text(column.title)
@@ -53,7 +55,7 @@ struct KanbanColumnView<Kanban: KanbanViewModel>: View {
                             delegate: KanbanDropDelegate(kanban: kanban, destinationColumn: column)
                         )
                 } else {
-                    ForEach(column.cards) { KanbanCardView(card: $0) }
+                    ForEach(column.cards) { KanbanCardView(card: $0, onTap: onCardTap) }
                         .onDrop(
                             of: [.text],
                             delegate: KanbanDropDelegate(kanban: kanban, destinationColumn: column)
@@ -67,6 +69,7 @@ struct KanbanColumnView<Kanban: KanbanViewModel>: View {
 struct KanbanCardView: View {
     @Environment(\.colorScheme) var colorScheme
     let card: KanbanCard
+    let onTap: (KanbanCard) -> Void
     var body: some View {
         VStack(alignment: .leading) {
             Text(card.title)
@@ -98,6 +101,7 @@ struct KanbanCardView: View {
         .listRowInsets(.init(top: 0, leading: 0, bottom: 8, trailing: 0))
         .listRowBackground(Color.white.opacity(0.001))
         .onDrag { NSItemProvider(object: card.asNSString) }
+        .onTapGesture { onTap(card) }
     }
     
     func label(_ label: KanbanCard.Label) -> some View {

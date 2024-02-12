@@ -19,6 +19,8 @@ enum Segue: NavigationSegue {
     case workspaceSettings
     case accountView(Account)
     
+    case editLead(lead: Lead?, funnelID: String?, stageID: String?)
+    
     @ViewBuilder
     var view: some View {
         switch self {
@@ -27,6 +29,7 @@ enum Segue: NavigationSegue {
         case let .taskDetails(task): TaskDetailView(task: task)
         case .workspaceSettings: WorkspaceSettingsView()
         case let .accountView(account): AccountView(account: account)
+        case let .editLead(lead, funnelID, stageID): EditLeadView(lead: lead, initialFunnelD: funnelID, initialStageID: stageID)
         }
     }
 }
