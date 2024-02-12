@@ -97,6 +97,8 @@
 		0D7972582B767D100048E942 /* EditOpportunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972572B767D100048E942 /* EditOpportunityView.swift */; };
 		0D79725A2B76E0840048E942 /* EditLeadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972592B76E0840048E942 /* EditLeadViewModel.swift */; };
 		0D79725C2B7A816C0048E942 /* LeadDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D79725B2B7A816C0048E942 /* LeadDetailView.swift */; };
+		0D7972612B7AB5190048E942 /* CaseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972602B7AB5190048E942 /* CaseDetailView.swift */; };
+		0D7972632B7AB5400048E942 /* OpportunityDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972622B7AB5400048E942 /* OpportunityDetailView.swift */; };
 		0DBB674F2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */; };
 		0DBF9CAF2B5A16C20045AC44 /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */; };
 		0DBF9CB12B5A35F20045AC44 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF9CB02B5A35F20045AC44 /* LogsView.swift */; };
@@ -242,6 +244,8 @@
 		0D7972572B767D100048E942 /* EditOpportunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOpportunityView.swift; sourceTree = "<group>"; };
 		0D7972592B76E0840048E942 /* EditLeadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLeadViewModel.swift; sourceTree = "<group>"; };
 		0D79725B2B7A816C0048E942 /* LeadDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadDetailView.swift; sourceTree = "<group>"; };
+		0D7972602B7AB5190048E942 /* CaseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaseDetailView.swift; sourceTree = "<group>"; };
+		0D7972622B7AB5400048E942 /* OpportunityDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpportunityDetailView.swift; sourceTree = "<group>"; };
 		0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DevEnvironment.xcconfig; sourceTree = "<group>"; };
 		0DBB67562B4FA39B00CFE9A5 /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = "<group>"; };
 		0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugMenu.swift; sourceTree = "<group>"; };
@@ -598,6 +602,7 @@
 		0D79725E2B7A81930048E942 /* Cases */ = {
 			isa = PBXGroup;
 			children = (
+				0D7972602B7AB5190048E942 /* CaseDetailView.swift */,
 				0D7972552B767D070048E942 /* EditCaseView.swift */,
 			);
 			path = Cases;
@@ -607,6 +612,7 @@
 			isa = PBXGroup;
 			children = (
 				0D7972572B767D100048E942 /* EditOpportunityView.swift */,
+				0D7972622B7AB5400048E942 /* OpportunityDetailView.swift */,
 			);
 			path = Opportunities;
 			sourceTree = "<group>";
@@ -1086,6 +1092,7 @@
 				0D012E6F2B477E3A00658153 /* SwiftUI+.swift in Sources */,
 				0D012E7B2B477E3A00658153 /* LoginView.swift in Sources */,
 				0D012E892B477E3A00658153 /* JoinExistingWorkspaceViewModel.swift in Sources */,
+				0D7972612B7AB5190048E942 /* CaseDetailView.swift in Sources */,
 				0D012E7E2B477E3A00658153 /* WorkspaceInviteView.swift in Sources */,
 				0DCC163C2B5249DC008F705B /* Date+.swift in Sources */,
 				0DCC16342B50D26C008F705B /* TodayViewModel.swift in Sources */,
@@ -1142,6 +1149,7 @@
 				1FCB7680DC135B3DD5B15F0C /* Segue.swift in Sources */,
 				0DBF9CB32B5A35FB0045AC44 /* FeatureFlagsView.swift in Sources */,
 				0DE9E0A42B60DDBA00B8288F /* WhatsNewView.swift in Sources */,
+				0D7972632B7AB5400048E942 /* OpportunityDetailView.swift in Sources */,
 				1FCB74155DEADF4A32FAA4E4 /* LoginViewModel.swift in Sources */,
 				1FCB73F124945A937ECDAC6F /* WorkspacesView.swift in Sources */,
 				1FCB781F978049D634870A8C /* WorkspacesViewModel.swift in Sources */,

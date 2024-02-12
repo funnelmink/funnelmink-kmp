@@ -15,15 +15,7 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
     
     struct State: Hashable {
         var funnels: [Funnel] = []
-        var isInitialized = false
         var selectedFunnel: Funnel?
-    }
-    
-    @MainActor
-    func setUp(initialSelection: String) async throws {
-        if !state.isInitialized {
-            try await fetchFunnels()
-        }
     }
     
     @MainActor
@@ -99,18 +91,20 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
     }
     
     @MainActor
-    private func fetchFunnels() async throws {
+    func fetchFunnels(_ selection: String) async throws {
         let funnels = try await Networking.api.getFunnels()
-        try await selectFunnel(funnels.first!)
-        var state = self.state
+        guard !funnels.isEmpty else { return }
+        if let selectedFunnel = funnels.first(where: { $0.name == selection }) {
+            try await selectFunnel(selectedFunnel)
+        } else if let first = funnels.first {
+            try await selectFunnel(first)
+        }
         state.funnels = funnels
-        state.isInitialized = true
-        self.state = state
     }
     
     @MainActor
     func createDefaultFunnels() async throws {
         try await Networking.api.createDefaultFunnels()
-        try await fetchFunnels()
+        try await fetchFunnels("Leads")
     }
 }
