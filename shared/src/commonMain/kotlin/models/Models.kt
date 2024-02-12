@@ -64,7 +64,7 @@ data class CaseRecord(
     val name: String,
     val notes: String? = null,
     val priority: Int,
-    val stage: String? = null,
+    val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
 )
@@ -110,7 +110,7 @@ data class Lead(
     val phone: String? = null,
     val priority: Int,
     val source: String? = null,
-    val stage: String? = null,
+    val stageID: String? = null,
     val state: String? = null,
     val updatedAt: String,
     val zip: String? = null,
@@ -127,7 +127,7 @@ data class Opportunity(
     val name: String,
     val notes: String? = null,
     val priority: Int,
-    val stage: String? = null,
+    val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
 )

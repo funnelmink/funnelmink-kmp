@@ -35,7 +35,7 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
             
             switch funnel.type {
             case .lead:
-                for lead in funnel.leads {
+                for lead in funnel.leads where lead.stageID == stage.id {
                     let card = KanbanCard(
                         id: lead.id,
                         title: lead.name,
@@ -46,12 +46,12 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
                         ),
                         secondFooterLabel: nil,
                         footerTrailingText: "",
-                        columnID: lead.stage ?? stage.id
+                        columnID: lead.stageID ?? stage.id
                     )
                     cards.append(card)
                 }
             case .case:
-                for caseRecord in funnel.cases {
+                for caseRecord in funnel.cases where caseRecord.stageID == stage.id {
                     let card = KanbanCard(
                         id: caseRecord.id,
                         title: caseRecord.name,
@@ -62,12 +62,12 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
                         ),
                         secondFooterLabel: nil,
                         footerTrailingText: "",
-                        columnID: caseRecord.stage ?? stage.id
+                        columnID: caseRecord.stageID ?? stage.id
                     )
                     cards.append(card)
                 }
             case .opportunity:
-                for opportunity in funnel.opportunities {
+                for opportunity in funnel.opportunities where opportunity.stageID == stage.id {
                     let card = KanbanCard(
                         id: opportunity.id,
                         title: opportunity.name,
@@ -78,7 +78,7 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
                         ),
                         secondFooterLabel: nil,
                         footerTrailingText: "",
-                        columnID: opportunity.stage ?? stage.id
+                        columnID: opportunity.stageID ?? stage.id
                     )
                     cards.append(card)
                 }
