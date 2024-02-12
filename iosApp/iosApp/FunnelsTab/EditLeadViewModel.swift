@@ -75,7 +75,7 @@ class EditLeadViewModel: ViewModel {
             priority: priority.kotlinValue,
             source: source,
             accountID: nil,
-            assignedTo: assignedTo,
+            assignedTo: assignedTo?.nilIfEmpty(),
             funnelID: self.state.selectedFunnel.id,
             stageID: self.state.selectedStage.id
         )
@@ -120,7 +120,7 @@ class EditLeadViewModel: ViewModel {
             priority: priority.kotlinValue,
             source: source,
             accountID: nil,
-            assignedTo: assignedTo,
+            assignedTo: assignedTo?.nilIfEmpty(),
             funnelID: self.state.selectedFunnel.id,
             stageID: self.state.selectedStage.id
         )

@@ -52,6 +52,8 @@ extension String {
             return prefix
         }
     }
+    
+    func nilIfEmpty() -> String? { self.isEmpty ? nil : self }
 }
 
 // MARK: constants
