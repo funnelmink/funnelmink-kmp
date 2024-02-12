@@ -28,7 +28,6 @@ data class Account(
     val notes: String? = null,
     val phone: String? = null,
     val state: String? = null,
-    val type: AccountType,
     val updatedAt: String,
     val zip: String? = null,
 )
@@ -113,7 +112,6 @@ data class Lead(
     val source: String? = null,
     val stage: String? = null,
     val state: String? = null,
-    val type: AccountType,
     val updatedAt: String,
     val zip: String? = null,
 )
@@ -176,18 +174,6 @@ data class WorkspaceMember(
 // MARK: - Enums
 // ------------------------------------------------------------------------
 
-@Serializable(with = AccountTypeSerializer::class)
-enum class AccountType(val typeName: String) {
-    Individual("INDIVIDUAL"),
-    Organization("ORGANIZATION");
-
-    companion object {
-        fun fromTypeName(typeName: String): AccountType =
-            entries.find { it.typeName == typeName }
-                ?: throw IllegalArgumentException("Type not found for name: $typeName")
-    }
-}
-
 @Serializable(with = ActivityRecordTypeSerializer::class)
 enum class ActivityRecordType(val typeName: String) {
     Email("EMAIL"),
@@ -247,19 +233,6 @@ enum class WorkspaceMembershipRole(val roleName: String) {
 // MARK: - Enum Serializers
 // ------------------------------------------------------------------------
 
-object AccountTypeSerializer : KSerializer<AccountType> {
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor("AccountType", PrimitiveKind.STRING)
-
-    override fun serialize(encoder: Encoder, value: AccountType) {
-        encoder.encodeString(value.typeName)
-    }
-
-    override fun deserialize(decoder: Decoder): AccountType {
-        val typeName = decoder.decodeString()
-        return AccountType.fromTypeName(typeName)
-    }
-}
 object ActivityRecordTypeSerializer : KSerializer<ActivityRecordType> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("ActivityRecordType", PrimitiveKind.STRING)

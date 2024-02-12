@@ -38,7 +38,6 @@ struct CreateAccountView: View {
                     country: nil,
                     zip: nil,
                     notes: nil,
-                    type: isIndividual ? .individual : .organization,
                     leadID: nil
                 )
                 nav.dismissModal()

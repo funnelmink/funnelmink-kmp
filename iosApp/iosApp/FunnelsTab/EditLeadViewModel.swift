@@ -56,7 +56,6 @@ class EditLeadViewModel: ViewModel {
         assignedTo: String?,
         latitude: Double?,
         longitude: Double?,
-        type: AccountType,
         priority: Int32
     ) async throws {
         let body = CreateLeadRequest(

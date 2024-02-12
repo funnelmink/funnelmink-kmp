@@ -34,7 +34,6 @@ class AccountsViewModel: ViewModel {
         country: String?,
         zip: String?,
         notes: String?,
-        type: AccountType,
         leadID: String?
     ) async throws {
         let body = CreateAccountRequest(
@@ -49,7 +48,6 @@ class AccountsViewModel: ViewModel {
             country: country,
             zip: zip,
             notes: notes,
-            type: type,
             leadID: leadID
         )
         //            if !Utilities.validation.isName(input: body.name) {
@@ -87,7 +85,6 @@ class AccountsViewModel: ViewModel {
         country: String?,
         zip: String?,
         notes: String?,
-        type: AccountType,
         leadID: String?
     ) async throws {
         let body = UpdateAccountRequest(
@@ -101,8 +98,7 @@ class AccountsViewModel: ViewModel {
             state: state,
             country: country,
             zip: zip,
-            notes: notes,
-            type: type
+            notes: notes
         )
         //            if !Utilities.validation.isName(input: body.name) {
         //                throw "\(body.name) contains invalid characters"

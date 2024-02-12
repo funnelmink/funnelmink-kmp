@@ -39,7 +39,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             account.notes,
             account.phone,
             account.state,
-            account.type.typeName,
             account.updatedAt,
             account.zip
         )
@@ -62,7 +61,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             cached.notes,
             cached.phone,
             cached.state,
-            cached.type,
             cached.updatedAt,
             cached.zip
         )
@@ -88,7 +86,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             account.notes,
             account.phone,
             account.state,
-            account.type.typeName,
             account.updatedAt,
             account.zip,
             account.id
@@ -125,7 +122,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         notes: String?,
         phone: String?,
         state: String?,
-        type: String,
         updatedAt: String,
         zip: String?
     ): Account {
@@ -143,7 +139,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             notes,
             phone,
             state,
-            AccountType.fromTypeName(type),
             updatedAt,
             zip
         )
@@ -759,7 +754,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             lead.source,
             lead.stage,
             lead.state,
-            lead.type.typeName,
             lead.updatedAt,
             lead.zip
         )
@@ -789,7 +783,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             cached.source,
             cached.stage,
             cached.state,
-            cached.type,
             cached.updatedAt,
             cached.zip
         )
@@ -822,7 +815,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             lead.source,
             lead.stage,
             lead.state,
-            lead.type.typeName,
             lead.updatedAt,
             lead.zip,
             lead.id
@@ -860,7 +852,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         source: String?,
         stage: String?,
         state: String?,
-        type: String,
         updatedAt: String,
         zip: String?
     ): Lead {
@@ -885,7 +876,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             source,
             stage,
             state,
-            AccountType.fromTypeName(type),
             updatedAt,
             zip
         )

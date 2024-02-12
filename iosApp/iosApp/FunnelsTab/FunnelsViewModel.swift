@@ -41,8 +41,8 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
                         title: lead.name,
                         subtitleLabel: .init(iconName: "note.text", text: lead.notes ?? "--"),
                         footerLabel: .init(
-                            iconName: lead.type == .individual ? "person" : "building.2",
-                            text: lead.type.typeName
+                            iconName: "banknote",
+                            text: "$2000.00"
                         ),
                         secondFooterLabel: nil,
                         footerTrailingText: "",

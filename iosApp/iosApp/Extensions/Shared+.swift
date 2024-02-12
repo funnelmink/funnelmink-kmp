@@ -60,14 +60,3 @@ extension Validator {
         Utilities.shared.validator.isEmail(input: email)
     }
 }
-
-// MARK: - Types
-
-extension AccountType {
-    var iconName: String {
-        switch self {
-        case .individual: return "person"
-        case .organization: return "building.2"
-        }
-    }
-}

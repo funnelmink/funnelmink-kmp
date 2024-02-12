@@ -13,15 +13,14 @@ CREATE TABLE SQLAccount (
     notes TEXT,
     phone TEXT,
     state TEXT,
-    type TEXT NOT NULL,
     updatedAt TEXT NOT NULL,
     zip TEXT
 );
 
 
 insertAccount:
-INSERT INTO SQLAccount(id, address, city, country, createdAt, email, latitude, leadID, longitude, name, notes, phone, state, type, updatedAt, zip)
-VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO SQLAccount(id, address, city, country, createdAt, email, latitude, leadID, longitude, name, notes, phone, state, updatedAt, zip)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 selectAccountById:
 SELECT *
@@ -34,7 +33,7 @@ FROM SQLAccount;
 
 updateAccount:
 UPDATE SQLAccount
-SET address = ?, city = ?, country = ?, createdAt = ?, email = ?, latitude = ?, leadID = ?, longitude = ?, name = ?, notes = ?, phone = ?, state = ?, type = ?, updatedAt = ?, zip = ?
+SET address = ?, city = ?, country = ?, createdAt = ?, email = ?, latitude = ?, leadID = ?, longitude = ?, name = ?, notes = ?, phone = ?, state = ?, updatedAt = ?, zip = ?
 WHERE id = ?;
 
 removeAccount:

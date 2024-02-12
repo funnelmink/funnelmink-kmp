@@ -32,7 +32,6 @@ struct EditLeadView: View {
     @State private var priority: Int32 = 0
     @State private var source = ""
     @State private var state = ""
-    @State private var type: AccountType = .individual
     @State private var updatedAt = ""
     @State private var zip = ""
     
@@ -79,13 +78,6 @@ struct EditLeadView: View {
                     CustomTextField(text: $jobTitle, placeholder: "Job Title", style: .text)
                         .autocorrectionDisabled()
                         .discreteListRowStyle()
-                    
-                    Picker(selection: $type, label: Text("Type").foregroundStyle(.secondary)) {
-                        ForEach(AccountType.allCases, id: \.typeName) { type in
-                            Label(" " + type.typeName.lowercased().capitalized, systemImage: type.iconName)
-                                .tag(type)
-                        }
-                    }
                 }
                 
                 Section("LOCATION INFORMATION") {
@@ -208,7 +200,6 @@ struct EditLeadView: View {
                             assignedTo: assignedTo,
                             latitude: Double(latitude),
                             longitude: Double(longitude),
-                            type: type,
                             priority: priority
                         )
                     }
@@ -246,7 +237,6 @@ struct EditLeadView: View {
                 self.priority = lead.priority
                 self.source = lead.source ?? ""
                 self.state = lead.state ?? ""
-                self.type = lead.type
                 self.updatedAt = lead.updatedAt
                 self.zip = lead.zip ?? ""
                 
