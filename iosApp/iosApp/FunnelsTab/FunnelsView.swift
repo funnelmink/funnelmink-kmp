@@ -33,15 +33,14 @@ struct FunnelsView: View {
                     }
                 } else {
                     KanbanView(kanban: viewModel) { card in
+                        guard
+                            let funnel = viewModel.selectedFunnel,
+                            let stage = funnel.stages.first(where: { $0.id == card.columnID })
+                        else { return }
                         switch viewModel.selectedFunnel?.type {
                         case .lead:
-                            // TODO: lead details (show the history, etc)
-                            // From lead details, have the option to EditLead
-                            navigation.segue(.editLead(
-                                lead: viewModel.selectedFunnel?.leads.first(where: { $0.id == card.id }),
-                                funnelID: viewModel.selectedFunnel?.id,
-                                stageID: card.columnID
-                            ))
+                            guard let lead = funnel.leads.first(where: { $0.id == card.id }) else { return }
+                            navigation.segue(.leadDetails(lead: lead, funnel: funnel, stage: stage))
                         default: print("TODO")
                         }
                     }

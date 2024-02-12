@@ -96,6 +96,7 @@
 		0D7972562B767D070048E942 /* EditCaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972552B767D070048E942 /* EditCaseView.swift */; };
 		0D7972582B767D100048E942 /* EditOpportunityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972572B767D100048E942 /* EditOpportunityView.swift */; };
 		0D79725A2B76E0840048E942 /* EditLeadViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972592B76E0840048E942 /* EditLeadViewModel.swift */; };
+		0D79725C2B7A816C0048E942 /* LeadDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D79725B2B7A816C0048E942 /* LeadDetailView.swift */; };
 		0DBB674F2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */; };
 		0DBF9CAF2B5A16C20045AC44 /* DebugMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */; };
 		0DBF9CB12B5A35F20045AC44 /* LogsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBF9CB02B5A35F20045AC44 /* LogsView.swift */; };
@@ -240,6 +241,7 @@
 		0D7972552B767D070048E942 /* EditCaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditCaseView.swift; sourceTree = "<group>"; };
 		0D7972572B767D100048E942 /* EditOpportunityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOpportunityView.swift; sourceTree = "<group>"; };
 		0D7972592B76E0840048E942 /* EditLeadViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditLeadViewModel.swift; sourceTree = "<group>"; };
+		0D79725B2B7A816C0048E942 /* LeadDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadDetailView.swift; sourceTree = "<group>"; };
 		0DBB674E2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DevEnvironment.xcconfig; sourceTree = "<group>"; };
 		0DBB67562B4FA39B00CFE9A5 /* ReleaseConfig.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ReleaseConfig.xcconfig; sourceTree = "<group>"; };
 		0DBF9CAE2B5A16C20045AC44 /* DebugMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DebugMenu.swift; sourceTree = "<group>"; };
@@ -429,12 +431,11 @@
 		0D012E352B477E3900658153 /* FunnelsTab */ = {
 			isa = PBXGroup;
 			children = (
-				0D7972552B767D070048E942 /* EditCaseView.swift */,
-				0D7972532B767CFD0048E942 /* EditLeadView.swift */,
-				0D7972592B76E0840048E942 /* EditLeadViewModel.swift */,
-				0D7972572B767D100048E942 /* EditOpportunityView.swift */,
 				0D012E362B477E3900658153 /* FunnelsView.swift */,
 				0D3E40432B6413B20096E222 /* FunnelsViewModel.swift */,
+				0D79725E2B7A81930048E942 /* Cases */,
+				0D79725D2B7A81890048E942 /* Leads */,
+				0D79725F2B7A81990048E942 /* Opportunities */,
 			);
 			path = FunnelsTab;
 			sourceTree = "<group>";
@@ -582,6 +583,32 @@
 				0D7759492B6B75C500A61BAC /* ImportContactsVM.swift */,
 			);
 			path = ImportContacts;
+			sourceTree = "<group>";
+		};
+		0D79725D2B7A81890048E942 /* Leads */ = {
+			isa = PBXGroup;
+			children = (
+				0D7972532B767CFD0048E942 /* EditLeadView.swift */,
+				0D7972592B76E0840048E942 /* EditLeadViewModel.swift */,
+				0D79725B2B7A816C0048E942 /* LeadDetailView.swift */,
+			);
+			path = Leads;
+			sourceTree = "<group>";
+		};
+		0D79725E2B7A81930048E942 /* Cases */ = {
+			isa = PBXGroup;
+			children = (
+				0D7972552B767D070048E942 /* EditCaseView.swift */,
+			);
+			path = Cases;
+			sourceTree = "<group>";
+		};
+		0D79725F2B7A81990048E942 /* Opportunities */ = {
+			isa = PBXGroup;
+			children = (
+				0D7972572B767D100048E942 /* EditOpportunityView.swift */,
+			);
+			path = Opportunities;
 			sourceTree = "<group>";
 		};
 		0DBF9CAD2B5A16C20045AC44 /* DebugMenu */ = {
@@ -1074,6 +1101,7 @@
 				0D3E40422B640F130096E222 /* Kanban.swift in Sources */,
 				0D012E6D2B477E3A00658153 /* Color+.swift in Sources */,
 				0D012E752B477E3A00658153 /* ViewModel.swift in Sources */,
+				0D79725C2B7A816C0048E942 /* LeadDetailView.swift in Sources */,
 				0D012E782B477E3A00658153 /* AppDelegate.swift in Sources */,
 				1FA27F7C2B5CAA9F00A447C3 /* CustomEmptyView.swift in Sources */,
 				0D012E672B477E3A00658153 /* FunnelsView.swift in Sources */,
