@@ -21,7 +21,6 @@ struct FunnelsView: View {
                     .init(name: "New Lead", iconName: "person") {
                         navigation
                             .modalSheet(
-                                // TODO: detect automatically?
                                 .createLead(
                                     funnelID: nil,
                                     stageID: nil
@@ -31,12 +30,6 @@ struct FunnelsView: View {
                 ]
             )
         }
-    }
-    
-    var originalUI: some View {
-        Text("Funnels")
-            .navigationTitle("Funnels")
-            .logged()
     }
     
     var kanbanView: some View {
