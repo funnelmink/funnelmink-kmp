@@ -128,3 +128,12 @@ struct LeadDetailView: View {
         }
     }
 }
+
+#Preview {
+    LeadDetailView(
+        lead: Utilities.shared.testData.lead,
+        funnel: Utilities.shared.testData.leadFunnel,
+        stage: Utilities.shared.testData.funnelStage0
+    )
+    .withPreviewDependencies()
+}
