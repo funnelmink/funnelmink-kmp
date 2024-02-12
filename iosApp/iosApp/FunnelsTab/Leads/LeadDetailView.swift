@@ -131,9 +131,9 @@ struct LeadDetailView: View {
 
 #Preview {
     LeadDetailView(
-        lead: Utilities.shared.testData.lead,
-        funnel: Utilities.shared.testData.leadFunnel,
-        stage: Utilities.shared.testData.funnelStage0
+        lead: TestData.lead,
+        funnel: TestData.leadFunnel,
+        stage: TestData.funnelStage0
     )
     .withPreviewDependencies()
 }
