@@ -138,8 +138,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getAccountDetails(id: String): Account {
-        // this is unused right now
+    override suspend fun getAccountDetails(id: String): AccountDetailsResponse {
         return genericRequest("$baseURL/v1/workspace/accounts/$id", HttpMethod.Get)
     }
 

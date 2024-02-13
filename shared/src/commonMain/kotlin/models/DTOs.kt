@@ -34,6 +34,30 @@ data class UpdateAccountRequest(
 )
 
 @Serializable
+data class AccountDetailsResponse(
+    val id: String,
+    val name: String,
+    val email: String? = null,
+    val phone: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val address: String? = null,
+    val city: String? = null,
+    val state: String? = null,
+    val country: String? = null,
+    val zip: String? = null,
+    val notes: String? = null,
+    val createdAt: String,
+    val updatedAt: String,
+    val leadID: String? = null,
+    val activities: List<ActivityRecord>,
+    val contacts: List<AccountContact>,
+    val leads: List<Lead>,
+    val cases: List<CaseRecord>,
+    val opportunities: List<Opportunity>
+)
+
+@Serializable
 data class CreateAccountContactRequest(
     val name: String,
     val email: String? = null,
