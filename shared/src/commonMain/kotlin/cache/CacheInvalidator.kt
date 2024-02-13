@@ -22,4 +22,8 @@ class CacheInvalidator(private val threshold: Long) {
     fun reset() {
         timestamps.clear()
     }
+
+    fun invalidate(key: String) {
+        timestamps.remove(key)
+    }
 }

@@ -1,5 +1,5 @@
 //
-//  LoginBackgroundGradient.swift
+//  FunnelminkGradient.swift
 //  funnelmink
 //
 //  Created by Jared Warren on 11/28/23.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct LoginBackgroundGradient: View {
+struct FunnelminkGradient: View {
     var body: some View {
         LinearGradient(
             gradient: .funnelmink,
@@ -20,5 +20,5 @@ struct LoginBackgroundGradient: View {
 }
 
 #Preview {
-    LoginBackgroundGradient()
+    FunnelminkGradient()
 }

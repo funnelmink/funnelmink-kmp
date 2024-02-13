@@ -17,6 +17,7 @@ final class AppState: ObservableObject {
     @Published var hasInitialized = false
     @Published var shouldPresentUpdateWall = false
     @Published var shouldPresentWhatsNew = false
+    @Published var isFABExpanded = false
 
     var isWorkspaceOwner: Bool { workspace?.role == .owner }
     

@@ -60,3 +60,23 @@ extension Validator {
         Utilities.shared.validator.isEmail(input: email)
     }
 }
+
+// MARK: Test Data
+
+extension TestData {
+    static var account: Account { Utilities.shared.testData.testAccount }
+    static var accountContact: AccountContact { Utilities.shared.testData.testAccountContact }
+    static var activity: ActivityRecord { Utilities.shared.testData.testActivityRecord }
+    static var caseRecord: CaseRecord { Utilities.shared.testData.testCaseRecord }
+    static var caseFunnel: Funnel { Utilities.shared.testData.testCaseFunnel }
+    static var leadFunnel: Funnel { Utilities.shared.testData.testLeadFunnel }
+    static var opportunityFunnel: Funnel { Utilities.shared.testData.testOpportunityFunnel }
+    static var funnelStage0: FunnelStage { Utilities.shared.testData.testFunnelStage0 }
+    static var funnelStage1: FunnelStage { Utilities.shared.testData.testFunnelStage1 }
+    static var lead: Lead { Utilities.shared.testData.testLead }
+    static var opportunity: Opportunity { Utilities.shared.testData.testOpportunity }
+    static var task: TaskRecord { Utilities.shared.testData.testTask }
+    static var user: Shared.User { Utilities.shared.testData.testUser }
+    static var workspace: Workspace { Utilities.shared.testData.testWorkspace }
+    static var workspaceMember: WorkspaceMember { Utilities.shared.testData.testWorkspaceMember }
+}

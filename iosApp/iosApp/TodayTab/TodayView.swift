@@ -26,13 +26,17 @@ struct TodayView: View {
                 }
             }
             .searchable(text: $viewModel.searchText)
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    addTaskFAB
-                }
-            }
+            MenuFAB(
+                items: [
+                    .init(name: "New Task", iconName: "plus") {
+                        navigation.modalSheet(.createTask) {
+                            Task {
+                                await viewModel.getTasks()
+                            }
+                        }
+                    }
+                ]
+            )
         }
         .tint(.primary)
         .scrollIndicators(.never)
@@ -86,7 +90,7 @@ struct TodayView: View {
                 .frame(width: 24, height: 24)
                 .padding()
                 .foregroundStyle(.white)
-                .background(LoginBackgroundGradient())
+                .background(FunnelminkGradient())
                 .clipShape(Circle())
         }
         .padding()

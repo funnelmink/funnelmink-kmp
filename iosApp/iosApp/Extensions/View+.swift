@@ -52,4 +52,28 @@ extension View {
             Logger.view("\(id.dropFirst(11).dropLast(6))")
         }
     }
+    
+    func requiredIndicator(isVisible: Bool) -> some View {
+        self.modifier(RequiredModifier(isVisible: isVisible))
+    }
+}
+
+struct RequiredModifier: ViewModifier {
+    let isVisible: Bool
+    func body(content: Content) -> some View {
+        content
+            .overlay {
+                if isVisible {
+                    VStack {
+                        HStack {
+                            Spacer()
+                            Text("*")
+                                .font(.title)
+                                .foregroundStyle(.red)
+                        }
+                        Spacer()
+                    }
+                }
+            }
+    }
 }

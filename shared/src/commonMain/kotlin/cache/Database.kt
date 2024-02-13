@@ -39,7 +39,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             account.notes,
             account.phone,
             account.state,
-            account.type.typeName,
             account.updatedAt,
             account.zip
         )
@@ -62,7 +61,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             cached.notes,
             cached.phone,
             cached.state,
-            cached.type,
             cached.updatedAt,
             cached.zip
         )
@@ -88,7 +86,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             account.notes,
             account.phone,
             account.state,
-            account.type.typeName,
             account.updatedAt,
             account.zip,
             account.id
@@ -125,7 +122,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         notes: String?,
         phone: String?,
         state: String?,
-        type: String,
         updatedAt: String,
         zip: String?
     ): Account {
@@ -143,7 +139,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             notes,
             phone,
             state,
-            AccountType.fromTypeName(type),
             updatedAt,
             zip
         )
@@ -275,7 +270,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             case.name,
             case.notes,
             case.priority.toLong(),
-            case.stage,
+            case.stageID,
             case.updatedAt,
             case.value.toString(),
             funnelID,
@@ -341,7 +336,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             case.name,
             case.notes,
             case.priority.toLong(),
-            case.stage,
+            case.stageID,
             case.updatedAt,
             case.value.toString(),
             case.id
@@ -465,7 +460,11 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         return Funnel(
             id,
             name,
-            FunnelType.fromTypeName(type)
+            FunnelType.fromTypeName(type),
+            emptyList(),
+            emptyList(),
+            emptyList(),
+            emptyList()
         )
     }
 
@@ -522,7 +521,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             opportunity.name,
             opportunity.notes,
             opportunity.priority.toLong(),
-            opportunity.stage,
+            opportunity.stageID,
             opportunity.updatedAt,
             opportunity.value.toString(),
             funnelID,
@@ -615,7 +614,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             opportunity.name,
             opportunity.notes,
             opportunity.priority.toLong(),
-            opportunity.stage,
+            opportunity.stageID,
             opportunity.updatedAt,
             opportunity.value.toString(),
             opportunity.id
@@ -753,9 +752,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             lead.phone,
             lead.priority.toLong(),
             lead.source,
-            lead.stage,
+            lead.stageID,
             lead.state,
-            lead.type.typeName,
             lead.updatedAt,
             lead.zip
         )
@@ -785,7 +783,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             cached.source,
             cached.stage,
             cached.state,
-            cached.type,
             cached.updatedAt,
             cached.zip
         )
@@ -816,9 +813,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             lead.phone,
             lead.priority.toLong(),
             lead.source,
-            lead.stage,
+            lead.stageID,
             lead.state,
-            lead.type.typeName,
             lead.updatedAt,
             lead.zip,
             lead.id
@@ -849,14 +845,13 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         jobTitle: String?,
         latitude: Double?,
         longitude: Double?,
-        name: String?,
+        name: String,
         notes: String?,
         phone: String?,
         priority: Long,
         source: String?,
         stage: String?,
         state: String?,
-        type: String,
         updatedAt: String,
         zip: String?
     ): Lead {
@@ -881,7 +876,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             source,
             stage,
             state,
-            AccountType.fromTypeName(type),
             updatedAt,
             zip
         )

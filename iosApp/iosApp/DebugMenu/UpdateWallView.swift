@@ -49,7 +49,7 @@ struct UpdateWallView: View {
                 Text(buttonTitle)
                     .frame(height: 52)
                     .maxReadableWidth()
-                    .background(LoginBackgroundGradient())
+                    .background(FunnelminkGradient())
                     .foregroundStyle(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 4))
             }
