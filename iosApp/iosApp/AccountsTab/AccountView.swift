@@ -17,6 +17,9 @@ struct AccountView: View {
     @State private var showingActionSheet = false
     
     var account: Account
+    var accountFullAddress: String {
+        return ("\(account.address ?? ""), \(account.city ?? ""), \(account.country ?? "")")
+    }
     var initials: String {
         
         if let initial = account.name.first {
@@ -137,8 +140,6 @@ struct AccountView: View {
             Text(account.name)
                 .bold()
                 .font(.title)
-            Text(account.name) // accounts don't have a company name anymore because they *are* the company
-                .foregroundStyle(.secondary)
         }
         Spacer()
         ScrollView {
@@ -172,15 +173,29 @@ struct AccountView: View {
             Button(action: {
                 // present a banner to route to an address
             }, label: {
-                CustomCell(title: "Address", subtitle: "891 N 800 E, Orem, UT", icon: "arrow.merge" ,cellType: .iconAction)
+                CustomCell(title: "Address", subtitle: accountFullAddress, icon: "arrow.merge" ,cellType: .iconAction)
                     .padding()
             })
             .foregroundStyle(.primary)
+            VStack(alignment: .leading) {
+                Text("Account Notes")
+                    .bold()
+                Text(account.notes ?? "")
+                    .padding(.vertical)
+                    .padding(.horizontal)
+                    .font(.footnote)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke()
+                    }
+            }
+            .padding(.horizontal)
+            .padding(.vertical)
         }
         .padding()
     }
 }
 
 #Preview {
-    AccountView(account: Account(id: "id", address: "street address", city: "City", country: "Country", createdAt: "Date created", email: "email", latitude: 123.123, leadID: "LeadID?", longitude: 123.123, name: "Account Name", notes: "Notes for the account here", phone: "phone number here", state: "STATE", type: .organization, updatedAt: "UpdatedAt?", zip: "Zip Code"))
+    AccountView(account: Account(id: "id", address: "street address", city: "City", country: "Country", createdAt: "Date created", email: "email", latitude: 123.123, leadID: "LeadID?", longitude: 123.123, name: "Account Name", notes: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", phone: "phone number here", state: "STATE", type: .organization, updatedAt: "UpdatedAt?", zip: "Zip Code"))
 }
