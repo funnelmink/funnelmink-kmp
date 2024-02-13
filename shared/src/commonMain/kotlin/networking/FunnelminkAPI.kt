@@ -306,22 +306,30 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun getFunnel(id: String): Funnel {
-        val cached = cache.selectFunnel(id)
-        if (cached != null) {
-            Utilities.logger.info("Returned funnel $id from cache")
-            return cached
-        }
+//        val cached = cache.selectFunnel(id)
+//        if (cached != null) {
+//            Utilities.logger.info("Returned funnel $id from cache")
+//            return cached
+//        }
         return genericRequest("$baseURL/v1/workspace/funnels/$id", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
+    override suspend fun getFunnelsForType(funnelType: FunnelType): List<Funnel> {
+        return genericRequest("$baseURL/v1/workspace/funnels/${funnelType.typeName}", HttpMethod.Get)
+    }
+
+    @Throws(Exception::class)
     override suspend fun createDefaultFunnels() {
-        genericRequest<Unit>("$baseURL/v1/workspace/funnels/createDefaultFunnels", HttpMethod.Post)
+        genericRequest<Unit>("$baseURL/v1/workspace/owner/funnels/createDefaultFunnels", HttpMethod.Post) {
+            setBody("{}") // POST requests can't have empty bodies
+        }
+        cacheInvalidator.invalidate("getFunnels")
     }
 
     @Throws(Exception::class)
     override suspend fun createFunnel(body: CreateFunnelRequest): Funnel {
-        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/funnels", HttpMethod.Post) {
+        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/owner/funnels", HttpMethod.Post) {
             setBody(body)
         }
         cache.insertFunnel(funnel)
@@ -330,7 +338,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun updateFunnel(id: String, body: UpdateFunnelRequest): Funnel {
-        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/funnels/$id", HttpMethod.Put) {
+        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/owner/funnels/$id", HttpMethod.Put) {
             setBody(body)
         }
         cache.replaceFunnel(funnel)
@@ -339,7 +347,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun deleteFunnel(id: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/funnels/$id", HttpMethod.Delete)
+        genericRequest<Unit>("$baseURL/v1/workspace/owner/funnels/$id", HttpMethod.Delete)
         cache.deleteFunnel(id)
     }
 
@@ -349,7 +357,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun createFunnelStage(funnelID: String, body: CreateFunnelStageRequest): FunnelStage {
-        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/funnelstages/$funnelID/", HttpMethod.Post) {
+        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/owner/funnelstages/$funnelID/", HttpMethod.Post) {
             setBody(body)
         }
         cache.insertFunnelStage(stage, funnelID)
@@ -358,7 +366,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun reorderFunnelStages(funnelID: String, body: ReorderFunnelStagesRequest) {
-        genericRequest<Unit>("$baseURL/v1/workspace/funnelstages/$funnelID/reorder", HttpMethod.Put) {
+        genericRequest<Unit>("$baseURL/v1/workspace/owner/funnelstages/$funnelID/reorder", HttpMethod.Put) {
             setBody(body)
         }
 
@@ -367,7 +375,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun updateFunnelStage(id: String, body: UpdateFunnelStageRequest): FunnelStage {
-        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/funnelstages/$id", HttpMethod.Put) {
+        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/owner/funnelstages/$id", HttpMethod.Put) {
             setBody(body)
         }
         cache.replaceFunnelStage(stage)
@@ -376,7 +384,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun deleteFunnelStage(id: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/funnelstages/$id", HttpMethod.Delete)
+        genericRequest<Unit>("$baseURL/v1/workspace/owner/funnelstages/$id", HttpMethod.Delete)
         cache.deleteFunnelStage(id)
     }
 
@@ -803,7 +811,10 @@ class FunnelminkAPI(
         } else {
             Utilities.logger.log(LogLevel.WARN, "🆘 $responseBody")
             try {
-                val message = jsonDecoder.decodeFromString<APIError>(responseBody).message
+                var message = jsonDecoder.decodeFromString<APIError>(responseBody).message
+                if (message.startsWith("Expected start of object") == true) {
+                    message = responseBody
+                }
                 when (response.status) {
                     HttpStatusCode.Unauthorized -> {
                         onAuthFailure?.invoke(message)
@@ -813,10 +824,10 @@ class FunnelminkAPI(
                     HttpStatusCode.NotFound -> onMissing?.invoke(message)
                     HttpStatusCode.InternalServerError -> onServerError?.invoke(message)
                 }
-                throw RuntimeException("Unexpected server response: $responseBody")
+                throw RuntimeException(message)
             } catch (e: SerializationException) {
                 onServerError?.invoke(e.message.orEmpty())
-                throw e
+                throw RuntimeException(responseBody)
             }
         }
     }

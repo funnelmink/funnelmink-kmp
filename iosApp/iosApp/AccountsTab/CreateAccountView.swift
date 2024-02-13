@@ -41,37 +41,12 @@ struct CreateAccountView: View {
                     country: country,
                     zip: zip,
                     notes: accountNotes,
-                    type: isIndividual ? .individual : .organization,
                     leadID: nil
                 )
                 nav.dismissModal()
             } catch {
                 Toast.error(error)
             }
-        }
-    }
-    
-    func formatAsPhoneNumber(_ input: String) -> String {
-        // Remove non-numeric characters
-        let digits = input.filter { "0123456789".contains($0) }
-        
-        // Format according to the US phone number pattern
-        let maxDigits = 10
-        let prefix = String(digits.prefix(maxDigits))
-        
-        // Apply the formatting
-        if prefix.count > 3 && prefix.count <= 6 {
-            let index = prefix.index(prefix.startIndex, offsetBy: 3)
-            return "(\(prefix.prefix(upTo: index))) \(prefix.suffix(from: index))"
-        } else if prefix.count > 6 {
-            let areaCodeIndex = prefix.index(prefix.startIndex, offsetBy: 3)
-            let exchangeIndex = prefix.index(prefix.startIndex, offsetBy: 6)
-            let areaCode = prefix.prefix(upTo: areaCodeIndex)
-            let exchange = prefix[areaCodeIndex..<exchangeIndex]
-            let subscriber = prefix.suffix(from: exchangeIndex)
-            return "(\(areaCode)) \(exchange)-\(subscriber)"
-        } else {
-            return prefix
         }
     }
     

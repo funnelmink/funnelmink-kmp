@@ -204,5 +204,5 @@ struct AccountView: View {
 }
 
 #Preview {
-    AccountView(account: Account(id: "id", address: "street address", city: "City", country: "Country", createdAt: "Date created", email: "email", latitude: 123.123, leadID: "LeadID?", longitude: 123.123, name: "Account Name", notes: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", phone: "phone number here", state: "STATE", type: .organization, updatedAt: "UpdatedAt?", zip: "Zip Code"))
+    AccountView(account: TestData.account)
 }

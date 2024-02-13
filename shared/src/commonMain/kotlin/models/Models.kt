@@ -28,7 +28,6 @@ data class Account(
     val notes: String? = null,
     val phone: String? = null,
     val state: String? = null,
-    val type: AccountType,
     val updatedAt: String,
     val zip: String? = null,
 )
@@ -65,7 +64,7 @@ data class CaseRecord(
     val name: String,
     val notes: String? = null,
     val priority: Int,
-    val stage: String? = null,
+    val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
 )
@@ -76,6 +75,10 @@ data class Funnel(
 
     val name: String,
     val type: FunnelType,
+    val stages: List<FunnelStage>,
+    val cases: List<CaseRecord>,
+    val leads: List<Lead>,
+    val opportunities: List<Opportunity>,
 )
 
 @Serializable
@@ -102,14 +105,13 @@ data class Lead(
     val jobTitle: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val name: String? = null,
+    val name: String,
     val notes: String? = null,
     val phone: String? = null,
     val priority: Int,
     val source: String? = null,
-    val stage: String? = null,
+    val stageID: String? = null,
     val state: String? = null,
-    val type: AccountType,
     val updatedAt: String,
     val zip: String? = null,
 )
@@ -125,7 +127,7 @@ data class Opportunity(
     val name: String,
     val notes: String? = null,
     val priority: Int,
-    val stage: String? = null,
+    val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
 )
@@ -171,18 +173,6 @@ data class WorkspaceMember(
 // ------------------------------------------------------------------------
 // MARK: - Enums
 // ------------------------------------------------------------------------
-
-@Serializable(with = AccountTypeSerializer::class)
-enum class AccountType(val typeName: String) {
-    Individual("INDIVIDUAL"),
-    Organization("ORGANIZATION");
-
-    companion object {
-        fun fromTypeName(typeName: String): AccountType =
-            entries.find { it.typeName == typeName }
-                ?: throw IllegalArgumentException("Type not found for name: $typeName")
-    }
-}
 
 @Serializable(with = ActivityRecordTypeSerializer::class)
 enum class ActivityRecordType(val typeName: String) {
@@ -243,19 +233,6 @@ enum class WorkspaceMembershipRole(val roleName: String) {
 // MARK: - Enum Serializers
 // ------------------------------------------------------------------------
 
-object AccountTypeSerializer : KSerializer<AccountType> {
-    override val descriptor: SerialDescriptor =
-        PrimitiveSerialDescriptor("AccountType", PrimitiveKind.STRING)
-
-    override fun serialize(encoder: Encoder, value: AccountType) {
-        encoder.encodeString(value.typeName)
-    }
-
-    override fun deserialize(decoder: Decoder): AccountType {
-        val typeName = decoder.decodeString()
-        return AccountType.fromTypeName(typeName)
-    }
-}
 object ActivityRecordTypeSerializer : KSerializer<ActivityRecordType> {
     override val descriptor: SerialDescriptor =
         PrimitiveSerialDescriptor("ActivityRecordType", PrimitiveKind.STRING)

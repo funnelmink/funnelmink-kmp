@@ -26,7 +26,7 @@ struct WorkspacesView: View {
                     Text("Try again")
                         .frame(height: 52)
                         .maxReadableWidth()
-                        .background(LoginBackgroundGradient())
+                        .background(FunnelminkGradient())
                         .foregroundStyle(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 4))
                 }

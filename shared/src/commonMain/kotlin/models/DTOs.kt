@@ -15,7 +15,6 @@ data class CreateAccountRequest(
     val country: String? = null,
     val zip: String? = null,
     val notes: String? = null,
-    val type: AccountType,
     val leadID: String? = null
 )
 
@@ -32,7 +31,6 @@ data class UpdateAccountRequest(
     val country: String? = null,
     val zip: String? = null,
     val notes: String? = null,
-    val type: AccountType? = null
 )
 
 @Serializable

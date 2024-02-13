@@ -12,25 +12,24 @@ CREATE TABLE SQLLead (
     jobTitle TEXT,
     latitude REAL,
     longitude REAL,
-    name TEXT,
+    name TEXT NOT NULL,
     notes TEXT,
     phone TEXT,
     priority INTEGER NOT NULL,
     source TEXT,
     stage TEXT,
     state TEXT,
-    type TEXT NOT NULL,
     updatedAt TEXT NOT NULL,
     zip TEXT
 );
 
 insertLead:
-INSERT INTO SQLLead (id, address, assignedTo, city, closedDate, closedResult, company, country, createdAt, email, jobTitle, latitude, longitude, name, notes, phone, priority, source, stage, state, type, updatedAt, zip)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO SQLLead (id, address, assignedTo, city, closedDate, closedResult, company, country, createdAt, email, jobTitle, latitude, longitude, name, notes, phone, priority, source, stage, state, updatedAt, zip)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 updateLead:
 UPDATE SQLLead
-SET address = ?, assignedTo = ?, city = ?, closedDate = ?, closedResult = ?, company = ?, country = ?, createdAt = ?, email = ?, jobTitle = ?, latitude = ?, longitude = ?, name = ?, notes = ?, phone = ?, priority = ?, source = ?, stage = ?, state = ?, type = ?, updatedAt = ?, zip = ?
+SET address = ?, assignedTo = ?, city = ?, closedDate = ?, closedResult = ?, company = ?, country = ?, createdAt = ?, email = ?, jobTitle = ?, latitude = ?, longitude = ?, name = ?, notes = ?, phone = ?, priority = ?, source = ?, stage = ?, state = ?, updatedAt = ?, zip = ?
 WHERE id = ?;
 
 deleteLead:

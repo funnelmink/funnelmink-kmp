@@ -68,6 +68,7 @@ interface API {
 
     // funnels
     @Throws(Exception::class) suspend fun getFunnels(): List<Funnel>
+    @Throws(Exception::class) suspend fun getFunnelsForType(funnelType: FunnelType): List<Funnel>
     @Throws(Exception::class) suspend fun getFunnel(id: String): Funnel
 
     // leads

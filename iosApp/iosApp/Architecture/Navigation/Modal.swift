@@ -26,6 +26,11 @@ enum Modal: Identifiable {
 
     case debugMenu
     
+    case createCase
+    case createLead
+    case editLead(lead: Lead?, funnelID: String?, stageID: String?)
+    case createOpportunity
+    
     @ViewBuilder
     var view: some View {
         Group {
@@ -41,8 +46,13 @@ enum Modal: Identifiable {
             case .joinExistingWorkspace: JoinExistingWorkspaceView()
             case .selectWorkspace: WorkspacesView()
             case .createAccount: CreateAccountView()
-            case .createContact: CreateContactView(account: Account(id: "id", address: "street address", city: "City", country: "Country", createdAt: "Date created", email: "email", latitude: 123.123, leadID: "LeadID?", longitude: 123.123, name: "Account Name", notes: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", phone: "phone number here", state: "STATE", type: .organization, updatedAt: "UpdatedAt?", zip: "Zip Code") )
+            case .createContact: CreateContactView(account: TestData.account)
             case .debugMenu: DebugMenu()
+                
+            case .createCase: EditCaseView()
+            case .createLead: EditLeadView()
+            case let .editLead(lead, funnelID, stageID): EditLeadView(lead: lead, initialFunnelD: funnelID, initialStageID: stageID)
+            case .createOpportunity: EditOpportunityView()
             }
         }
         .toasted(isPresented: true) // modals exist in a separate window. this modifier lets them display toasts anyways

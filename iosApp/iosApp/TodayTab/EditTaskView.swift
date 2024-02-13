@@ -20,8 +20,8 @@ struct EditTaskView: View {
     
     var body: some View {
         VStack {
-            Text(task == nil ? "Create Task" : "Edit Task")
-                .font(.title)
+            Text(task == nil ? "New Task" : "Edit Task")
+                .font(.headline)
                 .fontWeight(.bold)
                 .padding(.top)
             List {
@@ -113,7 +113,7 @@ struct EditTaskView: View {
                 Text(task == nil ? "Create" : "Update")
                     .frame(height: 52)
                     .maxReadableWidth()
-                    .background(LoginBackgroundGradient())
+                    .background(FunnelminkGradient())
                     .foregroundStyle(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 4))
             }
@@ -121,7 +121,7 @@ struct EditTaskView: View {
             .padding()
         }
         .multilineTextAlignment(.center)
-        .onAppear {
+        .loggedOnAppear {
             if let task = task {
                 taskName = task.title
                 priority = task.priority

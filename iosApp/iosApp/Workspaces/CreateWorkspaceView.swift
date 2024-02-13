@@ -48,7 +48,7 @@ struct CreateWorkspaceView: View {
                 Text("Create")
                     .frame(height: 52)
                     .maxReadableWidth()
-                    .background(LoginBackgroundGradient())
+                    .background(FunnelminkGradient())
                     .foregroundStyle(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 4))
             }
