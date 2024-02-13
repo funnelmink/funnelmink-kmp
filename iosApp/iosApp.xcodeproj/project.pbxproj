@@ -121,6 +121,7 @@
 		1F022A3C2B49159100966345 /* CustomAccordion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A382B49159100966345 /* CustomAccordion.swift */; };
 		1F022A3D2B49159100966345 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A392B49159100966345 /* CustomCell.swift */; };
 		1F022A3E2B49159100966345 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A3A2B49159100966345 /* CustomTextField.swift */; };
+		1F610AE82B7BE48300A9D262 /* CreateContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F610AE72B7BE48300A9D262 /* CreateContactView.swift */; };
 		1F9D49AF2B747CCD0085106C /* AddContactAccordion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9D49AE2B747CCD0085106C /* AddContactAccordion.swift */; };
 		1FA27F7A2B5978F300A447C3 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F792B5978F300A447C3 /* TimelineView.swift */; };
 		1FA27F7C2B5CAA9F00A447C3 /* CustomEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F7B2B5CAA9F00A447C3 /* CustomEmptyView.swift */; };
@@ -261,6 +262,7 @@
 		1F022A382B49159100966345 /* CustomAccordion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAccordion.swift; sourceTree = "<group>"; };
 		1F022A392B49159100966345 /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		1F022A3A2B49159100966345 /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		1F610AE72B7BE48300A9D262 /* CreateContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContactView.swift; sourceTree = "<group>"; };
 		1F9D49AE2B747CCD0085106C /* AddContactAccordion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactAccordion.swift; sourceTree = "<group>"; };
 		1FA27F792B5978F300A447C3 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		1FA27F7B2B5CAA9F00A447C3 /* CustomEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomEmptyView.swift; sourceTree = "<group>"; };
@@ -556,9 +558,10 @@
 			children = (
 				0D7759472B6B75C500A61BAC /* ImportContacts */,
 				1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */,
+				41CC6A14DD5B8A3D385ADCB2 /* AccountsView.swift */,
 				1FCB79A7D2ED77D23827B2FB /* AccountView.swift */,
 				1FCB7C6403EE8A0091F9C3AC /* CreateAccountView.swift */,
-				41CC6A14DD5B8A3D385ADCB2 /* AccountsView.swift */,
+				1F610AE72B7BE48300A9D262 /* CreateContactView.swift */,
 			);
 			path = AccountsTab;
 			sourceTree = "<group>";
@@ -1076,6 +1079,7 @@
 				0D77594E2B6B75C500A61BAC /* ImportContactsView.swift in Sources */,
 				0D012E722B477E3A00658153 /* Navigation.swift in Sources */,
 				0D012E7F2B477E3A00658153 /* WorkspaceSettingsView.swift in Sources */,
+				1F610AE82B7BE48300A9D262 /* CreateContactView.swift in Sources */,
 				1F022A3B2B49159100966345 /* CustomButton.swift in Sources */,
 				1FA27F7A2B5978F300A447C3 /* TimelineView.swift in Sources */,
 				0D45D80A2B5E01A100591524 /* Toast.swift in Sources */,
