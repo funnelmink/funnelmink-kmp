@@ -172,11 +172,15 @@ struct AccountView: View {
             Button(action: {
                 // present a banner to route to an address
             }, label: {
-                CustomCell(title: "Address", subtitle: "891 N 800 E, Orem, UT              ", icon: "arrow.merge" ,cellType: .iconAction)
+                CustomCell(title: "Address", subtitle: "891 N 800 E, Orem, UT", icon: "arrow.merge" ,cellType: .iconAction)
                     .padding()
             })
             .foregroundStyle(.primary)
         }
         .padding()
     }
+}
+
+#Preview {
+    AccountView(account: Account(id: "id", address: "street address", city: "City", country: "Country", createdAt: "Date created", email: "email", latitude: 123.123, leadID: "LeadID?", longitude: 123.123, name: "Account Name", notes: "Notes for the account here", phone: "phone number here", state: "STATE", type: .organization, updatedAt: "UpdatedAt?", zip: "Zip Code"))
 }

@@ -13,14 +13,17 @@ struct CreateAccountView: View {
     @EnvironmentObject var nav: Navigation
     @StateObject var viewModel = AccountsViewModel()
     @State var name = ""
-    @State var businessName: String = "" // This is going away (the account is the company)
     @State var email: String = ""
     @State var address: String = ""
     @State var phoneNumber: String = ""
+    @State var city: String = ""
+    @State var state: String = ""
+    @State var country: String = ""
+    @State var zip: String = ""
+    @State var isIndividual: Bool = false
+    @State var accountNotes: String = ""
     @State var emails: [String] = []
     @State var phoneNumbers: [String] = []
-    @State var jobTitle: String = ""
-    @State var isIndividual: Bool = true
     
     func addAccount() {
         Task {
@@ -33,11 +36,11 @@ struct CreateAccountView: View {
                     latitude: nil,
                     longitude: nil,
                     address: address,
-                    city: nil,
-                    state: nil,
-                    country: nil,
-                    zip: nil,
-                    notes: nil,
+                    city: city,
+                    state: state,
+                    country: country,
+                    zip: zip,
+                    notes: accountNotes,
                     type: isIndividual ? .individual : .organization,
                     leadID: nil
                 )
@@ -74,73 +77,62 @@ struct CreateAccountView: View {
     
     var body: some View {
         ScrollView {
-            HStack {
+            HStack() {
                 Button(action: {
                     nav.dismissModal()
                 }, label: {
                     Text("Cancel")
                 })
+                .padding(.trailing, 10)
+                Text("Account creation")
+                    .bold()
+                    .font(.system(size: 30).bold())
+                    .lineLimit(1)
                 Spacer()
-                Button(action: {
-                    addAccount()
-                }, label: {
-                    Text("Done")
-                })
+            }
+            .padding(.vertical)
+            .padding(.horizontal)
+            
+            VStack(alignment: .leading) {
+                Text("Account info")
+                    .font(.system(size: 20).weight(.semibold))
+                
+                CustomTextField(text: $name, placeholder: "Account Name", style: .text)
+                CustomTextField(text: $phoneNumber, placeholder: "Primary Phone", style: .phone)
+                CustomTextField(text: $email, placeholder: "Primary Email", style: .email)
             }
             .padding(.horizontal)
-            Spacer()
-            HStack(spacing: 35) {
-                Button(action: {
-                    isIndividual = true
-                }, label: {
-                    VStack {
-                        Image(systemName: "person")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 125, height: 125)
-                        Text("Individual")
-                    }
-                    
-                    .foregroundStyle(isIndividual ? .blue : .black)
-                })
-                Button(action: {
-                    isIndividual = false
-                }, label: {
-                    VStack {
-                        Image(systemName: "building")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 125, height: 125)
-                        Text("Business")
-                    }
-                    .foregroundStyle(isIndividual ? .black : .blue)
-                })
-            }
-            VStack {
+            VStack(alignment: .leading) {
+                Text("Address info")
+                    .font(.system(size: 20).weight(.semibold))
                 HStack {
-                    CustomTextField(text: $name, placeholder: "Name", style: .text)
-                        .autocorrectionDisabled()
+                    CustomTextField(text: $address, placeholder: "Street Address", style: .text)
+                        .frame(width: 240)
+                    CustomTextField(text: $city, placeholder: "City", style: .text)
                 }
-                .padding(.horizontal)
-                CustomTextField(text: $businessName, placeholder: "Company", style: .text)
-                    .padding(.horizontal)
-                    .autocorrectionDisabled()
-                CustomTextField(text: $email, placeholder: "Email", style: .email)
-                    .padding(.horizontal)
-                    .autocorrectionDisabled()
-                    .textInputAutocapitalization(.never)
-                CustomTextField(text: $address, placeholder: "Address", style: .text)
-                    .padding(.horizontal)
-                    .autocorrectionDisabled()
-                CustomTextField(text: $phoneNumber, placeholder: "Phone Number", style: .phone)
-                    .padding(.horizontal)
-                    .onChange(of: phoneNumber) { newValue in
-                        phoneNumber = formatAsPhoneNumber(newValue)
-                    }
+                HStack {
+                    CustomTextField(text: $state, placeholder: "State", style: .text)
+                    CustomTextField(text: $country, placeholder: "Country", style: .phone)
+                    CustomTextField(text: $zip, placeholder: "ZIP", style: .phone)
+                }
             }
-            Spacer()
+            .padding(.horizontal)
+            
+            VStack(alignment: .leading, content: {
+                Text("Account notes")
+                    .font(.system(size: 20).weight(.semibold))
+                TextEditor(text: $accountNotes)
+                    .frame(width: 350, height: 150)
+                    .border(.secondary)
+            })
+            Button {
+                addAccount()
+            } label: {
+                Text("Create account")
+                    .font(.system(size: 35).weight(.semibold))
+            }
+
         }
-        .padding(.vertical)
     }
 }
 
