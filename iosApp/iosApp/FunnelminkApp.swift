@@ -104,9 +104,7 @@ enum FunnelMinkTab: Int, Identifiable, CaseIterable {
     case inbox // would be really cool to make this its own email client
     case profile // settings, profile, etc. Apple Settings
     
-    var id: Int {
-        rawValue
-    }
+    var id: Int { rawValue }
     
     @ViewBuilder
     var root: some View {
@@ -129,17 +127,4 @@ enum FunnelMinkTab: Int, Identifiable, CaseIterable {
         case .profile: Label("Profile", systemImage: "person")
         }
     }
-}
-
-class FunnelminkApp_Previews: PreviewProvider {
-    static var previews: some View {
-        FunnelminkAppContents()
-    }
-    #if DEBUG
-    @objc class func injected() {
-        let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
-        windowScene?.windows.first?.rootViewController =
-            UIHostingController(rootView: FunnelminkAppContents())
-    }
-    #endif
 }

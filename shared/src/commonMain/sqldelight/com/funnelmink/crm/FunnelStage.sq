@@ -15,15 +15,13 @@ deleteFunnelStage:
 DELETE FROM SQLFunnelStage
 WHERE id = ?;
 
-selectAllStagesForFunnel:
-SELECT id, funnelId, name, order_
-FROM SQLFunnelStage
-WHERE funnelId = ?;
-
 selectStage:
 SELECT id, funnelId, name, order_
 FROM SQLFunnelStage
 WHERE id = ?;
+
+selectAllStagesForFunnel:
+SELECT * FROM SQLFunnelStage WHERE funnelId = ?;
 
 updateFunnelStage:
 UPDATE SQLFunnelStage
