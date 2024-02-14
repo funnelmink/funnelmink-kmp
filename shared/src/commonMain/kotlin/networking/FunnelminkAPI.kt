@@ -138,8 +138,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getAccountDetails(id: String): Account {
-        // this is unused right now
+    override suspend fun getAccountDetails(id: String): AccountDetailsResponse {
         return genericRequest("$baseURL/v1/workspace/accounts/$id", HttpMethod.Get)
     }
 
@@ -281,13 +280,21 @@ class FunnelminkAPI(
     override suspend fun getFunnels(): List<Funnel> {
         val cacheKey = "getFunnels"
         try {
-            if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllFunnels()
-                if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} funnels from cache")
-                    return cached
-                }
-            }
+            // TODO: retrieve funnels from cache
+//            if (!cacheInvalidator.isStale(cacheKey)) {
+//                val cached = cache.selectAllFunnels()
+//                if (cached.isNotEmpty()) {
+//                    Utilities.logger.info("Retrieved ${cached.size} funnels from cache")
+//                    cached.forEach {
+//                        val details = cache.selectFunnel(it.id)
+//                        it.stages = details?.stages.orEmpty()
+//                        it.cases = details?.cases.orEmpty()
+//                        it.leads = details?.leads.orEmpty()
+//                        it.opportunities = details?.opportunities.orEmpty()
+//                    }
+//                    return cached
+//                }
+//            }
             val fetched: List<Funnel> = genericRequest("$baseURL/v1/workspace/funnels", HttpMethod.Get)
             cache.replaceAllFunnels(fetched)
             cacheInvalidator.updateTimestamp(cacheKey)
@@ -306,6 +313,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun getFunnel(id: String): Funnel {
+        // TODO: funnels from cache
 //        val cached = cache.selectFunnel(id)
 //        if (cached != null) {
 //            Utilities.logger.info("Returned funnel $id from cache")

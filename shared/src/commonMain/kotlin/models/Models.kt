@@ -75,10 +75,10 @@ data class Funnel(
 
     val name: String,
     val type: FunnelType,
-    val stages: List<FunnelStage>,
-    val cases: List<CaseRecord>,
-    val leads: List<Lead>,
-    val opportunities: List<Opportunity>,
+    var stages: List<FunnelStage>,
+    var cases: List<CaseRecord>,
+    var leads: List<Lead>,
+    var opportunities: List<Opportunity>,
 )
 
 @Serializable

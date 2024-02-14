@@ -46,7 +46,7 @@ interface API {
     @Throws(Exception::class) suspend fun createAccount(body: CreateAccountRequest): Account
     @Throws(Exception::class) suspend fun deleteAccount(id: String)
     @Throws(Exception::class) suspend fun getAccountActivities(id: String): List<ActivityRecord>
-    @Throws(Exception::class) suspend fun getAccountDetails(id: String): Account
+    @Throws(Exception::class) suspend fun getAccountDetails(id: String): AccountDetailsResponse
     @Throws(Exception::class) suspend fun updateAccount(id: String, body: UpdateAccountRequest): Account
 
     // activities
