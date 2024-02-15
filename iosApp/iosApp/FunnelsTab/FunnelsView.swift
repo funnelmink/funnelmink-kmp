@@ -31,24 +31,36 @@ struct FunnelsView: View {
                     Text("No funnels found. Ask the workspace owner to create them!")
                 }
             } else {
-                KanbanView(kanban: viewModel) { card in
-                    guard
-                        let funnel = viewModel.selectedFunnel,
-                        let stage = funnel.stages.first(where: { $0.id == card.columnID })
-                    else { return }
-                    switch viewModel.selectedFunnel?.type {
-                    case .lead:
-                        guard let lead = funnel.leads.first(where: { $0.id == card.id }) else { fatalError() }
-                        navigation.segue(.leadDetails(lead: lead, funnel: funnel, stage: stage))
-                    case .case:
-                        guard let caseRecord = funnel.cases.first(where: { $0.id == card.id }) else { fatalError() }
-                        navigation.segue(.caseDetails(caseRecord: caseRecord, funnel: funnel, stage: stage))
-                    case .opportunity:
-                        guard let opportunity = funnel.opportunities.first(where: { $0.id == card.id }) else { fatalError() }
-                        navigation.segue(.opportunityDetails(opportunity: opportunity, funnel: funnel, stage: stage))
-                    case .none: break
+                KanbanView(
+                    kanban: viewModel,
+                    onCardTap: { card in
+                        guard
+                            let funnel = viewModel.selectedFunnel,
+                            let stage = funnel.stages.first(where: { $0.id == card.columnID })
+                        else { return }
+                        switch viewModel.selectedFunnel?.type {
+                        case .lead:
+                            guard let lead = funnel.leads.first(where: { $0.id == card.id }) else { fatalError() }
+                            navigation.segue(.leadDetails(lead: lead, funnel: funnel, stage: stage))
+                        case .case:
+                            guard let caseRecord = funnel.cases.first(where: { $0.id == card.id }) else { fatalError() }
+                            navigation.segue(.caseDetails(caseRecord: caseRecord, funnel: funnel, stage: stage))
+                        case .opportunity:
+                            guard let opportunity = funnel.opportunities.first(where: { $0.id == card.id }) else { fatalError() }
+                            navigation.segue(.opportunityDetails(opportunity: opportunity, funnel: funnel, stage: stage))
+                        case .none: break
+                        }
+                    }, onColumnDrop: { card, column in
+                        Task {
+                            do {
+                                try await viewModel.assignCard(id: card.id, to: column.id)
+                            } catch {
+                                // TODO: revert card drop
+                                Toast.warn(error)
+                            }
+                        }
                     }
-                }
+                )
             }
         }
         .toolbar {

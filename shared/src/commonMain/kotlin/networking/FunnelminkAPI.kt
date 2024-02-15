@@ -820,7 +820,7 @@ class FunnelminkAPI(
             Utilities.logger.log(LogLevel.WARN, "🆘 $responseBody")
             try {
                 var message = jsonDecoder.decodeFromString<APIError>(responseBody).message
-                if (message.startsWith("Expected start of object") == true) {
+                if (message.startsWith("Expected start of object")) {
                     message = responseBody
                 }
                 when (response.status) {

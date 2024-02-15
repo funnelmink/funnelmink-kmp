@@ -104,4 +104,14 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
         try await Networking.api.createDefaultFunnels()
         try await fetchFunnels("Leads")
     }
+    
+    @MainActor
+    func assignCard(id: String, to stage: String) async throws {
+        switch state.selectedFunnel?.type {
+        case .case: _ = try await Networking.api.assignCaseToFunnelStage(id: id, stageID: stage)
+        case .lead: _ = try await Networking.api.assignLeadToFunnelStage(id: id, stageID: stage)
+        case .opportunity: _ = try await Networking.api.assignOpportunityToFunnelStage(id: id, stageID: stage)
+        case .none: Logger.error("Assigned card to stage without selected funnel")
+        }
+    }
 }
