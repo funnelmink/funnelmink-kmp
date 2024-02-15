@@ -55,8 +55,8 @@ struct FunnelsView: View {
                             do {
                                 try await viewModel.assignCard(id: card.id, to: column.id)
                             } catch {
-                                // TODO: revert card drop
                                 Toast.warn(error)
+                                try? await viewModel.fetchFunnels(selection)
                             }
                         }
                     }
