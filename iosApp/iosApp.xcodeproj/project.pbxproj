@@ -69,7 +69,6 @@
 		0D012E902B477F2500658153 /* FunnelminkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E8F2B477F2500658153 /* FunnelminkApp.swift */; };
 		0D012E932B477FFC00658153 /* GoogleService-Info-DEV.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E912B477FFC00658153 /* GoogleService-Info-DEV.plist */; };
 		0D012E942B477FFC00658153 /* GoogleService-Info-PROD.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E922B477FFC00658153 /* GoogleService-Info-PROD.plist */; };
-		0D012E9A2B47877B00658153 /* ProdEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */; };
 		0D012E9B2B47877B00658153 /* LocalEnvironment.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */; };
 		0D3E40422B640F130096E222 /* Kanban.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E40412B640F130096E222 /* Kanban.swift */; };
 		0D3E40442B6413B20096E222 /* FunnelsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E40432B6413B20096E222 /* FunnelsViewModel.swift */; };
@@ -855,9 +854,7 @@
 				0DBB674F2B4FA1FF00CFE9A5 /* DevEnvironment.xcconfig in Resources */,
 				0D012E8E2B477E9000658153 /* Assets.xcassets in Resources */,
 				1FA27F842B5EE80E00A447C3 /* TasksLottie.json in Resources */,
-				0D012E9A2B47877B00658153 /* ProdEnvironment.xcconfig in Resources */,
 				1FA27F822B5CAFF200A447C3 /* ContactsLottie.json in Resources */,
-				0D012E9A2B47877B00658153 /* ProdEnvironment.xcconfig in Resources */,
 				0D012DF52B477D1D00658153 /* gRPCCertificates-Cpp.bundle in Resources */,
 				0D012E932B477FFC00658153 /* GoogleService-Info-DEV.plist in Resources */,
 			);
