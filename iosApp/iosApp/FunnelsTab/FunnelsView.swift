@@ -17,19 +17,17 @@ struct FunnelsView: View {
     var kanbanView: some View {
         VStack {
             if viewModel.funnels.isEmpty {
-                if appState.isWorkspaceOwner {
-                    AsyncButton {
-                        do {
-                            try await viewModel.createDefaultFunnels()
-                        } catch {
-                            Toast.error(error)
-                        }
-                    } label: {
-                        Text("Create default funnels")
+                AsyncButton {
+                    do {
+                        try await viewModel.createDefaultFunnels()
+                    } catch {
+                        Toast.error(error)
                     }
-                } else {
-                    Text("No funnels found. Ask the workspace owner to create them!")
+                } label: {
+                    // TODO: better UI/tutorial
+                    Text("Create default funnels")
                 }
+            }
             } else {
                 KanbanView(
                     kanban: viewModel,

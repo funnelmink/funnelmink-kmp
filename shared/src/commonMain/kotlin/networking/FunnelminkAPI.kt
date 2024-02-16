@@ -284,13 +284,6 @@ class FunnelminkAPI(
                 val cached = cache.selectAllFunnels()
                 if (cached.isNotEmpty()) {
                     Utilities.logger.info("🛃 Retrieved ${cached.size} funnels from cache")
-                    cached.forEach {
-                        val details = cache.selectFunnel(it.id)
-                        it.stages = details?.stages.orEmpty()
-                        it.cases = details?.cases.orEmpty()
-                        it.leads = details?.leads.orEmpty()
-                        it.opportunities = details?.opportunities.orEmpty()
-                    }
                     return cached
                 }
             }
@@ -328,7 +321,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun createDefaultFunnels() {
-        genericRequest<Unit>("$baseURL/v1/workspace/owner/funnels/createDefaultFunnels", HttpMethod.Post) {
+        genericRequest<Unit>("$baseURL/v1/workspace/funnels/createDefaultFunnels", HttpMethod.Post) {
             setBody("{}") // POST requests can't have empty bodies
         }
         cacheInvalidator.invalidate("getFunnels")

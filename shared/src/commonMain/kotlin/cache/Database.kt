@@ -439,7 +439,15 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     @Throws(Exception::class)
     fun selectAllFunnels(): List<Funnel> {
-        return funnelsDB.selectAllFunnels(::mapFunnel).executeAsList()
+        val funnels = funnelsDB.selectAllFunnels(::mapFunnel).executeAsList()
+        funnels.forEach {
+            val details = selectFunnel(it.id)
+            it.stages = details?.stages.orEmpty()
+            it.cases = details?.cases.orEmpty()
+            it.leads = details?.leads.orEmpty()
+            it.opportunities = details?.opportunities.orEmpty()
+        }
+        return funnels
     }
 
     @Throws(Exception::class)
