@@ -106,7 +106,7 @@ class TestData {
         "c32d4984-1b89-48a3-a0f4-6c1d1239cc99",
         "Orem",
         timestamp,
-        LeadClosedResult.Converted,
+        LeadClosedResult.AccountAndOpportunity,
         "funnelmink",
         "United States",
         timestamp,

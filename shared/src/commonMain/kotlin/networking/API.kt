@@ -77,7 +77,7 @@ interface API {
     @Throws(Exception::class) suspend fun getLeads(): List<Lead>
     @Throws(Exception::class) suspend fun createLead(body: CreateLeadRequest): Lead
     @Throws(Exception::class) suspend fun updateLead(id: String, body: UpdateLeadRequest): Lead
-    @Throws(Exception::class) suspend fun convertLead(id: String, wasSuccessfulConversion: Boolean)
+    @Throws(Exception::class) suspend fun convertLead(id: String, result: LeadClosedResult)
     @Throws(Exception::class) suspend fun deleteLead(id: String)
 
     // opportunities

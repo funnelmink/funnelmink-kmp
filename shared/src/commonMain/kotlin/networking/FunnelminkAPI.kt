@@ -460,9 +460,9 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun convertLead(id: String, wasSuccessfulConversion: Boolean) {
+    override suspend fun convertLead(id: String, result: LeadClosedResult) {
         genericRequest<Unit>("$baseURL/v1/workspace/leads/$id/convert", HttpMethod.Put) {
-            parameter("closedResult", if (wasSuccessfulConversion) "CONVERTED" else "NOT_CONVERTED")
+            parameter("closedResult", result.resultName)
         }
         cache.deleteLead(id)
     }

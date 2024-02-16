@@ -117,6 +117,7 @@
 		1FCB73F124945A937ECDAC6F /* WorkspacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7C4E3E93CDD70AD8DCC1 /* WorkspacesView.swift */; };
 		1FCB74155DEADF4A32FAA4E4 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7A3AB02D5F9F52C1AB1F /* LoginViewModel.swift */; };
 		1FCB74EE9F81EC19833E8639 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB79A7D2ED77D23827B2FB /* AccountView.swift */; };
+		1FCB758646ABB9ABE0EE09E4 /* ConvertLeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB704EE675D6553F6CC5D8 /* ConvertLeadView.swift */; };
 		1FCB7680DC135B3DD5B15F0C /* Segue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB72AEE522D13EAC8565D2 /* Segue.swift */; };
 		1FCB76F93C37F8F4E4B76F94 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7C6403EE8A0091F9C3AC /* CreateAccountView.swift */; };
 		1FCB77F6AD2C612392D4609B /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7E8839B6F36DABAA626E /* ProfileViewModel.swift */; };
@@ -234,6 +235,7 @@
 		1FA27F7B2B5CAA9F00A447C3 /* CustomEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomEmptyView.swift; sourceTree = "<group>"; };
 		1FA27F812B5CAFF200A447C3 /* ContactsLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ContactsLottie.json; sourceTree = "<group>"; };
 		1FA27F832B5EE80E00A447C3 /* TasksLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TasksLottie.json; sourceTree = "<group>"; };
+		1FCB704EE675D6553F6CC5D8 /* ConvertLeadView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConvertLeadView.swift; sourceTree = "<group>"; };
 		1FCB7097FD586CA3E01B3C36 /* Double+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+.swift"; sourceTree = "<group>"; };
 		1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Shared+.swift"; sourceTree = "<group>"; };
 		1FCB729289973E82B53DC6AE /* WorkspacesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspacesViewModel.swift; sourceTree = "<group>"; };
@@ -549,6 +551,7 @@
 				0D7972532B767CFD0048E942 /* EditLeadView.swift */,
 				0D7972592B76E0840048E942 /* EditLeadViewModel.swift */,
 				0D79725B2B7A816C0048E942 /* LeadDetailView.swift */,
+				1FCB704EE675D6553F6CC5D8 /* ConvertLeadView.swift */,
 			);
 			path = Leads;
 			sourceTree = "<group>";
@@ -981,6 +984,7 @@
 				1FCB76F93C37F8F4E4B76F94 /* CreateAccountView.swift in Sources */,
 				1FCB77F6AD2C612392D4609B /* ProfileViewModel.swift in Sources */,
 				1FCB7B2A5C922AB310B658B3 /* ProflieView.swift in Sources */,
+				1FCB758646ABB9ABE0EE09E4 /* ConvertLeadView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

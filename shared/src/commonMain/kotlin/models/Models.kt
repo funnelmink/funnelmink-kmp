@@ -205,8 +205,9 @@ enum class FunnelType(val typeName: String) {
 
 @Serializable(with = LeadClosedResultSerializer::class)
 enum class LeadClosedResult(val resultName: String) {
-    Converted("CONVERTED"),
-    NotConverted("NOT_CONVERTED");
+    AccountAndOpportunity("CONVERT_TO_ACCOUNT_AND_OPPORTUNITY"),
+    Account("CONVERT_TO_ACCOUNT"),
+    Lost("CLOSE_AS_LOST");
 
     companion object {
         fun fromResultName(resultName: String): LeadClosedResult =
