@@ -434,6 +434,15 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
+    override suspend fun getLead(id: String): Lead {
+        val cached = cache.selectLead(id)
+        if (cached != null) {
+            return cached
+        }
+        return genericRequest("$baseURL/v1/workspace/leads/$id", HttpMethod.Get)
+    }
+
+    @Throws(Exception::class)
     override suspend fun createLead(body: CreateLeadRequest): Lead {
         val lead: Lead = genericRequest("$baseURL/v1/workspace/leads", HttpMethod.Post) {
             setBody(body)

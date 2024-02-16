@@ -46,6 +46,7 @@ struct ConvertLeadView: View {
             do {
                 try await Networking.api.convertLead(id: lead.id, result: conversionResult)
                 navigation.dismissModal()
+                Toast.success("Lead closed")
             } catch {
                 Toast.warn(error)
             }

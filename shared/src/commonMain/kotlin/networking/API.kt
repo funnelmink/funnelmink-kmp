@@ -76,6 +76,7 @@ interface API {
     @Throws(Exception::class) suspend fun assignLeadToMember(id: String, memberID: String): Lead
     @Throws(Exception::class) suspend fun assignLeadToFunnelStage(id: String, stageID: String): Lead
     @Throws(Exception::class) suspend fun getLeads(): List<Lead>
+    @Throws(Exception::class) suspend fun getLead(id: String): Lead
     @Throws(Exception::class) suspend fun createLead(body: CreateLeadRequest): Lead
     @Throws(Exception::class) suspend fun updateLead(id: String, body: UpdateLeadRequest): Lead
     @Throws(Exception::class) suspend fun convertLead(id: String, result: LeadClosedResult)

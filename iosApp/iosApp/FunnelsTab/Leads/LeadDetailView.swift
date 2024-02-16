@@ -15,8 +15,26 @@ struct LeadDetailView: View {
     @State var lead: Lead
     @State var funnel: Funnel
     @State var stage: FunnelStage
+    var closedPrompt: String? {
+        switch lead.closedResult {
+        case .lost: return "This Lead was closed as `Lost`"
+        case .account: return "This Lead was converted to an Account"
+        case .accountAndOpportunity: return "This Lead was converted to an Account + Opportunity"
+        case .none: return nil
+        }
+    }
     var body: some View {
         VStack {
+            if let closedPrompt {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.yellow)
+                    .overlay {
+                        Text(closedPrompt)
+                            .foregroundStyle(.secondary)
+                    }
+                    .frame(height: 100)
+                    .padding()
+            }
             List {
                 if lead.email != nil || lead.phone != nil || lead.company != nil || lead.source != nil || lead.jobTitle != nil {
                     Section("CONTACT INFORMATION") {
@@ -97,7 +115,11 @@ struct LeadDetailView: View {
                 }
                 Spacer()
                 Button("Convert or Close Lead") {
-                    navigation.modalSheet(.convertLead(lead: lead))
+                    navigation.modalSheet(.convertLead(lead: lead)) {
+                        Task { @MainActor in
+                            lead = try await Networking.api.getLead(id: lead.id)
+                        }
+                    }
                 }
             }
             .padding()
@@ -113,6 +135,7 @@ struct LeadDetailView: View {
                 }
             }
         }
+        .logged(info: lead.id)
     }
     
     func labeledRow(name: String, value: String) -> some View {
