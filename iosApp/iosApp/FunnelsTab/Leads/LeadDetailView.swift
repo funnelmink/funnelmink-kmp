@@ -97,10 +97,7 @@ struct LeadDetailView: View {
                 }
                 Spacer()
                 Button("Convert or Close Lead") {
-                    // TODO: presentation
-                    // convert to account
-                    // gives the option to also create an opportunity
-                    // OR you can close lead
+                    navigation.modalSheet(.convertLead(lead: lead))
                 }
             }
             .padding()

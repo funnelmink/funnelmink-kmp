@@ -28,6 +28,7 @@ enum Modal: Identifiable {
     case createCase
     case createLead
     case editLead(lead: Lead?, funnelID: String?, stageID: String?)
+    case convertLead(lead: Lead)
     case createOpportunity
     
     @ViewBuilder
@@ -50,6 +51,7 @@ enum Modal: Identifiable {
             case .createCase: EditCaseView()
             case .createLead: EditLeadView()
             case let .editLead(lead, funnelID, stageID): EditLeadView(lead: lead, initialFunnelD: funnelID, initialStageID: stageID)
+            case let .convertLead(lead): ConvertLeadView(lead: lead)
             case .createOpportunity: EditOpportunityView()
             }
         }

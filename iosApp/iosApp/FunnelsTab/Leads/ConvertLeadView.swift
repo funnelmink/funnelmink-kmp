@@ -45,6 +45,7 @@ struct ConvertLeadView: View {
         AsyncButton {
             do {
                 try await Networking.api.convertLead(id: lead.id, result: conversionResult)
+                navigation.dismissModal()
             } catch {
                 Toast.warn(error)
             }

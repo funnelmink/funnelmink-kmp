@@ -410,6 +410,10 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         )
         replaceAllCasesForFunnel(funnel.id, funnel.cases)
         replaceAllOpportunitiesForFunnel(funnel.id, funnel.opportunities)
+        replaceAllStagesForFunnel(funnel.id, funnel.stages)
+        if (funnel.leads.isNotEmpty()) {
+            replaceAllLeads(funnel.leads)
+        }
     }
 
     @Throws(Exception::class)
@@ -508,6 +512,14 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
                 it.name,
                 it.order_.toInt()
             )
+        }
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllStagesForFunnel(id: String, stages: List<FunnelStage>) {
+        funnelStageDB.transaction {
+            funnelStageDB.deleteAllStagesForFunnel(id)
+            stages.forEach { insertFunnelStage(it, id) }
         }
     }
 
