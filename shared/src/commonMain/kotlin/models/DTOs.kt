@@ -147,7 +147,6 @@ data class CreateOpportunityRequest(
     val priority: Int? = null,
     val notes: String? = null,
     val accountID: String,
-    val stageID: String,
     val assignedToID: String? = null
 )
 

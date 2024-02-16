@@ -77,9 +77,18 @@ tasks.register("prepareXcode") {
         "linkDebugFrameworkIosArm64",
         "linkDebugFrameworkIosSimulatorArm64",
         "linkDebugFrameworkIosX64",
-        // Include release variants if necessary
         "compileAppleMainKotlinMetadata",
-        "compileIosMainKotlinMetadata"
+        "compileIosMainKotlinMetadata",
+        // SKIE tasks
+        "skieCreateConfigurationDebugFrameworkIosArm64",
+        "skieCreateConfigurationDebugFrameworkIosSimulatorArm64",
+        "skieCreateConfigurationDebugFrameworkIosX64",
+        "skieMergeCustomSwiftDebugFrameworkIosArm64",
+        "skieMergeCustomSwiftDebugFrameworkIosSimulatorArm64",
+        "skieMergeCustomSwiftDebugFrameworkIosX64",
+        "skiePackageCustomSwiftDebugFrameworkIosArm64",
+        "skiePackageCustomSwiftDebugFrameworkIosSimulatorArm64",
+        "skiePackageCustomSwiftDebugFrameworkIosX64"
     )
     doLast {
         println("Kotlin Multiplatform frameworks are ready for Xcode.")

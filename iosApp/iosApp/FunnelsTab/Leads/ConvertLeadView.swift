@@ -25,7 +25,7 @@ struct ConvertLeadView: View {
             cardButton(
                 title: "Close as Lost",
                 subtitle: "This Lead is not interested in our product",
-                conversionResult: .accountAndOpportunity
+                conversionResult: .lost
             )
             cardButton(
                 title: "Convert to Account",
@@ -35,14 +35,14 @@ struct ConvertLeadView: View {
             cardButton(
                 title: "Convert to Account + Opportunity",
                 subtitle: "We've established a relationship and are actively pursuing a sale",
-                conversionResult: .lost
+                conversionResult: .accountAndOpportunity
             )
         }
         .padding()
     }
     
     func cardButton(title: String, subtitle: String, conversionResult: LeadClosedResult) -> some View {
-        AsyncButton {
+        AsyncWarningAlertButton(warningMessage: "\(title)?") {
             do {
                 try await Networking.api.convertLead(id: lead.id, result: conversionResult)
                 navigation.dismissModal()

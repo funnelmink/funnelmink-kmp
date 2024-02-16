@@ -17,7 +17,7 @@ struct AsyncButton<Label: View>: View {
     var body: some View {
         Button {
             guard !isActing else { return }
-            Task {
+            Task { @MainActor in
                 isActing = true
                 do {
                     try await action()

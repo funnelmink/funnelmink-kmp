@@ -27,7 +27,6 @@ struct FunnelsView: View {
                     // TODO: better UI/tutorial
                     Text("Create default funnels")
                 }
-            }
             } else {
                 KanbanView(
                     kanban: viewModel,

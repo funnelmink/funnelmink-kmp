@@ -486,8 +486,8 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun createOpportunity(body: CreateOpportunityRequest, funnelID: String, accountID: String?): Opportunity {
-        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities", HttpMethod.Post) {
+    override suspend fun createOpportunity(body: CreateOpportunityRequest, stageID: String, funnelID: String, accountID: String?): Opportunity {
+        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities/$funnelID/$stageID", HttpMethod.Post) {
             setBody(body)
         }
         cache.insertOpportunity(opportunity, funnelID, accountID)
