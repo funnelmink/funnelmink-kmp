@@ -15,7 +15,7 @@ struct AccountView: View {
     @StateObject var viewModel = AccountsViewModel()
     @State private var isAnimating: Bool = false
     @State private var showingActionSheet = false
-    
+    @State var contacts: [AccountContact]
     var account: Account
     var accountFullAddress: String {
         return ("\(account.address ?? ""), \(account.city ?? ""), \(account.country ?? "")")
@@ -177,13 +177,20 @@ struct AccountView: View {
                     .padding()
             })
             .foregroundStyle(.primary)
-            Button(action: {
-                nav.modalSheet(.createContact)
-            }, label: {
-                CustomCell(title: "Create Contact", subtitle: "Add contact to account", icon: "plus" ,cellType: .iconAction)
-                    .padding()
-            })
-            .foregroundStyle(.primary)
+            VStack {
+                Button(action: {
+                    nav.modalSheet(.createContact)
+                }, label: {
+                    CustomCell(title: "Create Contact", subtitle: "Add contact to account", icon: "plus" ,cellType: .iconAction)
+                        .padding()
+                })
+                .foregroundStyle(.primary)
+                List {
+                    ForEach(contacts, id: \.self) { contact in
+                        CustomCell(title: contact.name ?? "", subtitle: contact.phone, cellType: .navigation)
+                    }
+                }
+            }
             VStack(alignment: .leading) {
                 Text("Account Notes")
                     .bold()
@@ -200,9 +207,18 @@ struct AccountView: View {
             .padding(.vertical)
         }
         .padding()
+        .onAppear(perform: {
+            Task {
+                do {
+                 let details = try await Networking.api.getAccountDetails(id: account.id)
+                } catch {
+                    Toast(message: "Could not get account details", type: .error)
+                }
+            }
+        })
     }
 }
 
 #Preview {
-    AccountView(account: TestData.account)
+    AccountView(contacts: [TestData.accountContact,], account: TestData.account)
 }

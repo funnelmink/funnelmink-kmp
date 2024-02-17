@@ -29,7 +29,7 @@ struct CreateAccountView: View {
         Task {
             do {
                 // TODO: update this to use the new createAccount method
-                try await viewModel.createAccount(
+            let createdAccount = try await viewModel.createAccount(
                     name: name,
                     email: email,
                     phone: phoneNumber,
@@ -44,6 +44,7 @@ struct CreateAccountView: View {
                     leadID: nil
                 )
                 nav.dismissModal()
+                nav.segue(.accountView(createdAccount))
             } catch {
                 Toast.error(error)
             }
