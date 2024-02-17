@@ -14,13 +14,14 @@ import SwiftUI
 struct KanbanView<Kanban: KanbanViewModel>: View {
     @ObservedObject var kanban: Kanban
     let onCardTap: (KanbanCard) -> Void
+    let onColumnDrop: (KanbanCard, KanbanColumn) -> Void
     var body: some View {
         GeometryReader { o_o in
             ScrollView(.horizontal) {
                 HStack(spacing: 0) {
                     Spacer(minLength: o_o.size.width * 0.1)
                     ForEach(kanban.columns) { column in
-                        KanbanColumnView(kanban: kanban, column: column, onCardTap: onCardTap)
+                        KanbanColumnView(kanban: kanban, column: column, onCardTap: onCardTap, onColumnDrop: onColumnDrop)
                     }
                     .frame(width: o_o.size.width * 0.8)
                     Spacer(minLength: o_o.size.width * 0.1)
@@ -36,6 +37,7 @@ struct KanbanColumnView<Kanban: KanbanViewModel>: View {
     @ObservedObject var kanban: Kanban
     @ObservedObject var column: KanbanColumn
     let onCardTap: (KanbanCard) -> Void
+    let onColumnDrop: (KanbanCard, KanbanColumn) -> Void
     var body: some View {
         VStack(spacing: 0) {
             Text(column.title)
@@ -52,13 +54,13 @@ struct KanbanColumnView<Kanban: KanbanViewModel>: View {
                         .listRowBackground(Color.clear)
                         .onDrop(
                             of: [.text],
-                            delegate: KanbanDropDelegate(kanban: kanban, destinationColumn: column)
+                            delegate: KanbanDropDelegate(kanban: kanban, destinationColumn: column, onColumnDrop: onColumnDrop)
                         )
                 } else {
                     ForEach(column.cards) { KanbanCardView(card: $0, onTap: onCardTap) }
                         .onDrop(
                             of: [.text],
-                            delegate: KanbanDropDelegate(kanban: kanban, destinationColumn: column)
+                            delegate: KanbanDropDelegate(kanban: kanban, destinationColumn: column, onColumnDrop: onColumnDrop)
                         )
                 }
             }
@@ -72,17 +74,18 @@ struct KanbanCardView: View {
     let onTap: (KanbanCard) -> Void
     var body: some View {
         VStack(alignment: .leading) {
-            Text(card.title)
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack(spacing: 0) {
+                Text(card.title)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Image(systemName: card.priority.priorityIconName)
+                    .foregroundStyle(card.priority.priorityColor)
+            }
             label(card.subtitleLabel)
                 .padding(.vertical, 1)
             HStack(spacing: 12) {
                 if let footerLabel = card.footerLabel {
                     label(footerLabel)
-                }
-                if let secondFooterLabel = card.secondFooterLabel {
-                    label(secondFooterLabel)
                 }
                 Spacer()
                 Text(card.footerTrailingText)
@@ -96,7 +99,7 @@ struct KanbanCardView: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(.systemGray), lineWidth: 1)
+                .stroke(card.priority.priorityColor, lineWidth: CGFloat(card.priority + 1))
         )
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .listRowSeparator(.hidden)
@@ -124,6 +127,7 @@ protocol KanbanViewModel: ObservableObject {
 struct KanbanDropDelegate: DropDelegate {
     let kanban: any KanbanViewModel
     let destinationColumn: KanbanColumn
+    let onColumnDrop: (KanbanCard, KanbanColumn) -> Void
     
     func dropUpdated(info: DropInfo) -> DropProposal? {
         if info.itemProviders(for: [.text]).isEmpty {
@@ -155,6 +159,7 @@ struct KanbanDropDelegate: DropDelegate {
                     // update card and move to destination
                     card.columnID = destinationColumn.id
                     destinationColumn.cards.insert(card, at: 0)
+                    onColumnDrop(card, destinationColumn)
                 }
             }
         }
@@ -181,7 +186,7 @@ struct KanbanCard: Identifiable, Codable {
     let title: String
     let subtitleLabel: Label
     let footerLabel: Label?
-    var secondFooterLabel: Label?
+    let priority: Int32
     let footerTrailingText: String
     
     var columnID: String

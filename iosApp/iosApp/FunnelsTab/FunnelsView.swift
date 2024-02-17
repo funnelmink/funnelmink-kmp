@@ -1,3 +1,4 @@
+import Shared
 import SwiftUI
 
 struct FunnelsView: View {
@@ -17,38 +18,48 @@ struct FunnelsView: View {
     var kanbanView: some View {
         VStack {
             if viewModel.funnels.isEmpty {
-                if appState.isWorkspaceOwner {
-                    AsyncButton {
-                        do {
-                            try await viewModel.createDefaultFunnels()
-                        } catch {
-                            Toast.error(error)
-                        }
-                    } label: {
-                        Text("Create default funnels")
+                AsyncButton {
+                    do {
+                        try await viewModel.createDefaultFunnels()
+                    } catch {
+                        Toast.error(error)
                     }
-                } else {
-                    Text("No funnels found. Ask the workspace owner to create them!")
+                } label: {
+                    // TODO: better UI/tutorial
+                    Text("Create default funnels")
                 }
             } else {
-                KanbanView(kanban: viewModel) { card in
-                    guard
-                        let funnel = viewModel.selectedFunnel,
-                        let stage = funnel.stages.first(where: { $0.id == card.columnID })
-                    else { return }
-                    switch viewModel.selectedFunnel?.type {
-                    case .lead:
-                        guard let lead = funnel.leads.first(where: { $0.id == card.id }) else { return }
-                        navigation.segue(.leadDetails(lead: lead, funnel: funnel, stage: stage))
-                    case .case:
-                        guard let caseRecord = funnel.cases.first(where: { $0.id == card.id }) else { return }
-                        navigation.segue(.caseDetails(caseRecord: caseRecord, funnel: funnel, stage: stage))
-                    case .opportunity:
-                        guard let opportunity = funnel.opportunities.first(where: { $0.id == card.id }) else { return }
-                        navigation.segue(.opportunityDetails(opportunity: opportunity, funnel: funnel, stage: stage))
-                    case .none: break
+                KanbanView(
+                    kanban: viewModel,
+                    onCardTap: { card in
+                        guard
+                            let funnel = viewModel.selectedFunnel,
+                            let stage = funnel.stages.first(where: { $0.id == card.columnID })
+                        else { return }
+                        switch viewModel.selectedFunnel?.type {
+                        case .lead:
+                            guard let lead = funnel.leads.first(where: { $0.id == card.id }) else { fatalError() }
+                            navigation.segue(.leadDetails(lead: lead, funnel: funnel, stage: stage))
+                        case .case:
+                            guard let caseRecord = funnel.cases.first(where: { $0.id == card.id }) else { fatalError() }
+                            navigation.segue(.caseDetails(caseRecord: caseRecord, funnel: funnel, stage: stage))
+                        case .opportunity:
+                            guard let opportunity = funnel.opportunities.first(where: { $0.id == card.id }) else { fatalError() }
+                            navigation.segue(.opportunityDetails(opportunity: opportunity, funnel: funnel, stage: stage))
+                        case .none: break
+                        }
+                    }, onColumnDrop: { card, column in
+                        Task {
+                            do {
+                                try await viewModel.assignCard(id: card.id, to: column.id)
+                            } catch {
+                                Logger.warning(error)
+                                Toast.warn("Failed to update card position. Please try again.")
+                                try? await viewModel.fetchFunnels(selection)
+                            }
+                        }
                     }
-                }
+                )
             }
         }
         .toolbar {
@@ -85,19 +96,27 @@ struct FunnelsView: View {
         MenuFAB(
             items: [
                 .init(name: "New Case", iconName: "hazardsign") {
+                    if let newSelection = viewModel.funnels.first(where: { $0.type == .case }) {
+                        selection = newSelection.name
+                    }
                     navigation.modalSheet(.createCase, onDismiss: refreshFunnels)
                 },
                 .init(name: "New Opportunity", iconName: "moon.stars") {
-                    navigation.modalSheet(.createOpportunity, onDismiss: refreshFunnels)
+                    if let newSelection = viewModel.funnels.first(where: { $0.type == .opportunity }) {
+                        selection = newSelection.name
+                    }
+                    navigation.modalSheet(.createOpportunity(accountID: nil), onDismiss: refreshFunnels)
                 },
                 .init(name: "New Lead", iconName: "person") {
-                    navigation.modalSheet(.createLead, onDismiss: refreshFunnels)
+                    if let newSelection = viewModel.funnels.first(where: { $0.type == .lead }) {
+                        selection = newSelection.name
+                    }
+                    navigation.modalSheet(.createLead(accountID: nil), onDismiss: refreshFunnels)
                 },
             ]
         )
     }
     
-    @MainActor
     func refreshFunnels() {
         Task {
             do {

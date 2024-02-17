@@ -30,7 +30,7 @@ enum Segue: NavigationSegue {
         case .accounts: AccountsView()
         case let .taskDetails(task): TaskDetailView(task: task)
         case .workspaceSettings: WorkspaceSettingsView()
-        case let .accountView(account): AccountView(account: account)
+        case let .accountView(account): AccountView(contacts: [], account: account)
         case let .caseDetails(caseRecord, funnel, stage): CaseDetailView(caseRecord: caseRecord, funnel: funnel, stage: stage)
         case let .leadDetails(lead, funnel, stage): LeadDetailView(lead: lead, funnel: funnel, stage: stage)
         case let .opportunityDetails(opportunity, funnel, stage): OpportunityDetailView(opportunity: opportunity, funnel: funnel, stage: stage)

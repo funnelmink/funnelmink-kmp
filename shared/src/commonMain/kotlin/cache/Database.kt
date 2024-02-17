@@ -408,6 +408,12 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             funnel.name,
             funnel.type.typeName
         )
+        replaceAllCasesForFunnel(funnel.id, funnel.cases)
+        replaceAllOpportunitiesForFunnel(funnel.id, funnel.opportunities)
+        replaceAllStagesForFunnel(funnel.id, funnel.stages)
+        if (funnel.leads.isNotEmpty()) {
+            replaceAllLeads(funnel.leads)
+        }
     }
 
     @Throws(Exception::class)
@@ -421,12 +427,40 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     @Throws(Exception::class)
     fun selectFunnel(id: String): Funnel? {
         val cached = funnelsDB.selectFunnel(id).executeAsOneOrNull() ?: return null
-        return mapFunnel(cached.id, cached.name, cached.type)
+        val funnel = mapFunnel(cached.id, cached.name, cached.type)
+        funnel.stages = getAllFunnelStagesForFunnel(funnel.id)
+        when (funnel.type) {
+            FunnelType.Case -> funnel.cases = selectAllCasesForFunnel(funnel.id)
+            FunnelType.Lead -> funnel.leads = selectAllLeads()
+            FunnelType.Opportunity -> funnel.opportunities = selectAllOpportunitiesForFunnel(funnel.id)
+        }
+        return funnel
     }
 
     @Throws(Exception::class)
     fun selectAllFunnels(): List<Funnel> {
-        return funnelsDB.selectAllFunnels(::mapFunnel).executeAsList()
+        val funnels = funnelsDB.selectAllFunnels(::mapFunnel).executeAsList()
+        funnels.forEach {
+            val details = selectFunnel(it.id)
+            it.stages = details?.stages.orEmpty()
+            it.cases = details?.cases.orEmpty()
+            it.leads = details?.leads.orEmpty()
+            it.opportunities = details?.opportunities.orEmpty()
+        }
+        return funnels
+    }
+
+    @Throws(Exception::class)
+    fun selectAllFunnelsForType(funnelType: FunnelType): List<Funnel> {
+        val funnels = funnelsDB.selectAllFunnelsForType(funnelType.typeName, ::mapFunnel).executeAsList()
+        funnels.forEach {
+            val details = selectFunnel(it.id)
+            it.stages = details?.stages.orEmpty()
+            it.cases = details?.cases.orEmpty()
+            it.leads = details?.leads.orEmpty()
+            it.opportunities = details?.opportunities.orEmpty()
+        }
+        return funnels
     }
 
     @Throws(Exception::class)
@@ -492,6 +526,25 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
+    fun getAllFunnelStagesForFunnel(id: String): List<FunnelStage> {
+        return funnelStageDB.selectAllStagesForFunnel(id).executeAsList().map {
+            mapFunnelStage(
+                it.id,
+                it.name,
+                it.order_.toInt()
+            )
+        }
+    }
+
+    @Throws(Exception::class)
+    fun replaceAllStagesForFunnel(id: String, stages: List<FunnelStage>) {
+        funnelStageDB.transaction {
+            funnelStageDB.deleteAllStagesForFunnel(id)
+            stages.forEach { insertFunnelStage(it, id) }
+        }
+    }
+
+    @Throws(Exception::class)
     fun deleteAllFunnelStagesForFunnel(id: String) {
         funnelStageDB.deleteAllStagesForFunnel(id)
     }
@@ -504,6 +557,10 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     @Throws(Exception::class)
     fun deleteAllFunnelStages() {
         funnelStageDB.deleteAllStages()
+    }
+
+    private fun mapFunnelStage(id: String, name: String, order: Int): FunnelStage {
+        return FunnelStage(id, name, order)
     }
 
     // ------------------------------------------------------------------------
@@ -528,6 +585,15 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             accountID
         )
     }
+
+    @Throws(Exception::class)
+    fun replaceAllOpportunitiesForFunnel(id: String, opportunities: List<Opportunity>) {
+        opportunityDB.transaction {
+            opportunityDB.removeAllOpportunitiesForFunnel(id)
+            opportunities.forEach { insertOpportunity(it, id, null) }
+        }
+    }
+
 
     @Throws(Exception::class)
     fun replaceOpportunity(opportunity: Opportunity) {
@@ -555,6 +621,24 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
                 it.value_?.toDouble() ?: 0.0
             )
         }
+    }
+
+    @Throws(Exception::class)
+    fun selectOpportunity(id: String): Opportunity? {
+        val cached = opportunityDB.getOpportunity(id).executeAsOneOrNull() ?: return null
+        return mapOpportunity(
+            cached.id,
+            cached.assignedTo,
+            cached.closedDate,
+            cached.createdAt,
+            cached.description,
+            cached.name,
+            cached.notes,
+            cached.priority.toInt(),
+            cached.stage,
+            cached.updatedAt,
+            cached.value_?.toDouble() ?: 0.0
+        )
     }
 
     private fun mapOpportunity(

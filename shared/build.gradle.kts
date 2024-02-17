@@ -67,3 +67,30 @@ sqldelight {
         }
     }
 }
+
+// makes it so iOS devs don't have to launch Fleet to get the latest KMP updates
+tasks.register("prepareXcode") {
+    dependsOn(
+        "compileKotlinIosArm64",
+        "compileKotlinIosSimulatorArm64",
+        "compileKotlinIosX64",
+        "linkDebugFrameworkIosArm64",
+        "linkDebugFrameworkIosSimulatorArm64",
+        "linkDebugFrameworkIosX64",
+        "compileAppleMainKotlinMetadata",
+        "compileIosMainKotlinMetadata",
+        // SKIE tasks
+        "skieCreateConfigurationDebugFrameworkIosArm64",
+        "skieCreateConfigurationDebugFrameworkIosSimulatorArm64",
+        "skieCreateConfigurationDebugFrameworkIosX64",
+        "skieMergeCustomSwiftDebugFrameworkIosArm64",
+        "skieMergeCustomSwiftDebugFrameworkIosSimulatorArm64",
+        "skieMergeCustomSwiftDebugFrameworkIosX64",
+        "skiePackageCustomSwiftDebugFrameworkIosArm64",
+        "skiePackageCustomSwiftDebugFrameworkIosSimulatorArm64",
+        "skiePackageCustomSwiftDebugFrameworkIosX64"
+    )
+    doLast {
+        println("Kotlin Multiplatform frameworks are ready for Xcode.")
+    }
+}

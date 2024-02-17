@@ -34,6 +34,30 @@ data class UpdateAccountRequest(
 )
 
 @Serializable
+data class AccountDetailsResponse(
+    val id: String,
+    val name: String,
+    val email: String? = null,
+    val phone: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val address: String? = null,
+    val city: String? = null,
+    val state: String? = null,
+    val country: String? = null,
+    val zip: String? = null,
+    val notes: String? = null,
+    val createdAt: String,
+    val updatedAt: String,
+    val leadID: String? = null,
+    val activities: List<ActivityRecord>,
+    val contacts: List<AccountContact>,
+    val leads: List<Lead>,
+    val cases: List<CaseRecord>,
+    val opportunities: List<Opportunity>
+)
+
+@Serializable
 data class CreateAccountContactRequest(
     val name: String,
     val email: String? = null,
@@ -55,18 +79,25 @@ data class UpdateAccountContactRequest(
 data class CreateCaseRequest(
     val name: String,
     val description: String? = null,
+    val value: Double,
+    val priority: Int,
     val notes: String? = null,
-    val priority: Int? = null,
-    val value: Double? = null
+    val accountID: String? = null,
+    val assignedToID: String? = null,
+    val funnelID: String,
+    val stageID: String,
 )
 
 @Serializable
 data class UpdateCaseRequest(
-    val name: String? = null,
+    val name: String,
     val description: String? = null,
+    val value: Double,
+    val priority: Int,
     val notes: String? = null,
-    val priority: Int? = null,
-    val value: Double? = null
+    val assignedTo: String? = null,
+    val stageID: String,
+    val funnelID: String,
 )
 
 @Serializable
@@ -119,21 +150,25 @@ data class UpdateLeadRequest(
 data class CreateOpportunityRequest(
     val name: String,
     val description: String? = null,
-    val value: Double? = null,
-    val priority: Int? = null,
+    val value: Double,
+    val priority: Int,
     val notes: String? = null,
-    val accountID: String,
+    val accountID: String? = null,
+    val assignedToID: String? = null,
+    val funnelID: String,
     val stageID: String,
-    val assignedToID: String? = null
 )
 
 @Serializable
 data class UpdateOpportunityRequest(
     val name: String,
     val description: String? = null,
-    val value: Double? = null,
-    val priority: Int? = null,
+    val value: Double,
+    val priority: Int,
     val notes: String? = null,
+    val assignedTo: String? = null,
+    val stageID: String,
+    val funnelID: String,
 )
 
 @Serializable

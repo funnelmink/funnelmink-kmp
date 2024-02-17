@@ -75,10 +75,10 @@ data class Funnel(
 
     val name: String,
     val type: FunnelType,
-    val stages: List<FunnelStage>,
-    val cases: List<CaseRecord>,
-    val leads: List<Lead>,
-    val opportunities: List<Opportunity>,
+    var stages: List<FunnelStage>,
+    var cases: List<CaseRecord>,
+    var leads: List<Lead>,
+    var opportunities: List<Opportunity>,
 )
 
 @Serializable
@@ -205,8 +205,9 @@ enum class FunnelType(val typeName: String) {
 
 @Serializable(with = LeadClosedResultSerializer::class)
 enum class LeadClosedResult(val resultName: String) {
-    Converted("CONVERTED"),
-    NotConverted("NOT_CONVERTED");
+    AccountAndOpportunity("CONVERT_TO_ACCOUNT_AND_OPPORTUNITY"),
+    Account("CONVERT_TO_ACCOUNT"),
+    Lost("CLOSE_AS_LOST");
 
     companion object {
         fun fromResultName(resultName: String): LeadClosedResult =

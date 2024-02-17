@@ -15,25 +15,49 @@ struct LeadDetailView: View {
     @State var lead: Lead
     @State var funnel: Funnel
     @State var stage: FunnelStage
+    var closedPrompt: String? {
+        var out = ""
+        switch lead.closedResult {
+        case .lost: out = "This Lead was closed as `Lost`"
+        case .account: out = "This Lead was converted to an Account"
+        case .accountAndOpportunity: out = "This Lead was converted to an Account + Opportunity"
+        case .none: return nil
+        }
+        if let closedDate = lead.closedDate?.toDate()?.toTaskSectionTitle() {
+            out += " on \(closedDate)"
+        }
+        return out
+    }
     var body: some View {
         VStack {
+            if let closedPrompt {
+                RoundedRectangle(cornerRadius: 10)
+                    .fill(Color.yellow)
+                    .overlay {
+                        Text(closedPrompt)
+                            .foregroundStyle(.secondary)
+                            .padding()
+                    }
+                    .frame(height: 100)
+                    .padding()
+            }
             List {
                 if lead.email != nil || lead.phone != nil || lead.company != nil || lead.source != nil || lead.jobTitle != nil {
                     Section("CONTACT INFORMATION") {
                         if let email = lead.email {
-                            labeledRow(name: "Email", value: email)
+                            LabeledRow(name: "Email", value: email)
                         }
                         if let phone = lead.phone {
-                            labeledRow(name: "Phone", value: phone)
+                            LabeledRow(name: "Phone", value: phone)
                         }
                         if let company = lead.company {
-                            labeledRow(name: "Company", value: company)
+                            LabeledRow(name: "Company", value: company)
                         }
                         if let source = lead.source {
-                            labeledRow(name: "Source", value: source)
+                            LabeledRow(name: "Source", value: source)
                         }
                         if let jobTitle = lead.jobTitle {
-                            labeledRow(name: "Job Title", value: jobTitle)
+                            LabeledRow(name: "Job Title", value: jobTitle)
                         }
                     }
                 }
@@ -41,38 +65,42 @@ struct LeadDetailView: View {
                 if lead.address != nil || lead.city != nil || lead.state != nil || lead.zip != nil || lead.country != nil {
                     Section("LOCATION INFORMATION") {
                         if let address = lead.address {
-                            labeledRow(name: "Address", value: address)
+                            LabeledRow(name: "Address", value: address)
                         }
                         if let city = lead.city {
-                            labeledRow(name: "City", value: city)
+                            LabeledRow(name: "City", value: city)
                         }
                         if let state = lead.state {
-                            labeledRow(name: "State", value: state)
+                            LabeledRow(name: "State", value: state)
                         }
                         if let zip = lead.zip {
-                            labeledRow(name: "Zip", value: zip)
+                            LabeledRow(name: "Zip", value: zip)
                         }
                         if let country = lead.country {
-                            labeledRow(name: "Country", value: country)
+                            LabeledRow(name: "Country", value: country)
                         }
                     }
                 }
                 
                 if let latitude = lead.latitude, let longitude = lead.longitude {
                     Section("GEO LOCATION") {
-                        labeledRow(name: "Latitude", value: "\(latitude.doubleValue)")
-                        labeledRow(name: "Longitude", value: "\(longitude.doubleValue)")
+                        LabeledRow(name: "Latitude", value: "\(latitude.doubleValue)")
+                        LabeledRow(name: "Longitude", value: "\(longitude.doubleValue)")
                     }
                 }
                 
                 Section("LEAD MANAGEMENT") {
                     if let assignedTo = lead.assignedTo {
-                        labeledRow(name: "Assigned To", value: assignedTo)
+                        LabeledRow(name: "Assigned To", value: assignedTo)
                     }
-                    // TODO: priority Label
-                    labeledRow(name: "Priority", value: "\(lead.priority)")
-                    labeledRow(name: "Funnel", value: funnel.name)
-                    labeledRow(name: "Stage", value: stage.name)
+                    LabeledRow(
+                        name: "Priority",
+                        value: lead.priority.priorityName,
+                        imageName: lead.priority.priorityIconName,
+                        valueColor: lead.priority.priorityColor
+                    )
+                    LabeledRow(name: "Funnel", value: funnel.name)
+                    LabeledRow(name: "Stage", value: stage.name)
                 }
                 
                 if let notes = lead.notes {
@@ -97,10 +125,11 @@ struct LeadDetailView: View {
                 }
                 Spacer()
                 Button("Convert or Close Lead") {
-                    // TODO: presentation
-                    // convert to account
-                    // gives the option to also create an opportunity
-                    // OR you can close lead
+                    navigation.modalSheet(.convertLead(lead: lead)) {
+                        Task { @MainActor in
+                            lead = try await Networking.api.getLead(id: lead.id)
+                        }
+                    }
                 }
             }
             .padding()
@@ -110,22 +139,17 @@ struct LeadDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    navigation.modalSheet(.editLead(lead: lead, funnelID: funnel.id, stageID: stage.id))
+                    navigation.modalSheet(.editLead(lead: lead, funnelID: funnel.id, stageID: stage.id)) {
+                        Task { @MainActor in
+                            lead = try await Networking.api.getLead(id: lead.id)
+                        }
+                    }
                 } label: {
                     Text("Edit")
                 }
             }
         }
-    }
-    
-    func labeledRow(name: String, value: String) -> some View {
-        HStack {
-            Text(name)
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-            Spacer()
-            Text(value)
-        }
+        .logged(info: lead.id)
     }
 }
 

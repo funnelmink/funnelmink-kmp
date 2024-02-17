@@ -46,7 +46,7 @@ interface API {
     @Throws(Exception::class) suspend fun createAccount(body: CreateAccountRequest): Account
     @Throws(Exception::class) suspend fun deleteAccount(id: String)
     @Throws(Exception::class) suspend fun getAccountActivities(id: String): List<ActivityRecord>
-    @Throws(Exception::class) suspend fun getAccountDetails(id: String): Account
+    @Throws(Exception::class) suspend fun getAccountDetails(id: String): AccountDetailsResponse
     @Throws(Exception::class) suspend fun updateAccount(id: String, body: UpdateAccountRequest): Account
 
     // activities
@@ -61,12 +61,13 @@ interface API {
     // cases
     @Throws(Exception::class) suspend fun assignCaseToMember(id: String, memberID: String): CaseRecord
     @Throws(Exception::class) suspend fun assignCaseToFunnelStage(id: String, stageID: String): CaseRecord
-    @Throws(Exception::class) suspend fun createCase(body: CreateCaseRequest, stageID: String, funnelID: String, accountID: String?): CaseRecord
+    @Throws(Exception::class) suspend fun createCase(body: CreateCaseRequest): CaseRecord
     @Throws(Exception::class) suspend fun updateCase(id: String, body: UpdateCaseRequest): CaseRecord
     @Throws(Exception::class) suspend fun deleteCase(id: String)
     @Throws(Exception::class) suspend fun closeCase(id: String): CaseRecord
 
     // funnels
+    @Throws(Exception::class) suspend fun createDefaultFunnels()
     @Throws(Exception::class) suspend fun getFunnels(): List<Funnel>
     @Throws(Exception::class) suspend fun getFunnelsForType(funnelType: FunnelType): List<Funnel>
     @Throws(Exception::class) suspend fun getFunnel(id: String): Funnel
@@ -75,15 +76,17 @@ interface API {
     @Throws(Exception::class) suspend fun assignLeadToMember(id: String, memberID: String): Lead
     @Throws(Exception::class) suspend fun assignLeadToFunnelStage(id: String, stageID: String): Lead
     @Throws(Exception::class) suspend fun getLeads(): List<Lead>
+    @Throws(Exception::class) suspend fun getLead(id: String): Lead
     @Throws(Exception::class) suspend fun createLead(body: CreateLeadRequest): Lead
     @Throws(Exception::class) suspend fun updateLead(id: String, body: UpdateLeadRequest): Lead
-    @Throws(Exception::class) suspend fun convertLead(id: String, wasSuccessfulConversion: Boolean)
+    @Throws(Exception::class) suspend fun convertLead(id: String, result: LeadClosedResult)
     @Throws(Exception::class) suspend fun deleteLead(id: String)
 
     // opportunities
     @Throws(Exception::class) suspend fun assignOpportunityToMember(id: String, memberID: String): Opportunity
     @Throws(Exception::class) suspend fun assignOpportunityToFunnelStage(id: String, stageID: String): Opportunity
-    @Throws(Exception::class) suspend fun createOpportunity(body: CreateOpportunityRequest, funnelID: String, accountID: String?): Opportunity
+    @Throws(Exception::class) suspend fun createOpportunity(body: CreateOpportunityRequest): Opportunity
+    @Throws(Exception::class) suspend fun getOpportunity(id: String): Opportunity
     @Throws(Exception::class) suspend fun updateOpportunity(id: String, body: UpdateOpportunityRequest): Opportunity
     @Throws(Exception::class) suspend fun deleteOpportunity(id: String)
 
@@ -107,7 +110,6 @@ interface API {
     // ------------------------------------------------------------------------
 
     // funnels
-    @Throws(Exception::class) suspend fun createDefaultFunnels()
     @Throws(Exception::class) suspend fun createFunnel(body: CreateFunnelRequest): Funnel
     @Throws(Exception::class) suspend fun updateFunnel(id: String, body: UpdateFunnelRequest): Funnel
     @Throws(Exception::class) suspend fun deleteFunnel(id: String)

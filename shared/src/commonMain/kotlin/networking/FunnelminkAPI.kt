@@ -71,7 +71,6 @@ class FunnelminkAPI(
             Utilities.logger.warn("User for $id not found. Dumping users:")
             val users = cache.selectAllUsersInfo()
             users.forEach { Utilities.logger.info("${it.id} - ${it.username}") }
-//            Utilities.logger.info("Not signed in. Navigating to LoginView")
         } else {
             Utilities.logger.info("Signing back in as ${user.username}")
         }
@@ -117,7 +116,7 @@ class FunnelminkAPI(
             if (!cacheInvalidator.isStale(cacheKey)) {
                 val cached = cache.selectAllActivitiesForRecord(id)
                 if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} activities for account $id from cache")
+                    Utilities.logger.info("🛃 Retrieved ${cached.size} activities for account $id from cache")
                     return cached
                 }
             }
@@ -129,7 +128,7 @@ class FunnelminkAPI(
         } catch (e: Exception) {
             val cached = cache.selectAllActivitiesForRecord(id)
             if (cached.isNotEmpty()) {
-                Utilities.logger.warn("Failed to fetch Activities. Returned ${cached.size} activities for account $id from cache")
+                Utilities.logger.warn("🛃 Failed to fetch Activities. Returned ${cached.size} activities for account $id from cache")
                 return cached
             } else {
                 throw e
@@ -138,8 +137,8 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getAccountDetails(id: String): Account {
-        // this is unused right now
+    override suspend fun getAccountDetails(id: String): AccountDetailsResponse {
+//         TODO: val cacheKey = "getAccountDetails$id"
         return genericRequest("$baseURL/v1/workspace/accounts/$id", HttpMethod.Get)
     }
 
@@ -150,7 +149,7 @@ class FunnelminkAPI(
             if (!cacheInvalidator.isStale(cacheKey)) {
                 val cached = cache.selectAllAccounts()
                 if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} accounts from cache")
+                    Utilities.logger.info("🛃 Retrieved ${cached.size} accounts from cache")
                     return cached
                 }
             }
@@ -162,7 +161,7 @@ class FunnelminkAPI(
         } catch (e: Exception) {
             val cached = cache.selectAllAccounts()
             if (cached.isNotEmpty()) {
-                Utilities.logger.warn("Failed to fetch Accounts. Returned ${cached.size} accounts from cache")
+                Utilities.logger.warn("🛃 Failed to fetch Accounts. Returned ${cached.size} accounts from cache")
                 return cached
             } else {
                 throw e
@@ -242,12 +241,11 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun createCase(body: CreateCaseRequest, stageID: String, funnelID: String, accountID: String?): CaseRecord {
-        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$funnelID/$stageID", HttpMethod.Post) {
+    override suspend fun createCase(body: CreateCaseRequest): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases", HttpMethod.Post) {
             setBody(body)
-            accountID?.let { parameter("accountID", it) }
         }
-        cache.insertCase(case, funnelID, accountID)
+        cache.insertCase(case, body.funnelID, body.accountID)
         return case
     }
 
@@ -284,7 +282,7 @@ class FunnelminkAPI(
             if (!cacheInvalidator.isStale(cacheKey)) {
                 val cached = cache.selectAllFunnels()
                 if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} funnels from cache")
+                    Utilities.logger.info("🛃 Retrieved ${cached.size} funnels from cache")
                     return cached
                 }
             }
@@ -296,7 +294,7 @@ class FunnelminkAPI(
         } catch (e: Exception) {
             val cached = cache.selectAllFunnels()
             if (cached.isNotEmpty()) {
-                Utilities.logger.warn("Failed to fetch Funnels. Returned ${cached.size} funnels from cache")
+                Utilities.logger.warn("🛃 Failed to fetch Funnels. Returned ${cached.size} funnels from cache")
                 return cached
             } else {
                 throw e
@@ -306,22 +304,41 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun getFunnel(id: String): Funnel {
-//        val cached = cache.selectFunnel(id)
-//        if (cached != null) {
-//            Utilities.logger.info("Returned funnel $id from cache")
-//            return cached
-//        }
+        val cached = cache.selectFunnel(id)
+        if (cached != null) {
+            Utilities.logger.info("🛃 Returned funnel $id from cache")
+            return cached
+        }
         return genericRequest("$baseURL/v1/workspace/funnels/$id", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
     override suspend fun getFunnelsForType(funnelType: FunnelType): List<Funnel> {
-        return genericRequest("$baseURL/v1/workspace/funnels/${funnelType.typeName}", HttpMethod.Get)
+        val cacheKey = "getFunnels"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllFunnelsForType(funnelType)
+                if (cached.isNotEmpty()) {
+                    Utilities.logger.info("🛃 Retrieved ${cached.size} ${funnelType.typeName} funnels from cache")
+                    return cached
+                }
+            }
+            // TODO: Funnel.sq replaceAllFunnelsForType
+           return genericRequest<List<Funnel>>("$baseURL/v1/workspace/funnels/${funnelType.typeName}", HttpMethod.Get)
+        } catch (e: Exception) {
+            val cached = cache.selectAllFunnelsForType(funnelType)
+            if (cached.isNotEmpty()) {
+                Utilities.logger.warn("🛃 Failed to fetch Funnels. Returned ${cached.size} ${funnelType.typeName} funnels from cache")
+                return cached
+            } else {
+                throw e
+            }
+        }
     }
 
     @Throws(Exception::class)
     override suspend fun createDefaultFunnels() {
-        genericRequest<Unit>("$baseURL/v1/workspace/owner/funnels/createDefaultFunnels", HttpMethod.Post) {
+        genericRequest<Unit>("$baseURL/v1/workspace/funnels/createDefaultFunnels", HttpMethod.Post) {
             setBody("{}") // POST requests can't have empty bodies
         }
         cacheInvalidator.invalidate("getFunnels")
@@ -413,7 +430,7 @@ class FunnelminkAPI(
             if (!cacheInvalidator.isStale(cacheKey)) {
                 val cached = cache.selectAllLeads()
                 if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} leads from cache")
+                    Utilities.logger.info("🛃 Retrieved ${cached.size} leads from cache")
                     return cached
                 }
             }
@@ -425,12 +442,21 @@ class FunnelminkAPI(
         } catch (e: Exception) {
             val cached = cache.selectAllLeads()
             if (cached.isNotEmpty()) {
-                Utilities.logger.warn("Failed to fetch Leads. Returned ${cached.size} leads from cache")
+                Utilities.logger.warn("🛃 Failed to fetch Leads. Returned ${cached.size} leads from cache")
                 return cached
             } else {
                 throw e
             }
         }
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getLead(id: String): Lead {
+        val cached = cache.selectLead(id)
+        if (cached != null) {
+            return cached
+        }
+        return genericRequest("$baseURL/v1/workspace/leads/$id", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
@@ -452,10 +478,12 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun convertLead(id: String, wasSuccessfulConversion: Boolean) {
+    override suspend fun convertLead(id: String, result: LeadClosedResult) {
         genericRequest<Unit>("$baseURL/v1/workspace/leads/$id/convert", HttpMethod.Put) {
-            parameter("closedResult", if (wasSuccessfulConversion) "CONVERTED" else "NOT_CONVERTED")
+            parameter("closedResult", result.resultName)
         }
+        cacheInvalidator.invalidate("getFunnels")
+        cacheInvalidator.invalidate("getAccounts")
         cache.deleteLead(id)
     }
 
@@ -484,12 +512,21 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun createOpportunity(body: CreateOpportunityRequest, funnelID: String, accountID: String?): Opportunity {
+    override suspend fun createOpportunity(body: CreateOpportunityRequest): Opportunity {
         val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities", HttpMethod.Post) {
             setBody(body)
         }
-        cache.insertOpportunity(opportunity, funnelID, accountID)
+        cache.insertOpportunity(opportunity, body.funnelID, body.accountID)
         return opportunity
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getOpportunity(id: String): Opportunity {
+        val cached = cache.selectOpportunity(id)
+        if (cached != null) {
+            return cached
+        }
+        return genericRequest("$baseURL/v1/workspace/opportunities/$id", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
@@ -527,7 +564,7 @@ class FunnelminkAPI(
             if (!cacheInvalidator.isStale(cacheKey)) {
                 val cached = cache.selectAllIncompleteTasks()
                 if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} tasks from cache")
+                    Utilities.logger.info("🛃 Retrieved ${cached.size} tasks from cache")
                     return cached
                 }
             }
@@ -540,7 +577,7 @@ class FunnelminkAPI(
             // Fallback to cached data if a network request fails
             val cached = cache.selectAllIncompleteTasks()
             if (cached.isNotEmpty()) {
-                Utilities.logger.warn("Failed to fetch Tasks. Returned ${cached.size} tasks from cache")
+                Utilities.logger.warn("🛃 Failed to fetch Tasks. Returned ${cached.size} tasks from cache")
                 return cached
             } else {
                 throw e // Re-throw the exception if there's no cached data
@@ -555,7 +592,7 @@ class FunnelminkAPI(
             if (!cacheInvalidator.isStale(cacheKey)) {
                 val cached = cache.selectAllCompleteTasks()
                 if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} completed tasks from cache")
+                    Utilities.logger.info("🛃 Retrieved ${cached.size} completed tasks from cache")
                     return cached
                 }
             }
@@ -568,7 +605,7 @@ class FunnelminkAPI(
             // Fallback to cached data if a network request fails
             val cached = cache.selectAllCompleteTasks()
             if (cached.isNotEmpty()) {
-                Utilities.logger.warn("Failed to fetch completed Tasks. Returned ${cached.size} completed tasks from cache")
+                Utilities.logger.warn("🛃 Failed to fetch completed Tasks. Returned ${cached.size} completed tasks from cache")
                 return cached
             } else {
                 throw e // Re-throw the exception if there's no cached data
@@ -602,7 +639,7 @@ class FunnelminkAPI(
     override suspend fun getTask(id: String): TaskRecord? {
         val cached = cache.selectTask(id)
         if (cached != null) {
-            Utilities.logger.info("Returned task $id from cache")
+            Utilities.logger.info("🛃 Returned task $id from cache")
             return cached
         }
         return genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Get)
@@ -698,7 +735,7 @@ class FunnelminkAPI(
             if (!cacheInvalidator.isStale(cacheKey)) {
                 val cached = cache.selectAllWorkspaceMembers()
                 if (cached.isNotEmpty()) {
-                    Utilities.logger.info("Retrieved ${cached.size} workspace members from cache")
+                    Utilities.logger.info("🛃 Retrieved ${cached.size} workspace members from cache")
                     return cached
                 }
             }
@@ -710,7 +747,7 @@ class FunnelminkAPI(
         } catch (e: Exception) {
             val cached = cache.selectAllWorkspaceMembers()
             if (cached.isNotEmpty()) {
-                Utilities.logger.warn("Failed to fetch workspace members. Returned ${cached.size} members from cache")
+                Utilities.logger.warn("🛃 Failed to fetch workspace members. Returned ${cached.size} members from cache")
                 return cached
             } else {
                 throw e
@@ -812,7 +849,7 @@ class FunnelminkAPI(
             Utilities.logger.log(LogLevel.WARN, "🆘 $responseBody")
             try {
                 var message = jsonDecoder.decodeFromString<APIError>(responseBody).message
-                if (message.startsWith("Expected start of object") == true) {
+                if (message.startsWith("Expected start of object")) {
                     message = responseBody
                 }
                 when (response.status) {
