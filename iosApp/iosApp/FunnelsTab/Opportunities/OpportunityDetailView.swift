@@ -33,51 +33,51 @@ struct OpportunityDetailView: View {
                     }
                     .frame(height: 100)
                     .padding()
-                List {
-                    LabeledRow(name: "Value", value: opportunity.value.currencyFormat)
-                    Section("OPPORTUNITY MANAGEMENT") {
-                        if let assignedTo = opportunity.assignedTo {
-                            LabeledRow(name: "Assigned To", value: assignedTo)
-                        }
-                        LabeledRow(
-                            name: "Priority",
-                            value: opportunity.priority.priorityName,
-                            imageName: opportunity.priority.priorityIconName,
-                            valueColor: opportunity.priority.priorityColor
-                        )
-                        LabeledRow(name: "Funnel", value: funnel.name)
-                        LabeledRow(name: "Stage", value: stage.name)
-                    }
-                    
-                    if let notes = opportunity.notes {
-                        Section("NOTES") {
-                            Text(notes)
-                        }
-                    }
-                }
-                HStack {
-                    WarningAlertButton(warningMessage: "Are you sure you want to delete this opportunity?") {
-                        Task {
-                            do {
-                                try await Networking.api.deleteOpportunity(id: opportunity.id)
-                                navigation.popSegue()
-                            } catch {
-                                Toast.warn(error)
-                            }
-                        }
-                    } label: {
-                        Text("Delete Opportunity")
-                            .foregroundStyle(.red)
-                    }
-                    Spacer()
-                    Button("Close Opportunity") {
-                        Toast.info("TODO: close opportunity view - asks for close reason and notes")
-                        // TODO: close opportunity
-                        // Takes you to a generic close screen and asks you to select a close reason
-                    }
-                }
-                .padding()
             }
+            List {
+                LabeledRow(name: "Value", value: opportunity.value.currencyFormat)
+                Section("OPPORTUNITY MANAGEMENT") {
+                    if let assignedTo = opportunity.assignedTo {
+                        LabeledRow(name: "Assigned To", value: assignedTo)
+                    }
+                    LabeledRow(
+                        name: "Priority",
+                        value: opportunity.priority.priorityName,
+                        imageName: opportunity.priority.priorityIconName,
+                        valueColor: opportunity.priority.priorityColor
+                    )
+                    LabeledRow(name: "Funnel", value: funnel.name)
+                    LabeledRow(name: "Stage", value: stage.name)
+                }
+                
+                if let notes = opportunity.notes {
+                    Section("NOTES") {
+                        Text(notes)
+                    }
+                }
+            }
+            HStack {
+                WarningAlertButton(warningMessage: "Are you sure you want to delete this opportunity?") {
+                    Task {
+                        do {
+                            try await Networking.api.deleteOpportunity(id: opportunity.id)
+                            navigation.popSegue()
+                        } catch {
+                            Toast.warn(error)
+                        }
+                    }
+                } label: {
+                    Text("Delete Opportunity")
+                        .foregroundStyle(.red)
+                }
+                Spacer()
+                Button("Close Opportunity") {
+                    Toast.info("TODO: close opportunity view - asks for close reason and notes")
+                    // TODO: close opportunity
+                    // Takes you to a generic close screen and asks you to select a close reason
+                }
+            }
+            .padding()
         }
         .navigationTitle(opportunity.name)
         .navigationBarTitleDisplayMode(.inline)
