@@ -74,17 +74,18 @@ struct KanbanCardView: View {
     let onTap: (KanbanCard) -> Void
     var body: some View {
         VStack(alignment: .leading) {
-            Text(card.title)
-                .font(.headline)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            HStack(spacing: 0) {
+                Text(card.title)
+                    .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Image(systemName: card.priority.priorityIconName)
+                    .foregroundStyle(card.priority.priorityColor)
+            }
             label(card.subtitleLabel)
                 .padding(.vertical, 1)
             HStack(spacing: 12) {
                 if let footerLabel = card.footerLabel {
                     label(footerLabel)
-                }
-                if let secondFooterLabel = card.secondFooterLabel {
-                    label(secondFooterLabel)
                 }
                 Spacer()
                 Text(card.footerTrailingText)
@@ -98,7 +99,7 @@ struct KanbanCardView: View {
         )
         .overlay(
             RoundedRectangle(cornerRadius: 12)
-                .stroke(Color(.systemGray), lineWidth: 1)
+                .stroke(card.priority.priorityColor, lineWidth: CGFloat(card.priority + 1))
         )
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .listRowSeparator(.hidden)
@@ -185,7 +186,7 @@ struct KanbanCard: Identifiable, Codable {
     let title: String
     let subtitleLabel: Label
     let footerLabel: Label?
-    var secondFooterLabel: Label?
+    let priority: Int32
     let footerTrailingText: String
     
     var columnID: String

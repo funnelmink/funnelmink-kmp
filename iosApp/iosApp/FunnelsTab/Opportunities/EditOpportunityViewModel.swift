@@ -56,9 +56,9 @@ class EditOpportunityViewModel: ViewModel {
             priority: priority.kotlinValue,
             notes: notes,
             accountID: accountID,
-            assignedToID: assignedTo,
+            assignedToID: assignedTo?.nilIfEmpty(),
             funnelID: state.selectedFunnel.id,
-            stageID: state.selectedStage.idgen
+            stageID: state.selectedStage.id
         )
         _ = try await Networking.api.createOpportunity(body: body)
     }

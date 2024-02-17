@@ -33,7 +33,7 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
                         title: lead.name,
                         subtitleLabel: .init(iconName: "note.text", text: lead.notes ?? "--"),
                         footerLabel: nil,
-                        secondFooterLabel: nil,
+                        priority: lead.priority,
                         footerTrailingText: "",
                         columnID: lead.stageID ?? stage.id
                     )
@@ -45,12 +45,9 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
                         id: caseRecord.id,
                         title: caseRecord.name,
                         subtitleLabel: .init(iconName: "note.text", text: caseRecord.notes ?? "--"),
-                        footerLabel: .init(
-                            iconName: "banknote",
-                            text: caseRecord.value.currencyFormat
-                        ),
-                        secondFooterLabel: nil,
-                        footerTrailingText: "",
+                        footerLabel: nil,
+                        priority: caseRecord.priority,
+                        footerTrailingText: caseRecord.value.currencyFormat,
                         columnID: caseRecord.stageID ?? stage.id
                     )
                     cards.append(card)
@@ -61,12 +58,9 @@ class FunnelsViewModel: ViewModel, KanbanViewModel {
                         id: opportunity.id,
                         title: opportunity.name,
                         subtitleLabel: .init(iconName: "note.text", text: opportunity.notes ?? "--"),
-                        footerLabel: .init(
-                            iconName: "banknote",
-                            text: opportunity.value.currencyFormat
-                        ),
-                        secondFooterLabel: nil,
-                        footerTrailingText: "",
+                        footerLabel: nil,
+                        priority: opportunity.priority,
+                        footerTrailingText: opportunity.value.currencyFormat,
                         columnID: opportunity.stageID ?? stage.id
                     )
                     cards.append(card)
