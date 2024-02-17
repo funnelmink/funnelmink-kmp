@@ -99,7 +99,7 @@ struct FunnelsView: View {
                     if let newSelection = viewModel.funnels.first(where: { $0.type == .case }) {
                         selection = newSelection.name
                     }
-                    navigation.modalSheet(.createCase, onDismiss: refreshFunnels)
+                    navigation.modalSheet(.createCase(accountID: nil), onDismiss: refreshFunnels)
                 },
                 .init(name: "New Opportunity", iconName: "moon.stars") {
                     if let newSelection = viewModel.funnels.first(where: { $0.type == .opportunity }) {

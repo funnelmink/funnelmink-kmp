@@ -288,6 +288,24 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
+    fun selectCase(id: String): CaseRecord? {
+        val cached = caseDB.selectCaseById(id).executeAsOneOrNull() ?: return null
+        return mapCase(
+            cached.id,
+            cached.assignedTo,
+            cached.closedDate,
+            cached.createdAt,
+            cached.description,
+            cached.name,
+            cached.notes,
+            cached.priority.toInt(),
+            cached.stage,
+            cached.updatedAt,
+            cached.value_?.toDouble() ?: 0.0
+        )
+    }
+
+    @Throws(Exception::class)
     fun selectAllCasesForAccount(id: String): List<CaseRecord> {
         return caseDB.selectAllCasesForAccount(id).executeAsList().map {
             mapCase(

@@ -164,4 +164,5 @@ struct EditCaseView: View {
 
 #Preview {
     EditCaseView()
+        .withPreviewDependencies()
 }

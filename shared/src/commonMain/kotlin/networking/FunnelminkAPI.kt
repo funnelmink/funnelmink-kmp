@@ -259,6 +259,15 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
+    override suspend fun getCase(id: String): CaseRecord {
+        val cached = cache.selectCase(id)
+        if (cached != null) {
+            return cached
+        }
+        return genericRequest("$baseURL/v1/workspace/cases/$id", HttpMethod.Get)
+    }
+
+    @Throws(Exception::class)
     override suspend fun deleteCase(id: String) {
         genericRequest<Unit>("$baseURL/v1/workspace/cases/$id", HttpMethod.Delete)
         cache.deleteCase(id)
