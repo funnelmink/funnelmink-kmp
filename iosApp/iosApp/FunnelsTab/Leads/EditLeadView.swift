@@ -248,7 +248,7 @@ struct EditLeadView: View {
             do {
                 try await viewModel.setUp(funnelID: initialFunnelD, stageID: initialStageID, lead: lead)
             } catch {
-                Toast.error(error)
+                Toast.warn(error)
             }
         }
     }

@@ -12,6 +12,7 @@ import SwiftUI
 extension View {
     func withPreviewDependencies() -> some View {
         self
+            .toasted()
             .environmentObject(AppState.shared)
             .environmentObject(Navigation.shared)
     }

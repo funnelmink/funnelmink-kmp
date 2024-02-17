@@ -87,5 +87,6 @@ struct TaskDetailView: View {
                 }
             }
         }
+        .logged(info: task.id)
     }
 }

@@ -46,10 +46,14 @@ extension View {
         }
     }
     
-    func logged(id: String = #fileID) -> some View {
+    func logged(id: String = #fileID, info: String? = nil) -> some View {
         self.onAppear {
             // Drop the `funnelmink/` and `.swift` from each file ID
-            Logger.view("\(id.dropFirst(11).dropLast(6))")
+            var out = "\(id.dropFirst(11).dropLast(6))"
+            if let info = info {
+                out += " - \(info)"
+            }
+            Logger.view(out)
         }
     }
     

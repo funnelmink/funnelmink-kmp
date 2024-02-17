@@ -19,5 +19,8 @@ UPDATE SQLFunnel SET name = ?, type = ? WHERE id = ?;
 selectAllFunnels:
 SELECT * FROM SQLFunnel;
 
+selectAllFunnelsForType:
+SELECT * FROM SQLFunnel WHERE type = ?;
+
 removeAllFunnels:
 DELETE FROM SQLFunnel;
