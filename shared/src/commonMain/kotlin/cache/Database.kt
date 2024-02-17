@@ -623,6 +623,24 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         }
     }
 
+    @Throws(Exception::class)
+    fun selectOpportunity(id: String): Opportunity? {
+        val cached = opportunityDB.getOpportunity(id).executeAsOneOrNull() ?: return null
+        return mapOpportunity(
+            cached.id,
+            cached.assignedTo,
+            cached.closedDate,
+            cached.createdAt,
+            cached.description,
+            cached.name,
+            cached.notes,
+            cached.priority.toInt(),
+            cached.stage,
+            cached.updatedAt,
+            cached.value_?.toDouble() ?: 0.0
+        )
+    }
+
     private fun mapOpportunity(
         id: String,
         assignedTo: String?,

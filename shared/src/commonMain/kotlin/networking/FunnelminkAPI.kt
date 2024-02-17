@@ -522,6 +522,15 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
+    override suspend fun getOpportunity(id: String): Opportunity {
+        val cached = cache.selectOpportunity(id)
+        if (cached != null) {
+            return cached
+        }
+        return genericRequest("$baseURL/v1/workspace/opportunities/$id", HttpMethod.Get)
+    }
+
+    @Throws(Exception::class)
     override suspend fun updateOpportunity(id: String, body: UpdateOpportunityRequest): Opportunity {
         val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities/$id", HttpMethod.Put) {
             setBody(body)

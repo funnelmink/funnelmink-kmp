@@ -110,6 +110,7 @@
 		1FA27F842B5EE80E00A447C3 /* TasksLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 1FA27F832B5EE80E00A447C3 /* TasksLottie.json */; };
 		1FCB70600327C8D33AEA3E90 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7D2C21891A9AE2804154 /* Modal.swift */; };
 		1FCB71FE510C993BB847583D /* AccounsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7B80AFBEAD61BD614CD6 /* AccounsView.swift */; };
+		1FCB731B11540D8EC93FCBBD /* LabeledRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB73DEFFC09C0D5A581EFC /* LabeledRow.swift */; };
 		1FCB73EF89A4C87B5C5908DD /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */; };
 		1FCB73F124945A937ECDAC6F /* WorkspacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7C4E3E93CDD70AD8DCC1 /* WorkspacesView.swift */; };
 		1FCB74155DEADF4A32FAA4E4 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7A3AB02D5F9F52C1AB1F /* LoginViewModel.swift */; };
@@ -238,6 +239,7 @@
 		1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Shared+.swift"; sourceTree = "<group>"; };
 		1FCB729289973E82B53DC6AE /* WorkspacesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspacesViewModel.swift; sourceTree = "<group>"; };
 		1FCB72AEE522D13EAC8565D2 /* Segue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
+		1FCB73DEFFC09C0D5A581EFC /* LabeledRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabeledRow.swift; sourceTree = "<group>"; };
 		1FCB7805FE812978E02B4C3E /* EditOpportunityViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditOpportunityViewModel.swift; sourceTree = "<group>"; };
 		1FCB79A7D2ED77D23827B2FB /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		1FCB7A3AB02D5F9F52C1AB1F /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
@@ -492,6 +494,7 @@
 				1FA27F7B2B5CAA9F00A447C3 /* CustomEmptyView.swift */,
 				1F022A3A2B49159100966345 /* CustomTextField.swift */,
 				0D3E40412B640F130096E222 /* Kanban.swift */,
+				1FCB73DEFFC09C0D5A581EFC /* LabeledRow.swift */,
 				0D7972512B75E7E80048E942 /* MenuFAB.swift */,
 				1FA27F792B5978F300A447C3 /* TimelineView.swift */,
 				0D012E5A2B477E3A00658153 /* WarningAlertButton.swift */,
@@ -568,8 +571,8 @@
 			isa = PBXGroup;
 			children = (
 				0D7972572B767D100048E942 /* EditOpportunityView.swift */,
-				0D7972622B7AB5400048E942 /* OpportunityDetailView.swift */,
 				1FCB7805FE812978E02B4C3E /* EditOpportunityViewModel.swift */,
+				0D7972622B7AB5400048E942 /* OpportunityDetailView.swift */,
 			);
 			path = Opportunities;
 			sourceTree = "<group>";
@@ -983,6 +986,7 @@
 				1FCB7B2A5C922AB310B658B3 /* ProflieView.swift in Sources */,
 				1FCB758646ABB9ABE0EE09E4 /* ConvertLeadView.swift in Sources */,
 				1FCB790621C10F05028F2990 /* EditOpportunityViewModel.swift in Sources */,
+				1FCB731B11540D8EC93FCBBD /* LabeledRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

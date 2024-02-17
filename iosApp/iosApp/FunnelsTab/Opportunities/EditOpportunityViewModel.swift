@@ -85,7 +85,7 @@ class EditOpportunityViewModel: ViewModel {
             value: val,
             priority: priority,
             notes: notes,
-            assignedTo: assignedTo,
+            assignedTo: assignedTo?.nilIfEmpty(),
             stageID: state.selectedStage.id,
             funnelID: state.selectedFunnel.id
         )

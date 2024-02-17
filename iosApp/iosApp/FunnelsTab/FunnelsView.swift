@@ -105,7 +105,7 @@ struct FunnelsView: View {
                     if let newSelection = viewModel.funnels.first(where: { $0.type == .opportunity }) {
                         selection = newSelection.name
                     }
-                    navigation.modalSheet(.createOpportunity, onDismiss: refreshFunnels)
+                    navigation.modalSheet(.createOpportunity(accountID: nil), onDismiss: refreshFunnels)
                 },
                 .init(name: "New Lead", iconName: "person") {
                     if let newSelection = viewModel.funnels.first(where: { $0.type == .lead }) {
