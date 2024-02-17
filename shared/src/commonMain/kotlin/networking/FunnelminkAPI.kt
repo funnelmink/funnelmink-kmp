@@ -241,12 +241,11 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun createCase(body: CreateCaseRequest, stageID: String, funnelID: String, accountID: String?): CaseRecord {
-        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$funnelID/$stageID", HttpMethod.Post) {
+    override suspend fun createCase(body: CreateCaseRequest): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases", HttpMethod.Post) {
             setBody(body)
-            accountID?.let { parameter("accountID", it) }
         }
-        cache.insertCase(case, funnelID, accountID)
+        cache.insertCase(case, body.funnelID, body.accountID)
         return case
     }
 

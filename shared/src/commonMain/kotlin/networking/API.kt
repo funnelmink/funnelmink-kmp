@@ -61,7 +61,7 @@ interface API {
     // cases
     @Throws(Exception::class) suspend fun assignCaseToMember(id: String, memberID: String): CaseRecord
     @Throws(Exception::class) suspend fun assignCaseToFunnelStage(id: String, stageID: String): CaseRecord
-    @Throws(Exception::class) suspend fun createCase(body: CreateCaseRequest, stageID: String, funnelID: String, accountID: String?): CaseRecord
+    @Throws(Exception::class) suspend fun createCase(body: CreateCaseRequest): CaseRecord
     @Throws(Exception::class) suspend fun updateCase(id: String, body: UpdateCaseRequest): CaseRecord
     @Throws(Exception::class) suspend fun deleteCase(id: String)
     @Throws(Exception::class) suspend fun closeCase(id: String): CaseRecord

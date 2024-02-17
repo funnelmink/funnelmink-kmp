@@ -79,18 +79,25 @@ data class UpdateAccountContactRequest(
 data class CreateCaseRequest(
     val name: String,
     val description: String? = null,
+    val value: Double,
+    val priority: Int,
     val notes: String? = null,
-    val priority: Int? = null,
-    val value: Double? = null
+    val accountID: String? = null,
+    val assignedToID: String? = null,
+    val funnelID: String,
+    val stageID: String,
 )
 
 @Serializable
 data class UpdateCaseRequest(
-    val name: String? = null,
+    val name: String,
     val description: String? = null,
+    val value: Double,
+    val priority: Int,
     val notes: String? = null,
-    val priority: Int? = null,
-    val value: Double? = null
+    val assignedTo: String? = null,
+    val stageID: String,
+    val funnelID: String,
 )
 
 @Serializable
