@@ -94,19 +94,27 @@ struct FunnelsView: View {
         MenuFAB(
             items: [
                 .init(name: "New Case", iconName: "hazardsign") {
+                    if let newSelection = viewModel.funnels.first(where: { $0.type == .case }) {
+                        selection = newSelection.name
+                    }
                     navigation.modalSheet(.createCase, onDismiss: refreshFunnels)
                 },
                 .init(name: "New Opportunity", iconName: "moon.stars") {
+                    if let newSelection = viewModel.funnels.first(where: { $0.type == .opportunity }) {
+                        selection = newSelection.name
+                    }
                     navigation.modalSheet(.createOpportunity, onDismiss: refreshFunnels)
                 },
                 .init(name: "New Lead", iconName: "person") {
-                    navigation.modalSheet(.createLead, onDismiss: refreshFunnels)
+                    if let newSelection = viewModel.funnels.first(where: { $0.type == .lead }) {
+                        selection = newSelection.name
+                    }
+                    navigation.modalSheet(.createLead(accountID: nil), onDismiss: refreshFunnels)
                 },
             ]
         )
     }
     
-    @MainActor
     func refreshFunnels() {
         Task {
             do {

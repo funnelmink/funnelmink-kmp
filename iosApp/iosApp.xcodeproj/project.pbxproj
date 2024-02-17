@@ -119,6 +119,7 @@
 		1FCB76F93C37F8F4E4B76F94 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7C6403EE8A0091F9C3AC /* CreateAccountView.swift */; };
 		1FCB77F6AD2C612392D4609B /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7E8839B6F36DABAA626E /* ProfileViewModel.swift */; };
 		1FCB781F978049D634870A8C /* WorkspacesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB729289973E82B53DC6AE /* WorkspacesViewModel.swift */; };
+		1FCB790621C10F05028F2990 /* EditOpportunityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7805FE812978E02B4C3E /* EditOpportunityViewModel.swift */; };
 		1FCB7B2A5C922AB310B658B3 /* ProflieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7BDF0E879F1578FB13D0 /* ProflieView.swift */; };
 		1FCB7BF596E9F1D2939A3E34 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7D6AC6CEDB402D6F242A /* AppState.swift */; };
 		1FCB7CD17EFAA37FE7FA338F /* Shared+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */; };
@@ -237,6 +238,7 @@
 		1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Shared+.swift"; sourceTree = "<group>"; };
 		1FCB729289973E82B53DC6AE /* WorkspacesViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspacesViewModel.swift; sourceTree = "<group>"; };
 		1FCB72AEE522D13EAC8565D2 /* Segue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
+		1FCB7805FE812978E02B4C3E /* EditOpportunityViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditOpportunityViewModel.swift; sourceTree = "<group>"; };
 		1FCB79A7D2ED77D23827B2FB /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		1FCB7A3AB02D5F9F52C1AB1F /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
@@ -567,6 +569,7 @@
 			children = (
 				0D7972572B767D100048E942 /* EditOpportunityView.swift */,
 				0D7972622B7AB5400048E942 /* OpportunityDetailView.swift */,
+				1FCB7805FE812978E02B4C3E /* EditOpportunityViewModel.swift */,
 			);
 			path = Opportunities;
 			sourceTree = "<group>";
@@ -979,6 +982,7 @@
 				1FCB77F6AD2C612392D4609B /* ProfileViewModel.swift in Sources */,
 				1FCB7B2A5C922AB310B658B3 /* ProflieView.swift in Sources */,
 				1FCB758646ABB9ABE0EE09E4 /* ConvertLeadView.swift in Sources */,
+				1FCB790621C10F05028F2990 /* EditOpportunityViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

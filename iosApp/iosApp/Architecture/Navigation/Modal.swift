@@ -26,9 +26,13 @@ enum Modal: Identifiable {
     case debugMenu
     
     case createCase
-    case createLead
+    
+    case createLead(accountID: String?)
+    
     case editLead(lead: Lead?, funnelID: String?, stageID: String?)
     case convertLead(lead: Lead)
+    
+    // TODO: funnelID, stageID, accountID
     case createOpportunity
     
     @ViewBuilder

@@ -85,7 +85,7 @@ interface API {
     // opportunities
     @Throws(Exception::class) suspend fun assignOpportunityToMember(id: String, memberID: String): Opportunity
     @Throws(Exception::class) suspend fun assignOpportunityToFunnelStage(id: String, stageID: String): Opportunity
-    @Throws(Exception::class) suspend fun createOpportunity(body: CreateOpportunityRequest, stageID: String, funnelID: String, accountID: String?): Opportunity
+    @Throws(Exception::class) suspend fun createOpportunity(body: CreateOpportunityRequest): Opportunity
     @Throws(Exception::class) suspend fun updateOpportunity(id: String, body: UpdateOpportunityRequest): Opportunity
     @Throws(Exception::class) suspend fun deleteOpportunity(id: String)
 

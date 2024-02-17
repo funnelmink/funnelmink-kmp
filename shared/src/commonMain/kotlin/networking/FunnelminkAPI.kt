@@ -305,18 +305,36 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun getFunnel(id: String): Funnel {
-        // TODO: funnels from cache
-//        val cached = cache.selectFunnel(id)
-//        if (cached != null) {
-        //            Utilities.logger.info("🛃 Returned funnel $id from cache")
-//            return cached
-//        }
+        val cached = cache.selectFunnel(id)
+        if (cached != null) {
+            Utilities.logger.info("🛃 Returned funnel $id from cache")
+            return cached
+        }
         return genericRequest("$baseURL/v1/workspace/funnels/$id", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
     override suspend fun getFunnelsForType(funnelType: FunnelType): List<Funnel> {
-        return genericRequest("$baseURL/v1/workspace/funnels/${funnelType.typeName}", HttpMethod.Get)
+        val cacheKey = "getFunnels"
+        try {
+            if (!cacheInvalidator.isStale(cacheKey)) {
+                val cached = cache.selectAllFunnelsForType(funnelType)
+                if (cached.isNotEmpty()) {
+                    Utilities.logger.info("🛃 Retrieved ${cached.size} ${funnelType.typeName} funnels from cache")
+                    return cached
+                }
+            }
+            // TODO: Funnel.sq replaceAllFunnelsForType
+           return genericRequest<List<Funnel>>("$baseURL/v1/workspace/funnels/${funnelType.typeName}", HttpMethod.Get)
+        } catch (e: Exception) {
+            val cached = cache.selectAllFunnelsForType(funnelType)
+            if (cached.isNotEmpty()) {
+                Utilities.logger.warn("🛃 Failed to fetch Funnels. Returned ${cached.size} ${funnelType.typeName} funnels from cache")
+                return cached
+            } else {
+                throw e
+            }
+        }
     }
 
     @Throws(Exception::class)
@@ -495,11 +513,11 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun createOpportunity(body: CreateOpportunityRequest, stageID: String, funnelID: String, accountID: String?): Opportunity {
-        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities/$funnelID/$stageID", HttpMethod.Post) {
+    override suspend fun createOpportunity(body: CreateOpportunityRequest): Opportunity {
+        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities", HttpMethod.Post) {
             setBody(body)
         }
-        cache.insertOpportunity(opportunity, funnelID, accountID)
+        cache.insertOpportunity(opportunity, body.funnelID, body.accountID)
         return opportunity
     }
 
