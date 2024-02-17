@@ -21,7 +21,7 @@ struct EditOpportunityView: View {
     @State private var notes = ""
     @State private var priority: Int32 = 0
     @State private var stageID = ""
-    @State private var value = 0.0
+    @State private var value = ""
     
     @State private var shouldDisplayRequiredIndicators = false
     
@@ -49,6 +49,13 @@ struct EditOpportunityView: View {
                     CustomTextField(text: $description, placeholder: "Description", style: .text)
                         .autocorrectionDisabled()
                         .discreteListRowStyle()
+                    
+                    CustomTextField(
+                        text: $value,
+                        placeholder: "Value",
+                        style: .decimal
+                    )
+                    .discreteListRowStyle()
                 }
                 
                 Section("OPPORTUNITY MANAGEMENT") {
@@ -119,6 +126,8 @@ struct EditOpportunityView: View {
                             assignedTo: assignedTo
                         )
                     }
+                    navigation.dismissModal()
+                    Toast.success("Opportunity created")
                 } catch {
                     Toast.warn(error)
                 }
@@ -140,7 +149,7 @@ struct EditOpportunityView: View {
                 assignedTo = opportunity.assignedTo ?? ""
                 priority = opportunity.priority
                 notes = opportunity.notes ?? ""
-                value = opportunity.value
+                value = "\(opportunity.value)"
                 closedDate = opportunity.closedDate ?? ""
                 stageID = opportunity.stageID ?? ""
             }

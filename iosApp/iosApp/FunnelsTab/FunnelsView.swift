@@ -1,3 +1,4 @@
+import Shared
 import SwiftUI
 
 struct FunnelsView: View {
@@ -52,7 +53,8 @@ struct FunnelsView: View {
                             do {
                                 try await viewModel.assignCard(id: card.id, to: column.id)
                             } catch {
-                                Toast.warn(error)
+                                Logger.warning(error)
+                                Toast.warn("Failed to update card position. Please try again.")
                                 try? await viewModel.fetchFunnels(selection)
                             }
                         }

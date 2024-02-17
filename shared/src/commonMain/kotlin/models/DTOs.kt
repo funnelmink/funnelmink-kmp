@@ -143,8 +143,8 @@ data class UpdateLeadRequest(
 data class CreateOpportunityRequest(
     val name: String,
     val description: String? = null,
-    val value: Double? = null,
-    val priority: Int? = null,
+    val value: Double,
+    val priority: Int,
     val notes: String? = null,
     val accountID: String? = null,
     val assignedToID: String? = null,
@@ -156,12 +156,12 @@ data class CreateOpportunityRequest(
 data class UpdateOpportunityRequest(
     val name: String,
     val description: String? = null,
-    val value: Double? = null,
-    val priority: Int? = null,
+    val value: Double,
+    val priority: Int,
     val notes: String? = null,
     val assignedTo: String? = null,
-    val stageID: String? = null,
-    val funnelID: String? = null,
+    val stageID: String,
+    val funnelID: String,
 )
 
 @Serializable

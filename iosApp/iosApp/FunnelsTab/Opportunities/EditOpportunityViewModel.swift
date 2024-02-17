@@ -43,17 +43,20 @@ class EditOpportunityViewModel: ViewModel {
     func createOpportunity(
         name: String,
         description: String,
-        value: Double,
+        value: String,
         priority: Int32,
         notes: String?,
         accountID: String?,
         assignedTo: String?
     ) async throws {
+        guard let val = Double(value) else {
+            throw "Value must be a number"
+        }
         let body = CreateOpportunityRequest(
             name: name,
             description: description,
-            value: value.kotlinValue,
-            priority: priority.kotlinValue,
+            value: val,
+            priority: priority,
             notes: notes,
             accountID: accountID,
             assignedToID: assignedTo?.nilIfEmpty(),
@@ -68,16 +71,19 @@ class EditOpportunityViewModel: ViewModel {
         id: String,
         name: String,
         description: String,
-        value: Double,
+        value: String,
         priority: Int32,
         notes: String?,
         assignedTo: String?
     ) async throws {
+        guard let val = Double(value) else {
+            throw "Value must be a number"
+        }
         let body = UpdateOpportunityRequest(
             name: name,
             description: description,
-            value: value.kotlinValue,
-            priority: priority.kotlinValue,
+            value: val,
+            priority: priority,
             notes: notes,
             assignedTo: assignedTo,
             stageID: state.selectedStage.id,
