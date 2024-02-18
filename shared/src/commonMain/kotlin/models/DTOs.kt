@@ -3,6 +3,11 @@ package models
 import kotlinx.serialization.Serializable
 
 @Serializable
+data class RecordClosureRequest(
+    val reason: String? = null,
+)
+
+@Serializable
 data class CreateAccountRequest(
     val name: String,
     val email: String? = null,

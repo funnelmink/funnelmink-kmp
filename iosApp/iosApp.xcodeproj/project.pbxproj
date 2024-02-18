@@ -110,6 +110,7 @@
 		1FA27F822B5CAFF200A447C3 /* ContactsLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 1FA27F812B5CAFF200A447C3 /* ContactsLottie.json */; };
 		1FA27F842B5EE80E00A447C3 /* TasksLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 1FA27F832B5EE80E00A447C3 /* TasksLottie.json */; };
 		1FCB70600327C8D33AEA3E90 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7D2C21891A9AE2804154 /* Modal.swift */; };
+		1FCB7062A19F8D62F892FD92 /* CloseRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB78B08A792C000D33E2AA /* CloseRecordView.swift */; };
 		1FCB71FE510C993BB847583D /* AccounsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7B80AFBEAD61BD614CD6 /* AccounsView.swift */; };
 		1FCB731B11540D8EC93FCBBD /* LabeledRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB73DEFFC09C0D5A581EFC /* LabeledRow.swift */; };
 		1FCB73EF89A4C87B5C5908DD /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */; };
@@ -243,6 +244,7 @@
 		1FCB72AEE522D13EAC8565D2 /* Segue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
 		1FCB73DEFFC09C0D5A581EFC /* LabeledRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabeledRow.swift; sourceTree = "<group>"; };
 		1FCB7805FE812978E02B4C3E /* EditOpportunityViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditOpportunityViewModel.swift; sourceTree = "<group>"; };
+		1FCB78B08A792C000D33E2AA /* CloseRecordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseRecordView.swift; sourceTree = "<group>"; };
 		1FCB79A7D2ED77D23827B2FB /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		1FCB7A3AB02D5F9F52C1AB1F /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
@@ -399,6 +401,7 @@
 				0D79725E2B7A81930048E942 /* Cases */,
 				0D79725D2B7A81890048E942 /* Leads */,
 				0D79725F2B7A81990048E942 /* Opportunities */,
+				1FCB78B08A792C000D33E2AA /* CloseRecordView.swift */,
 			);
 			path = FunnelsTab;
 			sourceTree = "<group>";
@@ -552,10 +555,10 @@
 		0D79725D2B7A81890048E942 /* Leads */ = {
 			isa = PBXGroup;
 			children = (
+				1FCB704EE675D6553F6CC5D8 /* ConvertLeadView.swift */,
 				0D7972532B767CFD0048E942 /* EditLeadView.swift */,
 				0D7972592B76E0840048E942 /* EditLeadViewModel.swift */,
 				0D79725B2B7A816C0048E942 /* LeadDetailView.swift */,
-				1FCB704EE675D6553F6CC5D8 /* ConvertLeadView.swift */,
 			);
 			path = Leads;
 			sourceTree = "<group>";
@@ -991,6 +994,7 @@
 				1FCB758646ABB9ABE0EE09E4 /* ConvertLeadView.swift in Sources */,
 				1FCB790621C10F05028F2990 /* EditOpportunityViewModel.swift in Sources */,
 				1FCB731B11540D8EC93FCBBD /* LabeledRow.swift in Sources */,
+				1FCB7062A19F8D62F892FD92 /* CloseRecordView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
