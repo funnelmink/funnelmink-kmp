@@ -202,7 +202,7 @@ struct AccountView: View {
             VStack(alignment: .leading) {
                 Text("Account Notes")
                     .bold()
-                Text(account.notes ?? "")
+                Text(account.notes ?? "No notes recorded for this account")
                     .padding(.vertical)
                     .padding(.horizontal)
                     .font(.footnote)
