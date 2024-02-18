@@ -47,9 +47,9 @@ struct CreateContactView: View {
                     })
                 }
                 CustomTextField(text: $name, placeholder: "Contact Name", style: .text)
-                CustomTextField(text: $name, placeholder: "Job Title", style: .text)
-                CustomTextField(text: $name, placeholder: "Contact Phone Number", style: .phone)
-                CustomTextField(text: $name, placeholder: "Contact Email", style: .text)
+                CustomTextField(text: $jobTitle, placeholder: "Job Title", style: .text)
+                CustomTextField(text: $phoneNumber, placeholder: "Contact Phone Number", style: .phone)
+                CustomTextField(text: $email, placeholder: "Contact Email", style: .text)
                 VStack(alignment: .leading) {
                     Text("Contact Notes")
                         .font(.system(size: 20).weight(.semibold))

@@ -23,6 +23,7 @@ enum Modal: Identifiable {
     case selectWorkspace
     case createAccount
     case createContact
+    case contactDetails(AccountContact)
 
     case debugMenu
     
@@ -42,7 +43,7 @@ enum Modal: Identifiable {
             switch self {
             case let .any(view): AnyView(view())
             case .importContacts: ImportContactsView()
-
+            case let .contactDetails(contact): ContactDetailsView(contact: contact)
             case .createTask: EditTaskView()
             case let .editTask(task): EditTaskView(task: task)
 

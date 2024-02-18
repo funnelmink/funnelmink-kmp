@@ -164,14 +164,16 @@ struct AccountView: View {
                 )
             }
             Button(action: {
-                // present a banner to send an email
+                if let email = account.email {
+                    prepareEmail(emailAddress: email)
+                }
             }, label: {
                 CustomCell(title: "Email", subtitle: account.email, icon: "envelope" ,cellType: .iconAction)
                     .padding()
             })
             .foregroundStyle(.primary)
             Button(action: {
-                // present a banner to route to an address
+                navigateToAddress(address: accountFullAddress)
             }, label: {
                 CustomCell(title: "Address", subtitle: accountFullAddress, icon: "arrow.merge" ,cellType: .iconAction)
                     .padding()
@@ -187,10 +189,16 @@ struct AccountView: View {
                 .foregroundStyle(.primary)
                 List {
                     ForEach(contacts, id: \.self) { contact in
-                        CustomCell(title: contact.name ?? "", subtitle: contact.phone, cellType: .navigation)
+                        Button {
+                            nav.modalFullscreen(.contactDetails(contact))
+                        } label: {
+                            CustomCell(title: contact.name ?? "", subtitle: contact.phone, cellType: .navigation)
+                        }
+
                     }
                 }
             }
+            
             VStack(alignment: .leading) {
                 Text("Account Notes")
                     .bold()
@@ -198,9 +206,10 @@ struct AccountView: View {
                     .padding(.vertical)
                     .padding(.horizontal)
                     .font(.footnote)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .overlay {
-                        RoundedRectangle(cornerRadius: 20)
-                            .stroke()
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.secondary, lineWidth: 1)
                     }
             }
             .padding(.horizontal)
@@ -213,7 +222,7 @@ struct AccountView: View {
                  let details = try await Networking.api.getAccountDetails(id: account.id)
                     contacts = details.contacts
                 } catch {
-                    Toast(message: "Could not get account details", type: .error)
+                    Toast.error("Unable to get account details")
                 }
             }
         })
