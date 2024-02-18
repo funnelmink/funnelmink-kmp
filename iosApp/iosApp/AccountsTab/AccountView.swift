@@ -181,7 +181,7 @@ struct AccountView: View {
             .foregroundStyle(.primary)
             VStack {
                 Button(action: {
-                    nav.modalSheet(.createContact)
+                    nav.modalSheet(.createContact(account))
                 }, label: {
                     CustomCell(title: "Create Contact", subtitle: "Add contact to account", icon: "plus" ,cellType: .iconAction)
                         .padding()

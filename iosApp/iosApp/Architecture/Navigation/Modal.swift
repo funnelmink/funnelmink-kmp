@@ -22,7 +22,7 @@ enum Modal: Identifiable {
     case joinExistingWorkspace
     case selectWorkspace
     case createAccount
-    case createContact
+    case createContact(Account)
     case contactDetails(AccountContact)
     
     case closeRecord(type: FunnelType, id: String)
@@ -55,7 +55,7 @@ enum Modal: Identifiable {
             case .joinExistingWorkspace: JoinExistingWorkspaceView()
             case .selectWorkspace: WorkspacesView()
             case .createAccount: CreateAccountView()
-            case .createContact: CreateContactView(account: TestData.account)
+            case let .createContact(account): CreateContactView(account: account)
             case let .closeRecord(type, id): CloseRecordView(recordType: type, recordID: id)
             case .debugMenu: DebugMenu()
                 
