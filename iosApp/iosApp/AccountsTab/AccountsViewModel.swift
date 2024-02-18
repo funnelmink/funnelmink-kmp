@@ -35,7 +35,7 @@ class AccountsViewModel: ViewModel {
         zip: String?,
         notes: String?,
         leadID: String?
-    ) async throws {
+    ) async throws -> Account {
         let body = CreateAccountRequest(
             name: name,
             email: email,
@@ -50,25 +50,8 @@ class AccountsViewModel: ViewModel {
             notes: notes,
             leadID: leadID
         )
-        //            if !Utilities.validation.isName(input: body.name) {
-        //                throw "\(body.name) contains invalid characters"
-        //            }
-        //            for number in body.phoneNumbers {
-        //                if !Utilities.validation.isPhoneNumber(input: number) {
-        //                    throw "\(number) is not a valid phone number"
-        //                }
-        //            }
-        //            for email in body.emails {
-        //                if !Utilities.validation.isEmail(input: email) {
-        //                    throw "\(email) is not a valid email"
-        //                }
-        //            }
-        //            if let jobTitle = body.jobTitle {
-        //                if !Utilities.validation.isName(input: jobTitle) {
-        //                    throw "\(jobTitle) contains invalid characters"
-        //                }
-        //            }
-        _ = try await Networking.api.createAccount(body: body)
+        let createdAccount = try await Networking.api.createAccount(body: body)
+        return createdAccount
     }
     
     @MainActor
@@ -100,24 +83,6 @@ class AccountsViewModel: ViewModel {
             zip: zip,
             notes: notes
         )
-        //            if !Utilities.validation.isName(input: body.name) {
-        //                throw "\(body.name) contains invalid characters"
-        //            }
-        //            for number in body.phoneNumbers {
-        //                if !Utilities.validation.isPhoneNumber(input: number) {
-        //                    throw "\(number) is not a valid phone number"
-        //                }
-        //            }
-        //            for email in body.emails {
-        //                if !Utilities.validation.isEmail(input: email) {
-        //                    throw "\(email) is not a valid email"
-        //                }
-        //            }
-        //            if let jobTitle = body.jobTitle {
-        //                if !Utilities.validation.isName(input: jobTitle) {
-        //                    throw "\(jobTitle) contains invalid characters"
-        //                }
-        //            }
         _ = try await Networking.api.updateAccount(id: id, body: body)
     }
     

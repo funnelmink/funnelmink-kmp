@@ -72,9 +72,7 @@ struct CaseDetailView: View {
                 }
                 Spacer()
                 Button("Close Case") {
-                    Toast.info("TODO: close record view - asks for close reason and notes")
-                    // TODO: close caseRecord
-                    // Takes you to a generic close screen and asks you to select a close reason
+                    navigation.modalSheet(.closeRecord(type: .case, id: caseRecord.id), onDismiss: refreshCase)
                 }
             }
             .padding()
@@ -84,17 +82,19 @@ struct CaseDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    navigation.modalSheet(.editCase(caseRecord: caseRecord)) {
-                        Task { @MainActor in
-                            caseRecord = try await Networking.api.getCase(id: caseRecord.id)
-                        }
-                    }
+                    navigation.modalSheet(.editCase(caseRecord: caseRecord), onDismiss: refreshCase)
                 } label: {
                     Text("Edit")
                 }
             }
         }
         .logged(info: caseRecord.id)
+    }
+    
+    private func refreshCase() {
+        Task { @MainActor in
+            caseRecord = try await Networking.api.getCase(id: caseRecord.id)
+        }
     }
 }
 

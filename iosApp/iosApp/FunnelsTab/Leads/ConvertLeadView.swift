@@ -22,11 +22,25 @@ struct ConvertLeadView: View {
                 }
                 Spacer()
             }
-            cardButton(
-                title: "Close as Lost",
-                subtitle: "This Lead is not interested in our product",
-                conversionResult: .lost
-            )
+            Button {
+                // the onDismiss here is a little hacky. assumes that we're coming from LeadDetailView and that it will want to be refreshed
+                navigation.modalSheet(.closeRecord(type: .lead, id: lead.id), onDismiss: navigation._onModalDismiss)
+            } label: {
+                Color
+                    .secondary
+                    .opacity(0.24)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .overlay {
+                        VStack {
+                            Text("Close as Lost")
+                                .font(.headline)
+                            Text("This Lead is not interested in our product")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                    .tint(.primary)
+            }
             cardButton(
                 title: "Convert to Account",
                 subtitle: "We've established a relationship with this Lead" ,
@@ -44,7 +58,7 @@ struct ConvertLeadView: View {
     func cardButton(title: String, subtitle: String, conversionResult: LeadClosedResult) -> some View {
         AsyncWarningAlertButton(warningMessage: "\(title)?") {
             do {
-                try await Networking.api.convertLead(id: lead.id, result: conversionResult)
+                try await Networking.api.convertLead(id: lead.id, result: conversionResult, body: .init(reason: nil))
                 navigation.dismissModal()
                 Toast.success("Lead closed")
             } catch {

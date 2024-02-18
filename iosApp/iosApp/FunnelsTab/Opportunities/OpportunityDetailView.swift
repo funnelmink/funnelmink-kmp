@@ -72,9 +72,7 @@ struct OpportunityDetailView: View {
                 }
                 Spacer()
                 Button("Close Opportunity") {
-                    Toast.info("TODO: close opportunity view - asks for close reason and notes")
-                    // TODO: close opportunity
-                    // Takes you to a generic close screen and asks you to select a close reason
+                    navigation.modalSheet(.closeRecord(type: .opportunity, id: opportunity.id), onDismiss: refreshOpportunity)
                 }
             }
             .padding()
@@ -84,16 +82,18 @@ struct OpportunityDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    navigation.modalSheet(.editOpportunity(opportunity: opportunity)) {
-                        Task { @MainActor in
-                            opportunity = try await Networking.api.getOpportunity(id: opportunity.id)
-                        }
-                    }
+                    navigation.modalSheet(.editOpportunity(opportunity: opportunity), onDismiss: refreshOpportunity)
                 } label: {
                     Text("Edit")
                 }
             }
         }
         .logged(info: opportunity.id)
+    }
+    
+    private func refreshOpportunity() {
+        Task { @MainActor in
+            opportunity = try await Networking.api.getOpportunity(id: opportunity.id)
+        }
     }
 }
