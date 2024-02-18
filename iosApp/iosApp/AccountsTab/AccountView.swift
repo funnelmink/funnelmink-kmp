@@ -15,8 +15,11 @@ struct AccountView: View {
     @StateObject var viewModel = AccountsViewModel()
     @State private var isAnimating: Bool = false
     @State private var showingActionSheet = false
-    
+    @State var contacts: [AccountContact] = []
     var account: Account
+    var accountFullAddress: String {
+        return ("\(account.address ?? ""), \(account.city ?? ""), \(account.country ?? "")")
+    }
     var initials: String {
         
         if let initial = account.name.first {
@@ -137,8 +140,6 @@ struct AccountView: View {
             Text(account.name)
                 .bold()
                 .font(.title)
-            Text(account.name) // accounts don't have a company name anymore because they *are* the company
-                .foregroundStyle(.secondary)
         }
         Spacer()
         ScrollView {
@@ -163,20 +164,71 @@ struct AccountView: View {
                 )
             }
             Button(action: {
-                // present a banner to send an email
+                if let email = account.email {
+                    prepareEmail(emailAddress: email)
+                }
             }, label: {
                 CustomCell(title: "Email", subtitle: account.email, icon: "envelope" ,cellType: .iconAction)
                     .padding()
             })
             .foregroundStyle(.primary)
             Button(action: {
-                // present a banner to route to an address
+                navigateToAddress(address: accountFullAddress)
             }, label: {
-                CustomCell(title: "Address", subtitle: "891 N 800 E, Orem, UT              ", icon: "arrow.merge" ,cellType: .iconAction)
+                CustomCell(title: "Address", subtitle: accountFullAddress, icon: "arrow.merge" ,cellType: .iconAction)
                     .padding()
             })
             .foregroundStyle(.primary)
+            VStack {
+                Button(action: {
+                    nav.modalSheet(.createContact)
+                }, label: {
+                    CustomCell(title: "Create Contact", subtitle: "Add contact to account", icon: "plus" ,cellType: .iconAction)
+                        .padding()
+                })
+                .foregroundStyle(.primary)
+                List {
+                    ForEach(contacts, id: \.self) { contact in
+                        Button {
+                            nav.modalFullscreen(.contactDetails(contact))
+                        } label: {
+                            CustomCell(title: contact.name ?? "", subtitle: contact.phone, cellType: .navigation)
+                        }
+
+                    }
+                }
+            }
+            
+            VStack(alignment: .leading) {
+                Text("Account Notes")
+                    .bold()
+                Text(account.notes ?? "No notes recorded for this account")
+                    .padding(.vertical)
+                    .padding(.horizontal)
+                    .font(.footnote)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.secondary, lineWidth: 1)
+                    }
+            }
+            .padding(.horizontal)
+            .padding(.vertical)
         }
         .padding()
+        .onAppear(perform: {
+            Task {
+                do {
+                 let details = try await Networking.api.getAccountDetails(id: account.id)
+                    contacts = details.contacts
+                } catch {
+                    Toast.error("Unable to get account details")
+                }
+            }
+        })
     }
+}
+
+#Preview {
+    AccountView(contacts: [TestData.accountContact,], account: TestData.account)
 }

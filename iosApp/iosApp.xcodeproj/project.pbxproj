@@ -104,13 +104,15 @@
 		1F022A3C2B49159100966345 /* CustomAccordion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A382B49159100966345 /* CustomAccordion.swift */; };
 		1F022A3D2B49159100966345 /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A392B49159100966345 /* CustomCell.swift */; };
 		1F022A3E2B49159100966345 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A3A2B49159100966345 /* CustomTextField.swift */; };
+		1F2335282B8155640035547D /* ContactDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2335272B8155640035547D /* ContactDetailsView.swift */; };
+		1F610AE82B7BE48300A9D262 /* CreateContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F610AE72B7BE48300A9D262 /* CreateContactView.swift */; };
+		1F9D49AF2B747CCD0085106C /* AddContactAccordion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9D49AE2B747CCD0085106C /* AddContactAccordion.swift */; };
 		1FA27F7A2B5978F300A447C3 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F792B5978F300A447C3 /* TimelineView.swift */; };
 		1FA27F7C2B5CAA9F00A447C3 /* CustomEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F7B2B5CAA9F00A447C3 /* CustomEmptyView.swift */; };
 		1FA27F7F2B5CAD7700A447C3 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1FA27F7E2B5CAD7700A447C3 /* Lottie */; };
 		1FA27F822B5CAFF200A447C3 /* ContactsLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 1FA27F812B5CAFF200A447C3 /* ContactsLottie.json */; };
 		1FA27F842B5EE80E00A447C3 /* TasksLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 1FA27F832B5EE80E00A447C3 /* TasksLottie.json */; };
 		1FCB70600327C8D33AEA3E90 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7D2C21891A9AE2804154 /* Modal.swift */; };
-		1FCB71FE510C993BB847583D /* AccounsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7B80AFBEAD61BD614CD6 /* AccounsView.swift */; };
 		1FCB731B11540D8EC93FCBBD /* LabeledRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB73DEFFC09C0D5A581EFC /* LabeledRow.swift */; };
 		1FCB73EF89A4C87B5C5908DD /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */; };
 		1FCB73F124945A937ECDAC6F /* WorkspacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7C4E3E93CDD70AD8DCC1 /* WorkspacesView.swift */; };
@@ -126,6 +128,7 @@
 		1FCB7BF596E9F1D2939A3E34 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7D6AC6CEDB402D6F242A /* AppState.swift */; };
 		1FCB7CD17EFAA37FE7FA338F /* Shared+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */; };
 		1FCB7D042F2C82CA13D88884 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7097FD586CA3E01B3C36 /* Double+.swift */; };
+		41CC62D6E2C9601B1230CEAA /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CC6A14DD5B8A3D385ADCB2 /* AccountsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -232,6 +235,9 @@
 		1F022A382B49159100966345 /* CustomAccordion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAccordion.swift; sourceTree = "<group>"; };
 		1F022A392B49159100966345 /* CustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
 		1F022A3A2B49159100966345 /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		1F2335272B8155640035547D /* ContactDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsView.swift; sourceTree = "<group>"; };
+		1F610AE72B7BE48300A9D262 /* CreateContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContactView.swift; sourceTree = "<group>"; };
+		1F9D49AE2B747CCD0085106C /* AddContactAccordion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactAccordion.swift; sourceTree = "<group>"; };
 		1FA27F792B5978F300A447C3 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
 		1FA27F7B2B5CAA9F00A447C3 /* CustomEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomEmptyView.swift; sourceTree = "<group>"; };
 		1FA27F812B5CAFF200A447C3 /* ContactsLottie.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ContactsLottie.json; sourceTree = "<group>"; };
@@ -246,13 +252,13 @@
 		1FCB79A7D2ED77D23827B2FB /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		1FCB7A3AB02D5F9F52C1AB1F /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
-		1FCB7B80AFBEAD61BD614CD6 /* AccounsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccounsView.swift; sourceTree = "<group>"; };
 		1FCB7BDF0E879F1578FB13D0 /* ProflieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProflieView.swift; sourceTree = "<group>"; };
 		1FCB7C4E3E93CDD70AD8DCC1 /* WorkspacesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspacesView.swift; sourceTree = "<group>"; };
 		1FCB7C6403EE8A0091F9C3AC /* CreateAccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 		1FCB7D2C21891A9AE2804154 /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		1FCB7D6AC6CEDB402D6F242A /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		1FCB7E8839B6F36DABAA626E /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		41CC6A14DD5B8A3D385ADCB2 /* AccountsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* funnelmink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = funnelmink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB3632DC29227652001CCB65 /* DebugConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugConfig.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -491,6 +497,7 @@
 			children = (
 				0D012E592B477E3A00658153 /* AsyncButton.swift */,
 				1F022A382B49159100966345 /* CustomAccordion.swift */,
+				1F9D49AE2B747CCD0085106C /* AddContactAccordion.swift */,
 				1F022A372B49159100966345 /* CustomButton.swift */,
 				1F022A392B49159100966345 /* CustomCell.swift */,
 				1FA27F7B2B5CAA9F00A447C3 /* CustomEmptyView.swift */,
@@ -532,10 +539,12 @@
 			isa = PBXGroup;
 			children = (
 				0D7759472B6B75C500A61BAC /* ImportContacts */,
-				1FCB7B80AFBEAD61BD614CD6 /* AccounsView.swift */,
 				1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */,
+				41CC6A14DD5B8A3D385ADCB2 /* AccountsView.swift */,
 				1FCB79A7D2ED77D23827B2FB /* AccountView.swift */,
 				1FCB7C6403EE8A0091F9C3AC /* CreateAccountView.swift */,
+				1F610AE72B7BE48300A9D262 /* CreateContactView.swift */,
+				1F2335272B8155640035547D /* ContactDetailsView.swift */,
 			);
 			path = AccountsTab;
 			sourceTree = "<group>";
@@ -944,6 +953,7 @@
 				0D3E40442B6413B20096E222 /* FunnelsViewModel.swift in Sources */,
 				0D9894FE2B814BFD00725BAC /* EditCaseViewModel.swift in Sources */,
 				0D7972522B75E7E80048E942 /* MenuFAB.swift in Sources */,
+				1F2335282B8155640035547D /* ContactDetailsView.swift in Sources */,
 				0DBF9CAF2B5A16C20045AC44 /* DebugMenu.swift in Sources */,
 				0D012E712B477E3A00658153 /* Properties.swift in Sources */,
 				0DE9E0A22B60DDAC00B8288F /* UpdateWallView.swift in Sources */,
@@ -952,6 +962,7 @@
 				0D77594E2B6B75C500A61BAC /* ImportContactsView.swift in Sources */,
 				0D012E722B477E3A00658153 /* Navigation.swift in Sources */,
 				0D012E7F2B477E3A00658153 /* WorkspaceSettingsView.swift in Sources */,
+				1F610AE82B7BE48300A9D262 /* CreateContactView.swift in Sources */,
 				1F022A3B2B49159100966345 /* CustomButton.swift in Sources */,
 				1FA27F7A2B5978F300A447C3 /* TimelineView.swift in Sources */,
 				0D45D80A2B5E01A100591524 /* Toast.swift in Sources */,
@@ -965,6 +976,7 @@
 				0D012E6E2B477E3A00658153 /* View+.swift in Sources */,
 				0D012E762B477E3A00658153 /* ExternalDeeplink.swift in Sources */,
 				0D012E822B477E3A00658153 /* AsyncButton.swift in Sources */,
+				1F9D49AF2B747CCD0085106C /* AddContactAccordion.swift in Sources */,
 				0D012E8C2B477E3A00658153 /* CreateWorkspaceView.swift in Sources */,
 				0D012E832B477E3A00658153 /* WarningAlertButton.swift in Sources */,
 				0DCC163E2B524AE2008F705B /* DateFormatter+.swift in Sources */,
@@ -982,12 +994,12 @@
 				0DE9E0A02B60D6BF00B8288F /* DebugDivider.swift in Sources */,
 				1FCB7BF596E9F1D2939A3E34 /* AppState.swift in Sources */,
 				1FCB7D042F2C82CA13D88884 /* Double+.swift in Sources */,
-				1FCB71FE510C993BB847583D /* AccounsView.swift in Sources */,
 				1FCB73EF89A4C87B5C5908DD /* AccountsViewModel.swift in Sources */,
 				1FCB74EE9F81EC19833E8639 /* AccountView.swift in Sources */,
 				1FCB76F93C37F8F4E4B76F94 /* CreateAccountView.swift in Sources */,
 				1FCB77F6AD2C612392D4609B /* ProfileViewModel.swift in Sources */,
 				1FCB7B2A5C922AB310B658B3 /* ProflieView.swift in Sources */,
+				41CC62D6E2C9601B1230CEAA /* AccountsView.swift in Sources */,
 				1FCB758646ABB9ABE0EE09E4 /* ConvertLeadView.swift in Sources */,
 				1FCB790621C10F05028F2990 /* EditOpportunityViewModel.swift in Sources */,
 				1FCB731B11540D8EC93FCBBD /* LabeledRow.swift in Sources */,

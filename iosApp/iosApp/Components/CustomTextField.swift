@@ -101,7 +101,7 @@ struct CustomTextField: View {
             }
         case .email:
             HStack {
-                TextField("Email", text: $text)
+                TextField(placeholder, text: $text)
                     .keyboardType(.emailAddress)
                 if let icon {
                     Image(systemName: icon)
@@ -109,7 +109,7 @@ struct CustomTextField: View {
             }
         case .phone:
             HStack {
-                TextField("Phone", text: $text)
+                TextField(placeholder, text: $text)
                     .keyboardType(.phonePad)
                 if let icon {
                     Image(systemName: icon)
