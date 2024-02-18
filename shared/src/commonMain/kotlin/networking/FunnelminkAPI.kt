@@ -259,14 +259,25 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
+    override suspend fun getCase(id: String): CaseRecord {
+        val cached = cache.selectCase(id)
+        if (cached != null) {
+            return cached
+        }
+        return genericRequest("$baseURL/v1/workspace/cases/$id", HttpMethod.Get)
+    }
+
+    @Throws(Exception::class)
     override suspend fun deleteCase(id: String) {
         genericRequest<Unit>("$baseURL/v1/workspace/cases/$id", HttpMethod.Delete)
         cache.deleteCase(id)
     }
 
     @Throws(Exception::class)
-    override suspend fun closeCase(id: String): CaseRecord {
-        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$id/close", HttpMethod.Put)
+    override suspend fun closeCase(id: String, body: RecordClosureRequest): CaseRecord {
+        val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases/$id/close", HttpMethod.Put) {
+            setBody(body)
+        }
         cache.replaceCase(case)
         return case
     }
@@ -478,9 +489,10 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun convertLead(id: String, result: LeadClosedResult) {
+    override suspend fun convertLead(id: String, result: LeadClosedResult, body: RecordClosureRequest) {
         genericRequest<Unit>("$baseURL/v1/workspace/leads/$id/convert", HttpMethod.Put) {
             parameter("closedResult", result.resultName)
+            setBody(body)
         }
         cacheInvalidator.invalidate("getFunnels")
         cacheInvalidator.invalidate("getAccounts")
@@ -542,6 +554,15 @@ class FunnelminkAPI(
     override suspend fun deleteOpportunity(id: String) {
         genericRequest<Unit>("$baseURL/v1/workspace/opportunities/$id", HttpMethod.Delete)
         cache.deleteOpportunity(id)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun closeOpportunity(id: String, body: RecordClosureRequest): Opportunity {
+        val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities/$id/close", HttpMethod.Put) {
+            setBody(body)
+        }
+        cache.replaceOpportunity(opportunity)
+        return opportunity
     }
 
     // ------------------------------------------------------------------------

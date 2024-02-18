@@ -125,11 +125,7 @@ struct LeadDetailView: View {
                 }
                 Spacer()
                 Button("Convert or Close Lead") {
-                    navigation.modalSheet(.convertLead(lead: lead)) {
-                        Task { @MainActor in
-                            lead = try await Networking.api.getLead(id: lead.id)
-                        }
-                    }
+                    navigation.modalSheet(.convertLead(lead: lead), onDismiss: refreshLead)
                 }
             }
             .padding()
@@ -139,17 +135,19 @@ struct LeadDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    navigation.modalSheet(.editLead(lead: lead, funnelID: funnel.id, stageID: stage.id)) {
-                        Task { @MainActor in
-                            lead = try await Networking.api.getLead(id: lead.id)
-                        }
-                    }
+                    navigation.modalSheet(.editLead(lead: lead, funnelID: funnel.id, stageID: stage.id), onDismiss: refreshLead)
                 } label: {
                     Text("Edit")
                 }
             }
         }
         .logged(info: lead.id)
+    }
+    
+    private func refreshLead() {
+        Task { @MainActor in
+            lead = try await Networking.api.getLead(id: lead.id)
+        }
     }
 }
 

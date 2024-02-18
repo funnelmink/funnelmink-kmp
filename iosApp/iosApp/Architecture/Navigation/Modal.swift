@@ -22,12 +22,15 @@ enum Modal: Identifiable {
     case joinExistingWorkspace
     case selectWorkspace
     case createAccount
-    case createContact
+    case createContact(Account)
     case contactDetails(AccountContact)
+    
+    case closeRecord(type: FunnelType, id: String)
 
     case debugMenu
     
-    case createCase
+    case createCase(accountID: String?)
+    case editCase(caseRecord: CaseRecord)
     
     case createLead(accountID: String?)
     
@@ -52,10 +55,12 @@ enum Modal: Identifiable {
             case .joinExistingWorkspace: JoinExistingWorkspaceView()
             case .selectWorkspace: WorkspacesView()
             case .createAccount: CreateAccountView()
-            case .createContact: CreateContactView(account: TestData.account)
+            case let .createContact(account): CreateContactView(account: account)
+            case let .closeRecord(type, id): CloseRecordView(recordType: type, recordID: id)
             case .debugMenu: DebugMenu()
                 
-            case .createCase: EditCaseView()
+            case let .createCase(accountID): EditCaseView(accountID: accountID)
+            case let .editCase(caseRecord): EditCaseView(caseRecord: caseRecord)
             case .createLead: EditLeadView()
             case let .editLead(lead, funnelID, stageID): EditLeadView(lead: lead, initialFunnelD: funnelID, initialStageID: stageID)
             case let .convertLead(lead): ConvertLeadView(lead: lead)

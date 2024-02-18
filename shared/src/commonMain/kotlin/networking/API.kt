@@ -62,9 +62,10 @@ interface API {
     @Throws(Exception::class) suspend fun assignCaseToMember(id: String, memberID: String): CaseRecord
     @Throws(Exception::class) suspend fun assignCaseToFunnelStage(id: String, stageID: String): CaseRecord
     @Throws(Exception::class) suspend fun createCase(body: CreateCaseRequest): CaseRecord
+    @Throws(Exception::class) suspend fun getCase(id: String): CaseRecord
     @Throws(Exception::class) suspend fun updateCase(id: String, body: UpdateCaseRequest): CaseRecord
     @Throws(Exception::class) suspend fun deleteCase(id: String)
-    @Throws(Exception::class) suspend fun closeCase(id: String): CaseRecord
+    @Throws(Exception::class) suspend fun closeCase(id: String, body: RecordClosureRequest): CaseRecord
 
     // funnels
     @Throws(Exception::class) suspend fun createDefaultFunnels()
@@ -79,7 +80,7 @@ interface API {
     @Throws(Exception::class) suspend fun getLead(id: String): Lead
     @Throws(Exception::class) suspend fun createLead(body: CreateLeadRequest): Lead
     @Throws(Exception::class) suspend fun updateLead(id: String, body: UpdateLeadRequest): Lead
-    @Throws(Exception::class) suspend fun convertLead(id: String, result: LeadClosedResult)
+    @Throws(Exception::class) suspend fun convertLead(id: String, result: LeadClosedResult, body: RecordClosureRequest)
     @Throws(Exception::class) suspend fun deleteLead(id: String)
 
     // opportunities
@@ -89,6 +90,7 @@ interface API {
     @Throws(Exception::class) suspend fun getOpportunity(id: String): Opportunity
     @Throws(Exception::class) suspend fun updateOpportunity(id: String, body: UpdateOpportunityRequest): Opportunity
     @Throws(Exception::class) suspend fun deleteOpportunity(id: String)
+    @Throws(Exception::class) suspend fun closeOpportunity(id: String, body: RecordClosureRequest): Opportunity
 
     // tasks
     @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): TaskRecord
