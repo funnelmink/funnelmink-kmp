@@ -33,7 +33,7 @@ struct EditCaseView: View {
     var body: some View {
         VStack {
             List {
-                Text(caseRecord == nil ? "New caseRecord" : "Edit caseRecord")
+                Text(caseRecord == nil ? "New Case" : "Edit Case")
                     .fontWeight(.bold)
                     .discreteListRowStyle(backgroundColor: .clear)
                     .frame(height: 1)
@@ -58,7 +58,7 @@ struct EditCaseView: View {
                     .discreteListRowStyle()
                 }
                 
-                Section("caseRecord MANAGEMENT") {
+                Section("CASE MANAGEMENT") {
                     CustomTextField(text: $assignedTo, placeholder: "Assigned To", style: .text)
                         .autocorrectionDisabled()
                         .discreteListRowStyle()
@@ -127,7 +127,7 @@ struct EditCaseView: View {
                         )
                     }
                     navigation.dismissModal()
-                    Toast.success("caseRecord created")
+                    Toast.success("Case created")
                 } catch {
                     Toast.warn(error)
                 }
