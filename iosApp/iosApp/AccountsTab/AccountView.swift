@@ -179,26 +179,6 @@ struct AccountView: View {
                     .padding()
             })
             .foregroundStyle(.primary)
-            VStack {
-                Button(action: {
-                    nav.modalSheet(.createContact(account))
-                }, label: {
-                    CustomCell(title: "Create Contact", subtitle: "Add contact to account", icon: "plus" ,cellType: .iconAction)
-                        .padding()
-                })
-                .foregroundStyle(.primary)
-                List {
-                    ForEach(contacts, id: \.self) { contact in
-                        Button {
-                            nav.modalFullscreen(.contactDetails(contact))
-                        } label: {
-                            CustomCell(title: contact.name ?? "", subtitle: contact.phone, cellType: .navigation)
-                        }
-
-                    }
-                }
-            }
-            
             VStack(alignment: .leading) {
                 Text("Account Notes")
                     .bold()
@@ -216,18 +196,36 @@ struct AccountView: View {
             .padding(.vertical)
         }
         .padding()
-        .onAppear(perform: {
-            Task {
-                do {
+        VStack {
+            Button(action: {
+                nav.modalSheet(.createContact(account))
+            }, label: {
+                CustomCell(title: "Create Contact", subtitle: "Add contact to account", icon: "plus" ,cellType: .iconAction)
+                    .padding()
+            })
+            .foregroundStyle(.primary)
+            List {
+                ForEach(contacts, id: \.self) { contact in
+                    Button {
+                        nav.modalFullscreen(.contactDetails(contact))
+                    } label: {
+                        CustomCell(title: contact.name ?? "", subtitle: contact.phone, cellType: .navigation)
+                    }
+
+                }
+            }
+        }
+        .loggedTask {
+            do {
                  let details = try await Networking.api.getAccountDetails(id: account.id)
                     contacts = details.contacts
                 } catch {
                     Toast.error("Unable to get account details")
                 }
             }
-        })
+        }
     }
-}
+
 
 #Preview {
     AccountView(contacts: [TestData.accountContact,], account: TestData.account)
