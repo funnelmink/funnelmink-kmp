@@ -128,103 +128,106 @@ struct AccountView: View {
     }
     
     var body: some View {
-        VStack(spacing: 6) {
-            ZStack {
-                Circle()
-                    .stroke(Gradient(colors: [.blue, .teal, .mint]), lineWidth: 10)
-                    .frame(width: 175, height: 175)
-                
-                Text(initials)
-                    .bold().font(.system(size: 80))
-            }
-            Text(account.name)
-                .bold()
-                .font(.title)
-        }
-        Spacer()
         ScrollView {
-            Button(action: {
-                showingActionSheet = true
-            }, label: {
-                CustomCell(title: "Phone", subtitle: account.phone, icon: "phone" ,cellType: .iconAction)
-                    .padding()
-            })
-            .foregroundStyle(.primary)
-            .actionSheet(isPresented: $showingActionSheet) {
-                ActionSheet(
-                    title: Text("Account"),
-                    message: Text("Call \(account.phone ?? "")?"),
-                    buttons: [
-                        .default(Text("Call")) {
-                            guard let phoneNumber = account.phone else { return }
-                            makeCall(phoneNumber: phoneNumber)
-                        },
-                        .cancel()
-                    ]
-                )
-            }
-            Button(action: {
-                if let email = account.email {
-                    prepareEmail(emailAddress: email)
+            VStack(spacing: 6) {
+                ZStack {
+                    Circle()
+                        .stroke(Gradient(colors: [.blue, .teal, .mint]), lineWidth: 10)
+                        .frame(width: 175, height: 175)
+                    
+                    Text(initials)
+                        .bold().font(.system(size: 80))
                 }
-            }, label: {
-                CustomCell(title: "Email", subtitle: account.email, icon: "envelope" ,cellType: .iconAction)
-                    .padding()
-            })
-            .foregroundStyle(.primary)
-            Button(action: {
-                navigateToAddress(address: accountFullAddress)
-            }, label: {
-                CustomCell(title: "Address", subtitle: accountFullAddress, icon: "arrow.merge" ,cellType: .iconAction)
-                    .padding()
-            })
-            .foregroundStyle(.primary)
-            VStack(alignment: .leading) {
-                Text("Account Notes")
+                Text(account.name)
                     .bold()
-                Text(account.notes ?? "No notes recorded for this account")
-                    .padding(.vertical)
-                    .padding(.horizontal)
-                    .font(.footnote)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(.secondary, lineWidth: 1)
-                    }
+                    .font(.title)
             }
-            .padding(.horizontal)
-            .padding(.vertical)
-        }
-        .padding()
-        VStack {
-            Button(action: {
-                nav.modalSheet(.createContact(account))
-            }, label: {
-                CustomCell(title: "Create Contact", subtitle: "Add contact to account", icon: "plus" ,cellType: .iconAction)
-                    .padding()
-            })
-            .foregroundStyle(.primary)
-            List {
-                ForEach(contacts, id: \.self) { contact in
-                    Button {
-                        nav.modalFullscreen(.contactDetails(contact))
-                    } label: {
-                        CustomCell(title: contact.name ?? "", subtitle: contact.phone, cellType: .navigation)
-                    }
-
+            Spacer()
+            VStack {
+                Button(action: {
+                    showingActionSheet = true
+                }, label: {
+                    CustomCell(title: "Phone", subtitle: account.phone, icon: "phone" ,cellType: .iconAction)
+                        .padding()
+                })
+                .foregroundStyle(.primary)
+                .actionSheet(isPresented: $showingActionSheet) {
+                    ActionSheet(
+                        title: Text("Account"),
+                        message: Text("Call \(account.phone ?? "")?"),
+                        buttons: [
+                            .default(Text("Call")) {
+                                guard let phoneNumber = account.phone else { return }
+                                makeCall(phoneNumber: phoneNumber)
+                            },
+                            .cancel()
+                        ]
+                    )
                 }
+                Button(action: {
+                    if let email = account.email {
+                        prepareEmail(emailAddress: email)
+                    }
+                }, label: {
+                    CustomCell(title: "Email", subtitle: account.email, icon: "envelope" ,cellType: .iconAction)
+                        .padding()
+                })
+                .foregroundStyle(.primary)
+                Button(action: {
+                    navigateToAddress(address: accountFullAddress)
+                }, label: {
+                    CustomCell(title: "Address", subtitle: accountFullAddress, icon: "arrow.merge" ,cellType: .iconAction)
+                        .padding()
+                })
+                .foregroundStyle(.primary)
+                VStack(alignment: .leading) {
+                    Text("Account Notes")
+                        .bold()
+                    Text(account.notes ?? "No notes recorded for this account")
+                        .padding(.vertical)
+                        .padding(.horizontal)
+                        .font(.footnote)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.secondary, lineWidth: 1)
+                        }
+                }
+                .padding(.horizontal)
+                .padding(.vertical)
+            }
+            Divider()
+                .frame(maxWidth: .infinity)
+            VStack {
+                Button(action: {
+                    nav.modalSheet(.createContact(account))
+                }, label: {
+                    CustomCell(title: "Create Contact", subtitle: "Add contact to account", icon: "plus" ,cellType: .iconAction)
+                        .padding()
+                })
+                .foregroundStyle(.primary)
+                    ForEach(contacts, id: \.self) { contact in
+                        Button {
+                            nav.modalFullscreen(.contactDetails(contact))
+                        } label: {
+                            CustomCell(title: contact.name ?? "", subtitle: contact.phone, cellType: .navigation)
+                        }
+                        
+                    }
+                    .padding(.horizontal)
+                    .padding(.vertical)
             }
         }
         .loggedTask {
             do {
-                 let details = try await Networking.api.getAccountDetails(id: account.id)
-                    contacts = details.contacts
-                } catch {
-                    Toast.error("Unable to get account details")
-                }
+                let details = try await Networking.api.getAccountDetails(id: account.id)
+                contacts = details.contacts
+            } catch {
+                Toast.error("Unable to get account details")
             }
         }
     }
+}
 
 
 #Preview {
