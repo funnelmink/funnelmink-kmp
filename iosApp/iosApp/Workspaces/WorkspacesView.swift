@@ -56,7 +56,7 @@ struct WorkspacesView: View {
                 // if they're a member of exactly one workspace, sign them in automatically
             } else if viewModel.workspaces.count == 1,
                       let workspace = viewModel.workspaces.first,
-                      [WorkspaceMembershipRole.owner, .member].contains(workspace.role) {
+                      [WorkspaceMembershipRole.admin, .sales, .labor].contains(workspace.role) {
                 appState.signIntoWorkspace(workspace)
             }
         }
@@ -77,7 +77,7 @@ struct WorkspacesView: View {
             }
             Spacer()
             switch workspace.role {
-            case .owner, .member:
+            case .admin, .labor, .sales:
                 if workspace.id == appState.workspace?.id {
                     Text("Current")
                         .foregroundColor(.secondary)
@@ -118,7 +118,7 @@ struct WorkspacesView: View {
             RoundedRectangle(cornerRadius: 4)
                 .stroke(
                     workspace.id == appState.workspace?.id ? Color.purple :
-                    [WorkspaceMembershipRole.owner, .member].contains(workspace.role) ? Color.blue : Color.gray,
+                        [WorkspaceMembershipRole.admin, .sales, .labor].contains(workspace.role) ? Color.blue : Color.gray,
                     lineWidth: 1
                 )
         }

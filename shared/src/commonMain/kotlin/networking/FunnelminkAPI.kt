@@ -357,7 +357,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun createFunnel(body: CreateFunnelRequest): Funnel {
-        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/owner/funnels", HttpMethod.Post) {
+        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/admin/funnels", HttpMethod.Post) {
             setBody(body)
         }
         cache.insertFunnel(funnel)
@@ -366,7 +366,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun updateFunnel(id: String, body: UpdateFunnelRequest): Funnel {
-        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/owner/funnels/$id", HttpMethod.Put) {
+        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/admin/funnels/$id", HttpMethod.Put) {
             setBody(body)
         }
         cache.replaceFunnel(funnel)
@@ -375,7 +375,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun deleteFunnel(id: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/owner/funnels/$id", HttpMethod.Delete)
+        genericRequest<Unit>("$baseURL/v1/workspace/admin/funnels/$id", HttpMethod.Delete)
         cache.deleteFunnel(id)
     }
 
@@ -385,7 +385,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun createFunnelStage(funnelID: String, body: CreateFunnelStageRequest): FunnelStage {
-        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/owner/funnelstages/$funnelID/", HttpMethod.Post) {
+        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/admin/funnelstages/$funnelID/", HttpMethod.Post) {
             setBody(body)
         }
         cache.insertFunnelStage(stage, funnelID)
@@ -394,7 +394,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun reorderFunnelStages(funnelID: String, body: ReorderFunnelStagesRequest) {
-        genericRequest<Unit>("$baseURL/v1/workspace/owner/funnelstages/$funnelID/reorder", HttpMethod.Put) {
+        genericRequest<Unit>("$baseURL/v1/workspace/admin/funnelstages/$funnelID/reorder", HttpMethod.Put) {
             setBody(body)
         }
 
@@ -403,7 +403,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun updateFunnelStage(id: String, body: UpdateFunnelStageRequest): FunnelStage {
-        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/owner/funnelstages/$id", HttpMethod.Put) {
+        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/admin/funnelstages/$id", HttpMethod.Put) {
             setBody(body)
         }
         cache.replaceFunnelStage(stage)
@@ -412,7 +412,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun deleteFunnelStage(id: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/owner/funnelstages/$id", HttpMethod.Delete)
+        genericRequest<Unit>("$baseURL/v1/workspace/admin/funnelstages/$id", HttpMethod.Delete)
         cache.deleteFunnelStage(id)
     }
 
@@ -693,17 +693,19 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun deleteWorkspace(): Workspace {
-        return genericRequest("$baseURL/v1/workspace/owner/deleteWorkspace", HttpMethod.Delete)
+        return genericRequest("$baseURL/v1/workspace/admin/deleteWorkspace", HttpMethod.Delete)
     }
 
     @Throws(Exception::class)
-    override suspend fun acceptWorkspaceRequest(userID: String) {
-        return genericRequest("$baseURL/v1/workspace/owner/acceptRequest/$userID", HttpMethod.Post)
+    override suspend fun acceptWorkspaceRequest(userID: String, role: WorkspaceMembershipRole) {
+        return genericRequest("$baseURL/v1/workspace/admin/acceptRequest/$userID", HttpMethod.Post) {
+            setBody("{\"role\":${role}}")
+        }
     }
 
     @Throws(Exception::class)
     override suspend fun declineWorkspaceRequest(userID: String) {
-        return genericRequest("$baseURL/v1/workspace/owner/declineRequest/$userID", HttpMethod.Post)
+        return genericRequest("$baseURL/v1/workspace/admin/declineRequest/$userID", HttpMethod.Post)
     }
 
     @Throws(Exception::class)
@@ -714,18 +716,20 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun inviteUserToWorkspace(email: String) {
-        return genericRequest("$baseURL/v1/workspace/owner/invite/$email", HttpMethod.Post)
+    override suspend fun inviteUserToWorkspace(email: String, role: WorkspaceMembershipRole) {
+        return genericRequest("$baseURL/v1/workspace/admin/invite/$email", HttpMethod.Post) {
+            setBody("{\"role\":${role}}")
+        }
     }
 
     @Throws(Exception::class)
     override suspend fun declineWorkspaceInvitation(id: String) {
-        return genericRequest("$baseURL/v1/workspace/owner/$id/declineInvite", HttpMethod.Post)
+        return genericRequest("$baseURL/v1/workspace/admin/$id/declineInvite", HttpMethod.Post)
     }
 
     @Throws(Exception::class)
     override suspend fun acceptWorkspaceInvitation(id: String): Workspace {
-        return genericRequest("$baseURL/v1/workspace/owner/$id/acceptInvite", HttpMethod.Post)
+        return genericRequest("$baseURL/v1/workspace/admin/$id/acceptInvite", HttpMethod.Post)
     }
 
     @Throws(Exception::class)
@@ -778,7 +782,9 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun changeWorkspaceRole(userID: String, role: WorkspaceMembershipRole) {
-        genericRequest<Unit>("$baseURL/v1/workspace/owner/roles/$userID?role=$role", HttpMethod.Post)
+        genericRequest<Unit>("$baseURL/v1/workspace/owner/roles/$userID?", HttpMethod.Post) {
+            setBody("{\"role\":${role}}")
+        }
         cache.changeWorkspaceMemberRole(userID, role)
     }
 

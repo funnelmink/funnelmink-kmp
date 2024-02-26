@@ -19,7 +19,7 @@ final class AppState: ObservableObject {
     @Published var shouldPresentWhatsNew = false
     @Published var isFABExpanded = false
 
-    var isWorkspaceOwner: Bool { workspace?.role == .owner }
+    var role: WorkspaceMembershipRole? { workspace?.role }
     
     @MainActor
     func configure(token: String?, updateWall: Bool, whatsNew: Bool) {

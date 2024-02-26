@@ -46,10 +46,10 @@ class WorkspaceSettingsViewModel: ViewModel {
     
     @MainActor
     func leaveWorkspace() async {
-        if AppState.shared.isWorkspaceOwner {
-            let owners = state.workspaceMembers.filter { $0.role == .owner }
-            guard owners.count > 1 else {
-                Toast.warn("You can't leave the workspace because you are the only owner.\nPlease promote another member before leaving.")
+        if AppState.shared.role == .admin {
+            let admins = state.workspaceMembers.filter { $0.role == .admin }
+            guard admins.count > 1 else {
+                Toast.warn("You can't leave the workspace because you are the only Admin.\nPlease promote another member before leaving.")
                 return
             }
         }
@@ -65,8 +65,8 @@ class WorkspaceSettingsViewModel: ViewModel {
     
     @MainActor
     func removeMemberFromWorkspace(id: String) async {
-        guard AppState.shared.isWorkspaceOwner else {
-            Toast.warn("You must be an owner to remove members.")
+        guard AppState.shared.role == .admin else {
+            Toast.warn("You must be an Admin to remove members.")
             return
         }
         guard id != AppState.shared.user?.id else {
@@ -96,11 +96,11 @@ class WorkspaceSettingsViewModel: ViewModel {
     }
     
     @MainActor
-    func acceptWorkspaceRequest(userID: String) async {
+    func acceptWorkspaceRequest(userID: String, role: WorkspaceMembershipRole) async {
         do {
-            try await Networking.api.acceptWorkspaceRequest(userID: userID)
+            try await Networking.api.acceptWorkspaceRequest(userID: userID, role: role)
             if let index = state.workspaceMembers.firstIndex(where: { $0.userID == userID }) {
-                state.workspaceMembers[index].role = .member
+                state.workspaceMembers[index].role = role
             }
         } catch {
             Toast.error(error)

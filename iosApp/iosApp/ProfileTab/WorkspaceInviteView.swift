@@ -14,6 +14,7 @@ struct WorkspaceInviteView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = WorkspacesViewModel()
     @State var inviteEmailAddress = ""
+    @State var role = WorkspaceMembershipRole.admin
     var body: some View {
         VStack {
             Spacer()
@@ -41,13 +42,20 @@ struct WorkspaceInviteView: View {
                     .keyboardType(.emailAddress)
             }
             .padding(.vertical)
+            
+            Picker("", selection: $role) {
+                Text("Admin").tag(WorkspaceMembershipRole.admin)
+                Text("Sales").tag(WorkspaceMembershipRole.sales)
+                Text("Labor").tag(WorkspaceMembershipRole.labor)
+            }
+            
             AsyncButton {
                 guard Validator.isValidEmail(inviteEmailAddress) else {
                     Toast.warn("Please enter a valid email address.")
                     return
                 }
                 
-                await viewModel.inviteToWorkspace(email: inviteEmailAddress) {
+                await viewModel.inviteToWorkspace(email: inviteEmailAddress, role: role) {
                     navigation.dismissModal()
                 }
             } label: {
