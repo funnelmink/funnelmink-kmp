@@ -218,10 +218,11 @@ enum class LeadClosedResult(val resultName: String) {
 
 @Serializable(with = WorkspaceMembershipRoleSerializer::class)
 enum class WorkspaceMembershipRole(val roleName: String) {
-    Owner("OWNER"),
-    Member("MEMBER"),
-    Requested("REQUESTED"),
-    Invited("INVITED");
+    Admin("Admin"),
+    Invited("Invited"),
+    Labor("Labor"),
+    Requested("Requested"),
+    Sales("Sales");
 
     companion object {
         fun fromRoleName(roleName: String): WorkspaceMembershipRole =

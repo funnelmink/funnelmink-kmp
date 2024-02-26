@@ -75,6 +75,7 @@
 		0D5987372B5607DF00327504 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5987362B5607DF00327504 /* TaskDetailView.swift */; };
 		0D5987392B561FCD00327504 /* TaskCompletionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5987382B561FCD00327504 /* TaskCompletionButton.swift */; };
 		0D73AB132B54DAF30026EC4D /* Int32+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AB122B54DAF30026EC4D /* Int32+.swift */; };
+		0D76D98F2B8CF80A0013FA62 /* FunnelminkTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D76D98E2B8CF80A0013FA62 /* FunnelminkTab.swift */; };
 		0D77594E2B6B75C500A61BAC /* ImportContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7759482B6B75C500A61BAC /* ImportContactsView.swift */; };
 		0D77594F2B6B75C500A61BAC /* ImportContactsVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7759492B6B75C500A61BAC /* ImportContactsVM.swift */; };
 		0D7972522B75E7E80048E942 /* MenuFAB.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7972512B75E7E80048E942 /* MenuFAB.swift */; };
@@ -114,7 +115,6 @@
 		1FA27F842B5EE80E00A447C3 /* TasksLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 1FA27F832B5EE80E00A447C3 /* TasksLottie.json */; };
 		1FCB70600327C8D33AEA3E90 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7D2C21891A9AE2804154 /* Modal.swift */; };
 		1FCB7062A19F8D62F892FD92 /* CloseRecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB78B08A792C000D33E2AA /* CloseRecordView.swift */; };
-		1FCB71FE510C993BB847583D /* AccounsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7B80AFBEAD61BD614CD6 /* AccounsView.swift */; };
 		1FCB731B11540D8EC93FCBBD /* LabeledRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB73DEFFC09C0D5A581EFC /* LabeledRow.swift */; };
 		1FCB73EF89A4C87B5C5908DD /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */; };
 		1FCB73F124945A937ECDAC6F /* WorkspacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7C4E3E93CDD70AD8DCC1 /* WorkspacesView.swift */; };
@@ -207,6 +207,7 @@
 		0D5987362B5607DF00327504 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		0D5987382B561FCD00327504 /* TaskCompletionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCompletionButton.swift; sourceTree = "<group>"; };
 		0D73AB122B54DAF30026EC4D /* Int32+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int32+.swift"; sourceTree = "<group>"; };
+		0D76D98E2B8CF80A0013FA62 /* FunnelminkTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunnelminkTab.swift; sourceTree = "<group>"; };
 		0D7759482B6B75C500A61BAC /* ImportContactsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportContactsView.swift; sourceTree = "<group>"; };
 		0D7759492B6B75C500A61BAC /* ImportContactsVM.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportContactsVM.swift; sourceTree = "<group>"; };
 		0D7972512B75E7E80048E942 /* MenuFAB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuFAB.swift; sourceTree = "<group>"; };
@@ -454,6 +455,7 @@
 				0D012E432B477E3900658153 /* Properties.swift */,
 				0D012E472B477E3900658153 /* ViewModel.swift */,
 				0D45D8082B5E018A00591524 /* Navigation */,
+				0D76D98E2B8CF80A0013FA62 /* FunnelminkTab.swift */,
 			);
 			path = Architecture;
 			sourceTree = "<group>";
@@ -1001,6 +1003,7 @@
 				1FCB73EF89A4C87B5C5908DD /* AccountsViewModel.swift in Sources */,
 				1FCB74EE9F81EC19833E8639 /* AccountView.swift in Sources */,
 				1FCB76F93C37F8F4E4B76F94 /* CreateAccountView.swift in Sources */,
+				0D76D98F2B8CF80A0013FA62 /* FunnelminkTab.swift in Sources */,
 				1FCB77F6AD2C612392D4609B /* ProfileViewModel.swift in Sources */,
 				1FCB7B2A5C922AB310B658B3 /* ProflieView.swift in Sources */,
 				41CC62D6E2C9601B1230CEAA /* AccountsView.swift in Sources */,

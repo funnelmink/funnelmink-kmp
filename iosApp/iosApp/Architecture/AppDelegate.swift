@@ -51,7 +51,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        UserDefaults.standard.setValue(Navigation.shared._state._selectedTab.rawValue, forKey: "Navigation._state._selectedTab")
+        UserDefaults.standard.setValue(Navigation.shared._state._selectedTab, forKey: "Navigation._state._selectedTab")
     }
 }
 

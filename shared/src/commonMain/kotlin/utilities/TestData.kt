@@ -159,7 +159,7 @@ class TestData {
     val testWorkspace = Workspace(
         "b2de1142-c10e-4343-b93d-7c11503955ad",
         "Godzilla Minus One",
-        WorkspaceMembershipRole.Owner,
+        WorkspaceMembershipRole.Admin,
         avatarURL,
     )
 
@@ -167,7 +167,7 @@ class TestData {
         "3c13e3d5-7d7f-4b62-bcec-cc527f7b4bcc",
         "c32d4984-1b89-48a3-a0f4-6c1d1239cc99",
         "Onson Sweemy",
-        WorkspaceMembershipRole.Owner,
+        WorkspaceMembershipRole.Admin,
     )
 
     private val avatarURL get() = "https://i.kym-cdn.com/photos/images/newsfeed/001/207/210/b22.jpg"

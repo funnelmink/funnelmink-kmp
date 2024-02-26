@@ -42,9 +42,9 @@ class WorkspacesViewModel: ViewModel {
     }
     
     @MainActor
-    func inviteToWorkspace(email: String, onSuccess: @escaping () -> Void) async {
+    func inviteToWorkspace(email: String, role: WorkspaceMembershipRole, onSuccess: @escaping () -> Void) async {
         do {
-            try await Networking.api.inviteUserToWorkspace(email: email)
+            try await Networking.api.inviteUserToWorkspace(email: email, role: role)
             onSuccess()
         } catch {
             Toast.warn(error)
