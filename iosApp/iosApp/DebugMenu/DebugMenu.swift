@@ -11,6 +11,7 @@ import SwiftUI
 
 /// Gives developer accounts superpowers.
 struct DebugMenu: View {
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
     @State private var selection: Selection = .debugMenu
     // Select between viewing the logs or the feature flags.
@@ -44,6 +45,7 @@ struct DebugMenu: View {
     var debugMenuView: some View {
         ScrollView {
             VStack {
+                roleOverride
                 menuButton(title: "Feature Flags", selection: .featureFlags)
                 menuButton(title: "Logs", selection: .logs)
                 menuButton(title: "Update Wall", selection: .updateWall)
@@ -64,6 +66,20 @@ struct DebugMenu: View {
             Button("Back") {
                 selection = .debugMenu
             }
+        }
+    }
+    
+    var roleOverride: some View {
+        HStack {
+            Text("View as:")
+            Spacer()
+            Picker("View as", selection: $appState.overriddenRole) {
+                Text("Default").tag(Optional< WorkspaceMembershipRole>.none)
+                Text("Admin").tag(Optional< WorkspaceMembershipRole>.some(.admin))
+                Text("Sales").tag(Optional< WorkspaceMembershipRole>.some(.sales))
+                Text("Labor").tag(Optional< WorkspaceMembershipRole>.some(.labor))
+            }
+            .tint(.cyan)
         }
     }
     
