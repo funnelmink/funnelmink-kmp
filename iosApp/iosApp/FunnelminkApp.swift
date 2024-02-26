@@ -30,12 +30,13 @@ fileprivate struct FunnelminkAppContents: View {
                 // Logged in and has joined a Workspace
                 if let workspace = appState.workspace {
                     TabView(selection: $navigation._state._selectedTab) {
-                        ForEach(FunnelMinkTab.allCases) { tab in
-                            NavigationStack(path: navigation._path(for: tab)) {
+                        ForEach(FunnelminkTab.activeTabConfiguration.indices, id: \.self) { i in
+                            let tab = FunnelminkTab.activeTabConfiguration[i]
+                            NavigationStack(path: navigation._path(index: i)) {
                                 tab.root.navigationDestination(for: Segue.self) { $0.view }
                             }
                             .tabItem { tab.tabItem }
-                            .tag(tab)
+                            .tag(i)
                         }
 
                     }
@@ -96,13 +97,15 @@ fileprivate struct FunnelminkAppContents: View {
     }
 }
 
-enum FunnelMinkTab: Int, Identifiable, CaseIterable {
-    // The order of the cases determines the order of the tabs
-    case today // today at a glance. Todoist
-    case accounts // quick find an account. send invoice. send business card. Apple Contacts
-    case funnels // leads and other - Jira
-    case inbox // would be really cool to make this its own email client
-    case profile // settings, profile, etc. Apple Settings
+enum FunnelminkTab: Int, Identifiable {
+    case today
+    case accounts
+    case funnels
+    case inbox
+    case profile
+    case pretendLaborTab
+    case pretendAdminTab
+    case pretendSalesTab
     
     var id: Int { rawValue }
     
@@ -114,6 +117,9 @@ enum FunnelMinkTab: Int, Identifiable, CaseIterable {
         case .funnels: FunnelsView()
         case .inbox: InboxView()
         case .profile: ProfileView()
+        case .pretendAdminTab: Label("Admin (fake)", systemImage: "crown")
+        case .pretendLaborTab: Label("Labor (fake)", systemImage: "hammer")
+        case .pretendSalesTab: Label("Sales (fake)", systemImage: "lizard")
         }
     }
 
@@ -125,6 +131,22 @@ enum FunnelMinkTab: Int, Identifiable, CaseIterable {
         case .funnels: Label("Funnels", image: "funnels.icon")
         case .inbox: Label("Inbox", systemImage: "envelope")
         case .profile: Label("Profile", systemImage: "person")
+        case .pretendAdminTab: Label("Admin (fake)", systemImage: "crown")
+        case .pretendLaborTab: Label("Labor (fake)", systemImage: "hammer")
+        case .pretendSalesTab: Label("Sales (fake)", systemImage: "lizard")
         }
     }
+    
+    static var activeTabConfiguration: [FunnelminkTab] {
+        switch AppState.shared.role {
+        case .admin: return adminTabs
+        case .labor: return laborTabs
+        case .sales: return salesTabs
+        default: return adminTabs
+        }
+    }
+    
+    static let adminTabs: [FunnelminkTab] = [.today, .pretendAdminTab, .accounts, .funnels, .profile]
+    static let laborTabs: [FunnelminkTab] = [.today, .pretendLaborTab, .accounts, .inbox, .profile]
+    static let salesTabs: [FunnelminkTab] = [.today, .pretendSalesTab, .accounts, .funnels, .profile]
 }

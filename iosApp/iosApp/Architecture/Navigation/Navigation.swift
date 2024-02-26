@@ -12,7 +12,7 @@ import SwiftUI
 class Navigation: ObservableObject {
     static let shared = Navigation()
     private init() {
-        _state._selectedTab = .init(rawValue: UserDefaults.standard.integer(forKey: "Navigation._state._selectedTab")) ?? .today
+        _state._selectedTab = UserDefaults.standard.integer(forKey: "Navigation._state._selectedTab")
     }
     
     @Published var _state = State()
@@ -20,7 +20,7 @@ class Navigation: ObservableObject {
     
     struct State: Hashable, Equatable {
         var _dismissTask: Task<Void, Error>?
-        var _selectedTab = FunnelMinkTab.today
+        var _selectedTab = 0
         
         // navigation stack for each tab
         var _0 = [Segue]()
@@ -37,11 +37,10 @@ class Navigation: ObservableObject {
         
         var _toast: Toast?
         var _modalToast: Toast?
-        
     }
     
-    func _path(for tab: FunnelMinkTab) -> Binding<[Segue]> {
-        switch tab.rawValue {
+    func _path(index: Int) -> Binding<[Segue]> {
+        switch index {
         case 0: return Binding(get: { self._state._0 }, set: { self._state._0 = $0 } )
         case 1: return Binding(get: { self._state._1 }, set: { self._state._1 = $0 } )
         case 2: return Binding(get: { self._state._2 }, set: { self._state._2 = $0 } )
@@ -52,7 +51,7 @@ class Navigation: ObservableObject {
     }
     
     func segue(_ segue: Segue) {
-        switch _state._selectedTab.rawValue {
+        switch _state._selectedTab {
         case 0: _state._0.append(segue)
         case 1: _state._1.append(segue)
         case 2: _state._2.append(segue)
@@ -63,7 +62,7 @@ class Navigation: ObservableObject {
     }
     
     func popSegue() {
-        switch _state._selectedTab.rawValue {
+        switch _state._selectedTab {
         case 0: _state._0.removeLast()
         case 1: _state._1.removeLast()
         case 2: _state._2.removeLast()
@@ -74,7 +73,7 @@ class Navigation: ObservableObject {
     }
     
     func popSegueToRoot() {
-        switch _state._selectedTab.rawValue {
+        switch _state._selectedTab {
         case 0: _state._0 = []
         case 1: _state._1 = []
         case 2: _state._2 = []
