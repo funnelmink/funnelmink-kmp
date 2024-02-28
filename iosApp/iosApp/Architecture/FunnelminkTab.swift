@@ -10,56 +10,65 @@ import Foundation
 import Shared
 import SwiftUI
 
-enum FunnelminkTab: Int, Identifiable {
-    case today
+enum FunnelminkTab: Int, Identifiable, CaseIterable {
+    // the `case` order is how they'll appear on the TabView. Feel free to rearrange.
+    case dashboard
     case accounts
-    case funnels
+    case cases
     case inbox
+    case leads
+    case opportunities
+    case tasks
     case profile
-    case pretendLaborTab
-    case pretendAdminTab
-    case pretendSalesTab
     
     var id: Int { rawValue }
     
     @ViewBuilder
     var root: some View {
         switch self {
-        case .today: TodayView()
+        case .dashboard: TodayView()
         case .accounts: AccountsView()
-        case .funnels: FunnelsView()
+        case .cases: Label("Cases", systemImage: "briefcase")
         case .inbox: InboxView()
+        case .leads: Label("Leads", systemImage: "person.3")
+        case .opportunities: Label("Opportunities", systemImage: "star")
+        case .tasks: Label("Tasks", systemImage: "checkmark.square")
         case .profile: ProfileView()
-        case .pretendAdminTab: Label("Admin (fake)", systemImage: "crown")
-        case .pretendLaborTab: Label("Labor (fake)", systemImage: "hammer")
-        case .pretendSalesTab: Label("Sales (fake)", systemImage: "lizard")
         }
     }
-
+    
     @ViewBuilder
     var tabItem: some View {
         switch self {
-        case .today: Label("Today", systemImage: "\(String(format: "%02d", Calendar.current.component(.day, from: .init()))).square.fill")
+        case .dashboard: Label("Today", systemImage: "\(String(format: "%02d", Calendar.current.component(.day, from: .init()))).square.fill")
         case .accounts: Label("Accounts", systemImage: "circle.hexagongrid")
-        case .funnels: Label("Funnels", image: "funnels.icon")
+        case .cases: Label("Cases", systemImage: "briefcase")
         case .inbox: Label("Inbox", systemImage: "envelope")
+        case .leads: Label("Leads", systemImage: "person.3")
+        case .opportunities: Label("Opportunities", systemImage: "star")
+        case .tasks: Label("Tasks", systemImage: "checkmark.square")
         case .profile: Label("Profile", systemImage: "person")
-        case .pretendAdminTab: Label("Admin (fake)", systemImage: "crown")
-        case .pretendLaborTab: Label("Labor (fake)", systemImage: "hammer")
-        case .pretendSalesTab: Label("Sales (fake)", systemImage: "lizard")
         }
     }
     
     static var activeTabConfiguration: [FunnelminkTab] {
-        switch AppState.shared.role {
-        case .admin: return adminTabs
-        case .labor: return laborTabs
-        case .sales: return salesTabs
-        default: return adminTabs
-        }
+        allCases.filter { $0.hasAccess(AppState.shared.roles) }
     }
-    
-    static let adminTabs: [FunnelminkTab] = [.today, .pretendAdminTab, .accounts, .funnels, .profile]
-    static let laborTabs: [FunnelminkTab] = [.today, .pretendLaborTab, .accounts, .inbox, .profile]
-    static let salesTabs: [FunnelminkTab] = [.today, .pretendSalesTab, .accounts, .funnels, .profile]
+}
+
+private extension FunnelminkTab {
+    func hasAccess(_ roles: [WorkspaceMembershipRole]) -> Bool {
+        var required = Set<WorkspaceMembershipRole>()
+        switch self {
+        case .accounts: required = [.admin, .sales, .labor]
+        case .cases: required = []
+        case .dashboard: required = []
+        case .inbox: required = []
+        case .leads: required = []
+        case .opportunities: required = []
+        case .profile: required = []
+        case .tasks: required = []
+        }
+        return !required.isDisjoint(with: roles)
+    }
 }

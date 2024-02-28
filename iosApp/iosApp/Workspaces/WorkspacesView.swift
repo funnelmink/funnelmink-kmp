@@ -56,7 +56,8 @@ struct WorkspacesView: View {
                 // if they're a member of exactly one workspace, sign them in automatically
             } else if viewModel.workspaces.count == 1,
                       let workspace = viewModel.workspaces.first,
-                      [WorkspaceMembershipRole.admin, .sales, .labor].contains(workspace.role) {
+                      // `!isDisjoint` means the sets overlap (workspace.roles contains admin, sales or labor)
+                      !Set([WorkspaceMembershipRole.admin, .sales, .labor]).isDisjoint(with: workspace.roles) {
                 appState.signIntoWorkspace(workspace)
             }
         }
@@ -69,15 +70,13 @@ struct WorkspacesView: View {
             VStack(alignment: .leading) {
                 Text(workspace.name)
                     .font(.title3)
-                if let role = workspace.role {
-                    Text(role.name)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
+                Text(workspace.roles.map(\.name).joined(separator: ", "))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
             }
             Spacer()
-            switch workspace.role {
-            case .admin, .labor, .sales:
+            
+            if !Set(workspace.roles).isDisjoint(with: [.admin, .labor, .sales]) {
                 if workspace.id == appState.workspace?.id {
                     Text("Current")
                         .foregroundColor(.secondary)
@@ -89,17 +88,17 @@ struct WorkspacesView: View {
                         Text("Sign in")
                     }
                 }
-            case .requested:
+            } else if workspace.roles.contains(.requested) {
                 Text("Request pending")
                     .foregroundColor(.secondary)
-            case .invited:
+            } else if workspace.roles.contains(.invited) {
                 HStack {
                     WarningAlertButton(warningMessage: "Reject invite?\n\nYou will need another invite in order to join this workspace.") {
                         Task { await viewModel.rejectInvite(workspace.id) { navigation.dismissModal() } }
                     } label: {
                         Text("Reject").foregroundColor(.red)
                     }
-
+                    
                     
                     AsyncButton {
                         await viewModel.acceptInvite(workspace.id) { navigation.dismissModal() }
@@ -107,8 +106,6 @@ struct WorkspacesView: View {
                         Text("Accept")
                     }
                 }
-            case .none:
-                EmptyView()
             }
         }
         .maxReadableWidth()
@@ -118,7 +115,7 @@ struct WorkspacesView: View {
             RoundedRectangle(cornerRadius: 4)
                 .stroke(
                     workspace.id == appState.workspace?.id ? Color.purple :
-                        [WorkspaceMembershipRole.admin, .sales, .labor].contains(workspace.role) ? Color.blue : Color.gray,
+                        Set([WorkspaceMembershipRole.admin, .sales, .labor]).isDisjoint(with: workspace.roles) ? Color.gray : Color.blue,
                     lineWidth: 1
                 )
         }

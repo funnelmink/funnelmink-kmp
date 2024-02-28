@@ -69,6 +69,7 @@
 		0D012E902B477F2500658153 /* FunnelminkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E8F2B477F2500658153 /* FunnelminkApp.swift */; };
 		0D012E932B477FFC00658153 /* GoogleService-Info-DEV.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E912B477FFC00658153 /* GoogleService-Info-DEV.plist */; };
 		0D012E942B477FFC00658153 /* GoogleService-Info-PROD.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E922B477FFC00658153 /* GoogleService-Info-PROD.plist */; };
+		0D22BAFB2B8FABC10012BCA8 /* RolePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D22BAFA2B8FABC10012BCA8 /* RolePicker.swift */; };
 		0D3E40422B640F130096E222 /* Kanban.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E40412B640F130096E222 /* Kanban.swift */; };
 		0D3E40442B6413B20096E222 /* FunnelsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E40432B6413B20096E222 /* FunnelsViewModel.swift */; };
 		0D45D80A2B5E01A100591524 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45D8092B5E01A100591524 /* Toast.swift */; };
@@ -201,6 +202,7 @@
 		0D012E982B47877A00658153 /* ProdEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = ProdEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E992B47877B00658153 /* LocalEnvironment.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = LocalEnvironment.xcconfig; sourceTree = "<group>"; };
 		0D012E9C2B47878F00658153 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
+		0D22BAFA2B8FABC10012BCA8 /* RolePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RolePicker.swift; sourceTree = "<group>"; };
 		0D3E40412B640F130096E222 /* Kanban.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kanban.swift; sourceTree = "<group>"; };
 		0D3E40432B6413B20096E222 /* FunnelsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunnelsViewModel.swift; sourceTree = "<group>"; };
 		0D45D8092B5E01A100591524 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
@@ -490,6 +492,7 @@
 			isa = PBXGroup;
 			children = (
 				0D012E542B477E3A00658153 /* WorkspaceInviteView.swift */,
+				0D22BAFA2B8FABC10012BCA8 /* RolePicker.swift */,
 				0D012E552B477E3A00658153 /* WorkspaceSettingsView.swift */,
 				0D012E572B477E3A00658153 /* WorkspaceSettingsViewModel.swift */,
 				1FCB7E8839B6F36DABAA626E /* ProfileViewModel.swift */,
@@ -939,6 +942,7 @@
 				1F022A3C2B49159100966345 /* CustomAccordion.swift in Sources */,
 				1F022A3E2B49159100966345 /* CustomTextField.swift in Sources */,
 				0D79725A2B76E0840048E942 /* EditLeadViewModel.swift in Sources */,
+				0D22BAFB2B8FABC10012BCA8 /* RolePicker.swift in Sources */,
 				0DCC163A2B511A2C008F705B /* EditTaskViewModel.swift in Sources */,
 				0D73AB132B54DAF30026EC4D /* Int32+.swift in Sources */,
 				0D012E742B477E3A00658153 /* Networking.swift in Sources */,

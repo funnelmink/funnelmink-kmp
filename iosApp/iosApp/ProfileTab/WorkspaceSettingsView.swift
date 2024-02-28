@@ -14,16 +14,17 @@ struct WorkspaceSettingsView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = WorkspaceSettingsViewModel()
     @State var newWorkspaceName = ""
+    @State var newRoles: [WorkspaceMembershipRole] = []
     @ViewBuilder
     var body: some View {
         if let workspace = appState.workspace {
             List {
                 Section("MEMBERS") {
                     ForEach(viewModel.workspaceMembers, id: \.self) { member in
-                        memberCell(id: member.userID, name: member.username, role: member.role, image: nil)
+                        memberCell(id: member.userID, name: member.username, roles: member.roles, image: nil)
                     }
                 }
-                if appState.role == .admin {
+                if appState.roles.contains(.admin) {
                     Section("WORKSPACE NAME") {
                         HStack {
                             TextField("Workspace name", text: $newWorkspaceName)
@@ -83,7 +84,7 @@ struct WorkspaceSettingsView: View {
         }
     }
     
-    private func memberCell(id: String?, name: String, role: WorkspaceMembershipRole, image: Image?) -> some View {
+    private func memberCell(id: String?, name: String, roles: [WorkspaceMembershipRole], image: Image?) -> some View {
         HStack {
             if let image = image {
                 image
@@ -98,47 +99,46 @@ struct WorkspaceSettingsView: View {
             }
             Text(name).fontWeight(.medium)
             Spacer()
-            if role == .invited {
+            if roles.contains(.invited) {
                 Text("Invited")
                     .foregroundStyle(.secondary)
-            } else if role == .requested && appState.role == .admin, let id {
+            } else if roles.contains(.requested) && appState.roles.contains(.admin), let id {
                 VStack {
                     AsyncButton {
                         await viewModel.declineWorkspaceRequest(userID: id)
                     } label: {
                         Text("Reject")
                     }
-                    AsyncButton {
-                        // TODO: instead of accepting it here, segue to a new view that lets the admin choose which role to give the new user
-                        await viewModel.acceptWorkspaceRequest(userID: id, role: .admin)
+                    Button {
+                        navigation.modalSheet(.rolePicker($newRoles)) {
+                            newRoles = [.admin]
+                            Task { await viewModel.acceptWorkspaceRequest(userID: id, roles: newRoles) }
+                        }
                     } label: {
                         Text("Approve")
                     }
                 }
-            } else if role == .requested {
+            } else if roles.contains(.requested) {
                 Text("Requesting to join")
                     .foregroundStyle(.secondary)
-            } else if appState.role == .admin, let id {
-                Picker(
-                    "",
-                    selection: Binding(
-                        get: { role },
-                        set: { viewModel.changeMemberRole(id: id, to: $0) }
-                    )
-                ) {
-                    Text("Admin").tag(WorkspaceMembershipRole.admin)
-                    Text("Sales").tag(WorkspaceMembershipRole.sales)
-                    Text("Labor").tag(WorkspaceMembershipRole.labor)
-                    if appState.user?.id != id {
-                        WarningAlertButton(warningMessage: "Remove \(name) from workspace?") {
-                            Task { await viewModel.removeMemberFromWorkspace(id: id) }
-                        } label: {
-                            Text("Remove").foregroundStyle(.red)
-                        }
+            } else if appState.roles.contains(.admin), let id {
+                Button {
+                    newRoles = roles
+                    navigation.modalSheet(.rolePicker($newRoles)) {
+                        Task { await viewModel.changeMemberRoles(id: id, to: newRoles) }
+                    }
+                } label: {
+                    Text(roles.map(\.name).joined(separator: ", "))
+                }
+                if appState.user?.id != id {
+                    WarningAlertButton(warningMessage: "Remove \(name) from workspace?") {
+                        Task { await viewModel.removeMemberFromWorkspace(id: id) }
+                    } label: {
+                        Text("Remove").foregroundStyle(.red)
                     }
                 }
             } else {
-                Text(role.name)
+                Text(roles.map(\.name).joined(separator: ", "))
                     .foregroundStyle(.secondary)
             }
         }

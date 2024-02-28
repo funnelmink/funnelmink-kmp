@@ -46,8 +46,8 @@ class WorkspaceSettingsViewModel: ViewModel {
     
     @MainActor
     func leaveWorkspace() async {
-        if AppState.shared.role == .admin {
-            let admins = state.workspaceMembers.filter { $0.role == .admin }
+        if AppState.shared.roles.contains(.admin) {
+            let admins = state.workspaceMembers.filter { $0.roles.contains(.admin) }
             guard admins.count > 1 else {
                 Toast.warn("You can't leave the workspace because you are the only Admin.\nPlease promote another member before leaving.")
                 return
@@ -65,7 +65,7 @@ class WorkspaceSettingsViewModel: ViewModel {
     
     @MainActor
     func removeMemberFromWorkspace(id: String) async {
-        guard AppState.shared.role == .admin else {
+        guard AppState.shared.roles.contains(.admin) else {
             Toast.warn("You must be an Admin to remove members.")
             return
         }
@@ -82,25 +82,25 @@ class WorkspaceSettingsViewModel: ViewModel {
     }
     
     @MainActor
-    func changeMemberRole(id: String, to role: WorkspaceMembershipRole) {
-        Task {
-            do {
-                try await Networking.api.changeWorkspaceRole(userID: id, role: role)
-                if let index = state.workspaceMembers.firstIndex(where: { $0.userID == id }) {
-                    state.workspaceMembers[index].role = role
-                }
-            } catch {
-                Toast.error(error)
+    func changeMemberRoles(id: String, to roles: [WorkspaceMembershipRole]) async {
+        do {
+            let body = WorkspaceMembershipRolesRequest(roles: roles)
+            try await Networking.api.changeWorkspaceRoles(userID: id, body: body)
+            if let index = state.workspaceMembers.firstIndex(where: { $0.userID == id }) {
+                state.workspaceMembers[index].roles = roles
             }
+        } catch {
+            Toast.error(error)
         }
     }
     
     @MainActor
-    func acceptWorkspaceRequest(userID: String, role: WorkspaceMembershipRole) async {
+    func acceptWorkspaceRequest(userID: String, roles: [WorkspaceMembershipRole]) async {
         do {
-            try await Networking.api.acceptWorkspaceRequest(userID: userID, role: role)
+            let body = WorkspaceMembershipRolesRequest(roles: roles)
+            try await Networking.api.acceptWorkspaceRequest(userID: userID, body: body)
             if let index = state.workspaceMembers.firstIndex(where: { $0.userID == userID }) {
-                state.workspaceMembers[index].role = role
+                state.workspaceMembers[index].roles = roles
             }
         } catch {
             Toast.error(error)
