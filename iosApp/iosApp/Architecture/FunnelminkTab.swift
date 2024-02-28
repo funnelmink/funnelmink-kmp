@@ -59,16 +59,19 @@ enum FunnelminkTab: Int, Identifiable, CaseIterable {
 private extension FunnelminkTab {
     func hasAccess(_ roles: [WorkspaceMembershipRole]) -> Bool {
         var required = Set<WorkspaceMembershipRole>()
+        
+        // right now these are just sort of random placeholders
         switch self {
         case .accounts: required = [.admin, .sales, .labor]
-        case .cases: required = []
-        case .dashboard: required = []
-        case .inbox: required = []
-        case .leads: required = []
-        case .opportunities: required = []
-        case .profile: required = []
-        case .tasks: required = []
+        case .cases: required = [.admin, .labor]
+        case .dashboard: required = [.admin, .sales, .labor]
+        case .inbox: required = [.admin]
+        case .leads: required = [.admin, .sales]
+        case .opportunities: required = [.admin, .sales]
+        case .profile: required = [.admin, .labor, .sales]
+        case .tasks: required = [.admin, .labor]
         }
+        
         return !required.isDisjoint(with: roles)
     }
 }

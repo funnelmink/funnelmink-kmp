@@ -45,8 +45,7 @@ class Navigation: ObservableObject {
         case 1: return Binding(get: { self._state._1 }, set: { self._state._1 = $0 } )
         case 2: return Binding(get: { self._state._2 }, set: { self._state._2 = $0 } )
         case 3: return Binding(get: { self._state._3 }, set: { self._state._3 = $0 } )
-        case 4: return Binding(get: { self._state._4 }, set: { self._state._4 = $0 } )
-        default: fatalError("Tried to access a tab that doesn't exist")
+        default: return Binding(get: { self._state._4 }, set: { self._state._4 = $0 } )
         }
     }
     
@@ -56,8 +55,7 @@ class Navigation: ObservableObject {
         case 1: _state._1.append(segue)
         case 2: _state._2.append(segue)
         case 3: _state._3.append(segue)
-        case 4: _state._4.append(segue)
-        default: break
+        default: _state._4.append(segue)
         }
     }
     
@@ -67,8 +65,7 @@ class Navigation: ObservableObject {
         case 1: _state._1.removeLast()
         case 2: _state._2.removeLast()
         case 3: _state._3.removeLast()
-        case 4: _state._4.removeLast()
-        default: break
+        default: _state._4.removeLast()
         }
     }
     
@@ -78,8 +75,7 @@ class Navigation: ObservableObject {
         case 1: _state._1 = []
         case 2: _state._2 = []
         case 3: _state._3 = []
-        case 4: _state._4 = []
-        default: break
+        default: _state._4 = []
         }
     }
     
@@ -131,11 +127,11 @@ protocol NavigationSegue: Hashable, Equatable {}
 
 extension NavigationSegue {
     var rawValue: String { "\(self)" }
-
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(rawValue)
     }
-
+    
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.rawValue == rhs.rawValue
     }
@@ -144,11 +140,11 @@ extension NavigationSegue {
 extension Modal: Hashable, Equatable {
     var id: String { rawValue }
     var rawValue: String { "\(self)" }
-
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(rawValue)
     }
-
+    
     static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.rawValue == rhs.rawValue
     }
