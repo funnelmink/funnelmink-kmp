@@ -697,9 +697,9 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun acceptWorkspaceRequest(userID: String, role: WorkspaceMembershipRole) {
+    override suspend fun acceptWorkspaceRequest(userID: String, body: WorkspaceMembershipRolesRequest) {
         return genericRequest("$baseURL/v1/workspace/admin/acceptRequest/$userID", HttpMethod.Post) {
-            setBody("{\"role\":${role}}")
+            setBody(body)
         }
     }
 
@@ -716,9 +716,9 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun inviteUserToWorkspace(email: String, role: WorkspaceMembershipRole) {
+    override suspend fun inviteUserToWorkspace(email: String, body: WorkspaceMembershipRolesRequest) {
         return genericRequest("$baseURL/v1/workspace/admin/invite/$email", HttpMethod.Post) {
-            setBody("{\"role\":${role}}")
+            setBody(body)
         }
     }
 
@@ -781,11 +781,11 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun changeWorkspaceRole(userID: String, role: WorkspaceMembershipRole) {
-        genericRequest<Unit>("$baseURL/v1/workspace/owner/roles/$userID?", HttpMethod.Post) {
-            setBody("{\"role\":${role}}")
+    override suspend fun changeWorkspaceRoles(userID: String, body: WorkspaceMembershipRolesRequest) {
+        genericRequest<Unit>("$baseURL/v1/workspace/owner/roles/$userID", HttpMethod.Post) {
+            setBody(body)
         }
-        cache.changeWorkspaceMemberRole(userID, role)
+        cache.changeWorkspaceMemberRoles(userID, body.roles)
     }
 
     @Throws(Exception::class)

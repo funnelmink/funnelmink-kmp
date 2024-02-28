@@ -2,11 +2,11 @@ CREATE TABLE SQLWorkspaceMember(
     id TEXT PRIMARY KEY,
     userID TEXT NOT NULL,
     username TEXT NOT NULL,
-    role TEXT NOT NULL
+    roles TEXT NOT NULL
 );
 
 insertWorkspaceMember:
-INSERT INTO SQLWorkspaceMember(id, userID, username, role)
+INSERT INTO SQLWorkspaceMember(id, userID, username, roles)
 VALUES(?, ?, ?, ?);
 
 selecteWorkspaceMemberById:
@@ -14,9 +14,9 @@ SELECT *
 FROM SQLWorkspaceMember
 WHERE id = ?;
 
-changeWorkspaceMemberRole:
+changeWorkspaceMemberRoles:
 UPDATE SQLWorkspaceMember
-SET role = ?
+SET roles = ?
 WHERE userID = ?;
 
 selectAllWorkspaceMembersInfo:
