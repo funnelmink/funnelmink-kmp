@@ -14,7 +14,7 @@ struct WorkspaceInviteView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = WorkspacesViewModel()
     @State var inviteEmailAddress = ""
-    @State var role = WorkspaceMembershipRole.admin
+    @State var roles = [WorkspaceMembershipRole.admin]
     var body: some View {
         VStack {
             Spacer()
@@ -43,11 +43,7 @@ struct WorkspaceInviteView: View {
             }
             .padding(.vertical)
             
-            Picker("", selection: $role) {
-                Text("Admin").tag(WorkspaceMembershipRole.admin)
-                Text("Sales").tag(WorkspaceMembershipRole.sales)
-                Text("Labor").tag(WorkspaceMembershipRole.labor)
-            }
+            RolePicker(roles: $roles)
             
             AsyncButton {
                 guard Validator.isValidEmail(inviteEmailAddress) else {
@@ -55,7 +51,7 @@ struct WorkspaceInviteView: View {
                     return
                 }
                 
-                await viewModel.inviteToWorkspace(email: inviteEmailAddress, role: role) {
+                await viewModel.inviteToWorkspace(email: inviteEmailAddress, roles: roles) {
                     navigation.dismissModal()
                 }
             } label: {

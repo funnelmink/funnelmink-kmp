@@ -255,3 +255,8 @@ data class CreateActivityRequest(
     val details: String?,
     val parentID: String
 )
+
+@Serializable
+data class WorkspaceMembershipRolesRequest(
+    val roles: List<WorkspaceMembershipRole>,
+)

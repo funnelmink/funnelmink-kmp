@@ -38,7 +38,6 @@ fileprivate struct FunnelminkAppContents: View {
                             .tabItem { tab.tabItem }
                             .tag(i)
                         }
-
                     }
                     .tag(workspace.id)
 
@@ -46,7 +45,6 @@ fileprivate struct FunnelminkAppContents: View {
                 } else {
                     WorkspacesView() // TODO: pass in whether or not the user has the option to log out
                 }
-
                 // Not logged in
             } else {
                 NavigationStack(path: $navigation._state._unauthenticated) {

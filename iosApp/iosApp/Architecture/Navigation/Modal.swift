@@ -40,6 +40,8 @@ enum Modal: Identifiable {
     case createOpportunity(accountID: String?)
     case editOpportunity(opportunity: Opportunity)
     
+    case rolePicker(Binding<[WorkspaceMembershipRole]>)
+    
     @ViewBuilder
     var view: some View {
         Group {
@@ -66,6 +68,7 @@ enum Modal: Identifiable {
             case let .convertLead(lead): ConvertLeadView(lead: lead)
             case let .createOpportunity(accountID): EditOpportunityView(accountID: accountID)
             case let .editOpportunity(opportunity): EditOpportunityView(opportunity: opportunity)
+            case let .rolePicker(roles): RolePicker(roles: roles)
             }
         }
         .toasted(isPresented: true) // modals exist in a separate window. this modifier lets them display toasts anyways

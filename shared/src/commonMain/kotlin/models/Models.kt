@@ -156,7 +156,7 @@ data class User(
 data class Workspace(
     val id: String,
     val name: String,
-    var role: WorkspaceMembershipRole? = null,
+    var roles: List<WorkspaceMembershipRole>,
     val avatarURL: String? = null
 )
 
@@ -166,7 +166,7 @@ data class WorkspaceMember(
     val userID: String,
     val username: String,
     //    @SerialName("avatar_url") val avatarURL: String? = null,
-    var role: WorkspaceMembershipRole,
+    var roles: List<WorkspaceMembershipRole>,
     //    val email: String, I don't think we want to share emails?
 )
 

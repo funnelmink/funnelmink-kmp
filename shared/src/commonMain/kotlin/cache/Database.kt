@@ -1060,7 +1060,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         workspaceDB.insertWorkspace(
             workspace.id,
             workspace.name,
-            workspace.role?.roleName,
+            workspace.roles.joinToString { it.name },
             workspace.avatarURL
         )
     }
@@ -1068,7 +1068,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     @Throws(Exception::class)
     fun selectWorkspaceById(id: String): Workspace? {
         val cached = workspaceDB.selectWorkspaceById(id).executeAsOneOrNull() ?: return null
-        return mapWorkspace(cached.id, cached.name, cached.role, cached.avatarURL)
+        return mapWorkspace(cached.id, cached.name, cached.roles, cached.avatarURL)
     }
 
     @Throws(Exception::class)
@@ -1080,7 +1080,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     fun updateWorkspace(workspace: Workspace) {
         workspaceDB.updateWorkspace(
             workspace.name,
-            workspace.role?.roleName,
+            workspace.roles.joinToString { it.name },
             workspace.avatarURL,
             workspace.id
         )
@@ -1096,11 +1096,11 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         workspaceDB.removeAllWorkspaces()
     }
 
-    private fun mapWorkspace(id: String, name: String, role: String?, avatarURL: String?): Workspace {
+    private fun mapWorkspace(id: String, name: String, roles: String, avatarURL: String?): Workspace {
         return Workspace(
             id,
             name,
-            role?.let { WorkspaceMembershipRole.fromRoleName(it) },
+            roles.split(",").map { WorkspaceMembershipRole.valueOf(it.trim()) },
             avatarURL
         )
     }
@@ -1115,7 +1115,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             member.id,
             member.userID,
             member.username,
-            member.role.roleName
+            member.roles.joinToString { it.name },
         )
     }
 
@@ -1125,8 +1125,11 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun changeWorkspaceMemberRole(userID: String, role: WorkspaceMembershipRole) {
-        workspaceMemberDB.changeWorkspaceMemberRole(role.roleName, userID)
+    fun changeWorkspaceMemberRoles(userID: String, roles: List<WorkspaceMembershipRole>) {
+        workspaceMemberDB.changeWorkspaceMemberRoles(
+            roles.joinToString { it.name },
+            userID
+        )
     }
 
     @Throws(Exception::class)
@@ -1145,12 +1148,12 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         workspaceMemberDB.removeAllWorkspaceMembers()
     }
 
-    private fun mapWorkspaceMember(id: String, userID: String, username: String, role: String?): WorkspaceMember {
+    private fun mapWorkspaceMember(id: String, userID: String, username: String, roles: String): WorkspaceMember {
         return WorkspaceMember(
             id,
             userID,
             username,
-            WorkspaceMembershipRole.fromRoleName(role!!)
+            roles.split(",").map { WorkspaceMembershipRole.valueOf(it.trim()) }
         )
     }
 
