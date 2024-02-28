@@ -9,6 +9,9 @@
 import Foundation
 import SwiftUI
 
+// One day we might need to create an iPad-specific version of this class
+// It would be used via conditional compilation/compiler directives
+// The iPad specific version would allow for an arbitrary amount of top-level tabs (not capped at 5)
 class Navigation: ObservableObject {
     static let shared = Navigation()
     private init() {
