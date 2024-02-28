@@ -74,9 +74,6 @@ struct MenuFAB: View {
                     .animation(.spring(), value: appState.isFABExpanded)
             }
         }
-        .onDisappear {
-            appState.isFABExpanded = false
-        }
     }
 }
 
