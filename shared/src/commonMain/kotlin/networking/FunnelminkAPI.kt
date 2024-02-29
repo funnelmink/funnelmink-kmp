@@ -706,7 +706,7 @@ class FunnelminkAPI(
     @Throws(Exception::class)
     override suspend fun inviteUserToWorkspace(email: String, body: WorkspaceMembershipRolesRequest) {
         cacheInvalidator.invalidate("getWorkspaceMembers")
-        return genericRequest("$baseURL/v1/workspace/admin/invite/$email", HttpMethod.Post) {
+        return genericRequest<Unit>("$baseURL/v1/workspace/admin/invite/$email", HttpMethod.Post) {
             setBody(body)
         }
     }
