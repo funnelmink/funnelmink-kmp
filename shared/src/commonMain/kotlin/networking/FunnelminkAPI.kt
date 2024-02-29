@@ -692,8 +692,8 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun deleteWorkspace(): Workspace {
-        return genericRequest("$baseURL/v1/workspace/admin/deleteWorkspace", HttpMethod.Delete)
+    override suspend fun deleteWorkspace() {
+        return genericRequest<Unit>("$baseURL/v1/workspace/admin/deleteWorkspace", HttpMethod.Delete)
     }
 
     @Throws(Exception::class)
@@ -859,7 +859,7 @@ class FunnelminkAPI(
             Utilities.logger.log(LogLevel.WARN, "🆘 $responseBody")
             try {
                 var message = jsonDecoder.decodeFromString<APIError>(responseBody).message
-                if (message.startsWith("Expected start of object")) {
+                if (message.startsWith("Expected start of")) {
                     message = responseBody
                 }
                 when (response.status) {

@@ -123,7 +123,7 @@ interface API {
 
     // workspaces
     @Throws(Exception::class) suspend fun changeWorkspaceRoles(userID: String, body: WorkspaceMembershipRolesRequest)
-    @Throws(Exception::class) suspend fun deleteWorkspace(): Workspace
+    @Throws(Exception::class) suspend fun deleteWorkspace()
     @Throws(Exception::class) suspend fun inviteUserToWorkspace(email: String, body: WorkspaceMembershipRolesRequest)
     @Throws(Exception::class) suspend fun removeMemberFromWorkspace(userID: String)
     @Throws(Exception::class) suspend fun updateWorkspace(body: UpdateWorkspaceRequest): Workspace

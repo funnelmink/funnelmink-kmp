@@ -99,9 +99,8 @@ class WorkspaceSettingsViewModel: ViewModel {
     @MainActor
     func deleteWorkspace() async {
         do {
-            _ = try await Networking.api.deleteWorkspace()
-            AppState.shared.workspace = nil
-            state.workspaceMembers = []
+            try await Networking.api.deleteWorkspace()
+            AppState.shared.signOut()
         } catch {
             Toast.error(error)
         }
