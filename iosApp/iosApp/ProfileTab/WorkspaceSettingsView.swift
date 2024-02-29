@@ -43,7 +43,9 @@ struct WorkspaceSettingsView: View {
                 }
                 Section("DANGER ZONE") {
                     Button("Invite new members") {
-                        navigation.modalSheet(.inviteToWorkspace)
+                        navigation.modalSheet(.inviteToWorkspace) {
+                            Task { await viewModel.fetchWorkspaceMembers() }
+                        }
                     }
                     
                     WarningAlertButton(warningMessage: "Leave workspace?\n\nYou will need an invite to rejoin.") {
