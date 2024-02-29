@@ -697,18 +697,6 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun acceptWorkspaceRequest(userID: String, body: WorkspaceMembershipRolesRequest) {
-        return genericRequest("$baseURL/v1/workspace/admin/acceptRequest/$userID", HttpMethod.Post) {
-            setBody(body)
-        }
-    }
-
-    @Throws(Exception::class)
-    override suspend fun declineWorkspaceRequest(userID: String) {
-        return genericRequest("$baseURL/v1/workspace/admin/declineRequest/$userID", HttpMethod.Post)
-    }
-
-    @Throws(Exception::class)
     override suspend fun updateWorkspace(body: UpdateWorkspaceRequest): Workspace {
         return genericRequest("$baseURL/v1/workspace", HttpMethod.Put) {
             setBody(body)
@@ -730,11 +718,6 @@ class FunnelminkAPI(
     @Throws(Exception::class)
     override suspend fun acceptWorkspaceInvitation(id: String): Workspace {
         return genericRequest("$baseURL/v1/workspace/admin/$id/acceptInvite", HttpMethod.Post)
-    }
-
-    @Throws(Exception::class)
-    override suspend fun requestWorkspaceMembership(name: String) {
-        return genericRequest("$baseURL/v1/workspaces/$name/requestMembership", HttpMethod.Post)
     }
 
     @Throws(Exception::class)

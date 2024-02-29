@@ -62,8 +62,6 @@
 		0D012E812B477E3A00658153 /* WorkspaceSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E572B477E3A00658153 /* WorkspaceSettingsViewModel.swift */; };
 		0D012E822B477E3A00658153 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E592B477E3A00658153 /* AsyncButton.swift */; };
 		0D012E832B477E3A00658153 /* WarningAlertButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E5A2B477E3A00658153 /* WarningAlertButton.swift */; };
-		0D012E892B477E3A00658153 /* JoinExistingWorkspaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E632B477E3A00658153 /* JoinExistingWorkspaceViewModel.swift */; };
-		0D012E8B2B477E3A00658153 /* JoinExistingWorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E652B477E3A00658153 /* JoinExistingWorkspaceView.swift */; };
 		0D012E8C2B477E3A00658153 /* CreateWorkspaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E662B477E3A00658153 /* CreateWorkspaceView.swift */; };
 		0D012E8E2B477E9000658153 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E8D2B477E9000658153 /* Assets.xcassets */; };
 		0D012E902B477F2500658153 /* FunnelminkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E8F2B477F2500658153 /* FunnelminkApp.swift */; };
@@ -190,8 +188,6 @@
 		0D012E572B477E3A00658153 /* WorkspaceSettingsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WorkspaceSettingsViewModel.swift; sourceTree = "<group>"; };
 		0D012E592B477E3A00658153 /* AsyncButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncButton.swift; sourceTree = "<group>"; };
 		0D012E5A2B477E3A00658153 /* WarningAlertButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WarningAlertButton.swift; sourceTree = "<group>"; };
-		0D012E632B477E3A00658153 /* JoinExistingWorkspaceViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinExistingWorkspaceViewModel.swift; sourceTree = "<group>"; };
-		0D012E652B477E3A00658153 /* JoinExistingWorkspaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JoinExistingWorkspaceView.swift; sourceTree = "<group>"; };
 		0D012E662B477E3A00658153 /* CreateWorkspaceView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateWorkspaceView.swift; sourceTree = "<group>"; };
 		0D012E8D2B477E9000658153 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0D012E8F2B477F2500658153 /* FunnelminkApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunnelminkApp.swift; sourceTree = "<group>"; };
@@ -523,8 +519,6 @@
 		0D012E612B477E3A00658153 /* Workspaces */ = {
 			isa = PBXGroup;
 			children = (
-				0D012E632B477E3A00658153 /* JoinExistingWorkspaceViewModel.swift */,
-				0D012E652B477E3A00658153 /* JoinExistingWorkspaceView.swift */,
 				0D012E662B477E3A00658153 /* CreateWorkspaceView.swift */,
 				1FCB7C4E3E93CDD70AD8DCC1 /* WorkspacesView.swift */,
 				1FCB729289973E82B53DC6AE /* WorkspacesViewModel.swift */,
@@ -934,7 +928,6 @@
 				0D012E902B477F2500658153 /* FunnelminkApp.swift in Sources */,
 				0D012E6F2B477E3A00658153 /* SwiftUI+.swift in Sources */,
 				0D012E7B2B477E3A00658153 /* LoginView.swift in Sources */,
-				0D012E892B477E3A00658153 /* JoinExistingWorkspaceViewModel.swift in Sources */,
 				0D7972612B7AB5190048E942 /* CaseDetailView.swift in Sources */,
 				0D012E7E2B477E3A00658153 /* WorkspaceInviteView.swift in Sources */,
 				0DCC163C2B5249DC008F705B /* Date+.swift in Sources */,
@@ -980,7 +973,6 @@
 				0D7972562B767D070048E942 /* EditCaseView.swift in Sources */,
 				0D7972582B767D100048E942 /* EditOpportunityView.swift in Sources */,
 				0D012E6A2B477E3A00658153 /* String+.swift in Sources */,
-				0D012E8B2B477E3A00658153 /* JoinExistingWorkspaceView.swift in Sources */,
 				0D5987372B5607DF00327504 /* TaskDetailView.swift in Sources */,
 				0D012E6B2B477E3A00658153 /* Gradient+.swift in Sources */,
 				0D012E6E2B477E3A00658153 /* View+.swift in Sources */,

@@ -33,7 +33,6 @@ interface API {
     @Throws(Exception::class) suspend fun declineWorkspaceInvitation(id: String)
     @Throws(Exception::class) suspend fun createWorkspace(body: CreateWorkspaceRequest): Workspace
     @Throws(Exception::class) suspend fun getWorkspaces(): List<Workspace>
-    @Throws(Exception::class) suspend fun requestWorkspaceMembership(name: String)
 
 
     // ------------------------------------------------------------------------
@@ -123,9 +122,7 @@ interface API {
     @Throws(Exception::class) suspend fun deleteFunnelStage(id: String)
 
     // workspaces
-    @Throws(Exception::class) suspend fun acceptWorkspaceRequest(userID: String, body: WorkspaceMembershipRolesRequest)
     @Throws(Exception::class) suspend fun changeWorkspaceRoles(userID: String, body: WorkspaceMembershipRolesRequest)
-    @Throws(Exception::class) suspend fun declineWorkspaceRequest(userID: String)
     @Throws(Exception::class) suspend fun deleteWorkspace(): Workspace
     @Throws(Exception::class) suspend fun inviteUserToWorkspace(email: String, body: WorkspaceMembershipRolesRequest)
     @Throws(Exception::class) suspend fun removeMemberFromWorkspace(userID: String)

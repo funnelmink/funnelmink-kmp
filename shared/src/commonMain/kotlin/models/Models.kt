@@ -221,7 +221,6 @@ enum class WorkspaceMembershipRole(val roleName: String) {
     Admin("Admin"),
     Invited("Invited"),
     Labor("Labor"),
-    Requested("Requested"),
     Sales("Sales");
 
     companion object {
