@@ -76,19 +76,7 @@ struct WorkspacesView: View {
             }
             Spacer()
             
-            if !Set(workspace.roles).isDisjoint(with: [.admin, .labor, .sales]) {
-                if workspace.id == appState.workspace?.id {
-                    Text("Current")
-                        .foregroundColor(.secondary)
-                } else {
-                    Button {
-                        appState.signIntoWorkspace(workspace)
-                        navigation.dismissModal()
-                    } label: {
-                        Text("Sign in")
-                    }
-                }
-            } else if workspace.roles.contains(.invited) {
+            if workspace.roles.contains(.invited) {
                 HStack {
                     WarningAlertButton(warningMessage: "Reject invite?\n\nYou will need another invite in order to join this workspace.") {
                         Task { await viewModel.rejectInvite(workspace.id) { navigation.dismissModal() } }
@@ -102,6 +90,16 @@ struct WorkspacesView: View {
                     } label: {
                         Text("Accept")
                     }
+                }
+            } else if workspace.id == appState.workspace?.id {
+                Text("Current")
+                    .foregroundColor(.secondary)
+            } else {
+                Button {
+                    appState.signIntoWorkspace(workspace)
+                    navigation.dismissModal()
+                } label: {
+                    Text("Sign in")
                 }
             }
         }
