@@ -51,6 +51,11 @@ struct WorkspaceInviteView: View {
                     return
                 }
                 
+                guard !roles.isEmpty else {
+                    Toast.warn("Please select a role.")
+                    return
+                }
+                
                 await viewModel.inviteToWorkspace(email: inviteEmailAddress, roles: roles) {
                     navigation.dismissModal()
                 }

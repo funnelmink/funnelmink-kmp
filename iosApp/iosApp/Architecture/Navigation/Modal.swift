@@ -19,7 +19,6 @@ enum Modal: Identifiable {
     // TODO: maybe don't depend on this viewmodel
     case createWorkspace(WorkspacesViewModel)
     case inviteToWorkspace
-    case joinExistingWorkspace
     case selectWorkspace
     case createAccount
     case createContact(Account)
@@ -54,7 +53,6 @@ enum Modal: Identifiable {
 
             case let .createWorkspace(viewModel): CreateWorkspaceView(viewModel: viewModel)
             case .inviteToWorkspace: WorkspaceInviteView()
-            case .joinExistingWorkspace: JoinExistingWorkspaceView()
             case .selectWorkspace: WorkspacesView()
             case .createAccount: CreateAccountView()
             case let .createContact(account): CreateContactView(account: account)

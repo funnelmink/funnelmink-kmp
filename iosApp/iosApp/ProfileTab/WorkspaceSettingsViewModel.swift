@@ -87,44 +87,20 @@ class WorkspaceSettingsViewModel: ViewModel {
             let body = WorkspaceMembershipRolesRequest(roles: roles)
             try await Networking.api.changeWorkspaceRoles(userID: id, body: body)
             if let index = state.workspaceMembers.firstIndex(where: { $0.userID == id }) {
-                state.workspaceMembers[index].roles = roles
+                let members = state.workspaceMembers
+                members[index].roles = roles
+                state.workspaceMembers = members
             }
         } catch {
-            Toast.error(error)
-        }
-    }
-    
-    @MainActor
-    func acceptWorkspaceRequest(userID: String, roles: [WorkspaceMembershipRole]) async {
-        do {
-            let body = WorkspaceMembershipRolesRequest(roles: roles)
-            try await Networking.api.acceptWorkspaceRequest(userID: userID, body: body)
-            if let index = state.workspaceMembers.firstIndex(where: { $0.userID == userID }) {
-                state.workspaceMembers[index].roles = roles
-            }
-        } catch {
-            Toast.error(error)
-        }
-    }
-    
-    @MainActor
-    func declineWorkspaceRequest(userID: String) async {
-        do {
-            try await Networking.api.declineWorkspaceRequest(userID: userID)
-            if let index = state.workspaceMembers.firstIndex(where: { $0.userID == userID }) {
-                state.workspaceMembers.remove(at: index)
-            }
-        } catch {
-            Toast.error(error)
+            Toast.warn(error)
         }
     }
     
     @MainActor
     func deleteWorkspace() async {
         do {
-            _ = try await Networking.api.deleteWorkspace()
-            AppState.shared.workspace = nil
-            state.workspaceMembers = []
+            try await Networking.api.deleteWorkspace()
+            AppState.shared.signOut()
         } catch {
             Toast.error(error)
         }

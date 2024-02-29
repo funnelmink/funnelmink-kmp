@@ -88,9 +88,6 @@ struct WorkspacesView: View {
                         Text("Sign in")
                     }
                 }
-            } else if workspace.roles.contains(.requested) {
-                Text("Request pending")
-                    .foregroundColor(.secondary)
             } else if workspace.roles.contains(.invited) {
                 HStack {
                     WarningAlertButton(warningMessage: "Reject invite?\n\nYou will need another invite in order to join this workspace.") {
@@ -128,9 +125,6 @@ struct WorkspacesView: View {
                 Button("Create a new workspace") {
                     navigation.modalSheet(.createWorkspace(viewModel))
                 }
-                Button("Join an existing one") {
-                    navigation.modalSheet(.joinExistingWorkspace)
-                }
                 Text("or")
                 Button("Sign into a different account") {
                     appState.signOut()
@@ -139,10 +133,6 @@ struct WorkspacesView: View {
                 Text("You can also")
                 Button("Create a new workspace") {
                     navigation.modalSheet(.createWorkspace(viewModel))
-                }
-                Text("or")
-                Button("Join an existing one") {
-                    navigation.modalSheet(.joinExistingWorkspace)
                 }
             }
         }

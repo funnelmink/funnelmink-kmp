@@ -46,12 +46,6 @@ struct WorkspaceSettingsView: View {
                         navigation.modalSheet(.inviteToWorkspace)
                     }
                     
-                    Button("Upgrade to premium") {
-                        Toast.error("TODO")
-                        //                        navigation.externalDeeplink(to: .funnelminkStripe)
-                    }
-                    
-                    
                     WarningAlertButton(warningMessage: "Leave workspace?\n\nYou will need an invite to rejoin.") {
                         Task { await viewModel.leaveWorkspace() }
                     } label: {
@@ -101,25 +95,6 @@ struct WorkspaceSettingsView: View {
             Spacer()
             if roles.contains(.invited) {
                 Text("Invited")
-                    .foregroundStyle(.secondary)
-            } else if roles.contains(.requested) && appState.roles.contains(.admin), let id {
-                VStack {
-                    AsyncButton {
-                        await viewModel.declineWorkspaceRequest(userID: id)
-                    } label: {
-                        Text("Reject")
-                    }
-                    Button {
-                        navigation.modalSheet(.rolePicker($newRoles)) {
-                            newRoles = [.admin]
-                            Task { await viewModel.acceptWorkspaceRequest(userID: id, roles: newRoles) }
-                        }
-                    } label: {
-                        Text("Approve")
-                    }
-                }
-            } else if roles.contains(.requested) {
-                Text("Requesting to join")
                     .foregroundStyle(.secondary)
             } else if appState.roles.contains(.admin), let id {
                 Button {
