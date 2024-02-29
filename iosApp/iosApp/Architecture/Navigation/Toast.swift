@@ -156,6 +156,7 @@ enum ToastType {
 
 extension Navigation {
     func toast(_ message: String, type: ToastType = .info) {
+        guard !message.contains("Swift.CancellationError") else { return }
         _state._dismissTask?.cancel()
         let toast = Toast(message: message, type: type)
         withAnimation {
