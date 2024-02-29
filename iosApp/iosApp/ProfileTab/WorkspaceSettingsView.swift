@@ -46,12 +46,6 @@ struct WorkspaceSettingsView: View {
                         navigation.modalSheet(.inviteToWorkspace)
                     }
                     
-                    Button("Upgrade to premium") {
-                        Toast.error("TODO")
-                        //                        navigation.externalDeeplink(to: .funnelminkStripe)
-                    }
-                    
-                    
                     WarningAlertButton(warningMessage: "Leave workspace?\n\nYou will need an invite to rejoin.") {
                         Task { await viewModel.leaveWorkspace() }
                     } label: {
