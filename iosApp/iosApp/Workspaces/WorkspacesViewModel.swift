@@ -67,13 +67,8 @@ class WorkspacesViewModel: ViewModel {
     }
     
     @MainActor
-    func rejectInvite(_ id: String, onSuccess: @escaping () -> Void) async {
-        do {
-            try await Networking.api.declineWorkspaceInvitation(id: id)
-            state.workspaces.removeAll { $0.id == id }
-            onSuccess()
-        } catch {
-            Toast.warn(error)
-        }
+    func rejectInvite(_ id: String) async throws {
+        try await Networking.api.declineWorkspaceInvitation(id: id)
+        state.workspaces.removeAll { $0.id == id }
     }
 }

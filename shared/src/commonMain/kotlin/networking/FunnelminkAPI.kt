@@ -713,12 +713,12 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun declineWorkspaceInvitation(id: String) {
-        return genericRequest("$baseURL/v1/workspace/admin/$id/declineInvite", HttpMethod.Post)
+        return genericRequest("$baseURL/v1/workspaces/$id/declineInvite", HttpMethod.Post)
     }
 
     @Throws(Exception::class)
     override suspend fun acceptWorkspaceInvitation(id: String): Workspace {
-        return genericRequest("$baseURL/v1/workspace/admin/$id/acceptInvite", HttpMethod.Post)
+        return genericRequest("$baseURL/v1/workspaces/$id/acceptInvite", HttpMethod.Post)
     }
 
     @Throws(Exception::class)
