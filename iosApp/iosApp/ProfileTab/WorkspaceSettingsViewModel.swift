@@ -87,10 +87,12 @@ class WorkspaceSettingsViewModel: ViewModel {
             let body = WorkspaceMembershipRolesRequest(roles: roles)
             try await Networking.api.changeWorkspaceRoles(userID: id, body: body)
             if let index = state.workspaceMembers.firstIndex(where: { $0.userID == id }) {
-                state.workspaceMembers[index].roles = roles
+                let members = state.workspaceMembers
+                members[index].roles = roles
+                state.workspaceMembers = members
             }
         } catch {
-            Toast.error(error)
+            Toast.warn(error)
         }
     }
     

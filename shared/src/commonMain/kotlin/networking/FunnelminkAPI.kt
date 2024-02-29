@@ -765,7 +765,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun changeWorkspaceRoles(userID: String, body: WorkspaceMembershipRolesRequest) {
-        genericRequest<Unit>("$baseURL/v1/workspace/owner/roles/$userID", HttpMethod.Post) {
+        genericRequest<Unit>("$baseURL/v1/workspace/admin/roles/$userID", HttpMethod.Post) {
             setBody(body)
         }
         cache.changeWorkspaceMemberRoles(userID, body.roles)
@@ -773,7 +773,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun removeMemberFromWorkspace(userID: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/owner/removeMember/$userID", HttpMethod.Delete)
+        genericRequest<Unit>("$baseURL/v1/workspace/admin/removeMember/$userID", HttpMethod.Delete)
         cache.deleteWorkspaceMember(userID)
     }
 
@@ -842,7 +842,7 @@ class FunnelminkAPI(
             Utilities.logger.log(LogLevel.INFO, "✴️ $requestBody")
         }
 
-        if (T::class == Unit::class) {
+        if (T::class == Unit::class && response.status.isSuccess()) {
             return Unit as T
         }
 

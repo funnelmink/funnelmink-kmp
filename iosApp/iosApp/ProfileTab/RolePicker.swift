@@ -13,7 +13,7 @@ struct RolePicker: View {
     @Binding var roles: [WorkspaceMembershipRole]
     var body: some View {
         List {
-            ForEach(WorkspaceMembershipRole.allCases, id: \.self) { role in
+            ForEach(WorkspaceMembershipRole.allCases.filter { $0 != .invited }, id: \.self) { role in
                 HStack {
                     Text(role.name)
                     Spacer()
