@@ -53,17 +53,12 @@ class WorkspacesViewModel: ViewModel {
     }
     
     @MainActor
-    func acceptInvite(_ id: String, onSuccess: @escaping () -> Void) async {
-        do {
-            let workspace = try await Networking.api.acceptWorkspaceInvitation(id: id)
-            AppState.shared.signIntoWorkspace(workspace)
-            // replace the workspace in the list with the new one
-            state.workspaces.removeAll { $0.id == workspace.id }
-            state.workspaces.append(workspace)
-            onSuccess()
-        } catch {
-            Toast.warn(error)
-        }
+    func acceptInvite(_ id: String) async throws {
+        let workspace = try await Networking.api.acceptWorkspaceInvitation(id: id)
+        AppState.shared.signIntoWorkspace(workspace)
+        // replace the workspace in the list with the new one
+        state.workspaces.removeAll { $0.id == workspace.id }
+        state.workspaces.append(workspace)
     }
     
     @MainActor

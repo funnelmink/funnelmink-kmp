@@ -90,7 +90,12 @@ struct WorkspacesView: View {
                     
                     
                     AsyncButton {
-                        await viewModel.acceptInvite(workspace.id) { navigation.dismissModal() }
+                        do {
+                            try await viewModel.acceptInvite(workspace.id)
+                            navigation.dismissModal()
+                        } catch {
+                            Toast.warn(error)
+                        }
                     } label: {
                         Text("Accept")
                     }
