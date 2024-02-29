@@ -63,7 +63,9 @@ class Networking {
                         Toast.error("Your session has expired. Please log in again.")
                     }
                 } else {
-                    Toast.error(message)
+                    // Currently we ignore the error here
+                    // Instead, errors are handled wherever they take place in code
+                    // Toast.error(message)
                 }
             }
         }
