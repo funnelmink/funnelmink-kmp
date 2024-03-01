@@ -705,24 +705,25 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun inviteUserToWorkspace(email: String, body: WorkspaceMembershipRolesRequest) {
-        return genericRequest("$baseURL/v1/workspace/admin/invite/$email", HttpMethod.Post) {
+        cacheInvalidator.invalidate("getWorkspaceMembers")
+        return genericRequest<Unit>("$baseURL/v1/workspace/admin/invite/$email", HttpMethod.Post) {
             setBody(body)
         }
     }
 
     @Throws(Exception::class)
     override suspend fun declineWorkspaceInvitation(id: String) {
-        return genericRequest("$baseURL/v1/workspace/admin/$id/declineInvite", HttpMethod.Post)
+        return genericRequest<Unit>("$baseURL/v1/workspaces/$id/declineInvite", HttpMethod.Post)
     }
 
     @Throws(Exception::class)
     override suspend fun acceptWorkspaceInvitation(id: String): Workspace {
-        return genericRequest("$baseURL/v1/workspace/admin/$id/acceptInvite", HttpMethod.Post)
+        return genericRequest("$baseURL/v1/workspaces/$id/acceptInvite", HttpMethod.Post)
     }
 
     @Throws(Exception::class)
     override suspend fun leaveWorkspace() {
-        return genericRequest("$baseURL/v1/workspace/leave", HttpMethod.Post)
+        return genericRequest<Unit>("$baseURL/v1/workspace/leave", HttpMethod.Post)
     }
 
     @Throws(Exception::class)

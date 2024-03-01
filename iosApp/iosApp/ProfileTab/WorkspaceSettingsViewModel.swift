@@ -36,7 +36,7 @@ class WorkspaceSettingsViewModel: ViewModel {
     }
     
     @MainActor
-    private func fetchWorkspaceMembers() async {
+    func fetchWorkspaceMembers() async {
         do {
             state.workspaceMembers = try await Networking.api.getWorkspaceMembers()
         } catch {

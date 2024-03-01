@@ -21,7 +21,7 @@ struct WorkspaceSettingsView: View {
             List {
                 Section("MEMBERS") {
                     ForEach(viewModel.workspaceMembers, id: \.self) { member in
-                        memberCell(id: member.userID, name: member.username, roles: member.roles, image: nil)
+                        memberCell(member)
                     }
                 }
                 if appState.roles.contains(.admin) {
@@ -43,7 +43,9 @@ struct WorkspaceSettingsView: View {
                 }
                 Section("DANGER ZONE") {
                     Button("Invite new members") {
-                        navigation.modalSheet(.inviteToWorkspace)
+                        navigation.modalSheet(.inviteToWorkspace) {
+                            Task { await viewModel.fetchWorkspaceMembers() }
+                        }
                     }
                     
                     WarningAlertButton(warningMessage: "Leave workspace?\n\nYou will need an invite to rejoin.") {
@@ -78,42 +80,39 @@ struct WorkspaceSettingsView: View {
         }
     }
     
-    private func memberCell(id: String?, name: String, roles: [WorkspaceMembershipRole], image: Image?) -> some View {
+    private func memberCell(_ member: WorkspaceMember) -> some View {
         HStack {
-            if let image = image {
-                image
-                    .resizable()
-                    .frame(width: 40, height: 40)
-                    .clipShape(Circle())
-            } else {
-                Circle()
-                    .fill(Color.gray)
-                    .frame(width: 40, height: 40)
-                    .overlay(Text(name.prefix(1)).foregroundStyle(.white))
-            }
-            Text(name).fontWeight(.medium)
+            //            if let image = image {
+            //                image
+            //                    .resizable()
+            //                    .frame(width: 40, height: 40)
+            //                    .clipShape(Circle())
+            //            } else {
+            Circle()
+                .fill(Color.gray)
+                .frame(width: 40, height: 40)
+                .overlay(Text(member.username.prefix(1)).foregroundStyle(.white))
+            //            }
+            Text(member.username).fontWeight(.medium)
             Spacer()
-            if roles.contains(.invited) {
+            if member.roles.contains(.invited) {
                 Text("Invited")
                     .foregroundStyle(.secondary)
-            } else if appState.roles.contains(.admin), let id {
+            } else if appState.roles.contains(.admin) {
                 Button {
-                    newRoles = roles
-                    navigation.modalSheet(.rolePicker($newRoles)) {
-                        Task { await viewModel.changeMemberRoles(id: id, to: newRoles) }
+                    navigation.modalSheet(.manageWorkspaceMember(member)) {
+                        Task {
+                            await viewModel.fetchWorkspaceMembers()
+                            if member.userID == appState.user?.id {
+                                appState.workspace?.roles = viewModel.workspaceMembers.first(where: { $0.userID == appState.user?.id })?.roles ?? []
+                            }
+                        }
                     }
                 } label: {
-                    Text(roles.map(\.name).joined(separator: ", "))
-                }
-                if appState.user?.id != id {
-                    WarningAlertButton(warningMessage: "Remove \(name) from workspace?") {
-                        Task { await viewModel.removeMemberFromWorkspace(id: id) }
-                    } label: {
-                        Text("Remove").foregroundStyle(.red)
-                    }
+                    Text(member.roles.map(\.name).joined(separator: ", "))
                 }
             } else {
-                Text(roles.map(\.name).joined(separator: ", "))
+                Text(member.roles.map(\.name).joined(separator: ", "))
                     .foregroundStyle(.secondary)
             }
         }
