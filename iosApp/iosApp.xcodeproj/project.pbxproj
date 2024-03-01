@@ -73,6 +73,7 @@
 		0D45D80A2B5E01A100591524 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45D8092B5E01A100591524 /* Toast.swift */; };
 		0D5987372B5607DF00327504 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5987362B5607DF00327504 /* TaskDetailView.swift */; };
 		0D5987392B561FCD00327504 /* TaskCompletionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5987382B561FCD00327504 /* TaskCompletionButton.swift */; };
+		0D648EDB2B915D680013328F /* ManageWorkspaceMemberView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D648EDA2B915D680013328F /* ManageWorkspaceMemberView.swift */; };
 		0D73AB132B54DAF30026EC4D /* Int32+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AB122B54DAF30026EC4D /* Int32+.swift */; };
 		0D76D98F2B8CF80A0013FA62 /* FunnelminkTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D76D98E2B8CF80A0013FA62 /* FunnelminkTab.swift */; };
 		0D77594E2B6B75C500A61BAC /* ImportContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D7759482B6B75C500A61BAC /* ImportContactsView.swift */; };
@@ -204,6 +205,7 @@
 		0D45D8092B5E01A100591524 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		0D5987362B5607DF00327504 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		0D5987382B561FCD00327504 /* TaskCompletionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCompletionButton.swift; sourceTree = "<group>"; };
+		0D648EDA2B915D680013328F /* ManageWorkspaceMemberView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageWorkspaceMemberView.swift; sourceTree = "<group>"; };
 		0D73AB122B54DAF30026EC4D /* Int32+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int32+.swift"; sourceTree = "<group>"; };
 		0D76D98E2B8CF80A0013FA62 /* FunnelminkTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunnelminkTab.swift; sourceTree = "<group>"; };
 		0D7759482B6B75C500A61BAC /* ImportContactsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImportContactsView.swift; sourceTree = "<group>"; };
@@ -493,6 +495,7 @@
 				0D012E572B477E3A00658153 /* WorkspaceSettingsViewModel.swift */,
 				1FCB7E8839B6F36DABAA626E /* ProfileViewModel.swift */,
 				1FCB7BDF0E879F1578FB13D0 /* ProflieView.swift */,
+				0D648EDA2B915D680013328F /* ManageWorkspaceMemberView.swift */,
 			);
 			path = ProfileTab;
 			sourceTree = "<group>";
@@ -937,6 +940,7 @@
 				0D79725A2B76E0840048E942 /* EditLeadViewModel.swift in Sources */,
 				0D22BAFB2B8FABC10012BCA8 /* RolePicker.swift in Sources */,
 				0DCC163A2B511A2C008F705B /* EditTaskViewModel.swift in Sources */,
+				0D648EDB2B915D680013328F /* ManageWorkspaceMemberView.swift in Sources */,
 				0D73AB132B54DAF30026EC4D /* Int32+.swift in Sources */,
 				0D012E742B477E3A00658153 /* Networking.swift in Sources */,
 				0DCC16382B50E184008F705B /* EditTaskView.swift in Sources */,
