@@ -62,6 +62,8 @@ class Networking {
                     } catch {
                         Toast.error("Your session has expired. Please log in again.")
                     }
+                } else if message.contains("You have been signed out") {
+                    AppState.shared.signOut()
                 } else {
                     // Currently we ignore the error here
                     // Instead, errors are handled wherever they take place in code
