@@ -82,17 +82,17 @@ struct WorkspaceSettingsView: View {
     
     private func memberCell(_ member: WorkspaceMember) -> some View {
         HStack {
-//            if let image = image {
-//                image
-//                    .resizable()
-//                    .frame(width: 40, height: 40)
-//                    .clipShape(Circle())
-//            } else {
-                Circle()
-                    .fill(Color.gray)
-                    .frame(width: 40, height: 40)
-                    .overlay(Text(member.username.prefix(1)).foregroundStyle(.white))
-//            }
+            //            if let image = image {
+            //                image
+            //                    .resizable()
+            //                    .frame(width: 40, height: 40)
+            //                    .clipShape(Circle())
+            //            } else {
+            Circle()
+                .fill(Color.gray)
+                .frame(width: 40, height: 40)
+                .overlay(Text(member.username.prefix(1)).foregroundStyle(.white))
+            //            }
             Text(member.username).fontWeight(.medium)
             Spacer()
             if member.roles.contains(.invited) {
@@ -101,7 +101,12 @@ struct WorkspaceSettingsView: View {
             } else if appState.roles.contains(.admin) {
                 Button {
                     navigation.modalSheet(.manageWorkspaceMember(member)) {
-                        Task { await viewModel.fetchWorkspaceMembers() }
+                        Task {
+                            await viewModel.fetchWorkspaceMembers()
+                            if member.userID == appState.user?.id {
+                                appState.workspace?.roles = viewModel.workspaceMembers.first(where: { $0.userID == appState.user?.id })?.roles ?? []
+                            }
+                        }
                     }
                 } label: {
                     Text(member.roles.map(\.name).joined(separator: ", "))
