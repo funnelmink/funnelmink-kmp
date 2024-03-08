@@ -10,7 +10,6 @@
                 "target": "iosApp"
             },
             "configuration": "Debug",
-            "destination": "iPhone 15 | iOS 17.2"
         }
     ]
 }
