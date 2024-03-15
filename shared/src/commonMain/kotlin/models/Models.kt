@@ -30,6 +30,8 @@ data class Account(
     val state: String? = null,
     val updatedAt: String,
     val zip: String? = null,
+
+    val contacts: List<AccountContact>,
 )
 
 @Serializable
@@ -40,6 +42,9 @@ data class AccountContact(
     val name: String? = null,
     val notes: String? = null,
     val phone: String? = null,
+
+    val accountName: String? = null,
+    val accountID: String? = null,
 )
 
 

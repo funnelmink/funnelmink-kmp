@@ -43,10 +43,10 @@ interface API {
     // accounts
     @Throws(Exception::class) suspend fun getAccounts(): List<Account>
     @Throws(Exception::class) suspend fun createAccount(body: CreateAccountRequest): Account
-    @Throws(Exception::class) suspend fun deleteAccount(id: String)
-    @Throws(Exception::class) suspend fun getAccountActivities(id: String): List<ActivityRecord>
     @Throws(Exception::class) suspend fun getAccountDetails(id: String): AccountDetailsResponse
     @Throws(Exception::class) suspend fun updateAccount(id: String, body: UpdateAccountRequest): Account
+    @Throws(Exception::class) suspend fun deleteAccount(id: String)
+    @Throws(Exception::class) suspend fun getAccountActivities(id: String): List<ActivityRecord>
 
     // activities
     @Throws(Exception::class) suspend fun createActivity(subtype: ActivitySubtype, body: CreateActivityRequest)
@@ -56,12 +56,14 @@ interface API {
     @Throws(Exception::class) suspend fun createAccountContact(accountID: String, body: CreateAccountContactRequest): AccountContact
     @Throws(Exception::class) suspend fun updateAccountContact(accountID: String, id: String, body: UpdateAccountContactRequest): AccountContact
     @Throws(Exception::class) suspend fun deleteAccountContact(accountID: String, id: String)
+    @Throws(Exception::class) suspend fun getAccountContact(id: String): AccountContact
 
     // cases
     @Throws(Exception::class) suspend fun assignCaseToMember(id: String, memberID: String): CaseRecord
     @Throws(Exception::class) suspend fun assignCaseToFunnelStage(id: String, stageID: String): CaseRecord
-    @Throws(Exception::class) suspend fun createCase(body: CreateCaseRequest): CaseRecord
     @Throws(Exception::class) suspend fun getCase(id: String): CaseRecord
+    @Throws(Exception::class) suspend fun getCases(): List<CaseRecord>
+    @Throws(Exception::class) suspend fun createCase(body: CreateCaseRequest): CaseRecord
     @Throws(Exception::class) suspend fun updateCase(id: String, body: UpdateCaseRequest): CaseRecord
     @Throws(Exception::class) suspend fun deleteCase(id: String)
     @Throws(Exception::class) suspend fun closeCase(id: String, body: RecordClosureRequest): CaseRecord
@@ -85,8 +87,9 @@ interface API {
     // opportunities
     @Throws(Exception::class) suspend fun assignOpportunityToMember(id: String, memberID: String): Opportunity
     @Throws(Exception::class) suspend fun assignOpportunityToFunnelStage(id: String, stageID: String): Opportunity
-    @Throws(Exception::class) suspend fun createOpportunity(body: CreateOpportunityRequest): Opportunity
     @Throws(Exception::class) suspend fun getOpportunity(id: String): Opportunity
+    @Throws(Exception::class) suspend fun getOpportunities(): List<Opportunity>
+    @Throws(Exception::class) suspend fun createOpportunity(body: CreateOpportunityRequest): Opportunity
     @Throws(Exception::class) suspend fun updateOpportunity(id: String, body: UpdateOpportunityRequest): Opportunity
     @Throws(Exception::class) suspend fun deleteOpportunity(id: String)
     @Throws(Exception::class) suspend fun closeOpportunity(id: String, body: RecordClosureRequest): Opportunity
