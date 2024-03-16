@@ -20,6 +20,22 @@ class TestData {
         "Utah",
         timestamp,
         "84097",
+        listOf(
+            AccountContact(
+                "8d2116f9-3862-4706-beb2-1b5fe7768f3f",
+                "",
+                "Darryl Archideld",
+                lorem,
+                "801-555-5555",
+                ),
+            AccountContact(
+                "8d2116f9-3862-4706-beb2-1b5fe7768f3f",
+                "",
+                "Darryl Archideld",
+                lorem,
+                "801-555-5555",
+                )
+        )
     )
 
     val testAccountContact = AccountContact(

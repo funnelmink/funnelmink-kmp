@@ -39,6 +39,7 @@ data class AccountContact(
     val id: String,
 
     val email: String? = null,
+    val jobTitle: String? = null,
     val name: String? = null,
     val notes: String? = null,
     val phone: String? = null,
@@ -72,6 +73,10 @@ data class CaseRecord(
     val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
+
+    val activities: List<ActivityRecord>,
+    val accountName: String? = null,
+    val accountID: String? = null,
 )
 
 @Serializable
@@ -119,6 +124,10 @@ data class Lead(
     val state: String? = null,
     val updatedAt: String,
     val zip: String? = null,
+
+    val activities: List<ActivityRecord>,
+    val accountName: String? = null,
+    val accountID: String? = null,
 )
 
 @Serializable
@@ -135,6 +144,10 @@ data class Opportunity(
     val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
+
+    val activities: List<ActivityRecord>,
+    val accountName: String? = null,
+    val accountID: String? = null,
 )
 
 @Serializable
