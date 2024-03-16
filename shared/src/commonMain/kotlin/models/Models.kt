@@ -30,6 +30,12 @@ data class Account(
     val state: String? = null,
     val updatedAt: String,
     val zip: String? = null,
+
+    val activities: List<ActivityRecord> = emptyList(),
+    val contacts: List<AccountContact> = emptyList(),
+    val leads: List<Lead> = emptyList(),
+    val cases: List<CaseRecord> = emptyList(),
+    val opportunities: List<Opportunity> = emptyList(),
 )
 
 @Serializable
@@ -37,9 +43,13 @@ data class AccountContact(
     val id: String,
 
     val email: String? = null,
+    val jobTitle: String? = null,
     val name: String? = null,
     val notes: String? = null,
     val phone: String? = null,
+
+    val accountName: String? = null,
+    val accountID: String? = null,
 )
 
 
@@ -67,6 +77,10 @@ data class CaseRecord(
     val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
+
+    val activities: List<ActivityRecord> = emptyList(),
+    val accountName: String? = null,
+    val accountID: String? = null,
 )
 
 @Serializable
@@ -75,10 +89,10 @@ data class Funnel(
 
     val name: String,
     val type: FunnelType,
-    var stages: List<FunnelStage>,
-    var cases: List<CaseRecord>,
-    var leads: List<Lead>,
-    var opportunities: List<Opportunity>,
+    var stages: List<FunnelStage> = emptyList(),
+    var cases: List<CaseRecord> = emptyList(),
+    var leads: List<Lead> = emptyList(),
+    var opportunities: List<Opportunity> = emptyList(),
 )
 
 @Serializable
@@ -114,6 +128,10 @@ data class Lead(
     val state: String? = null,
     val updatedAt: String,
     val zip: String? = null,
+
+    val activities: List<ActivityRecord> = emptyList(),
+    val accountName: String? = null,
+    val accountID: String? = null,
 )
 
 @Serializable
@@ -130,6 +148,10 @@ data class Opportunity(
     val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
+
+    val activities: List<ActivityRecord> = emptyList(),
+    val accountName: String? = null,
+    val accountID: String? = null,
 )
 
 @Serializable

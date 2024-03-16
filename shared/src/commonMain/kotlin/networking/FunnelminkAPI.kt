@@ -137,7 +137,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getAccountDetails(id: String): AccountDetailsResponse {
+    override suspend fun getAccountDetails(id: String): Account {
 //         TODO: val cacheKey = "getAccountDetails$id"
         return genericRequest("$baseURL/v1/workspace/accounts/$id", HttpMethod.Get)
     }
@@ -206,6 +206,10 @@ class FunnelminkAPI(
         cache.deleteContact(id)
     }
 
+    override suspend fun getAccountContact(id: String): AccountContact {
+        return genericRequest("$baseURL/v1/workspace/accounts/contacts/$id", HttpMethod.Get)
+    }
+
     // ------------------------------------------------------------------------
     // Activities
     // ------------------------------------------------------------------------
@@ -265,6 +269,11 @@ class FunnelminkAPI(
             return cached
         }
         return genericRequest("$baseURL/v1/workspace/cases/$id", HttpMethod.Get)
+    }
+
+    override suspend fun getCases(): List<CaseRecord> {
+        // TODO: val cacheKey = "getCases"
+        return genericRequest("$baseURL/v1/workspace/cases", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
@@ -539,6 +548,10 @@ class FunnelminkAPI(
             return cached
         }
         return genericRequest("$baseURL/v1/workspace/opportunities/$id", HttpMethod.Get)
+    }
+
+    override suspend fun getOpportunities(): List<Opportunity> {
+        return genericRequest("$baseURL/v1/workspace/opportunities", HttpMethod.Get)
     }
 
     @Throws(Exception::class)

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ProfileView: View {
+struct SettingsView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = ProfileViewModel()
@@ -11,10 +11,10 @@ struct ProfileView: View {
                     // TODO: can edit user's name, email, avatar, etc
                 } label: {
                     HStack {
-                    VStack(alignment: .leading) {
-                        Text("\(appState.user?.username ?? "Your account")")
-                            .font(.headline)
-                            .fontWeight(.bold)
+                        VStack(alignment: .leading) {
+                            Text("\(appState.user?.username ?? "Your account")")
+                                .font(.headline)
+                                .fontWeight(.bold)
                             Text("\(appState.user?.email ?? "Workspace settings")")
                                 .foregroundColor(.gray)
                                 .font(.subheadline)
@@ -104,6 +104,6 @@ struct ProfileView: View {
 }
 
 #Preview {
-    ProfileView()
+    SettingsView()
         .environmentObject(AppState())
 }

@@ -10,6 +10,7 @@ import FirebaseAuth
 import Foundation
 import Shared
 
+/// The full API can be found on [GitHub](https://github.com/funnelmink/funnelmink-kmp/blob/main/shared/src/commonMain/kotlin/networking/API.kt)
 class Networking {
     static let api: API = {
         let fmapi = FunnelminkAPI(

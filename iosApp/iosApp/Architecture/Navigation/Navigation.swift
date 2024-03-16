@@ -19,6 +19,16 @@ class Navigation: ObservableObject {
     }
     
     @Published var _state = State()
+    var _canDisplayFAB: Bool {
+        guard _state._selectedTab != FunnelminkTab.settings.rawValue else { return false }
+        switch _state._selectedTab {
+        case 0: return _state._0.isEmpty
+        case 1: return _state._1.isEmpty
+        case 2: return _state._2.isEmpty
+        case 3: return _state._3.isEmpty
+        default: return false
+        }
+    }
     var _onModalDismiss: (() -> Void)?
     
     struct State: Hashable, Equatable {

@@ -123,7 +123,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         phone: String?,
         state: String?,
         updatedAt: String,
-        zip: String?
+        zip: String?,
     ): Account {
         return Account(
             id,
@@ -140,7 +140,12 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             phone,
             state,
             updatedAt,
-            zip
+            zip,
+            emptyList(),
+            emptyList(),
+            emptyList(),
+            emptyList(),
+            emptyList(),
         )
     }
 
@@ -411,7 +416,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             priority,
             stage,
             updatedAt,
-            value
+            value,
+            emptyList(),
         )
     }
 
@@ -683,7 +689,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             priority,
             stage,
             updatedAt,
-            value
+            value,
+            emptyList(),
         )
     }
 
@@ -979,7 +986,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             stage,
             state,
             updatedAt,
-            zip
+            zip,
+            emptyList(),
         )
     }
 
