@@ -76,32 +76,39 @@ struct WorkspacesView: View {
             }
             Spacer()
             
-            if !Set(workspace.roles).isDisjoint(with: [.admin, .labor, .sales]) {
-                if workspace.id == appState.workspace?.id {
-                    Text("Current")
-                        .foregroundColor(.secondary)
-                } else {
-                    Button {
-                        appState.signIntoWorkspace(workspace)
-                        navigation.dismissModal()
-                    } label: {
-                        Text("Sign in")
-                    }
-                }
-            } else if workspace.roles.contains(.invited) {
+            if workspace.roles.contains(.invited) {
                 HStack {
-                    WarningAlertButton(warningMessage: "Reject invite?\n\nYou will need another invite in order to join this workspace.") {
-                        Task { await viewModel.rejectInvite(workspace.id) { navigation.dismissModal() } }
+                    AsyncWarningAlertButton(warningMessage: "Reject invite?\n\nYou will need another invite in order to join this workspace.") {
+                        do {
+                            try await viewModel.rejectInvite(workspace.id)
+                        } catch {
+                            Toast.warn(error)
+                        }
                     } label: {
                         Text("Reject").foregroundColor(.red)
                     }
                     
                     
                     AsyncButton {
-                        await viewModel.acceptInvite(workspace.id) { navigation.dismissModal() }
+                        do {
+                            try await viewModel.acceptInvite(workspace.id)
+                            navigation.dismissModal()
+                        } catch {
+                            Toast.warn(error)
+                        }
                     } label: {
                         Text("Accept")
                     }
+                }
+            } else if workspace.id == appState.workspace?.id {
+                Text("Current")
+                    .foregroundColor(.secondary)
+            } else {
+                Button {
+                    appState.signIntoWorkspace(workspace)
+                    navigation.dismissModal()
+                } label: {
+                    Text("Sign in")
                 }
             }
         }
