@@ -59,23 +59,13 @@ struct AccountsView: View {
     
     @ViewBuilder
     var body: some View {
-        ZStack {
-            List {
-                switch selection {
-                case .all: allAccounts
-                case .contacts: allAccountContacts
-                }
+        List {
+            switch selection {
+            case .all: allAccounts
+            case .contacts: allAccountContacts
             }
-            .searchable(text: $searchText)
-            VStack {
-                Spacer()
-                HStack {
-                    Spacer()
-                    addAccountFAB
-                }
-            }
-            .padding()
         }
+        .searchable(text: $searchText)
         .navigationTitle(selection == .all ? "Accounts" : "Contacts")
         .onChange(of: selection) { newValue in
             if newValue == .contacts {
@@ -105,25 +95,6 @@ struct AccountsView: View {
                 Text(name)
             }
         }
-    }
-    
-    var addAccountFAB: some View {
-        Button(action: {
-            nav.modalSheet(.createAccount) {
-                Task {
-                    try? await viewModel.getAccounts()
-                }
-            }
-        }) {
-            Image(systemName: "plus")
-                .resizable()
-                .frame(width: 24, height: 24)
-                .padding()
-                .background(FunnelminkGradient())
-                .foregroundColor(.white)
-                .clipShape(Circle())
-        }
-        .shadow(radius: 3)
     }
     
     var allAccounts: some View {

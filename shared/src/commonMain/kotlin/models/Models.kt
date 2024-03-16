@@ -31,11 +31,11 @@ data class Account(
     val updatedAt: String,
     val zip: String? = null,
 
-    val activities: List<ActivityRecord>,
-    val contacts: List<AccountContact>,
-    val leads: List<Lead>,
-    val cases: List<CaseRecord>,
-    val opportunities: List<Opportunity>
+    val activities: List<ActivityRecord> = emptyList(),
+    val contacts: List<AccountContact> = emptyList(),
+    val leads: List<Lead> = emptyList(),
+    val cases: List<CaseRecord> = emptyList(),
+    val opportunities: List<Opportunity> = emptyList(),
 )
 
 @Serializable
@@ -78,7 +78,7 @@ data class CaseRecord(
     val updatedAt: String,
     val value: Double,
 
-    val activities: List<ActivityRecord>,
+    val activities: List<ActivityRecord> = emptyList(),
     val accountName: String? = null,
     val accountID: String? = null,
 )
@@ -89,10 +89,10 @@ data class Funnel(
 
     val name: String,
     val type: FunnelType,
-    var stages: List<FunnelStage>,
-    var cases: List<CaseRecord>,
-    var leads: List<Lead>,
-    var opportunities: List<Opportunity>,
+    var stages: List<FunnelStage> = emptyList(),
+    var cases: List<CaseRecord> = emptyList(),
+    var leads: List<Lead> = emptyList(),
+    var opportunities: List<Opportunity> = emptyList(),
 )
 
 @Serializable
@@ -129,7 +129,7 @@ data class Lead(
     val updatedAt: String,
     val zip: String? = null,
 
-    val activities: List<ActivityRecord>,
+    val activities: List<ActivityRecord> = emptyList(),
     val accountName: String? = null,
     val accountID: String? = null,
 )
@@ -149,7 +149,7 @@ data class Opportunity(
     val updatedAt: String,
     val value: Double,
 
-    val activities: List<ActivityRecord>,
+    val activities: List<ActivityRecord> = emptyList(),
     val accountName: String? = null,
     val accountID: String? = null,
 )

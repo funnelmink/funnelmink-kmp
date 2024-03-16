@@ -17,27 +17,14 @@ struct TodayView: View {
     
     @ViewBuilder
     var body: some View {
-        ZStack {
-            List {
-                switch selection {
-                case .date: tasksByDate
-                case .priority: tasksByPriority
-                case .completed: completed
-                }
+        List {
+            switch selection {
+            case .date: tasksByDate
+            case .priority: tasksByPriority
+            case .completed: completed
             }
-            .searchable(text: $viewModel.searchText)
-            MenuFAB(
-                items: [
-                    .init(name: "New Task", iconName: "plus") {
-                        navigation.modalSheet(.createTask) {
-                            Task {
-                                await viewModel.getTasks()
-                            }
-                        }
-                    }
-                ]
-            )
         }
+        .searchable(text: $viewModel.searchText)
         .tint(.primary)
         .scrollIndicators(.never)
         .navigationTitle(selection == .completed ? "Completed" : "Tasks")
