@@ -21,7 +21,7 @@ enum Modal: Identifiable {
     case inviteToWorkspace
     case selectWorkspace
     case createAccount
-    case createContact(Account)
+    case createContact(Account?)
     case contactDetails(AccountContact)
     
     case closeRecord(type: FunnelType, id: String)

@@ -19,23 +19,21 @@ enum FunnelminkTab: Int, Identifiable, CaseIterable {
     case leads
     case opportunities
     case tasks
-    case tickets
-    case profile
+    case settings
     
     var id: Int { rawValue }
     
     @ViewBuilder
     var root: some View {
         switch self {
-        case .dashboard: TodayView()
+        case .dashboard: TasksView()
         case .accounts: AccountsView()
         case .cases: Label("Cases", systemImage: "briefcase")
         case .inbox: InboxView()
         case .leads: Label("Leads", systemImage: "person.3")
         case .opportunities: Label("Opportunities", systemImage: "star")
-        case .tasks: TodayView()
-        case .tickets: Text(" tickets")
-        case .profile: ProfileView()
+        case .tasks: TasksView()
+        case .settings: SettingsView()
         }
     }
     
@@ -44,13 +42,12 @@ enum FunnelminkTab: Int, Identifiable, CaseIterable {
         switch self {
         case .dashboard: Label("Today", systemImage: "\(String(format: "%02d", Calendar.current.component(.day, from: .init()))).square.fill")
         case .accounts: Label("Accounts", systemImage: "circle.hexagongrid")
-        case .cases: Label("Cases", systemImage: "briefcase")
+        case .cases: Label("Cases", systemImage: "wrench.and.screwdriver")
         case .inbox: Label("Inbox", systemImage: "envelope")
-        case .leads: Label("Leads", systemImage: "person.3")
-        case .opportunities: Label("Opportunities", systemImage: "star")
-        case .tasks: Label("Tasks", systemImage: "checkmark.square")
-        case .tickets: Label("Tasks", systemImage: "checkmark.square")
-        case .profile: Label("Profile", systemImage: "person")
+        case .leads: Label("Leads", systemImage: "point.3.connected.trianglepath.dotted")
+        case .opportunities: Label("Opportunities", systemImage: "trophy")
+        case .tasks: Label("Tasks", systemImage: "checkmark.circle")
+        case .settings: Label("Settings", systemImage: "gearshape")
         }
     }
     
@@ -71,8 +68,7 @@ private extension FunnelminkTab {
         case .inbox: required = []
         case .leads: required = [.admin, .sales]
         case .opportunities: required = [.admin, .sales]
-        case .profile: required = [.admin, .labor, .sales]
-        case .tickets: required = []
+        case .settings: required = [.admin, .labor, .sales]
         case .tasks: required = [.admin, .labor, .sales]
         }
         

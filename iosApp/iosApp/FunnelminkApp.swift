@@ -29,17 +29,26 @@ fileprivate struct FunnelminkAppContents: View {
             } else if appState.user != nil {
                 // Logged in and has joined a Workspace
                 if let workspace = appState.workspace {
-                    TabView(selection: $navigation._state._selectedTab) {
-                        ForEach(FunnelminkTab.activeTabConfiguration.indices, id: \.self) { i in
-                            let tab = FunnelminkTab.activeTabConfiguration[i]
-                            NavigationStack(path: navigation._path(index: i)) {
-                                tab.root.navigationDestination(for: Segue.self) { $0.view }
+                    MenuFAB(items: [
+                        .init(name: "Account", iconName: "building.2") { navigation.modalSheet(.createAccount) },
+                        .init(name: "Lead", iconName: "point.3.connected.trianglepath.dotted") { navigation.modalSheet(.createLead(accountID: nil)) },
+                        .init(name: "Opportunity", iconName: "trophy") { navigation.modalSheet(.createOpportunity(accountID: nil)) },
+                        .init(name: "Task", iconName: "checkmark.circle") { navigation.modalSheet(.createTask) },
+                        .init(name: "Case", iconName: "wrench.and.screwdriver") { navigation.modalSheet(.createCase(accountID: nil)) },
+                        .init(name: "Contact", iconName: "person.2") { navigation.modalSheet(.createContact(nil)) },
+                    ]) {
+                        TabView(selection: $navigation._state._selectedTab) {
+                            ForEach(FunnelminkTab.activeTabConfiguration.indices, id: \.self) { i in
+                                let tab = FunnelminkTab.activeTabConfiguration[i]
+                                NavigationStack(path: navigation._path(index: i)) {
+                                    tab.root.navigationDestination(for: Segue.self) { $0.view }
+                                }
+                                .tabItem { tab.tabItem }
+                                .tag(i)
                             }
-                            .tabItem { tab.tabItem }
-                            .tag(i)
                         }
+                        .tag(workspace.id)
                     }
-                    .tag(workspace.id)
 
                     // Logged in but no Workspaces
                 } else {

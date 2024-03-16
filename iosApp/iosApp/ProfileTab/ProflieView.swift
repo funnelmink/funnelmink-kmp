@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ProfileView: View {
+struct SettingsView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = ProfileViewModel()
@@ -104,6 +104,6 @@ struct ProfileView: View {
 }
 
 #Preview {
-    ProfileView()
+    SettingsView()
         .environmentObject(AppState())
 }

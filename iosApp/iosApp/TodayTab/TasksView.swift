@@ -9,7 +9,7 @@
 import Shared
 import SwiftUI
 
-struct TodayView: View {
+struct TasksView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = TodayViewModel()
     

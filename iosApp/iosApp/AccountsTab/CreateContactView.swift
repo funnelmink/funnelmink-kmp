@@ -12,7 +12,7 @@ import Shared
 struct CreateContactView: View {
     
     @EnvironmentObject var nav: Navigation
-    var account: Account
+    var account: Account?
     @State var name: String = ""
     @State var jobTitle: String = ""
     @State var phoneNumber: String = ""
@@ -21,6 +21,10 @@ struct CreateContactView: View {
     
     func addContactToAccount() async {
         do {
+            guard let account = account else {
+                Toast.error("You must select an account to add this contact to")
+                return
+            }
             let _ = try await Networking.api.createAccountContact(accountID: account.id, body: CreateAccountContactRequest(name: name, email: email, phone: phoneNumber, jobTitle: jobTitle, notes: notes))
             nav.dismissModal()
         } catch {
@@ -60,6 +64,11 @@ struct CreateContactView: View {
                 }
             }
             .padding(.horizontal)
+        }
+        .loggedTask {
+            if account == nil {
+                Toast.error("TODO: No account passed. We need a way to select which account to attach the contact to.")
+            }
         }
     }
 }

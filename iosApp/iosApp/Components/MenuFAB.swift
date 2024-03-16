@@ -8,10 +8,12 @@
 
 import SwiftUI
 
-struct MenuFAB: View {
+struct MenuFAB<Content: View>: View {
     let items: [MenuFABItem]
+    @ViewBuilder var content: Content
     @EnvironmentObject var appState: AppState
-
+    @EnvironmentObject var navigation: Navigation
+    
     struct MenuFABItem {
         let name: String
         let iconName: String
@@ -19,12 +21,18 @@ struct MenuFAB: View {
     }
     
     var body: some View {
-        VStack {
-            Spacer()
-            HStack {
-                Spacer()
-                fab
-                .padding([.bottom, .trailing])
+        ZStack {
+            content
+            if navigation._canDisplayFAB {
+                VStack {
+                    Spacer()
+                    HStack {
+                        Spacer()
+                        fab
+                            .padding([.bottom, .trailing])
+                            .padding(.bottom, 48)
+                    }
+                }
             }
         }
     }
@@ -89,6 +97,8 @@ struct MenuFAB: View {
         .init(name: "Delete", iconName: "trash") {
             print("Delete")
         }
-    ])
+    ]) {
+        Color.gray
+    }
     .withPreviewDependencies()
 }
