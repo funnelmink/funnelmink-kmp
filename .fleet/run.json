@@ -9,7 +9,7 @@
                 "project": "iosApp",
                 "target": "iosApp"
             },
-            "configuration": "Debug",
+            "configuration": "Debug"
         }
     ]
 }

@@ -3,7 +3,7 @@
 //  iosApp
 //
 //  Created by Jeremy Warren on 2/17/24.
-//  Copyright © 2024 orgName. All rights reserved.
+//  Copyright © 2024 FunnelMink. All rights reserved.
 //
 
 import SwiftUI
