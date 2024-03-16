@@ -3,7 +3,7 @@
 //  iosApp
 //
 //  Created by Jeremy Warren on 1/13/24.
-//  Copyright © 2024 orgName. All rights reserved.
+//  Copyright © 2024 Funnelmink. All rights reserved.
 //
 
 import SwiftUI
@@ -231,5 +231,5 @@ struct AccountView: View {
 
 
 #Preview {
-    AccountView(contacts: [TestData.accountContact,], account: TestData.account)
+    AccountView(contacts: [TestData.accountContact], account: TestData.account)
 }

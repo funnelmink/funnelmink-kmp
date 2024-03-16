@@ -9,10 +9,18 @@
 import SwiftUI
 import Shared
 
+enum AccountSelection: String {
+    case all
+    case contacts
+}
+
 struct AccountsView: View {
     @EnvironmentObject var nav: Navigation
     @StateObject var viewModel = AccountsViewModel()
+    @AppStorage("accountsView.selection") var selection: AccountSelection = .all
     @State var searchText: String = ""
+    @State var allContacts: [AccountContact] = []
+    
     
     private var filteredAccounts: [String : [Account]] {
         if searchText.isEmpty {
@@ -49,49 +57,109 @@ struct AccountsView: View {
         }
     }
     
+    @ViewBuilder
     var body: some View {
-        List {
-            ForEach(sortedGroupKeys, id: \.self) { key in
-                Section(header: Text(key)) {
-                    ForEach(filteredAccounts[key] ?? [], id: \.id) { account in
-                        Button(action: {
-                            nav.segue(.accountView(account))
-                        }, label: {
-                            CustomCell(title: account.name, cellType: .navigation)
-                                .foregroundStyle(Color.primary)
-                        })
-                    }
-                    .onDelete { offsets in
-                        deleteAccount(at: offsets, from: key)
-                    }
+        ZStack {
+            List {
+                switch selection {
+                case .all: allAccounts
+                case .contacts: allAccountContacts
                 }
             }
+            .searchable(text: $searchText)
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    addAccountFAB
+                }
+            }
+            .padding()
         }
-        .searchable(text: $searchText)
+        .navigationTitle(selection == .all ? "Accounts" : "Contacts")
+        .onChange(of: selection) { newValue in
+            if newValue == .contacts {
+                fetchAllContacts()
+            }
+        }
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
-                Button {
-                    nav.modalSheet(.createAccount) {
-                        Task {
-                            try? await viewModel.getAccounts()
-                        }
-                    }
-                } label: {
-                    Image(systemName: "plus")
+            ToolbarItem {
+                Picker("Sort Order", selection: $selection) {
+                    Text("Accounts").tag(AccountSelection.all)
+                    Text("Contacts").tag(AccountSelection.contacts)
                 }
             }
         }
-        .navigationTitle("Accounts")
         .loggedTask {
             do {
-                try await viewModel.getAccounts()
+            try await viewModel.getAccounts()
             } catch {
                 Toast.error(error)
+            }
+        }
+    }
+    
+    var allAccountContacts: some View {
+        ForEach(allContacts, id: \.id) { contact in
+            if let name = contact.name {
+                Text(name)
+            }
+        }
+    }
+    
+    var addAccountFAB: some View {
+        Button(action: {
+            nav.modalSheet(.createAccount) {
+                Task {
+                    try? await viewModel.getAccounts()
+                }
+            }
+        }) {
+            Image(systemName: "plus")
+                .resizable()
+                .frame(width: 24, height: 24)
+                .padding()
+                .background(FunnelminkGradient())
+                .foregroundColor(.white)
+                .clipShape(Circle())
+        }
+        .shadow(radius: 3)
+    }
+    
+    var allAccounts: some View {
+        ForEach(sortedGroupKeys, id: \.self) { key in
+            Section(header: Text(key)) {
+                ForEach(filteredAccounts[key] ?? [], id: \.id) { account in
+                    Button(action: {
+                        nav.segue(.accountView(account))
+                    }, label: {
+                        CustomCell(title: account.name, cellType: .navigation)
+                            .foregroundStyle(Color.primary)
+                    })
+                }
+                .onDelete { offsets in
+                    deleteAccount(at: offsets, from: key)
+                }
+            }
+        }
+    }
+    
+    private func fetchAllContacts() {
+        Task {
+            do {
+                var contacts: [AccountContact] = []
+                for account in viewModel.accounts {
+                    let details = try await Networking.api.getAccountDetails(id: account.id)
+                    contacts.append(contentsOf: details.contacts)
+                }
+                self.allContacts = contacts
+            } catch {
+                Toast.error("Unable to get account details")
             }
         }
     }
 }
 
 #Preview {
-    AccountsView()
+    AccountsView(selection: .all)
 }

@@ -19,6 +19,7 @@ enum FunnelminkTab: Int, Identifiable, CaseIterable {
     case leads
     case opportunities
     case tasks
+    case tickets
     case profile
     
     var id: Int { rawValue }
@@ -32,7 +33,8 @@ enum FunnelminkTab: Int, Identifiable, CaseIterable {
         case .inbox: InboxView()
         case .leads: Label("Leads", systemImage: "person.3")
         case .opportunities: Label("Opportunities", systemImage: "star")
-        case .tasks: Label("Tasks", systemImage: "checkmark.square")
+        case .tasks: TodayView()
+        case .tickets: Text(" tickets")
         case .profile: ProfileView()
         }
     }
@@ -47,6 +49,7 @@ enum FunnelminkTab: Int, Identifiable, CaseIterable {
         case .leads: Label("Leads", systemImage: "person.3")
         case .opportunities: Label("Opportunities", systemImage: "star")
         case .tasks: Label("Tasks", systemImage: "checkmark.square")
+        case .tickets: Label("Tasks", systemImage: "checkmark.square")
         case .profile: Label("Profile", systemImage: "person")
         }
     }
@@ -64,12 +67,13 @@ private extension FunnelminkTab {
         switch self {
         case .accounts: required = [.admin, .sales, .labor]
         case .cases: required = [.admin, .labor]
-        case .dashboard: required = [.admin, .sales, .labor]
-        case .inbox: required = [.admin]
+        case .dashboard: required = []
+        case .inbox: required = []
         case .leads: required = [.admin, .sales]
         case .opportunities: required = [.admin, .sales]
         case .profile: required = [.admin, .labor, .sales]
-        case .tasks: required = [.admin, .labor]
+        case .tickets: required = []
+        case .tasks: required = [.admin, .labor, .sales]
         }
         
         return !required.isDisjoint(with: roles)
