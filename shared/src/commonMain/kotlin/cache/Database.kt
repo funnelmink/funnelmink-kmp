@@ -141,7 +141,11 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             state,
             updatedAt,
             zip,
-            emptyList()
+            emptyList(),
+            emptyList(),
+            emptyList(),
+            emptyList(),
+            emptyList(),
         )
     }
 
@@ -412,7 +416,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             priority,
             stage,
             updatedAt,
-            value
+            value,
+            emptyList(),
         )
     }
 
@@ -684,7 +689,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             priority,
             stage,
             updatedAt,
-            value
+            value,
+            emptyList(),
         )
     }
 
@@ -980,7 +986,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             stage,
             state,
             updatedAt,
-            zip
+            zip,
+            emptyList(),
         )
     }
 

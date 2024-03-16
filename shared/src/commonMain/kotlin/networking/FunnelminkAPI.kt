@@ -137,7 +137,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getAccountDetails(id: String): AccountDetailsResponse {
+    override suspend fun getAccountDetails(id: String): Account {
 //         TODO: val cacheKey = "getAccountDetails$id"
         return genericRequest("$baseURL/v1/workspace/accounts/$id", HttpMethod.Get)
     }

@@ -31,7 +31,11 @@ data class Account(
     val updatedAt: String,
     val zip: String? = null,
 
+    val activities: List<ActivityRecord>,
     val contacts: List<AccountContact>,
+    val leads: List<Lead>,
+    val cases: List<CaseRecord>,
+    val opportunities: List<Opportunity>
 )
 
 @Serializable
