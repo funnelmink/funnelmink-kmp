@@ -21,17 +21,17 @@ enum Modal: Identifiable {
     case inviteToWorkspace
     case selectWorkspace
     case createAccount
-    case createContact(Account?)
+    case createContact(accountID: String)
     case contactDetails(AccountContact)
     
     case closeRecord(type: FunnelType, id: String)
 
     case debugMenu
     
-    case createCase(accountID: String?)
+    case createCase(accountID: String)
     case editCase(caseRecord: CaseRecord)
     
-    case createLead(accountID: String?)
+    case createLead
     
     case editLead(lead: Lead?, funnelID: String?, stageID: String?)
     case convertLead(lead: Lead)
@@ -41,6 +41,10 @@ enum Modal: Identifiable {
     
     case rolePicker(Binding<[WorkspaceMembershipRole]>)
     case manageWorkspaceMember(WorkspaceMember)
+    
+    case selectAccountAndCreateCase
+    case selectAccountAndCreateOpporunity
+    case selectAccountAndCreateContact
     
     @ViewBuilder
     var view: some View {
@@ -56,7 +60,7 @@ enum Modal: Identifiable {
             case .inviteToWorkspace: WorkspaceInviteView()
             case .selectWorkspace: WorkspacesView()
             case .createAccount: CreateAccountView()
-            case let .createContact(account): CreateContactView(account: account)
+            case let .createContact(accountID): CreateContactView(accountID: accountID)
             case let .closeRecord(type, id): CloseRecordView(recordType: type, recordID: id)
             case .debugMenu: DebugMenu()
                 
@@ -69,6 +73,9 @@ enum Modal: Identifiable {
             case let .editOpportunity(opportunity): EditOpportunityView(opportunity: opportunity)
             case let .rolePicker(roles): RolePicker(roles: roles)
             case let .manageWorkspaceMember(member): ManageWorkspaceMemberView(member: member)
+            case .selectAccountAndCreateCase: SelectAccountView(nextView: { Navigation.shared.modalSheet(.createCase(accountID: $0)) })
+            case .selectAccountAndCreateOpporunity: SelectAccountView(nextView: { Navigation.shared.modalSheet(.createOpportunity(accountID: $0)) })
+            case .selectAccountAndCreateContact: SelectAccountView(nextView: { Navigation.shared.modalSheet(.createContact(accountID: $0)) })
             }
         }
         .toasted(isPresented: true) // modals exist in a separate window. this modifier lets them display toasts anyways

@@ -144,8 +144,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
             emptyList(),
             emptyList(),
             emptyList(),
-            emptyList(),
-            emptyList(),
         )
     }
 

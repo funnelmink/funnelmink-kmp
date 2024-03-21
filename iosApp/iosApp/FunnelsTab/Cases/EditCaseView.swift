@@ -115,7 +115,7 @@ struct EditCaseView: View {
                             notes: notes,
                             assignedTo: assignedTo
                         )
-                    } else {
+                    } else if let accountID {
                         try await viewModel.createCase(
                             name: name,
                             description: description,
@@ -125,6 +125,8 @@ struct EditCaseView: View {
                             accountID: accountID,
                             assignedTo: assignedTo
                         )
+                    } else {
+                        Toast.warn("This case needs to be linked to an Account")
                     }
                     navigation.dismissModal()
                     Toast.success("Case created")
@@ -163,6 +165,6 @@ struct EditCaseView: View {
 }
 
 #Preview {
-    EditCaseView()
+    EditCaseView(accountID: TestData.account.id)
         .withPreviewDependencies()
 }

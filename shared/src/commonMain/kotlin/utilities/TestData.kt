@@ -22,7 +22,6 @@ class TestData {
         "84097",
         activities,
         listOf(accountContact,accountContact,accountContact),
-        listOf(lead,lead,lead),
         listOf(caseRecord,caseRecord,caseRecord),
         listOf(opportunity,opportunity,opportunity)
     )
