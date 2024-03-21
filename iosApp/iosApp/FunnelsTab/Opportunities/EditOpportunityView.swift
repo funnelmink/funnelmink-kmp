@@ -115,7 +115,7 @@ struct EditOpportunityView: View {
                             notes: notes,
                             assignedTo: assignedTo
                         )
-                    } else {
+                    } else if let accountID {
                         try await viewModel.createOpportunity(
                             name: name,
                             description: description,
@@ -125,6 +125,8 @@ struct EditOpportunityView: View {
                             accountID: accountID,
                             assignedTo: assignedTo
                         )
+                    } else {
+                        Toast.warn("This Opportunity needs to be linked to an Account")
                     }
                     navigation.dismissModal()
                     Toast.success("Opportunity created")
@@ -163,6 +165,6 @@ struct EditOpportunityView: View {
 }
 
 #Preview {
-    EditOpportunityView()
+    EditOpportunityView(accountID: TestData.account.id)
         .withPreviewDependencies()
 }

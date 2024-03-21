@@ -31,11 +31,11 @@ fileprivate struct FunnelminkAppContents: View {
                 if let workspace = appState.workspace {
                     MenuFAB(items: [
                         .init(name: "Account", iconName: "building.2") { navigation.modalSheet(.createAccount) },
-                        .init(name: "Lead", iconName: "point.3.connected.trianglepath.dotted") { navigation.modalSheet(.createLead(accountID: nil)) },
-                        .init(name: "Opportunity", iconName: "trophy") { navigation.modalSheet(.createOpportunity(accountID: nil)) },
+                        .init(name: "Lead", iconName: "point.3.connected.trianglepath.dotted") { navigation.modalSheet(.createLead) },
+                        .init(name: "Opportunity", iconName: "trophy") { navigation.modalSheet(.selectAccountAndCreateOpporunity) },
                         .init(name: "Task", iconName: "checkmark.circle") { navigation.modalSheet(.createTask) },
-                        .init(name: "Case", iconName: "wrench.and.screwdriver") { navigation.modalSheet(.createCase(accountID: nil)) },
-                        .init(name: "Contact", iconName: "person.2") { navigation.modalSheet(.createContact(nil)) },
+                        .init(name: "Case", iconName: "wrench.and.screwdriver") { navigation.modalSheet(.selectAccountAndCreateCase) },
+                        .init(name: "Contact", iconName: "person.2") { navigation.modalSheet(.selectAccountAndCreateContact) },
                     ]) {
                         TabView(selection: $navigation._state._selectedTab) {
                             ForEach(FunnelminkTab.activeTabConfiguration.indices, id: \.self) { i in

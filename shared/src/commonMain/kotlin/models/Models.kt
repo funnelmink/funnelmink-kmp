@@ -33,7 +33,6 @@ data class Account(
 
     val activities: List<ActivityRecord> = emptyList(),
     val contacts: List<AccountContact> = emptyList(),
-    val leads: List<Lead> = emptyList(),
     val cases: List<CaseRecord> = emptyList(),
     val opportunities: List<Opportunity> = emptyList(),
 )

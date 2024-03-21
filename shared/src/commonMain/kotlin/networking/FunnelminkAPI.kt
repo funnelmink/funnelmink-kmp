@@ -201,8 +201,8 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun deleteAccountContact(accountID: String, id: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/accounts/$accountID/contacts/$id", HttpMethod.Delete)
+    override suspend fun deleteAccountContact(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/accounts/contacts/$id", HttpMethod.Delete)
         cache.deleteContact(id)
     }
 

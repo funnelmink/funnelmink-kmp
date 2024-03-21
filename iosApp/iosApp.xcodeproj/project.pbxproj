@@ -96,6 +96,7 @@
 		0DCC163A2B511A2C008F705B /* EditTaskViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC16392B511A2C008F705B /* EditTaskViewModel.swift */; };
 		0DCC163C2B5249DC008F705B /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC163B2B5249DC008F705B /* Date+.swift */; };
 		0DCC163E2B524AE2008F705B /* DateFormatter+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DCC163D2B524AE2008F705B /* DateFormatter+.swift */; };
+		0DE811E22BAC0E2A00341174 /* SelectAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE811E12BAC0E2A00341174 /* SelectAccountView.swift */; };
 		0DE9E09D2B60CB7200B8288F /* FeatureFlags.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E09C2B60CB7200B8288F /* FeatureFlags.swift */; };
 		0DE9E0A02B60D6BF00B8288F /* DebugDivider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E09F2B60D6BF00B8288F /* DebugDivider.swift */; };
 		0DE9E0A22B60DDAC00B8288F /* UpdateWallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE9E0A12B60DDAC00B8288F /* UpdateWallView.swift */; };
@@ -230,6 +231,7 @@
 		0DCC16392B511A2C008F705B /* EditTaskViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTaskViewModel.swift; sourceTree = "<group>"; };
 		0DCC163B2B5249DC008F705B /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		0DCC163D2B524AE2008F705B /* DateFormatter+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+.swift"; sourceTree = "<group>"; };
+		0DE811E12BAC0E2A00341174 /* SelectAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectAccountView.swift; sourceTree = "<group>"; };
 		0DE9E09C2B60CB7200B8288F /* FeatureFlags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlags.swift; sourceTree = "<group>"; };
 		0DE9E09F2B60D6BF00B8288F /* DebugDivider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugDivider.swift; sourceTree = "<group>"; };
 		0DE9E0A12B60DDAC00B8288F /* UpdateWallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateWallView.swift; sourceTree = "<group>"; };
@@ -551,6 +553,7 @@
 				1FCB7C6403EE8A0091F9C3AC /* CreateAccountView.swift */,
 				1F610AE72B7BE48300A9D262 /* CreateContactView.swift */,
 				1F2335272B8155640035547D /* ContactDetailsView.swift */,
+				0DE811E12BAC0E2A00341174 /* SelectAccountView.swift */,
 			);
 			path = AccountsTab;
 			sourceTree = "<group>";
@@ -980,6 +983,7 @@
 				0D5987372B5607DF00327504 /* TaskDetailView.swift in Sources */,
 				0D012E6B2B477E3A00658153 /* Gradient+.swift in Sources */,
 				0D012E6E2B477E3A00658153 /* View+.swift in Sources */,
+				0DE811E22BAC0E2A00341174 /* SelectAccountView.swift in Sources */,
 				0D012E762B477E3A00658153 /* ExternalDeeplink.swift in Sources */,
 				0D012E822B477E3A00658153 /* AsyncButton.swift in Sources */,
 				1F9D49AF2B747CCD0085106C /* AddContactAccordion.swift in Sources */,

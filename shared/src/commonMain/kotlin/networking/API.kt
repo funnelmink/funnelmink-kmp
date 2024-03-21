@@ -55,7 +55,7 @@ interface API {
     // account contacts
     @Throws(Exception::class) suspend fun createAccountContact(accountID: String, body: CreateAccountContactRequest): AccountContact
     @Throws(Exception::class) suspend fun updateAccountContact(accountID: String, id: String, body: UpdateAccountContactRequest): AccountContact
-    @Throws(Exception::class) suspend fun deleteAccountContact(accountID: String, id: String)
+    @Throws(Exception::class) suspend fun deleteAccountContact(id: String)
     @Throws(Exception::class) suspend fun getAccountContact(id: String): AccountContact
 
     // cases

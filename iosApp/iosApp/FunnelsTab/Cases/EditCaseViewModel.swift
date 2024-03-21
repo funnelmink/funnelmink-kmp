@@ -46,7 +46,7 @@ class EditCaseViewModel: ViewModel {
         value: String,
         priority: Int32,
         notes: String?,
-        accountID: String?,
+        accountID: String,
         assignedTo: String?
     ) async throws {
         guard let val = Double(value) else {
