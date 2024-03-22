@@ -19,6 +19,7 @@ enum Segue: NavigationSegue {
     case workspaceSettings
     case accountView(Account)
     
+    case searchResultList
     case caseDetails(caseRecord: CaseRecord, funnel: Funnel, stage: FunnelStage)
     case leadDetails(lead: Lead, funnel: Funnel, stage: FunnelStage)
     case opportunityDetails(opportunity: Opportunity, funnel: Funnel, stage: FunnelStage)
@@ -34,6 +35,7 @@ enum Segue: NavigationSegue {
         case let .caseDetails(caseRecord, funnel, stage): CaseDetailView(caseRecord: caseRecord, funnel: funnel, stage: stage)
         case let .leadDetails(lead, funnel, stage): LeadDetailView(lead: lead, funnel: funnel, stage: stage)
         case let .opportunityDetails(opportunity, funnel, stage): OpportunityDetailView(opportunity: opportunity, funnel: funnel, stage: stage)
+        case .searchResultList: SearchResultList()
         }
     }
 }

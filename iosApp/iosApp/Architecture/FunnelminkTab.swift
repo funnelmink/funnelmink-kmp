@@ -13,10 +13,12 @@ import SwiftUI
 enum FunnelminkTab: Int, Identifiable, CaseIterable {
     // the `case` order is how they'll appear on the TabView. Feel free to rearrange.
     case dashboard
+    case assignedToMe
     case accounts
+    case leads
+    case team
     case cases
     case inbox
-    case leads
     case opportunities
     case tasks
     case settings
@@ -27,10 +29,12 @@ enum FunnelminkTab: Int, Identifiable, CaseIterable {
     var root: some View {
         switch self {
         case .dashboard: TasksView()
+        case .assignedToMe: AssignedToMeView()
         case .accounts: AccountsView()
+        case .leads: LeadsView()
+        case .team: TeamView()
         case .cases: Label("Cases", systemImage: "briefcase")
         case .inbox: InboxView()
-        case .leads: Label("Leads", systemImage: "person.3")
         case .opportunities: Label("Opportunities", systemImage: "star")
         case .tasks: TasksView()
         case .settings: SettingsView()
@@ -41,10 +45,12 @@ enum FunnelminkTab: Int, Identifiable, CaseIterable {
     var tabItem: some View {
         switch self {
         case .dashboard: Label("Today", systemImage: "\(String(format: "%02d", Calendar.current.component(.day, from: .init()))).square.fill")
+        case .assignedToMe: Label("Me", systemImage: "at")
         case .accounts: Label("Accounts", systemImage: "circle.hexagongrid")
-        case .cases: Label("Cases", systemImage: "wrench.and.screwdriver")
-        case .inbox: Label("Inbox", systemImage: "envelope")
         case .leads: Label("Leads", systemImage: "point.3.connected.trianglepath.dotted")
+        case .team: Label("Team", systemImage: "person.3")
+        case .inbox: Label("Inbox", systemImage: "envelope")
+        case .cases: Label("Cases", systemImage: "wrench.and.screwdriver")
         case .opportunities: Label("Opportunities", systemImage: "trophy")
         case .tasks: Label("Tasks", systemImage: "checkmark.circle")
         case .settings: Label("Settings", systemImage: "gearshape")
@@ -62,14 +68,16 @@ private extension FunnelminkTab {
         
         // right now these are just sort of random placeholders
         switch self {
+        case .dashboard: required = [.admin, .sales, .labor]
+        case .assignedToMe: required = [.admin, .sales, .labor]
         case .accounts: required = [.admin, .sales, .labor]
-        case .cases: required = [.admin, .labor]
-        case .dashboard: required = []
+        case .leads: required = [.admin, .sales, .labor]
+        case .team: required = [.admin, .labor, .sales]
+        case .cases: required = []
         case .inbox: required = []
-        case .leads: required = [.admin, .sales]
-        case .opportunities: required = [.admin, .sales]
-        case .settings: required = [.admin, .labor, .sales]
-        case .tasks: required = [.admin, .labor, .sales]
+        case .opportunities: required = []
+        case .settings: required = []
+        case .tasks: required = []
         }
         
         return !required.isDisjoint(with: roles)
