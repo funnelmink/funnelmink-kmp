@@ -213,6 +213,20 @@ data class UpdateWorkspaceRequest(
 )
 
 @Serializable
+data class SearchRequest(
+    val searchText: String,
+)
+
+@Serializable
+data class SearchResult(
+    val accounts: List<Account>,
+    val contacts: List<AccountContact>,
+    val cases: List<CaseRecord>,
+    val leads: List<Lead>,
+    val opportunities: List<Opportunity>,
+)
+
+@Serializable
 data class APIError(
     val message: String,
     val code: Int,

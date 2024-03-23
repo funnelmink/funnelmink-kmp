@@ -40,6 +40,10 @@ interface API {
     // (you need to be signed into a workspace. will fail if `workspaceID == nil`)
     // ------------------------------------------------------------------------
 
+    // search
+    @Throws(Exception::class) suspend fun search(body: SearchRequest): SearchResult
+    @Throws(Exception::class) suspend fun getAssignments(memberID: String): SearchResult
+
     // accounts
     @Throws(Exception::class) suspend fun getAccounts(): List<Account>
     @Throws(Exception::class) suspend fun createAccount(body: CreateAccountRequest): Account
@@ -51,6 +55,7 @@ interface API {
     // activities
     @Throws(Exception::class) suspend fun createActivity(subtype: ActivitySubtype, body: CreateActivityRequest)
     @Throws(Exception::class) suspend fun getActivitiesForRecord(id: String, subtype: ActivitySubtype): List<ActivityRecord>
+    @Throws(Exception::class) suspend fun deleteActivity(subtype: ActivitySubtype, id: String)
 
     // account contacts
     @Throws(Exception::class) suspend fun createAccountContact(accountID: String, body: CreateAccountContactRequest): AccountContact
