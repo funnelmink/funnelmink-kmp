@@ -176,6 +176,7 @@ data class User(
 @Serializable
 data class Workspace(
     val id: String,
+    val memberID: String,
     val name: String,
     var roles: List<WorkspaceMembershipRole>,
     val avatarURL: String? = null

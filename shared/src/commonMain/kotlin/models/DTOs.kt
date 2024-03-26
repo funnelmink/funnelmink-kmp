@@ -224,6 +224,15 @@ data class SearchResult(
     val cases: List<CaseRecord>,
     val leads: List<Lead>,
     val opportunities: List<Opportunity>,
+    val tasks: List<TaskRecord>,
+)
+
+@Serializable
+data class MemberAssignments(
+    val cases: List<CaseRecord>,
+    val leads: List<Lead>,
+    val opportunities: List<Opportunity>,
+    val tasks: List<TaskRecord>,
 )
 
 @Serializable

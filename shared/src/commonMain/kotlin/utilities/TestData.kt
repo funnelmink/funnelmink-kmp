@@ -101,6 +101,7 @@ class TestData {
 
     val testWorkspace = Workspace(
         "b2de1142-c10e-4343-b93d-7c11503955ad",
+        "3c13e3d5-7d7f-4b62-bcec-cc527f7b4bcc",
         "Godzilla Minus One",
         listOf(WorkspaceMembershipRole.Admin),
         avatarURL,
