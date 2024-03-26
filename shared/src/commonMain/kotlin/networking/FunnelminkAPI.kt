@@ -91,6 +91,22 @@ class FunnelminkAPI(
     }
 
     // ------------------------------------------------------------------------
+    // Search
+    // ------------------------------------------------------------------------
+
+    @Throws(Exception::class)
+    override suspend fun search(body: SearchRequest): SearchResult {
+        return genericRequest("$baseURL/v1/workspace/search", HttpMethod.Get) {
+            setBody(body)
+        }
+    }
+
+    @Throws(Exception::class)
+    override suspend fun getAssignments(memberID: String): SearchResult {
+        return genericRequest("$baseURL/v1/workspace/assignedTo/$memberID", HttpMethod.Get)
+    }
+
+    // ------------------------------------------------------------------------
     // Accounts
     // ------------------------------------------------------------------------
 
@@ -216,14 +232,19 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun createActivity(subtype: ActivitySubtype, body: CreateActivityRequest) {
-        genericRequest<Unit>("$baseURL/v1/activities/${subtype.typeName}", HttpMethod.Post) {
+        genericRequest<Unit>("$baseURL/v1/workspace/activities/${subtype.typeName}", HttpMethod.Post) {
             setBody(body)
         }
     }
 
     @Throws(Exception::class)
     override suspend fun getActivitiesForRecord(id: String, subtype: ActivitySubtype): List<ActivityRecord> {
-        return genericRequest("$baseURL/v1/activities/$subtype/$id", HttpMethod.Get)
+        return genericRequest("$baseURL/v1/workspace/activities/$subtype/$id", HttpMethod.Get)
+    }
+
+    @Throws(Exception::class)
+    override suspend fun deleteActivity(subtype: ActivitySubtype, id: String) {
+        return genericRequest<Unit>("$baseURL/v1/workspace/activities/$subtype/$id", HttpMethod.Delete)
     }
 
     // ------------------------------------------------------------------------

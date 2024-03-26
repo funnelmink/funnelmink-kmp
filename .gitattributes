@@ -1,0 +1,5 @@
+iosApp/FirebaseAnalytics/** linguist-vendored
+iosApp/FirebaseAuth/** linguist-vendored
+iosApp/FirebaseFirestore/** linguist-vendored
+iosApp/FirebaseRemoteConfig/** linguist-vendored
+iosApp/GoogleSignIn/** linguist-vendored
