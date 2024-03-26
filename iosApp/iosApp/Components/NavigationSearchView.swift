@@ -9,17 +9,18 @@
 import SwiftUI
 
 struct NavigationSearchView: View {
-    var action: () = ()
+    @EnvironmentObject var navigation: Navigation
     
     var body: some View {
         HStack {
-            Image(systemName: "circle")
+            Image(.logoWithText)
                 .resizable()
-                .aspectRatio(contentMode: .fit)
+                .aspectRatio(contentMode: .fill)
                 .frame(width: 24, height: 24)
+                .padding(.leading)
             Spacer()
             Button(action: {
-                    action
+                navigation.segue(.searchResultList)
             }, label: {
                 FunnelminkGradient().mask(
                     Image(systemName: "magnifyingglass")
@@ -34,7 +35,6 @@ struct NavigationSearchView: View {
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)
         }
-        .padding(.horizontal)
     }
 }
 

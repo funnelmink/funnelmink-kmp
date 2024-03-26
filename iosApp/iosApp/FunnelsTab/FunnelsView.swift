@@ -32,7 +32,7 @@ struct FunnelsView: View {
                         switch viewModel.selectedFunnel?.type {
                         case .lead:
                             guard let lead = funnel.leads.first(where: { $0.id == card.id }) else { fatalError() }
-                            navigation.segue(.leadDetails(lead: lead, funnel: funnel, stage: stage))
+                            navigation.segue(.leadDetails(lead: lead))
                         case .case:
                             guard let caseRecord = funnel.cases.first(where: { $0.id == card.id }) else { fatalError() }
                             navigation.segue(.caseDetails(caseRecord: caseRecord, funnel: funnel, stage: stage))

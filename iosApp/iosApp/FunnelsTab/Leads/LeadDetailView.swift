@@ -13,8 +13,6 @@ struct LeadDetailView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
     @State var lead: Lead
-    @State var funnel: Funnel
-    @State var stage: FunnelStage
     var closedPrompt: String? {
         var out = ""
         switch lead.closedResult {
@@ -99,8 +97,6 @@ struct LeadDetailView: View {
                         imageName: lead.priority.priorityIconName,
                         valueColor: lead.priority.priorityColor
                     )
-                    LabeledRow(name: "Funnel", value: funnel.name)
-                    LabeledRow(name: "Stage", value: stage.name)
                 }
                 
                 if let notes = lead.notes {
@@ -135,7 +131,7 @@ struct LeadDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
-                    navigation.modalSheet(.editLead(lead: lead, funnelID: funnel.id, stageID: stage.id), onDismiss: refreshLead)
+                    navigation.modalSheet(.editLead(lead: lead), onDismiss: refreshLead)
                 } label: {
                     Text("Edit")
                 }
@@ -153,9 +149,7 @@ struct LeadDetailView: View {
 
 #Preview {
     LeadDetailView(
-        lead: TestData.lead,
-        funnel: TestData.leadFunnel,
-        stage: TestData.funnelStage0
+        lead: TestData.lead
     )
     .withPreviewDependencies()
 }

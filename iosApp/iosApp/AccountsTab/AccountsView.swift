@@ -65,24 +65,27 @@ struct AccountsView: View {
             case .contacts: allAccountContacts
             }
         }
-        .searchable(text: $searchText)
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                // Your custom leading items here, if any.
+            }
+            ToolbarItemGroup(placement: .principal) {
+                NavigationSearchView()
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                // Your custom trailing items here, if any.
+            }
+        }
+        
         .navigationTitle(selection == .all ? "Accounts" : "Contacts")
         .onChange(of: selection) { newValue in
             if newValue == .contacts {
                 fetchAllContacts()
             }
         }
-        .toolbar {
-            ToolbarItem {
-                Picker("Sort Order", selection: $selection) {
-                    Text("Accounts").tag(AccountSelection.all)
-                    Text("Contacts").tag(AccountSelection.contacts)
-                }
-            }
-        }
         .loggedTask {
             do {
-            try await viewModel.getAccounts()
+                try await viewModel.getAccounts()
             } catch {
                 Toast.error(error)
             }

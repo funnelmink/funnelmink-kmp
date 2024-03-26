@@ -7,10 +7,48 @@
 //
 
 import SwiftUI
+import Shared
 
 struct LeadsView: View {
+    @EnvironmentObject var nav: Navigation
+    @State var leads: [Lead] = []
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            allLeads
+        }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                // Your custom leading items here, if any.
+            }
+            ToolbarItemGroup(placement: .principal) {
+                NavigationSearchView()
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                // Your custom trailing items here, if any.
+            }
+        }
+        .navigationTitle("Leads")
+        .loggedTask {
+            do {
+           let leads = try await Networking.api.getLeads()
+                self.leads = leads
+            } catch {
+                Toast.error(error)
+            }
+        }
+    }
+    
+    var allLeads: some View {
+        ForEach(leads, id: \.self) { lead in
+            Button {
+                nav.segue(.leadDetails(lead: lead))
+            } label: {
+                CustomCell(title: lead.name, cellType: .navigation)
+                    .foregroundStyle(Color.primary)
+            }
+
+        }
     }
 }
 

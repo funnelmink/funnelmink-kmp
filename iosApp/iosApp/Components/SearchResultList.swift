@@ -36,6 +36,7 @@ struct SearchResultList: View {
                     }
                     .padding(.horizontal)
                 }
+                .navigationBarHidden(true)
                 .transition(.asymmetric(insertion: .move(edge: .trailing).combined(with: .opacity), removal: .opacity))
     }
 }

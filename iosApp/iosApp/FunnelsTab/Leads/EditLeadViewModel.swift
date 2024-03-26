@@ -19,24 +19,8 @@ class EditLeadViewModel: ViewModel {
     }
     
     @MainActor
-    func setUp(funnelID: String?, stageID: String?, lead: Lead?) async throws {
-        state.funnels = try await Networking.api.getFunnelsForType(funnelType: .lead)
-        guard !state.funnels.isEmpty else {
-            throw "No funnels found"
-        }
-        if let funnelID,
-           let funnel = state.funnels.first(where: { $0.id == funnelID }),
-           let stageID,
-           let stage = funnel.stages.first(where: { $0.id == stageID }) {
-            state.selectedFunnel = funnel
-            state.selectedStage = stage
-        } else if let funnel = state.funnels.first,
-                  let stage = funnel.stages.first {
-            state.selectedFunnel = funnel
-            state.selectedStage = stage
-        } else {
-            throw "No valid funnel found"
-        }
+    func setUp(lead: Lead?) async throws {
+        
     }
     
     @MainActor
