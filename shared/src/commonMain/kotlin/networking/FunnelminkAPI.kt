@@ -102,7 +102,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getAssignments(memberID: String): SearchResult {
+    override suspend fun getAssignments(memberID: String): MemberAssignments {
         return genericRequest("$baseURL/v1/workspace/assignedTo/$memberID", HttpMethod.Get)
     }
 

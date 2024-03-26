@@ -42,7 +42,7 @@ interface API {
 
     // search
     @Throws(Exception::class) suspend fun search(body: SearchRequest): SearchResult
-    @Throws(Exception::class) suspend fun getAssignments(memberID: String): SearchResult
+    @Throws(Exception::class) suspend fun getAssignments(memberID: String): MemberAssignments
 
     // accounts
     @Throws(Exception::class) suspend fun getAccounts(): List<Account>
