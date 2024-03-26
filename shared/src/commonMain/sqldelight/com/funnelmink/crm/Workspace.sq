@@ -1,13 +1,14 @@
 CREATE TABLE SQLWorkspace(
     id TEXT PRIMARY KEY,
+    memberID TEXT NOT NULL,
     name TEXT NOT NULL,
     roles TEXT NOT NULL,
     avatarURL TEXT
 );
 
 insertWorkspace:
-INSERT INTO SQLWorkspace(id, name, roles, avatarURL)
-VALUES(?, ?, ?, ?);
+INSERT INTO SQLWorkspace(id, memberID, name, roles, avatarURL)
+VALUES(?, ?, ?, ?, ?);
 
 selectWorkspaceById:
 SELECT *
@@ -21,6 +22,7 @@ FROM SQLWorkspace;
 updateWorkspace:
 UPDATE SQLWorkspace
 SET name = ?,
+    memberID = ?,
     roles = ?,
     avatarURL = ?
 WHERE id = ?;
