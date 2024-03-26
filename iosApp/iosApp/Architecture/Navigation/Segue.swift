@@ -20,9 +20,9 @@ enum Segue: NavigationSegue {
     case accountView(Account)
     
     case searchResultList
-    case caseDetails(caseRecord: CaseRecord, funnel: Funnel, stage: FunnelStage)
+    case caseDetails(caseRecord: CaseRecord)
     case leadDetails(lead: Lead)
-    case opportunityDetails(opportunity: Opportunity, funnel: Funnel, stage: FunnelStage)
+    case opportunityDetails(opportunity: Opportunity)
     
     @ViewBuilder
     var view: some View {
@@ -32,9 +32,9 @@ enum Segue: NavigationSegue {
         case let .taskDetails(task): TaskDetailView(task: task)
         case .workspaceSettings: WorkspaceSettingsView()
         case let .accountView(account): AccountView(contacts: [], account: account)
-        case let .caseDetails(caseRecord, funnel, stage): CaseDetailView(caseRecord: caseRecord, funnel: funnel, stage: stage)
+        case let .caseDetails(caseRecord): CaseDetailView(caseRecord: caseRecord)
         case let .leadDetails(lead): LeadDetailView(lead: lead)
-        case let .opportunityDetails(opportunity, funnel, stage): OpportunityDetailView(opportunity: opportunity, funnel: funnel, stage: stage)
+        case let .opportunityDetails(opportunity): OpportunityDetailView(opportunity: opportunity)
         case .searchResultList: SearchResultList()
         }
     }

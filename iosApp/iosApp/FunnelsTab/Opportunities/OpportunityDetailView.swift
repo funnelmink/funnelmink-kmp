@@ -13,8 +13,6 @@ struct OpportunityDetailView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
     @State var opportunity: Opportunity
-    @State var funnel: Funnel
-    @State var stage: FunnelStage
     var closedPrompt: String? {
         if let closedDate = opportunity.closedDate?.toDate()?.toTaskSectionTitle() {
             return "This Opportunity was closed on \(closedDate)"
@@ -46,8 +44,6 @@ struct OpportunityDetailView: View {
                         imageName: opportunity.priority.priorityIconName,
                         valueColor: opportunity.priority.priorityColor
                     )
-                    LabeledRow(name: "Funnel", value: funnel.name)
-                    LabeledRow(name: "Stage", value: stage.name)
                 }
                 
                 if let notes = opportunity.notes {

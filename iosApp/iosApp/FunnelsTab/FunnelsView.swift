@@ -35,10 +35,10 @@ struct FunnelsView: View {
                             navigation.segue(.leadDetails(lead: lead))
                         case .case:
                             guard let caseRecord = funnel.cases.first(where: { $0.id == card.id }) else { fatalError() }
-                            navigation.segue(.caseDetails(caseRecord: caseRecord, funnel: funnel, stage: stage))
+                            navigation.segue(.caseDetails(caseRecord: caseRecord))
                         case .opportunity:
                             guard let opportunity = funnel.opportunities.first(where: { $0.id == card.id }) else { fatalError() }
-                            navigation.segue(.opportunityDetails(opportunity: opportunity, funnel: funnel, stage: stage))
+                            navigation.segue(.opportunityDetails(opportunity: opportunity))
                         case .none: break
                         }
                     }, onColumnDrop: { card, column in
