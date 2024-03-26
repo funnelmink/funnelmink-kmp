@@ -13,8 +13,6 @@ struct CaseDetailView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
     @State var caseRecord: CaseRecord
-    @State var funnel: Funnel
-    @State var stage: FunnelStage
     var closedPrompt: String? {
         if let closedDate = caseRecord.closedDate?.toDate()?.toTaskSectionTitle() {
             return "This Case was closed on \(closedDate)"
@@ -46,8 +44,6 @@ struct CaseDetailView: View {
                         imageName: caseRecord.priority.priorityIconName,
                         valueColor: caseRecord.priority.priorityColor
                     )
-                    LabeledRow(name: "Funnel", value: funnel.name)
-                    LabeledRow(name: "Stage", value: stage.name)
                 }
                 
                 if let notes = caseRecord.notes {
@@ -100,9 +96,7 @@ struct CaseDetailView: View {
 
 #Preview {
     CaseDetailView(
-        caseRecord: TestData.caseRecord,
-        funnel: TestData.caseFunnel,
-        stage: TestData.funnelStage0
+        caseRecord: TestData.caseRecord
     )
     .withPreviewDependencies()
 }

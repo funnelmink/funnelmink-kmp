@@ -38,8 +38,6 @@ struct EditLeadView: View {
     @State private var shouldDisplayRequiredIndicators = false
     
     var lead: Lead?
-    var initialFunnelD: String?
-    var initialStageID: String?
     
     var body: some View {
         VStack {
@@ -246,7 +244,7 @@ struct EditLeadView: View {
                 }
             }
             do {
-                try await viewModel.setUp(funnelID: initialFunnelD, stageID: initialStageID, lead: lead)
+                try await viewModel.setUp(lead: lead)
             } catch {
                 Toast.warn(error)
             }

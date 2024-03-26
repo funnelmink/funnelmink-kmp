@@ -33,7 +33,7 @@ enum Modal: Identifiable {
     
     case createLead
     
-    case editLead(lead: Lead?, funnelID: String?, stageID: String?)
+    case editLead(lead: Lead?)
     case convertLead(lead: Lead)
     
     case createOpportunity(accountID: String?)
@@ -67,7 +67,7 @@ enum Modal: Identifiable {
             case let .createCase(accountID): EditCaseView(accountID: accountID)
             case let .editCase(caseRecord): EditCaseView(caseRecord: caseRecord)
             case .createLead: EditLeadView()
-            case let .editLead(lead, funnelID, stageID): EditLeadView(lead: lead, initialFunnelD: funnelID, initialStageID: stageID)
+            case let .editLead(lead): EditLeadView(lead: lead)
             case let .convertLead(lead): ConvertLeadView(lead: lead)
             case let .createOpportunity(accountID): EditOpportunityView(accountID: accountID)
             case let .editOpportunity(opportunity): EditOpportunityView(opportunity: opportunity)
