@@ -15,8 +15,27 @@ struct TasksView: View {
     
     @AppStorage(.storage.todayPickerSelection) var selection: Selection = .date
     
+    let backgroundForButton = Color(hex: "F2F2F7")
+    
     @ViewBuilder
     var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(Selection.allCases, id: \.self) { newSelection in
+                    Button(action: {
+                        selection = newSelection
+                    }) {
+                        Text(newSelection.name)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .background(selection == newSelection ? Color.teal : backgroundForButton)
+                            .foregroundColor(selection == newSelection ? .white : .secondary)
+                            .cornerRadius(20)
+                    }
+                }
+            }
+            .padding(.horizontal)
+        }
         List {
             switch selection {
             case .date: tasksByDate
@@ -35,12 +54,14 @@ struct TasksView: View {
             Task { await getTasks() }
         }
         .toolbar {
-            ToolbarItem {
-                Picker("Sort Order", selection: $selection) {
-                    Text("By Date").tag(Selection.date)
-                    Text("By Priority").tag(Selection.priority)
-                    Text("Completed").tag(Selection.completed)
-                }
+            ToolbarItem(placement: .navigationBarLeading) {
+                // Your custom leading items here, if any.
+            }
+            ToolbarItemGroup(placement: .principal) {
+                NavigationSearchView()
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                // Your custom trailing items here, if any.
             }
         }
     }
@@ -109,11 +130,18 @@ struct TasksView: View {
         }
     }
     
-    enum Selection: Int, Identifiable, Equatable {
+    enum Selection: Int, Identifiable, Equatable, CaseIterable {
         case date
         case priority
         case completed
         
         var id: Int { rawValue }
+        var name: String {
+            switch self {
+            case .date: return "Date"
+            case .priority: return "Priority"
+            case .completed: return "Completed"
+            }
+        }
     }
 }

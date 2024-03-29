@@ -23,7 +23,7 @@ struct SearchResultList: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(width: 24, height: 24)
-                                .foregroundStyle(.black)
+                                .foregroundStyle(.primary)
                         })
                         TextField("Search Tasks, Accounts, Cases, etc.", text: $searchText)
                             .submitLabel(.search)

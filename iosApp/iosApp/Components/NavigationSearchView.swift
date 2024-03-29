@@ -13,11 +13,13 @@ struct NavigationSearchView: View {
     
     var body: some View {
         HStack {
-            Image(.logoWithText)
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 24, height: 24)
-                .padding(.leading)
+            if navigation._canDisplayFAB {
+                Image(.logoWithText)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 24, height: 24)
+                    .padding(.leading)
+            }
             Spacer()
             Button(action: {
                 navigation.segue(.searchResultList)
@@ -30,10 +32,19 @@ struct NavigationSearchView: View {
                 )
                 .frame(width: 24, height: 24)
             })
-            Image(systemName: "person")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
+            Button {
+                navigation.segue(.settings)
+            } label: {
+                FunnelminkGradient().mask(
+                    Image(systemName: "gearshape")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                )
                 .frame(width: 24, height: 24)
+                
+            }
+
         }
     }
 }

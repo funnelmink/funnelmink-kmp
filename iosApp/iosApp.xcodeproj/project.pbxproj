@@ -108,10 +108,10 @@
 		1F022A3E2B49159100966345 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F022A3A2B49159100966345 /* CustomTextField.swift */; };
 		1F2335282B8155640035547D /* ContactDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2335272B8155640035547D /* ContactDetailsView.swift */; };
 		1F319A8E2BADE2EB00FC1E6E /* SearchResultList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F319A8D2BADE2EB00FC1E6E /* SearchResultList.swift */; };
-		1F319A902BADF86500FC1E6E /* AssignedToMeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F319A8F2BADF86500FC1E6E /* AssignedToMeView.swift */; };
 		1F319A922BADF92500FC1E6E /* TeamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F319A912BADF92500FC1E6E /* TeamView.swift */; };
 		1F319A942BADFA9200FC1E6E /* LeadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F319A932BADFA9200FC1E6E /* LeadsView.swift */; };
 		1F319A962BAE018300FC1E6E /* NavigationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F319A952BAE018300FC1E6E /* NavigationSearchView.swift */; };
+		1F319A982BB4684100FC1E6E /* AccountDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F319A972BB4684100FC1E6E /* AccountDetailsView.swift */; };
 		1F610AE82B7BE48300A9D262 /* CreateContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F610AE72B7BE48300A9D262 /* CreateContactView.swift */; };
 		1F9D49AF2B747CCD0085106C /* AddContactAccordion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9D49AE2B747CCD0085106C /* AddContactAccordion.swift */; };
 		1FA27F7A2B5978F300A447C3 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F792B5978F300A447C3 /* TimelineView.swift */; };
@@ -125,7 +125,6 @@
 		1FCB73EF89A4C87B5C5908DD /* AccountsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */; };
 		1FCB73F124945A937ECDAC6F /* WorkspacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7C4E3E93CDD70AD8DCC1 /* WorkspacesView.swift */; };
 		1FCB74155DEADF4A32FAA4E4 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7A3AB02D5F9F52C1AB1F /* LoginViewModel.swift */; };
-		1FCB74EE9F81EC19833E8639 /* AccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB79A7D2ED77D23827B2FB /* AccountView.swift */; };
 		1FCB758646ABB9ABE0EE09E4 /* ConvertLeadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB704EE675D6553F6CC5D8 /* ConvertLeadView.swift */; };
 		1FCB7680DC135B3DD5B15F0C /* Segue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB72AEE522D13EAC8565D2 /* Segue.swift */; };
 		1FCB76F93C37F8F4E4B76F94 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7C6403EE8A0091F9C3AC /* CreateAccountView.swift */; };
@@ -137,6 +136,7 @@
 		1FCB7CD17EFAA37FE7FA338F /* Shared+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB712F2F5BC2ECA5C8C449 /* Shared+.swift */; };
 		1FCB7D042F2C82CA13D88884 /* Double+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7097FD586CA3E01B3C36 /* Double+.swift */; };
 		41CC62D6E2C9601B1230CEAA /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CC6A14DD5B8A3D385ADCB2 /* AccountsView.swift */; };
+		41CC64464D09F215E454CBBE /* MemberAssignmentsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41CC6172F31DD80F73655668 /* MemberAssignmentsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -247,10 +247,10 @@
 		1F022A3A2B49159100966345 /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		1F2335272B8155640035547D /* ContactDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactDetailsView.swift; sourceTree = "<group>"; };
 		1F319A8D2BADE2EB00FC1E6E /* SearchResultList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultList.swift; sourceTree = "<group>"; };
-		1F319A8F2BADF86500FC1E6E /* AssignedToMeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignedToMeView.swift; sourceTree = "<group>"; };
 		1F319A912BADF92500FC1E6E /* TeamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamView.swift; sourceTree = "<group>"; };
 		1F319A932BADFA9200FC1E6E /* LeadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeadsView.swift; sourceTree = "<group>"; };
 		1F319A952BAE018300FC1E6E /* NavigationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationSearchView.swift; sourceTree = "<group>"; };
+		1F319A972BB4684100FC1E6E /* AccountDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountDetailsView.swift; sourceTree = "<group>"; };
 		1F610AE72B7BE48300A9D262 /* CreateContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContactView.swift; sourceTree = "<group>"; };
 		1F9D49AE2B747CCD0085106C /* AddContactAccordion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddContactAccordion.swift; sourceTree = "<group>"; };
 		1FA27F792B5978F300A447C3 /* TimelineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimelineView.swift; sourceTree = "<group>"; };
@@ -265,7 +265,6 @@
 		1FCB73DEFFC09C0D5A581EFC /* LabeledRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LabeledRow.swift; sourceTree = "<group>"; };
 		1FCB7805FE812978E02B4C3E /* EditOpportunityViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditOpportunityViewModel.swift; sourceTree = "<group>"; };
 		1FCB78B08A792C000D33E2AA /* CloseRecordView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloseRecordView.swift; sourceTree = "<group>"; };
-		1FCB79A7D2ED77D23827B2FB /* AccountView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		1FCB7A3AB02D5F9F52C1AB1F /* LoginViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsViewModel.swift; sourceTree = "<group>"; };
 		1FCB7BDF0E879F1578FB13D0 /* ProflieView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProflieView.swift; sourceTree = "<group>"; };
@@ -274,6 +273,7 @@
 		1FCB7D2C21891A9AE2804154 /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		1FCB7D6AC6CEDB402D6F242A /* AppState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		1FCB7E8839B6F36DABAA626E /* ProfileViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		41CC6172F31DD80F73655668 /* MemberAssignmentsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemberAssignmentsView.swift; sourceTree = "<group>"; };
 		41CC6A14DD5B8A3D385ADCB2 /* AccountsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountsView.swift; sourceTree = "<group>"; };
 		7555FF7B242A565900829871 /* funnelmink.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = funnelmink.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB3632DC29227652001CCB65 /* DebugConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = DebugConfig.xcconfig; sourceTree = "<group>"; };
@@ -436,9 +436,9 @@
 				0DCC16392B511A2C008F705B /* EditTaskViewModel.swift */,
 				0D5987362B5607DF00327504 /* TaskDetailView.swift */,
 				0D5987382B561FCD00327504 /* TaskCompletionButton.swift */,
-				1F319A8F2BADF86500FC1E6E /* AssignedToMeView.swift */,
 				1F319A912BADF92500FC1E6E /* TeamView.swift */,
 				1F319A932BADFA9200FC1E6E /* LeadsView.swift */,
+				41CC6172F31DD80F73655668 /* MemberAssignmentsView.swift */,
 			);
 			path = TodayTab;
 			sourceTree = "<group>";
@@ -563,9 +563,9 @@
 			children = (
 				0D7759472B6B75C500A61BAC /* ImportContacts */,
 				1FCB7ACD8F7E057679621897 /* AccountsViewModel.swift */,
-				41CC6A14DD5B8A3D385ADCB2 /* AccountsView.swift */,
-				1FCB79A7D2ED77D23827B2FB /* AccountView.swift */,
 				1FCB7C6403EE8A0091F9C3AC /* CreateAccountView.swift */,
+				41CC6A14DD5B8A3D385ADCB2 /* AccountsView.swift */,
+				1F319A972BB4684100FC1E6E /* AccountDetailsView.swift */,
 				1F610AE72B7BE48300A9D262 /* CreateContactView.swift */,
 				1F2335272B8155640035547D /* ContactDetailsView.swift */,
 				0DE811E12BAC0E2A00341174 /* SelectAccountView.swift */,
@@ -1014,6 +1014,7 @@
 				0DBF9CB32B5A35FB0045AC44 /* FeatureFlagsView.swift in Sources */,
 				0DE9E0A42B60DDBA00B8288F /* WhatsNewView.swift in Sources */,
 				0D7972632B7AB5400048E942 /* OpportunityDetailView.swift in Sources */,
+				1F319A982BB4684100FC1E6E /* AccountDetailsView.swift in Sources */,
 				1FCB74155DEADF4A32FAA4E4 /* LoginViewModel.swift in Sources */,
 				1FCB73F124945A937ECDAC6F /* WorkspacesView.swift in Sources */,
 				1F319A942BADFA9200FC1E6E /* LeadsView.swift in Sources */,
@@ -1022,7 +1023,6 @@
 				1FCB7BF596E9F1D2939A3E34 /* AppState.swift in Sources */,
 				1FCB7D042F2C82CA13D88884 /* Double+.swift in Sources */,
 				1FCB73EF89A4C87B5C5908DD /* AccountsViewModel.swift in Sources */,
-				1FCB74EE9F81EC19833E8639 /* AccountView.swift in Sources */,
 				1F319A962BAE018300FC1E6E /* NavigationSearchView.swift in Sources */,
 				1FCB76F93C37F8F4E4B76F94 /* CreateAccountView.swift in Sources */,
 				0D76D98F2B8CF80A0013FA62 /* FunnelminkTab.swift in Sources */,
@@ -1033,8 +1033,8 @@
 				1FCB758646ABB9ABE0EE09E4 /* ConvertLeadView.swift in Sources */,
 				1FCB790621C10F05028F2990 /* EditOpportunityViewModel.swift in Sources */,
 				1FCB731B11540D8EC93FCBBD /* LabeledRow.swift in Sources */,
-				1F319A902BADF86500FC1E6E /* AssignedToMeView.swift in Sources */,
 				1FCB7062A19F8D62F892FD92 /* CloseRecordView.swift in Sources */,
+				41CC64464D09F215E454CBBE /* MemberAssignmentsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

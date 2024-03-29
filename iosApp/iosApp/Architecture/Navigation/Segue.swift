@@ -13,17 +13,19 @@ import Shared
 enum Segue: NavigationSegue {
     case home
     case accounts
+    case settings
     
     case taskDetails(TaskRecord)
     
     case workspaceSettings
-    case accountView(Account)
+    case accountDetailsView(Account)
+    case contactDetailsView(AccountContact)
     
     case searchResultList
     case caseDetails(caseRecord: CaseRecord)
     case leadDetails(lead: Lead)
     case opportunityDetails(opportunity: Opportunity)
-    
+    case memberAssignmentsView(workspaceMember: WorkspaceMember)
     @ViewBuilder
     var view: some View {
         switch self {
@@ -31,11 +33,14 @@ enum Segue: NavigationSegue {
         case .accounts: AccountsView()
         case let .taskDetails(task): TaskDetailView(task: task)
         case .workspaceSettings: WorkspaceSettingsView()
-        case let .accountView(account): AccountView(contacts: [], account: account)
+        case let .accountDetailsView(account): AccountDetailsView(account: account)
         case let .caseDetails(caseRecord): CaseDetailView(caseRecord: caseRecord)
+        case let .contactDetailsView(contact): ContactDetailsView(contact: contact)
         case let .leadDetails(lead): LeadDetailView(lead: lead)
         case let .opportunityDetails(opportunity): OpportunityDetailView(opportunity: opportunity)
         case .searchResultList: SearchResultList()
+        case .settings: SettingsView()
+        case let .memberAssignmentsView(workspaceMember): MemberAssignmentsView(workspaceMember: workspaceMember)
         }
     }
 }

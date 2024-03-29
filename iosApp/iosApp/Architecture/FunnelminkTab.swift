@@ -29,7 +29,7 @@ enum FunnelminkTab: Int, Identifiable, CaseIterable {
     var root: some View {
         switch self {
         case .dashboard: TasksView()
-        case .assignedToMe: AssignedToMeView()
+        case .assignedToMe: MemberAssignmentsView()
         case .accounts: AccountsView()
         case .leads: LeadsView()
         case .team: TeamView()

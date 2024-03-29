@@ -42,7 +42,7 @@ struct TeamView: View {
     var allWorkspaceMembers: some View {
         ForEach(members, id: \.self) { member in
             Button {
-//                nav.segue(.leadDetails(lead: lead))
+                nav.segue(.memberAssignmentsView(workspaceMember: member))
             } label: {
                 CustomCell(title: member.username, cellType: .navigation)
                     .foregroundStyle(Color.primary)
