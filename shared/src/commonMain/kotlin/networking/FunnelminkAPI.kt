@@ -208,8 +208,8 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun updateAccountContact(accountID: String, id: String, body: UpdateAccountContactRequest): AccountContact {
-        val contact: AccountContact = genericRequest("$baseURL/v1/workspace/accounts/$accountID/contacts/$id", HttpMethod.Put) {
+    override suspend fun updateAccountContact(id: String, body: UpdateAccountContactRequest): AccountContact {
+        val contact: AccountContact = genericRequest("$baseURL/v1/workspace/accounts/contacts/$id", HttpMethod.Put) {
             setBody(body)
         }
         cache.replaceAccountContact(contact, accountID)

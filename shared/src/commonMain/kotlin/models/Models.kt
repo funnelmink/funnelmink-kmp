@@ -43,7 +43,7 @@ data class AccountContact(
 
     val email: String? = null,
     val jobTitle: String? = null,
-    val name: String? = null,
+    val name: String,
     val notes: String? = null,
     val phone: String? = null,
 
@@ -57,8 +57,9 @@ data class ActivityRecord(
     val id: String,
 
     val createdAt: String,
-    val details: String? = null,
+    val details: String,
     val memberID: String,
+    val memberUsername: String,
     val type: ActivityRecordType,
 )
 
