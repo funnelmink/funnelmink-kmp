@@ -7,7 +7,7 @@ import models.*
 internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val database = FunnelminkCache(databaseDriverFactory.createDriver())
     private val accountDB = database.accountQueries
-    private val accountContactDB = database.accountContactQueries
+    private val contactDB = database.contactQueries
     private val activityDB = database.activityQueries
     private val caseDB = database.caseRecordQueries
     private val funnelsDB = database.funnelQueries
@@ -152,8 +152,8 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun insertAccountContact(contact: AccountContact, accountID: String) {
-        accountContactDB.insertContact(
+    fun insertContact(contact: Contact, accountID: String) {
+        contactDB.insertContact(
             contact.id,
             contact.email,
             contact.name,
@@ -164,13 +164,13 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun selectAllContactsForAccount(id: String): List<AccountContact> {
-        return accountContactDB.selectAllContactsForAccount(id).executeAsList().map { mapContact(it.id, it.email, it.name, it.notes, it.phone, id)}
+    fun selectAllContactsForAccount(id: String): List<Contact> {
+        return contactDB.selectAllContactsForAccount(id).executeAsList().map { mapContact(it.id, it.email, it.name, it.notes, it.phone, id)}
     }
 
     @Throws(Exception::class)
-    fun updateAccountContact(contact: AccountContact) {
-        accountContactDB.updateContact(
+    fun updateContact(contact: Contact) {
+        contactDB.updateContact(
             contact.email,
             contact.name,
             contact.notes,
@@ -180,33 +180,33 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    fun replaceAllContactsForAccount(id: String, contacts: List<AccountContact>) {
-        accountContactDB.transaction {
-            accountContactDB.removeAllContactsForAccount(id)
-            contacts.forEach { insertAccountContact(it, id) }
+    fun replaceAllContactsForAccount(id: String, contacts: List<Contact>) {
+        contactDB.transaction {
+            contactDB.removeAllContactsForAccount(id)
+            contacts.forEach { insertContact(it, id) }
         }
     }
 
     @Throws(Exception::class)
-    fun replaceAccountContact(contact: AccountContact, accountID: String) {
-        accountContactDB.transaction {
-            accountContactDB.removeContact(contact.id)
-            insertAccountContact(contact, accountID)
+    fun replaceContact(contact: Contact, accountID: String) {
+        contactDB.transaction {
+            contactDB.removeContact(contact.id)
+            insertContact(contact, accountID)
         }
     }
 
     @Throws(Exception::class)
     fun deleteContact(id: String) {
-        accountContactDB.removeContact(id)
+        contactDB.removeContact(id)
     }
 
     @Throws(Exception::class)
     private fun deleteAllContacts() {
-        accountContactDB.removeAllContacts()
+        contactDB.removeAllContacts()
     }
 
-    private fun mapContact(id: String, email: String?, name: String?, notes: String?, phone: String?, accountID: String): AccountContact {
-        return AccountContact(id, email, name, notes, phone)
+    private fun mapContact(id: String, email: String?, name: String?, notes: String?, phone: String?, accountID: String): Contact {
+        return Contact(id, email, name, notes, phone)
     }
 
     // ------------------------------------------------------------------------

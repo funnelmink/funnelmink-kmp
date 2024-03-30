@@ -16,29 +16,31 @@ import kotlinx.serialization.encoding.Encoder
 data class Account(
     val id: String,
 
-    val address: String? = null,
-    val city: String? = null,
-    val country: String? = null,
-    val createdAt: String,
-    val email: String? = null,
-    val latitude: Double? = null,
-    val leadID: String? = null,
-    val longitude: Double? = null,
     val name: String,
-    val notes: String? = null,
-    val phone: String? = null,
-    val state: String? = null,
+    val email: String,
+    val phone: String,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val address: String,
+    val city: String,
+    val state: String,
+    val country: String,
+    val zip: String,
+    val notes: String,
+
+    val createdAt: String,
     val updatedAt: String,
-    val zip: String? = null,
+
+    val leadID: String? = null,
 
     val activities: List<ActivityRecord> = emptyList(),
-    val contacts: List<AccountContact> = emptyList(),
+    val contacts: List<Contact> = emptyList(),
     val cases: List<CaseRecord> = emptyList(),
     val opportunities: List<Opportunity> = emptyList(),
 )
 
 @Serializable
-data class AccountContact(
+data class Contact(
     val id: String,
 
     val email: String? = null,
@@ -48,7 +50,7 @@ data class AccountContact(
     val phone: String? = null,
 
     val accountName: String? = null,
-    val accountID: String? = null,
+    val accountID: String,
 )
 
 
@@ -59,7 +61,6 @@ data class ActivityRecord(
     val createdAt: String,
     val details: String,
     val memberID: String,
-    val memberUsername: String,
     val type: ActivityRecordType,
 )
 
@@ -67,20 +68,22 @@ data class ActivityRecord(
 data class CaseRecord(
     val id: String,
 
-    val assignedTo: String? = null,
+    val name: String,
     val closedDate: String? = null,
     val createdAt: String,
-    val description: String? = null,
-    val name: String,
-    val notes: String? = null,
+    val description: String,
+    val notes: String,
     val priority: Int,
-    val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
-
     val activities: List<ActivityRecord> = emptyList(),
+
+    val stageID: String,
+    val stageName: String? = null,
     val accountName: String? = null,
-    val accountID: String? = null,
+    val accountID: String,
+    val assignedToID: String? = null,
+    val assignedToName: String? = null,
 )
 
 @Serializable

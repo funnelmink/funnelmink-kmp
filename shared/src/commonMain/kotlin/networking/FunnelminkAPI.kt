@@ -195,34 +195,34 @@ class FunnelminkAPI(
     }
 
     // ------------------------------------------------------------------------
-    // Account Contacts
+    // Contacts
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    override suspend fun createAccountContact(accountID: String, body: CreateAccountContactRequest): AccountContact {
-        val contact: AccountContact = genericRequest("$baseURL/v1/workspace/accounts/$accountID/contacts", HttpMethod.Post) {
+    override suspend fun createContact(accountID: String, body: CreateContactRequest): Contact {
+        val contact: Contact = genericRequest("$baseURL/v1/workspace/accounts/$accountID/contacts", HttpMethod.Post) {
             setBody(body)
         }
-        cache.insertAccountContact(contact, accountID)
+        cache.insertContact(contact, accountID)
         return contact
     }
 
     @Throws(Exception::class)
-    override suspend fun updateAccountContact(id: String, body: UpdateAccountContactRequest): AccountContact {
-        val contact: AccountContact = genericRequest("$baseURL/v1/workspace/accounts/contacts/$id", HttpMethod.Put) {
+    override suspend fun updateContact(id: String, body: UpdateContactRequest): Contact {
+        val contact: Contact = genericRequest("$baseURL/v1/workspace/accounts/contacts/$id", HttpMethod.Put) {
             setBody(body)
         }
-        cache.replaceAccountContact(contact, accountID)
+        cache.replaceContact(contact, accountID)
         return contact
     }
 
     @Throws(Exception::class)
-    override suspend fun deleteAccountContact(id: String) {
+    override suspend fun deleteContact(id: String) {
         genericRequest<Unit>("$baseURL/v1/workspace/accounts/contacts/$id", HttpMethod.Delete)
         cache.deleteContact(id)
     }
 
-    override suspend fun getAccountContact(id: String): AccountContact {
+    override suspend fun getContact(id: String): Contact {
         return genericRequest("$baseURL/v1/workspace/accounts/contacts/$id", HttpMethod.Get)
     }
 

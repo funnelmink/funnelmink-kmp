@@ -19,7 +19,7 @@ struct AccountsView: View {
     @StateObject var viewModel = AccountsViewModel()
     @AppStorage("accountsView.selection") var selection: AccountSelection = .all
     @State var searchText: String = ""
-    @State var allContacts: [AccountContact] = []
+    @State var allContacts: [Contact] = []
     
     
     private var filteredAccounts: [String : [Account]] {
@@ -62,7 +62,7 @@ struct AccountsView: View {
         List {
             switch selection {
             case .all: allAccounts
-            case .contacts: allAccountContacts
+            case .contacts: allContacts
             }
         }
         .toolbar {
@@ -92,7 +92,7 @@ struct AccountsView: View {
         }
     }
     
-    var allAccountContacts: some View {
+    var allContacts: some View {
         ForEach(allContacts, id: \.id) { contact in
             if let name = contact.name {
                 Text(name)
@@ -121,7 +121,7 @@ struct AccountsView: View {
     private func fetchAllContacts() {
         Task {
             do {
-                var contacts: [AccountContact] = []
+                var contacts: [Contact] = []
                 for account in viewModel.accounts {
                     let details = try await Networking.api.getAccountDetails(id: account.id)
                     contacts.append(contentsOf: details.contacts)

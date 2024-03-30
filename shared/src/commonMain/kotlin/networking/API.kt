@@ -57,11 +57,11 @@ interface API {
     @Throws(Exception::class) suspend fun getActivitiesForRecord(id: String, subtype: ActivitySubtype): List<ActivityRecord>
     @Throws(Exception::class) suspend fun deleteActivity(subtype: ActivitySubtype, id: String)
 
-    // account contacts
-    @Throws(Exception::class) suspend fun createAccountContact(accountID: String, body: CreateAccountContactRequest): AccountContact
-    @Throws(Exception::class) suspend fun updateAccountContact(accountID: String, id: String, body: UpdateAccountContactRequest): AccountContact
-    @Throws(Exception::class) suspend fun deleteAccountContact(id: String)
-    @Throws(Exception::class) suspend fun getAccountContact(id: String): AccountContact
+    // contacts
+    @Throws(Exception::class) suspend fun createContact(accountID: String, body: CreateContactRequest): Contact
+    @Throws(Exception::class) suspend fun updateContact(accountID: String, id: String, body: UpdateContactRequest): Contact
+    @Throws(Exception::class) suspend fun deleteContact(id: String)
+    @Throws(Exception::class) suspend fun getContact(id: String): Contact
 
     // cases
     @Throws(Exception::class) suspend fun assignCaseToMember(id: String, memberID: String): CaseRecord
