@@ -87,18 +87,6 @@ data class CaseRecord(
 )
 
 @Serializable
-data class Funnel(
-    val id: String,
-
-    val name: String,
-    val type: FunnelType,
-    var stages: List<FunnelStage> = emptyList(),
-    var cases: List<CaseRecord> = emptyList(),
-    var leads: List<Lead> = emptyList(),
-    var opportunities: List<Opportunity> = emptyList(),
-)
-
-@Serializable
 data class FunnelStage(
     val id: String,
 
@@ -141,31 +129,33 @@ data class Lead(
 data class Opportunity(
     val id: String,
 
-    val assignedTo: String? = null,
     val closedDate: String? = null,
     val createdAt: String,
-    val description: String? = null,
+    val description: String,
     val name: String,
     val notes: String? = null,
     val priority: Int,
-    val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
-
     val activities: List<ActivityRecord> = emptyList(),
+
+    val stageID: String,
+    val stageName: String? = null,
     val accountName: String? = null,
-    val accountID: String? = null,
+    val accountID: String,
+    val assignedToID: String? = null,
+    val assignedToName: String? = null,
 )
 
 @Serializable
 data class TaskRecord(
     val id: String,
 
-    val body: String? = null,
+    val title: String,
+    val body: String,
     val isComplete: Boolean,
     val priority: Int,
     val scheduledDate: String? = null,
-    val title: String,
     val updatedAt: String,
 )
 
