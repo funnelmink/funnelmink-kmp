@@ -26,6 +26,7 @@ class Navigation: ObservableObject {
         case 1: return _state._1.isEmpty
         case 2: return _state._2.isEmpty
         case 3: return _state._3.isEmpty
+        case 4: return _state._4.isEmpty
         default: return false
         }
     }
@@ -47,6 +48,7 @@ class Navigation: ObservableObject {
         
         var _sheet: Modal?
         var _fullscreen: Modal?
+        var _alert: Modal?
         
         var _toast: Toast?
         var _modalToast: Toast?
@@ -70,6 +72,15 @@ class Navigation: ObservableObject {
         case 3: _state._3.append(segue)
         default: _state._4.append(segue)
         }
+    }
+    
+    //TODO: update all present functions
+    func presentAlert(_ modal: Modal) {
+        var state = _state
+        state._alert = modal
+        state._fullscreen = nil
+        state._sheet = nil
+        _state = state
     }
     
     func popSegue() {
@@ -112,6 +123,7 @@ class Navigation: ObservableObject {
         var state = _state
         state._sheet = nil
         state._fullscreen = nil
+        state._alert = nil
         _state = state
     }
     

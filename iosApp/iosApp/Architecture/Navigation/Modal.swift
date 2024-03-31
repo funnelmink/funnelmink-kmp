@@ -46,6 +46,8 @@ enum Modal: Identifiable {
     case selectAccountAndCreateOpporunity
     case selectAccountAndCreateContact
     
+    case settings
+    
     @ViewBuilder
     var view: some View {
         Group {
@@ -76,6 +78,7 @@ enum Modal: Identifiable {
             case .selectAccountAndCreateCase: SelectAccountView(nextView: { Navigation.shared.modalSheet(.createCase(accountID: $0)) })
             case .selectAccountAndCreateOpporunity: SelectAccountView(nextView: { Navigation.shared.modalSheet(.createOpportunity(accountID: $0)) })
             case .selectAccountAndCreateContact: SelectAccountView(nextView: { Navigation.shared.modalSheet(.createContact(accountID: $0)) })
+            case .settings: SettingsView()
             }
         }
         .toasted(isPresented: true) // modals exist in a separate window. this modifier lets them display toasts anyways

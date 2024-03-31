@@ -26,6 +26,7 @@ struct CustomCell: View {
     var detail: String?
     var icon: String?
     var isDisabled: Bool = false
+    var needsBorder: Bool = false
     var cellType: CellType
     
     var body: some View {
@@ -80,6 +81,10 @@ struct CustomCell: View {
             }
         }
         .padding(.vertical, 8)
+        .overlay(
+            RoundedRectangle(cornerRadius: 0)
+                .stroke(needsBorder ? Color.gray : Color.clear, lineWidth: 1)
+        )
     }
 }
 
@@ -119,8 +124,8 @@ struct RadioButton: View {
 }
 
 #Preview {
-    List {
-        CustomCell(title: "Title", cellType: .navigation)
+    Section {
+        CustomCell(title: "Title", needsBorder: true, cellType: .navigation)
         CustomCell(title: "Title", icon: "person", cellType: .checkbox)
         CustomCell(title: "Title", subtitle: "Subtitle", icon: "person", cellType: .informative)
         CustomCell(title: "Title", subtitle: "Subtitle", description: "891 N 800 E", icon: "person", cellType: .radio)

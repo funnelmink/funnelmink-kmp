@@ -44,7 +44,7 @@ struct CreateAccountView: View {
                     leadID: nil
                 )
                 nav.dismissModal()
-                nav.segue(.accountView(createdAccount))
+                nav.segue(.accountDetailsView(createdAccount))
             } catch {
                 Toast.error(error)
             }
@@ -88,7 +88,7 @@ struct CreateAccountView: View {
                 }
                 HStack {
                     CustomTextField(text: $state, placeholder: "State", style: .text)
-                    CustomTextField(text: $country, placeholder: "Country", style: .phone)
+                    CustomTextField(text: $country, placeholder: "Country", style: .text)
                     CustomTextField(text: $zip, placeholder: "ZIP", style: .phone)
                 }
             }
