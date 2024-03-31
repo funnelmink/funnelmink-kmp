@@ -195,35 +195,35 @@ class FunnelminkAPI(
     }
 
     // ------------------------------------------------------------------------
-    // Account Contacts
+    // Contacts
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    override suspend fun createAccountContact(accountID: String, body: CreateAccountContactRequest): AccountContact {
-        val contact: AccountContact = genericRequest("$baseURL/v1/workspace/accounts/$accountID/contacts", HttpMethod.Post) {
+    override suspend fun createContact(accountID: String, body: CreateContactRequest): Contact {
+        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts/$accountID", HttpMethod.Post) {
             setBody(body)
         }
-        cache.insertAccountContact(contact, accountID)
+        cache.insertContact(contact, accountID)
         return contact
     }
 
     @Throws(Exception::class)
-    override suspend fun updateAccountContact(accountID: String, id: String, body: UpdateAccountContactRequest): AccountContact {
-        val contact: AccountContact = genericRequest("$baseURL/v1/workspace/accounts/$accountID/contacts/$id", HttpMethod.Put) {
+    override suspend fun updateContact(id: String, body: UpdateContactRequest): Contact {
+        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Put) {
             setBody(body)
         }
-        cache.replaceAccountContact(contact, accountID)
+        cache.replaceContact(contact)
         return contact
     }
 
     @Throws(Exception::class)
-    override suspend fun deleteAccountContact(id: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/accounts/contacts/$id", HttpMethod.Delete)
+    override suspend fun deleteContact(id: String) {
+        genericRequest<Unit>("$baseURL/v1/workspace/contacts/$id", HttpMethod.Delete)
         cache.deleteContact(id)
     }
 
-    override suspend fun getAccountContact(id: String): AccountContact {
-        return genericRequest("$baseURL/v1/workspace/accounts/contacts/$id", HttpMethod.Get)
+    override suspend fun getContact(id: String): Contact {
+        return genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Get)
     }
 
     // ------------------------------------------------------------------------
@@ -310,103 +310,6 @@ class FunnelminkAPI(
         }
         cache.replaceCase(case)
         return case
-    }
-
-    // ------------------------------------------------------------------------
-    // Funnels
-    // ------------------------------------------------------------------------
-
-    @Throws(Exception::class)
-    override suspend fun getFunnels(): List<Funnel> {
-        val cacheKey = "getFunnels"
-        try {
-            if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllFunnels()
-                if (cached.isNotEmpty()) {
-                    Utilities.logger.info("🛃 Retrieved ${cached.size} funnels from cache")
-                    return cached
-                }
-            }
-            val fetched: List<Funnel> = genericRequest("$baseURL/v1/workspace/funnels", HttpMethod.Get)
-            cache.replaceAllFunnels(fetched)
-            cacheInvalidator.updateTimestamp(cacheKey)
-            Utilities.logger.info("Cached ${fetched.size} funnels")
-            return fetched
-        } catch (e: Exception) {
-            val cached = cache.selectAllFunnels()
-            if (cached.isNotEmpty()) {
-                Utilities.logger.warn("🛃 Failed to fetch Funnels. Returned ${cached.size} funnels from cache")
-                return cached
-            } else {
-                throw e
-            }
-        }
-    }
-
-    @Throws(Exception::class)
-    override suspend fun getFunnel(id: String): Funnel {
-        val cached = cache.selectFunnel(id)
-        if (cached != null) {
-            Utilities.logger.info("🛃 Returned funnel $id from cache")
-            return cached
-        }
-        return genericRequest("$baseURL/v1/workspace/funnels/$id", HttpMethod.Get)
-    }
-
-    @Throws(Exception::class)
-    override suspend fun getFunnelsForType(funnelType: FunnelType): List<Funnel> {
-        val cacheKey = "getFunnels"
-        try {
-            if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllFunnelsForType(funnelType)
-                if (cached.isNotEmpty()) {
-                    Utilities.logger.info("🛃 Retrieved ${cached.size} ${funnelType.typeName} funnels from cache")
-                    return cached
-                }
-            }
-            // TODO: Funnel.sq replaceAllFunnelsForType
-           return genericRequest<List<Funnel>>("$baseURL/v1/workspace/funnels/${funnelType.typeName}", HttpMethod.Get)
-        } catch (e: Exception) {
-            val cached = cache.selectAllFunnelsForType(funnelType)
-            if (cached.isNotEmpty()) {
-                Utilities.logger.warn("🛃 Failed to fetch Funnels. Returned ${cached.size} ${funnelType.typeName} funnels from cache")
-                return cached
-            } else {
-                throw e
-            }
-        }
-    }
-
-    @Throws(Exception::class)
-    override suspend fun createDefaultFunnels() {
-        genericRequest<Unit>("$baseURL/v1/workspace/funnels/createDefaultFunnels", HttpMethod.Post) {
-            setBody("{}") // POST requests can't have empty bodies
-        }
-        cacheInvalidator.invalidate("getFunnels")
-    }
-
-    @Throws(Exception::class)
-    override suspend fun createFunnel(body: CreateFunnelRequest): Funnel {
-        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/admin/funnels", HttpMethod.Post) {
-            setBody(body)
-        }
-        cache.insertFunnel(funnel)
-        return funnel
-    }
-
-    @Throws(Exception::class)
-    override suspend fun updateFunnel(id: String, body: UpdateFunnelRequest): Funnel {
-        val funnel: Funnel = genericRequest("$baseURL/v1/workspace/admin/funnels/$id", HttpMethod.Put) {
-            setBody(body)
-        }
-        cache.replaceFunnel(funnel)
-        return funnel
-    }
-
-    @Throws(Exception::class)
-    override suspend fun deleteFunnel(id: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/admin/funnels/$id", HttpMethod.Delete)
-        cache.deleteFunnel(id)
     }
 
     // ------------------------------------------------------------------------

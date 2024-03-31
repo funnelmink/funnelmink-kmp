@@ -1,15 +1,16 @@
 CREATE TABLE SQLTaskRecord(
     id TEXT PRIMARY KEY,
-    body TEXT,
+
+    title TEXT NOT NULL,
+    body TEXT NOT NULL,
     isComplete INTEGER NOT NULL,
     priority INTEGER NOT NULL,
     scheduledDate TEXT,
-    title TEXT NOT NULL,
     updatedAt TEXT NOT NULL
 );
 
 insertTask:
-INSERT INTO SQLTaskRecord(id, body, isComplete, priority, scheduledDate, title, updatedAt)
+INSERT INTO SQLTaskRecord(id, title, body, isComplete, priority, scheduledDate, updatedAt)
 VALUES(?, ?, ?, ?, ?, ?, ?);
 
 selectTaskById:

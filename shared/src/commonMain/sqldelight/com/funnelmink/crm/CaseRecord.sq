@@ -1,45 +1,39 @@
 CREATE TABLE SQLCaseRecord (
     id TEXT PRIMARY KEY,
-    assignedTo TEXT,
+    name TEXT NOT NULL,
     closedDate TEXT,
     createdAt TEXT NOT NULL,
-    description TEXT,
-    name TEXT NOT NULL,
-    notes TEXT,
+    description TEXT NOT NULL,
+    notes TEXT NOT NULL,
     priority INTEGER NOT NULL,
-    stage TEXT,
     updatedAt TEXT NOT NULL,
-    value TEXT,
+    value TEXT NOT NULL,
+    stageID TEXT NOT NULL,
+    stageName TEXT,
+    accountName TEXT,
+    accountID TEXT NOT NULL,
+    assignedToID TEXT,
+    assignedToName TEXT,
 
-    funnelId TEXT,
-    accountId TEXT,
-
-    FOREIGN KEY (funnelId) REFERENCES SQLFunnel(id),
-    FOREIGN KEY (accountId) REFERENCES SQLAccount(id)
+    FOREIGN KEY (accountID) REFERENCES SQLAccount(id)
 );
 
 insertCase:
-INSERT INTO SQLCaseRecord (id, assignedTo, closedDate, createdAt, description, name, notes, priority, stage, updatedAt, value, funnelId, accountId)
-VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO SQLCaseRecord (id, name, closedDate, createdAt, description, notes, priority, updatedAt, value, stageID, stageName, accountName, accountID, assignedToID, assignedToName)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 
 updateCase:
-UPDATE SQLCaseRecord SET assignedTo = ?, closedDate = ?, createdAt = ?, description = ?, name = ?, notes = ?, priority = ?, stage = ?, updatedAt = ?, value = ? WHERE id = ?;
+UPDATE SQLCaseRecord SET name = ?, closedDate = ?, description = ?, notes = ?, priority = ?, updatedAt = ?, value = ?, stageID = ?, stageName = ?, accountName = ?, accountID = ?, assignedToID = ?, assignedToName = ? WHERE id = ?;
 
 selectCaseById:
 SELECT * FROM SQLCaseRecord WHERE id = ?;
 
-selectAllCasesForFunnel:
-SELECT * FROM SQLCaseRecord WHERE funnelId = ?;
-
 selectAllCasesForAccount:
-SELECT * FROM SQLCaseRecord WHERE accountId = ?;
-
-removeAllCasesForFunnel:
-DELETE FROM SQLCaseRecord WHERE funnelId = ?;
+SELECT * FROM SQLCaseRecord WHERE accountID = ?;
 
 removeAllCasesForAccount:
-DELETE FROM SQLCaseRecord WHERE accountId = ?;
+DELETE FROM SQLCaseRecord WHERE accountID = ?;
 
 removeCase:
 DELETE FROM SQLCaseRecord WHERE id = ?;

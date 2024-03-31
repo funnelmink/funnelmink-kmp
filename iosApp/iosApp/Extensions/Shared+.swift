@@ -65,7 +65,7 @@ extension Validator {
 
 extension TestData {
     static var account: Account { Utilities.shared.testData.testAccount }
-    static var accountContact: AccountContact { Utilities.shared.testData.testAccountContact }
+    static var accountContact: Contact { Utilities.shared.testData.testContact }
     static var activity: ActivityRecord { Utilities.shared.testData.testActivityRecord }
     static var caseRecord: CaseRecord { Utilities.shared.testData.testCaseRecord }
     static var caseFunnel: Funnel { Utilities.shared.testData.testCaseFunnel }

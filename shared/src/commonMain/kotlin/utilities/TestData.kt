@@ -21,12 +21,12 @@ class TestData {
         timestamp,
         "84097",
         activities,
-        listOf(accountContact,accountContact,accountContact),
+        listOf(contact,contact,contact),
         listOf(caseRecord,caseRecord,caseRecord),
         listOf(opportunity,opportunity,opportunity)
     )
 
-    val testAccountContact = accountContact
+    val testContact = contact
     val testActivityRecord = activityRecord
     val testCaseRecord = caseRecord
 
@@ -117,7 +117,7 @@ class TestData {
     private val avatarURL get() = "https://i.kym-cdn.com/photos/images/newsfeed/001/207/210/b22.jpg"
     private val lorem get() = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
     private val timestamp get() = "2024-02-12 04:54:13.208917+00"
-    private val accountContact get() = AccountContact(
+    private val contact get() = Contact(
         "8d2116f9-3862-4706-beb2-1b5fe7768f3f",
         "",
         "Darryl Archideld",

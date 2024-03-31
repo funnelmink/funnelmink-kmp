@@ -11,7 +11,7 @@ import Shared
 
 struct ContactDetailsView: View {
     @EnvironmentObject var navigation: Navigation
-    let contact: AccountContact
+    let contact: Contact
     
     private func makeCall(phoneNumber: String) {
         guard let url = URL(string: "tel://\(phoneNumber)"),

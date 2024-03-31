@@ -1,36 +1,43 @@
 CREATE TABLE SQLLead (
     id TEXT PRIMARY KEY,
-    address TEXT,
-    assignedTo TEXT,
-    city TEXT,
-    closedDate TEXT,
-    closedResult TEXT,
-    company TEXT,
-    country TEXT,
-    createdAt TEXT NOT NULL,
-    email TEXT,
-    jobTitle TEXT,
+
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    phone TEXT NOT NULL,
     latitude REAL,
     longitude REAL,
-    name TEXT NOT NULL,
-    notes TEXT,
-    phone TEXT,
-    priority INTEGER NOT NULL,
-    source TEXT,
-    stage TEXT,
-    state TEXT,
+    address TEXT NOT NULL,
+    city TEXT NOT NULL,
+    state TEXT NOT NULL,
+    country TEXT NOT NULL,
+    zip TEXT NOT NULL,
+    notes TEXT NOT NULL,
+
+    createdAt TEXT NOT NULL,
     updatedAt TEXT NOT NULL,
-    zip TEXT
+
+    closedDate TEXT,
+    closedResult TEXT,
+    accountID TEXT,
+    company TEXT NOT NULL,
+    jobTitle TEXT NOT NULL,
+    priority INTEGER NOT NULL,
+    source TEXT NOT NULL,
+
+    stageID TEXT NOT NULL,
+    stageName TEXT,
+
+    assignedToID TEXT,
+    assignedToName TEXT,
+    FOREIGN KEY (stageID) REFERENCES SQLFunnelStage(id)
 );
 
 insertLead:
-INSERT INTO SQLLead (id, address, assignedTo, city, closedDate, closedResult, company, country, createdAt, email, jobTitle, latitude, longitude, name, notes, phone, priority, source, stage, state, updatedAt, zip)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO SQLLead (id, name, email, phone, latitude, longitude, address, city, state, country, zip, notes, createdAt, updatedAt, closedDate, closedResult, accountID, company, jobTitle, priority, source, stageID, stageName, assignedToID, assignedToName)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 updateLead:
-UPDATE SQLLead
-SET address = ?, assignedTo = ?, city = ?, closedDate = ?, closedResult = ?, company = ?, country = ?, createdAt = ?, email = ?, jobTitle = ?, latitude = ?, longitude = ?, name = ?, notes = ?, phone = ?, priority = ?, source = ?, stage = ?, state = ?, updatedAt = ?, zip = ?
-WHERE id = ?;
+UPDATE SQLLead SET name = ?, email = ?, phone = ?, latitude = ?, longitude = ?, address = ?, city = ?, state = ?, country = ?, zip = ?, notes = ?, createdAt = ?, updatedAt = ?, closedDate = ?, closedResult = ?, accountID = ?, company = ?, jobTitle = ?, priority = ?, source = ?, stageID = ?, stageName = ?, assignedToID = ?, assignedToName = ? WHERE id = ?;
 
 deleteLead:
 DELETE FROM SQLLead

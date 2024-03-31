@@ -1,36 +1,26 @@
 CREATE TABLE SQLFunnelStage (
     id TEXT PRIMARY KEY,
-    funnelId TEXT NOT NULL,
     name TEXT NOT NULL,
-    order_ INTEGER NOT NULL,
-
-    FOREIGN KEY (funnelId) REFERENCES SQLFunnel(id)
+    order_ INTEGER NOT NULL
 );
 
 insertFunnelStage:
-INSERT INTO SQLFunnelStage (id, funnelId, name, order_)
-VALUES (?, ?, ?, ?);
+INSERT INTO SQLFunnelStage (id, name, order_)
+VALUES (?, ?, ?);
 
 deleteFunnelStage:
 DELETE FROM SQLFunnelStage
 WHERE id = ?;
 
 selectStage:
-SELECT id, funnelId, name, order_
+SELECT id, name, order_
 FROM SQLFunnelStage
 WHERE id = ?;
-
-selectAllStagesForFunnel:
-SELECT * FROM SQLFunnelStage WHERE funnelId = ?;
 
 updateFunnelStage:
 UPDATE SQLFunnelStage
 SET name = ?, order_ = ?
 WHERE id = ?;
-
-deleteAllStagesForFunnel:
-DELETE FROM SQLFunnelStage
-WHERE funnelId = ?;
 
 deleteAllStages:
 DELETE FROM SQLFunnelStage;

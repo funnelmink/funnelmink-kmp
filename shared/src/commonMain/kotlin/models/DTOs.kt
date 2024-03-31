@@ -39,7 +39,7 @@ data class UpdateAccountRequest(
 )
 
 @Serializable
-data class CreateAccountContactRequest(
+data class CreateContactRequest(
     val name: String,
     val email: String? = null,
     val phone: String? = null,
@@ -48,7 +48,7 @@ data class CreateAccountContactRequest(
 )
 
 @Serializable
-data class UpdateAccountContactRequest(
+data class UpdateContactRequest(
     val name: String? = null,
     val email: String? = null,
     val phone: String? = null,
@@ -220,7 +220,7 @@ data class SearchRequest(
 @Serializable
 data class SearchResult(
     val accounts: List<Account>,
-    val contacts: List<AccountContact>,
+    val contacts: List<Contact>,
     val cases: List<CaseRecord>,
     val leads: List<Lead>,
     val opportunities: List<Opportunity>,

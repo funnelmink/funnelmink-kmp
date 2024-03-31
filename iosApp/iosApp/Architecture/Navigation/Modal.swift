@@ -22,7 +22,7 @@ enum Modal: Identifiable {
     case selectWorkspace
     case createAccount
     case createContact(accountID: String)
-    case contactDetails(AccountContact)
+    case contactDetails(Contact)
     
     case closeRecord(type: FunnelType, id: String)
 

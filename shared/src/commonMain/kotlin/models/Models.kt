@@ -16,39 +16,41 @@ import kotlinx.serialization.encoding.Encoder
 data class Account(
     val id: String,
 
-    val address: String? = null,
-    val city: String? = null,
-    val country: String? = null,
-    val createdAt: String,
-    val email: String? = null,
-    val latitude: Double? = null,
-    val leadID: String? = null,
-    val longitude: Double? = null,
     val name: String,
-    val notes: String? = null,
-    val phone: String? = null,
-    val state: String? = null,
+    val email: String,
+    val phone: String,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val address: String,
+    val city: String,
+    val state: String,
+    val country: String,
+    val zip: String,
+    val notes: String,
+
+    val createdAt: String,
     val updatedAt: String,
-    val zip: String? = null,
+
+    val leadID: String? = null,
 
     val activities: List<ActivityRecord> = emptyList(),
-    val contacts: List<AccountContact> = emptyList(),
+    val contacts: List<Contact> = emptyList(),
     val cases: List<CaseRecord> = emptyList(),
     val opportunities: List<Opportunity> = emptyList(),
 )
 
 @Serializable
-data class AccountContact(
+data class Contact(
     val id: String,
 
-    val email: String? = null,
-    val jobTitle: String? = null,
-    val name: String? = null,
-    val notes: String? = null,
-    val phone: String? = null,
+    val name: String,
+    val email: String,
+    val phone: String,
+    val jobTitle: String,
+    val notes: String,
 
     val accountName: String? = null,
-    val accountID: String? = null,
+    val accountID: String,
 )
 
 
@@ -57,7 +59,7 @@ data class ActivityRecord(
     val id: String,
 
     val createdAt: String,
-    val details: String? = null,
+    val details: String,
     val memberID: String,
     val type: ActivityRecordType,
 )
@@ -66,32 +68,22 @@ data class ActivityRecord(
 data class CaseRecord(
     val id: String,
 
-    val assignedTo: String? = null,
+    val name: String,
     val closedDate: String? = null,
     val createdAt: String,
-    val description: String? = null,
-    val name: String,
-    val notes: String? = null,
+    val description: String,
+    val notes: String,
     val priority: Int,
-    val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
-
     val activities: List<ActivityRecord> = emptyList(),
+
+    val stageID: String,
+    val stageName: String? = null,
     val accountName: String? = null,
-    val accountID: String? = null,
-)
-
-@Serializable
-data class Funnel(
-    val id: String,
-
-    val name: String,
-    val type: FunnelType,
-    var stages: List<FunnelStage> = emptyList(),
-    var cases: List<CaseRecord> = emptyList(),
-    var leads: List<Lead> = emptyList(),
-    var opportunities: List<Opportunity> = emptyList(),
+    val accountID: String,
+    val assignedToID: String? = null,
+    val assignedToName: String? = null,
 )
 
 @Serializable
@@ -106,62 +98,68 @@ data class FunnelStage(
 data class Lead(
     val id: String,
 
-    val address: String? = null,
-    val assignedTo: String? = null,
-    val city: String? = null,
-    val closedDate: String? = null,
-    val closedResult: LeadClosedResult? = null,
-    val company: String? = null,
-    val country: String? = null,
-    val createdAt: String,
-    val email: String? = null,
-    val jobTitle: String? = null,
+    val name: String,
+    val email: String,
+    val phone: String,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val name: String,
-    val notes: String? = null,
-    val phone: String? = null,
-    val priority: Int,
-    val source: String? = null,
-    val stageID: String? = null,
-    val state: String? = null,
-    val updatedAt: String,
-    val zip: String? = null,
+    val address: String,
+    val city: String,
+    val state: String,
+    val country: String,
+    val zip: String,
+    val notes: String,
 
-    val activities: List<ActivityRecord> = emptyList(),
-    val accountName: String? = null,
+    val createdAt: String,
+    val updatedAt: String,
+
+    val closedDate: String? = null,
+    val closedResult: LeadClosedResult? = null,
     val accountID: String? = null,
+    val company: String,
+    val jobTitle: String,
+    val priority: Int,
+    val source: String,
+    val activities: List<ActivityRecord> = emptyList(),
+
+    val stageID: String,
+    val stageName: String? = null,
+
+    val assignedToID: String? = null,
+    val assignedToName: String? = null,
 )
 
 @Serializable
 data class Opportunity(
     val id: String,
 
-    val assignedTo: String? = null,
     val closedDate: String? = null,
     val createdAt: String,
-    val description: String? = null,
+    val description: String,
     val name: String,
-    val notes: String? = null,
+    val notes: String,
     val priority: Int,
-    val stageID: String? = null,
     val updatedAt: String,
     val value: Double,
-
     val activities: List<ActivityRecord> = emptyList(),
+
+    val stageID: String,
+    val stageName: String? = null,
     val accountName: String? = null,
-    val accountID: String? = null,
+    val accountID: String,
+    val assignedToID: String? = null,
+    val assignedToName: String? = null,
 )
 
 @Serializable
 data class TaskRecord(
     val id: String,
 
-    val body: String? = null,
+    val title: String,
+    val body: String,
     val isComplete: Boolean,
     val priority: Int,
     val scheduledDate: String? = null,
-    val title: String,
     val updatedAt: String,
 )
 

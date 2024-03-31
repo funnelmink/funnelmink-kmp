@@ -21,7 +21,7 @@ struct CreateContactView: View {
     
     func addContactToAccount() async {
         do {
-            let _ = try await Networking.api.createAccountContact(accountID: accountID, body: CreateAccountContactRequest(name: name, email: email, phone: phoneNumber, jobTitle: jobTitle, notes: notes))
+            let _ = try await Networking.api.createContact(accountID: accountID, body: CreateContactRequest(name: name, email: email, phone: phoneNumber, jobTitle: jobTitle, notes: notes))
             nav.dismissModal()
         } catch {
             Toast.warn("Could not add contact to account")
