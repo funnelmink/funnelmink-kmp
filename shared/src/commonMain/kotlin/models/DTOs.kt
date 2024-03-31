@@ -25,7 +25,7 @@ data class CreateAccountRequest(
 
 @Serializable
 data class UpdateAccountRequest(
-    val name: String? = null,
+    val name: String,
     val email: String? = null,
     val phone: String? = null,
     val latitude: Double? = null,
@@ -39,21 +39,10 @@ data class UpdateAccountRequest(
 )
 
 @Serializable
-data class CreateContactRequest(
-    val name: String,
-    val email: String? = null,
-    val phone: String? = null,
-    val jobTitle: String? = null,
-    val notes: String? = null,
-)
-
-@Serializable
-data class UpdateContactRequest(
-    val name: String? = null,
-    val email: String? = null,
-    val phone: String? = null,
-    val jobTitle: String? = null,
-    val notes: String? = null,
+data class CreateActivityRequest(
+    val type: ActivityRecordType,
+    val details: String,
+    val parentID: String
 )
 
 @Serializable
@@ -64,8 +53,7 @@ data class CreateCaseRequest(
     val priority: Int,
     val notes: String? = null,
     val accountID: String,
-    val assignedToID: String? = null,
-    val funnelID: String,
+    val assignedTo: String? = null,
     val stageID: String,
 )
 
@@ -78,7 +66,25 @@ data class UpdateCaseRequest(
     val notes: String? = null,
     val assignedTo: String? = null,
     val stageID: String,
-    val funnelID: String,
+)
+
+@Serializable
+data class CreateContactRequest(
+    val name: String,
+    val email: String? = null,
+    val phone: String? = null,
+    val jobTitle: String? = null,
+    val notes: String? = null,
+    val accountID: String,
+)
+
+@Serializable
+data class UpdateContactRequest(
+    val name: String,
+    val email: String? = null,
+    val phone: String? = null,
+    val jobTitle: String? = null,
+    val notes: String? = null,
 )
 
 @Serializable
@@ -98,15 +104,13 @@ data class CreateLeadRequest(
     val jobTitle: String? = null,
     val priority: Int? = null,
     val source: String? = null,
-    val accountID: String? = null,
     val assignedTo: String? = null,
-    val funnelID: String? = null,
-    val stageID: String? = null
+    val stageID: String,
 )
 
 @Serializable
 data class UpdateLeadRequest(
-    val name: String? = null,
+    val name: String,
     val email: String? = null,
     val phone: String? = null,
     val latitude: Double? = null,
@@ -121,10 +125,8 @@ data class UpdateLeadRequest(
     val jobTitle: String? = null,
     val priority: Int? = null,
     val source: String? = null,
-    val accountID: String? = null,
     val assignedTo: String? = null,
-    val funnelID: String? = null,
-    val stageID: String? = null
+    val stageID: String,
 )
 
 @Serializable
@@ -135,8 +137,7 @@ data class CreateOpportunityRequest(
     val priority: Int,
     val notes: String? = null,
     val accountID: String,
-    val assignedToID: String? = null,
-    val funnelID: String,
+    val assignedTo: String? = null,
     val stageID: String,
 )
 
@@ -149,66 +150,37 @@ data class UpdateOpportunityRequest(
     val notes: String? = null,
     val assignedTo: String? = null,
     val stageID: String,
-    val funnelID: String,
-)
-
-@Serializable
-data class CreateFunnelRequest(
-    val name: String,
-    val type: String,
-    val stages: List<String>
-)
-
-@Serializable
-data class UpdateFunnelRequest(
-    val name: String,
-)
-
-@Serializable
-data class CreateFunnelStageRequest(
-    val name: String,
-)
-
-@Serializable
-data class ReorderFunnelStagesRequest(
-    val stageIDs: List<String>,
-)
-
-@Serializable
-data class UpdateFunnelStageRequest(
-    val name: String,
-)
-
-@Serializable
-data class CreateUserRequest(
-    val id: String,
-    val username: String,
-    val email: String,
 )
 
 @Serializable
 data class CreateTaskRequest(
     val title: String,
-    val priority: Int,
     val body: String? = null,
+    val priority: Int,
     val scheduledDate: String? = null,
 )
 
 @Serializable
 data class UpdateTaskRequest(
     val title: String,
-    val priority: Int,
     val body: String? = null,
-    val isComplete: Boolean? = null,
+    val priority: Int,
+    val isComplete: Boolean,
     val scheduledDate: String? = null,
 )
 
+@Serializable
+data class CreateUserRequest(
+    val id: String,
+    val email: String,
+    val username: String,
+)
 @Serializable
 data class CreateWorkspaceRequest(val name: String)
 
 @Serializable
 data class UpdateWorkspaceRequest(
-    val name: String? = null,
+    val name: String,
     val avatarURL: String? = null
 )
 
@@ -236,6 +208,11 @@ data class MemberAssignments(
 )
 
 @Serializable
+data class WorkspaceMembershipRolesRequest(
+    val roles: List<WorkspaceMembershipRole>,
+)
+
+@Serializable
 data class APIError(
     val message: String,
     val code: Int,
@@ -247,15 +224,3 @@ enum class ActivitySubtype(val typeName: String) {
     Lead("lead"),
     Opportunity("opportunity"),
 }
-
-@Serializable
-data class CreateActivityRequest(
-    val type: ActivityRecordType,
-    val details: String?,
-    val parentID: String
-)
-
-@Serializable
-data class WorkspaceMembershipRolesRequest(
-    val roles: List<WorkspaceMembershipRole>,
-)
