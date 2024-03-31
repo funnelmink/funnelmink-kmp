@@ -16,7 +16,6 @@ struct EditLeadView: View {
     
     @State private var address = ""
     @State private var city = ""
-    @State private var closedDate = ""
     @State private var closedResult: LeadClosedResult?
     @State private var company = ""
     @State private var country = ""
@@ -205,23 +204,22 @@ struct EditLeadView: View {
         }
         .loggedTask {
             if let lead {
-                self.address = lead.address ?? ""
-                self.city = lead.city ?? ""
-                self.closedDate = lead.closedDate ?? ""
+                self.address = lead.address
+                self.city = lead.city
                 self.closedResult = lead.closedResult
-                self.company = lead.company ?? ""
-                self.country = lead.country ?? ""
+                self.company = lead.company
+                self.country = lead.country
                 self.createdAt = lead.createdAt
-                self.email = lead.email ?? ""
-                self.jobTitle = lead.jobTitle ?? ""
+                self.email = lead.email
+                self.jobTitle = lead.jobTitle
                 self.name = lead.name
-                self.notes = lead.notes ?? ""
-                self.phone = lead.phone ?? ""
+                self.notes = lead.notes
+                self.phone = lead.phone
                 self.priority = lead.priority
-                self.source = lead.source ?? ""
-                self.state = lead.state ?? ""
+                self.source = lead.source
+                self.state = lead.state
                 self.updatedAt = lead.updatedAt
-                self.zip = lead.zip ?? ""
+                self.zip = lead.zip
                 
                 if let lat = lead.latitude, let lon = lead.longitude {
                     self.latitude = "\(lat)"
