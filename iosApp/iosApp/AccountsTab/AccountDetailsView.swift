@@ -1,24 +1,22 @@
 //
-//  AccountView.swift
+//  AccountDetailsView.swift
 //  iosApp
 //
-//  Created by Jeremy Warren on 1/13/24.
-//  Copyright © 2024 Funnelmink. All rights reserved.
+//  Created by Jeremy Warren on 3/27/24.
+//  Copyright © 2024 orgName. All rights reserved.
 //
 
 import SwiftUI
 import Shared
-import UIKit
 
-struct AccountView: View {
+struct AccountDetailsView: View {
     @EnvironmentObject var nav: Navigation
     @StateObject var viewModel = AccountsViewModel()
     @State private var isAnimating: Bool = false
     @State private var showingActionSheet = false
-    @State var contacts: [Contact] = []
     var account: Account
     var accountFullAddress: String {
-        return ("\(account.address ?? ""), \(account.city ?? ""), \(account.country ?? "")")
+        return ("\(account.address ?? ""), \(account.city ?? ""), \(account.state ?? ""), \(account.country ?? "")")
     }
     var initials: String {
         
@@ -128,108 +126,117 @@ struct AccountView: View {
     }
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 6) {
+        List {
+            HStack(alignment: .center, spacing: 25) {
                 ZStack {
                     Circle()
-                        .stroke(Gradient(colors: [.blue, .teal, .mint]), lineWidth: 10)
-                        .frame(width: 175, height: 175)
+                        .stroke(Gradient(colors: [.blue, .teal, .mint]), lineWidth: 8)
+                        .frame(width: 100, height: 100)
                     
                     Text(initials)
-                        .bold().font(.system(size: 80))
+                        .bold().font(.system(size: 40))
                 }
-                Text(account.name)
-                    .bold()
-                    .font(.title)
-            }
-            Spacer()
-            VStack {
-                Button(action: {
-                    showingActionSheet = true
-                }, label: {
-                    CustomCell(title: "Phone", subtitle: account.phone, icon: "phone" ,cellType: .iconAction)
-                        .padding()
-                })
-                .foregroundStyle(.primary)
-                .actionSheet(isPresented: $showingActionSheet) {
-                    ActionSheet(
-                        title: Text("Account"),
-                        message: Text("Call \(account.phone)?"),
-                        buttons: [
-                            .default(Text("Call")) {
-                                guard !account.phone.isEmpty else { return }
-                                makeCall(phoneNumber: account.phone)
-                            },
-                            .cancel()
-                        ]
-                    )
-                }
-                Button(action: {
-                    if let !account.email.isEmpty {
-                        prepareEmail(emailAddress: account.email)
-                    }
-                }, label: {
-                    CustomCell(title: "Email", subtitle: account.email, icon: "envelope" ,cellType: .iconAction)
-                        .padding()
-                })
-                .foregroundStyle(.primary)
-                Button(action: {
-                    navigateToAddress(address: accountFullAddress)
-                }, label: {
-                    CustomCell(title: "Address", subtitle: accountFullAddress, icon: "arrow.merge" ,cellType: .iconAction)
-                        .padding()
-                })
-                .foregroundStyle(.primary)
-                VStack(alignment: .leading) {
-                    Text("Account Notes")
+                VStack(alignment: .leading, spacing: 15) {
+                    Text(account.name)
                         .bold()
-                    Text(account.notes.isEmpty ? "No notes recorded for this account" : account.notes)
-                        .padding(.vertical)
-                        .padding(.horizontal)
-                        .font(.footnote)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 10)
-                                .stroke(.secondary, lineWidth: 1)
+                        .font(.title)
+                    Button(action: {
+                        if let email = account.email {
+                            prepareEmail(emailAddress: email)
                         }
+                    }, label: {
+                        if let email = account.email {
+                            Text(email)
+                                .foregroundColor(.secondary)
+                                .font(.headline)
+                        }
+                    })
+                    Button(action: {
+                        showingActionSheet = true
+                    }, label: {
+                        if let phone = account.phone {
+                            Text(phone)
+                                .foregroundColor(.secondary)
+                                .font(.headline)
+                        }
+                    })
+                    .foregroundStyle(.primary)
+                    .actionSheet(isPresented: $showingActionSheet) {
+                        ActionSheet(
+                            title: Text("Account"),
+                            message: Text("Call \(account.phone ?? "")?"),
+                            buttons: [
+                                .default(Text("Call")) {
+                                    guard let phoneNumber = account.phone else { return }
+                                    makeCall(phoneNumber: phoneNumber)
+                                },
+                                .cancel()
+                            ]
+                        )
+                    }
                 }
-                .padding(.horizontal)
-                .padding(.vertical)
             }
-            Divider()
-                .frame(maxWidth: .infinity)
-            VStack {
-                Button(action: {
-                    nav.modalSheet(.createContact(accountID: account.id))
-                }, label: {
-                    CustomCell(title: "Create Contact", subtitle: "Add contact to account", icon: "plus" ,cellType: .iconAction)
-                        .padding()
-                })
-                .foregroundStyle(.primary)
-                    ForEach(contacts, id: \.self) { contact in
+            
+            if !cases.isEmpty {
+                Section(header: Text("Cases").font(.headline), content: {
+                    ForEach(cases, id: \.self) { caseRecord in
                         Button {
-                            nav.modalFullscreen(.contactDetails(contact))
+                            nav.segue(.caseDetails(caseRecord: caseRecord))
                         } label: {
-                            CustomCell(title: contact.name, subtitle: contact.phone, cellType: .navigation)
+                            CustomCell(title: caseRecord.name, cellType: .navigation)
                         }
                         
                     }
-                    .padding(.horizontal)
-                    .padding(.vertical)
+                })
+                .padding(.horizontal)
+            }
+            
+            if !opportunities.isEmpty {
+                Section("Opportunities") {
+                    ForEach(opportunities, id: \.self) { opportunity in
+                        Button {
+                            nav.segue(.opportunityDetails(opportunity: opportunity))
+                        } label: {
+                            CustomCell(title: opportunity.name, cellType: .navigation)
+                        }
+                        
+                    }
+                }
+                .padding(.horizontal)
+            }
+            
+            if !contacts.isEmpty {
+                Section(header: Text("Contacts").font(.title3) , content: {
+                    ForEach(contacts, id: \.self) { contact in
+                        Button {
+                            nav.presentAlert(.contactDetails(contact))
+                        } label: {
+                            if let name = contact.name {
+                                CustomCell(title: name, cellType: .navigation)
+                                    .foregroundColor(.secondary)
+                            }
+                        }
+                        
+                    }
+                })
+                .padding(.horizontal)
             }
         }
         .loggedTask {
             do {
                 let details = try await Networking.api.getAccountDetails(id: account.id)
                 contacts = details.contacts
+                opportunities = details.opportunities
+                cases = details.cases
+                contacts = details.contacts
             } catch {
                 Toast.error("Unable to get account details")
             }
         }
+
     }
 }
 
-
 #Preview {
-    AccountView(contacts: [TestData.accountContact], account: TestData.account)
+    AccountDetailsView(contacts: [TestData.accountContact], account: TestData.account)
 }

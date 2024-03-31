@@ -18,7 +18,7 @@ fileprivate struct FunnelminkAppContents: View {
     @StateObject var navigation = Navigation.shared
     @StateObject var appState = AppState.shared
     var body: some View {
-        Group {
+        ZStack {
             if !appState.hasInitialized {
                 // Loading screen
                 Color.white.overlay { Image("logo") }
@@ -28,6 +28,7 @@ fileprivate struct FunnelminkAppContents: View {
                 WhatsNewView()
             } else if appState.user != nil {
                 // Logged in and has joined a Workspace
+                //TODO: Add the MenuFAB to the Teams tab
                 if let workspace = appState.workspace {
                     MenuFAB(items: [
                         .init(name: "Account", iconName: "building.2") { navigation.modalSheet(.createAccount) },
@@ -62,6 +63,9 @@ fileprivate struct FunnelminkAppContents: View {
                             $0.view
                         }
                 }
+            }
+            if let alert = navigation._state._alert {
+                alert.view
             }
         }
         .overlay {

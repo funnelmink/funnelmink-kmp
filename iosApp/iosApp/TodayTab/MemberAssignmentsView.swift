@@ -9,11 +9,15 @@
 import SwiftUI
 import Shared
 
-struct AssignedToMeView: View {
+
+struct MemberAssignmentsView: View {
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
     @State var opportunities: [Opportunity] = []
+    @State var workspaceMember: WorkspaceMember?
     @State var leads: [Lead] = []
     @State var cases: [CaseRecord] = []
+    @State var assignments = MemberAssignments(cases: [], leads: [], opportunities: [], tasks: [])
     
     var body: some View {
         List {
@@ -25,10 +29,10 @@ struct AssignedToMeView: View {
                         } label: {
                             CustomCell(title: caseRecord.name, cellType: .navigation)
                         }
-
                     }
                 }
             }
+            
             if !opportunities.isEmpty {
                 Section("Opportunities") {
                     ForEach(opportunities, id: \.self) { opportunity in
@@ -37,10 +41,10 @@ struct AssignedToMeView: View {
                         } label: {
                             CustomCell(title: opportunity.name, cellType: .navigation)
                         }
-
                     }
                 }
             }
+            
             if !leads.isEmpty {
                 Section("Leads") {
                     ForEach(leads, id: \.self) { lead in
@@ -49,15 +53,28 @@ struct AssignedToMeView: View {
                         } label: {
                             CustomCell(title: lead.name, cellType: .navigation)
                         }
-
                     }
                 }
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                // Your custom leading items here, if any.
+            }
+            ToolbarItemGroup(placement: .principal) {
+                NavigationSearchView()
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                // Your custom trailing items here, if any.
+            }
+        }
+        
+        .navigationTitle("@\(workspaceMember?.username ?? "Me")")
         .loggedTask {
             do {
-//               let searchResults = try await Networking.api.getAssignments(memberID: "1")
-//                self.searchResults = searchResults
+                // Use the passed in WorkspaceMember. If no member, use "Me" id
+                guard let id = appState.workspace?.memberID else { return }
+                assignments = try await Networking.api.getAssignments(memberID: id)
             } catch {
                 Toast.error(error)
             }
@@ -67,5 +84,5 @@ struct AssignedToMeView: View {
 }
 
 #Preview {
-    AssignedToMeView()
+    MemberAssignmentsView()
 }

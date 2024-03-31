@@ -9,16 +9,21 @@
 import SwiftUI
 import Shared
 
-enum AccountSelection: String {
-    case all
-    case contacts
+enum AccountSelection: String, CaseIterable {
+    case all = "Accounts + Contacts"
+    case contacts = "Contacts"
+    case accounts = "Accounts"
 }
 
 struct AccountsView: View {
     @EnvironmentObject var nav: Navigation
     @StateObject var viewModel = AccountsViewModel()
     @AppStorage("accountsView.selection") var selection: AccountSelection = .all
+    @State private var selectedFilter: AccountSelection = .contacts
     @State var searchText: String = ""
+    @State var allContacts: [AccountContact] = []
+    
+    let backgroundForButton = Color(hex: "F2F2F7")
     
     
     private var filteredAccounts: [String : [Account]] {
@@ -58,12 +63,30 @@ struct AccountsView: View {
     
     @ViewBuilder
     var body: some View {
-        List {
-            switch selection {
-            case .all: allAccounts
-            case .contacts: allContacts
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(AccountSelection.allCases, id: \.self) { newSelection in
+                    Button(action: {
+                        selection = newSelection
+                    }) {
+                        Text(newSelection.rawValue)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 16)
+                            .background(selection == newSelection ? Color.teal : backgroundForButton)
+                            .foregroundColor(selection == newSelection ? .white : .secondary)
+                            .cornerRadius(20)
+                    }
+                }
             }
+            .padding(.horizontal)
         }
+        List {
+            ForEach(viewModel.state.accounts, id: \.self) { account in
+               accountAndContactsRows(account)
+            }
+            
+        }
+        .searchable(text: $searchText, prompt: selection == .all ? "Search Accounts" : "Search Contacts")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 // Your custom leading items here, if any.
@@ -91,27 +114,22 @@ struct AccountsView: View {
         }
     }
     
-    var allContacts: some View {
-        ForEach(allContacts, id: \.id) { contact in
-            if let name = contact.name {
-                Text(name)
+    @ViewBuilder
+    func accountAndContactsRows(_ account: Account) -> some View {
+        if [AccountSelection.all, .accounts].contains(selection) {
+            Button {
+                nav.segue(.accountDetailsView(account))
+            } label: {
+                CustomCell(title: account.name, icon: "building.2", cellType: .navigation)
             }
         }
-    }
-    
-    var allAccounts: some View {
-        ForEach(sortedGroupKeys, id: \.self) { key in
-            Section(header: Text(key)) {
-                ForEach(filteredAccounts[key] ?? [], id: \.id) { account in
-                    Button(action: {
-                        nav.segue(.accountView(account))
-                    }, label: {
-                        CustomCell(title: account.name, cellType: .navigation)
-                            .foregroundStyle(Color.primary)
-                    })
-                }
-                .onDelete { offsets in
-                    deleteAccount(at: offsets, from: key)
+        
+        ForEach(account.contacts, id: \.self) { contact in
+            if [AccountSelection.all, .contacts].contains(selection) {
+                Button {
+                    nav.segue(.contactDetailsView(contact))
+                } label: {
+                    CustomCell(title: contact.name!, icon: "person.fill", cellType: .navigation)
                 }
             }
         }
@@ -120,7 +138,7 @@ struct AccountsView: View {
     private func fetchAllContacts() {
         Task {
             do {
-                var contacts: [Contact] = []
+                var contacts: [AccountContact] = []
                 for account in viewModel.accounts {
                     let details = try await Networking.api.getAccountDetails(id: account.id)
                     contacts.append(contentsOf: details.contacts)
