@@ -13,9 +13,7 @@ class EditCaseViewModel: ViewModel {
     @Published var state = State()
     
     struct State: Hashable {
-        var selectedFunnel: Funnel = Funnel(id: "", name: "", type: .case, stages: [], cases: [], leads: [], opportunities: [])
         var selectedStage: FunnelStage = FunnelStage(id: "", name: "", order: 0)
-        var funnels: [Funnel] = []
     }
     
     @MainActor

@@ -19,7 +19,6 @@ struct AccountsView: View {
     @StateObject var viewModel = AccountsViewModel()
     @AppStorage("accountsView.selection") var selection: AccountSelection = .all
     @State var searchText: String = ""
-    @State var allContacts: [Contact] = []
     
     
     private var filteredAccounts: [String : [Account]] {

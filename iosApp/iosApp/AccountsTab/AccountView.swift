@@ -154,19 +154,19 @@ struct AccountView: View {
                 .actionSheet(isPresented: $showingActionSheet) {
                     ActionSheet(
                         title: Text("Account"),
-                        message: Text("Call \(account.phone ?? "")?"),
+                        message: Text("Call \(account.phone)?"),
                         buttons: [
                             .default(Text("Call")) {
-                                guard let phoneNumber = account.phone else { return }
-                                makeCall(phoneNumber: phoneNumber)
+                                guard !account.phone.isEmpty else { return }
+                                makeCall(phoneNumber: account.phone)
                             },
                             .cancel()
                         ]
                     )
                 }
                 Button(action: {
-                    if let email = account.email {
-                        prepareEmail(emailAddress: email)
+                    if let !account.email.isEmpty {
+                        prepareEmail(emailAddress: account.email)
                     }
                 }, label: {
                     CustomCell(title: "Email", subtitle: account.email, icon: "envelope" ,cellType: .iconAction)
@@ -183,7 +183,7 @@ struct AccountView: View {
                 VStack(alignment: .leading) {
                     Text("Account Notes")
                         .bold()
-                    Text(account.notes ?? "No notes recorded for this account")
+                    Text(account.notes.isEmpty ? "No notes recorded for this account" : account.notes)
                         .padding(.vertical)
                         .padding(.horizontal)
                         .font(.footnote)
@@ -210,7 +210,7 @@ struct AccountView: View {
                         Button {
                             nav.modalFullscreen(.contactDetails(contact))
                         } label: {
-                            CustomCell(title: contact.name ?? "", subtitle: contact.phone, cellType: .navigation)
+                            CustomCell(title: contact.name, subtitle: contact.phone, cellType: .navigation)
                         }
                         
                     }
