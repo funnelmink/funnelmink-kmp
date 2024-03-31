@@ -27,6 +27,7 @@ interface API {
     // users
     @Throws(Exception::class) suspend fun createUser(body: CreateUserRequest): User
     @Throws(Exception::class) suspend fun getUserById(userId: String): User
+    @Throws(Exception::class) suspend fun getFunnelStages(type: FunnelType): List<FunnelStage>
 
     // workspaces
     @Throws(Exception::class) suspend fun acceptWorkspaceInvitation(id: String): Workspace
@@ -58,7 +59,7 @@ interface API {
     @Throws(Exception::class) suspend fun deleteActivity(subtype: ActivitySubtype, id: String)
 
     // contacts
-    @Throws(Exception::class) suspend fun createContact(accountID: String, body: CreateContactRequest): Contact
+    @Throws(Exception::class) suspend fun createContact(body: CreateContactRequest): Contact
     @Throws(Exception::class) suspend fun updateContact(id: String, body: UpdateContactRequest): Contact
     @Throws(Exception::class) suspend fun deleteContact(id: String)
     @Throws(Exception::class) suspend fun getContact(id: String): Contact

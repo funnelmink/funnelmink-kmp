@@ -30,8 +30,8 @@ class EditTaskViewModel: ViewModel {
         do {
             let body = CreateTaskRequest(
                 title: title,
+                body: body, 
                 priority: Int32(priority),
-                body: body,
                 scheduledDate: scheduledDate
             )
             _ = try await Networking.api.createTask(body: body)
@@ -54,9 +54,9 @@ class EditTaskViewModel: ViewModel {
         do {
             let body = UpdateTaskRequest(
                 title: title,
+                body: body, 
                 priority: Int32(priority),
-                body: body,
-                isComplete: KotlinBoolean(value: isComplete),
+                isComplete: isComplete,
                 scheduledDate: scheduledDate
             )
             _ = try await Networking.api.updateTask(id: id, body: body)

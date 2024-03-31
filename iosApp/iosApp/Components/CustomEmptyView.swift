@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import Lottie
 import UIKit
 
 enum EmptyViewType {
@@ -33,8 +32,8 @@ struct CustomEmptyView: View {
 
     var body: some View {
         VStack {
-            LottieView(animationFileName: lottieAnimation, loopMode: .autoReverse)
-                .frame(width: 200, height: 200)
+//            LottieView(animationFileName: lottieAnimation, loopMode: .autoReverse)
+//                .frame(width: 200, height: 200)
             Text(title)
                 .font(.title)
                 .foregroundStyle(.secondary)
@@ -42,23 +41,23 @@ struct CustomEmptyView: View {
     }
 }
 
-struct LottieView: UIViewRepresentable {
-    
-    var animationFileName: String
-    let loopMode: LottieLoopMode
-    
-    func updateUIView(_ uiView: UIViewType, context: Context) {
-        
-    }
-    
-    func makeUIView(context: Context) -> Lottie.LottieAnimationView {
-        let animationView = LottieAnimationView(name: animationFileName)
-        animationView.loopMode = loopMode
-        animationView.play()
-        animationView.contentMode = .scaleAspectFill
-        return animationView
-    }
-}
+//struct LottieView: UIViewRepresentable {
+//    
+//    var animationFileName: String
+//    let loopMode: LottieLoopMode
+//    
+//    func updateUIView(_ uiView: UIViewType, context: Context) {
+//        
+//    }
+//    
+//    func makeUIView(context: Context) -> Lottie.LottieAnimationView {
+//        let animationView = LottieAnimationView(name: animationFileName)
+//        animationView.loopMode = loopMode
+//        animationView.play()
+//        animationView.contentMode = .scaleAspectFill
+//        return animationView
+//    }
+//}
 #Preview {
     CustomEmptyView(type: .contacts, lottieAnimation: "ContactsLottie")
 }

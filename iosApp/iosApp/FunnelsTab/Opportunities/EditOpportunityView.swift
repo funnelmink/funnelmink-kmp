@@ -26,8 +26,6 @@ struct EditOpportunityView: View {
     @State private var shouldDisplayRequiredIndicators = false
     
     var opportunity: Opportunity?
-    var initialFunnelD: String?
-    var initialStageID: String?
     var accountID: String?
     
     var body: some View {
@@ -59,12 +57,6 @@ struct EditOpportunityView: View {
                 }
                 
                 Section("OPPORTUNITY MANAGEMENT") {
-                    CustomTextField(text: $assignedTo, placeholder: "Assigned To", style: .text)
-                        .autocorrectionDisabled()
-                        .discreteListRowStyle()
-                    
-                    // TODO: assign it to an account. will need to fetch all accounts
-                    
                     Picker(selection: $priority, label: Text("Priority")) {
                         ForEach(Int32(0)..<4, id: \.self) { prio in
                             Label(" " + prio.priorityName, systemImage: prio.priorityIconName)
@@ -74,15 +66,8 @@ struct EditOpportunityView: View {
                     .pickerStyle(.menu)
                     .tint(priority.priorityColor)
                     
-                    Picker(selection: $viewModel.state.selectedFunnel, label: Text("Funnel")) {
-                        ForEach(viewModel.state.funnels, id: \.self) { funnel in
-                            Text(funnel.name).tag(funnel.id)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    
                     Picker(selection: $viewModel.state.selectedStage, label: Text("Stage")) {
-                        ForEach(viewModel.selectedFunnel.stages, id: \.self) { stage in
+                        ForEach(viewModel.state.stages, id: \.self) { stage in
                             Text(stage.name).tag(stage.id)
                         }
                     }
@@ -112,8 +97,7 @@ struct EditOpportunityView: View {
                             description: description,
                             value: value,
                             priority: priority,
-                            notes: notes,
-                            assignedTo: assignedTo
+                            notes: notes
                         )
                     } else if let accountID {
                         try await viewModel.createOpportunity(
@@ -122,8 +106,7 @@ struct EditOpportunityView: View {
                             value: value,
                             priority: priority,
                             notes: notes,
-                            accountID: accountID,
-                            assignedTo: assignedTo
+                            accountID: accountID
                         )
                     } else {
                         Toast.warn("This Opportunity needs to be linked to an Account")
@@ -147,16 +130,14 @@ struct EditOpportunityView: View {
         .loggedTask {
             if let opportunity {
                 name = opportunity.name
-                description = opportunity.description_ ?? ""
-                assignedTo = opportunity.assignedTo ?? ""
+                description = opportunity.description_
                 priority = opportunity.priority
-                notes = opportunity.notes ?? ""
+                notes = opportunity.notes
                 value = "\(opportunity.value)"
-                closedDate = opportunity.closedDate ?? ""
-                stageID = opportunity.stageID ?? ""
+                stageID = opportunity.stageID
             }
             do {
-                try await viewModel.setUp(funnelID: initialFunnelD, stageID: initialStageID, opportunity: opportunity)
+                try await viewModel.setUp(opportunity: opportunity)
             } catch {
                 Toast.warn(error)
             }

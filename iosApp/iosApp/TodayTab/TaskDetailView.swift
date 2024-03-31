@@ -48,9 +48,9 @@ struct TaskDetailView: View {
                 }
                 .foregroundStyle(task.priority.priorityColor)
                 
-                if let body = task.body {
+                if !task.body.isEmpty {
                     Divider()
-                    Text(body)
+                    Text(task.body)
                         .padding(.horizontal)
                         .multilineTextAlignment(.leading)
                         .frame(maxWidth: .infinity, alignment: .leading)

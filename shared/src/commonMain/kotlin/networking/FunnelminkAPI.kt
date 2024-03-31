@@ -106,6 +106,11 @@ class FunnelminkAPI(
         return genericRequest("$baseURL/v1/workspace/assignedTo/$memberID", HttpMethod.Get)
     }
 
+    @Throws(Exception::class)
+    override suspend fun getFunnelStages(type: FunnelType): List<FunnelStage> {
+        // TODO: cache
+        return genericRequest("$baseURL/v1/workspace/stages/$type", HttpMethod.Get)
+    }
     // ------------------------------------------------------------------------
     // Accounts
     // ------------------------------------------------------------------------
@@ -199,11 +204,11 @@ class FunnelminkAPI(
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    override suspend fun createContact(accountID: String, body: CreateContactRequest): Contact {
-        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts/$accountID", HttpMethod.Post) {
+    override suspend fun createContact(body: CreateContactRequest): Contact {
+        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts/${body.accountID}", HttpMethod.Post) {
             setBody(body)
         }
-        cache.insertContact(contact, accountID)
+        cache.insertContact(contact)
         return contact
     }
 
@@ -270,7 +275,7 @@ class FunnelminkAPI(
         val case: CaseRecord = genericRequest("$baseURL/v1/workspace/cases", HttpMethod.Post) {
             setBody(body)
         }
-        cache.insertCase(case, body.funnelID, body.accountID)
+        cache.insertCase(case)
         return case
     }
 
@@ -310,43 +315,6 @@ class FunnelminkAPI(
         }
         cache.replaceCase(case)
         return case
-    }
-
-    // ------------------------------------------------------------------------
-    // Funnel Stages
-    // ------------------------------------------------------------------------
-
-    @Throws(Exception::class)
-    override suspend fun createFunnelStage(funnelID: String, body: CreateFunnelStageRequest): FunnelStage {
-        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/admin/funnelstages/$funnelID/", HttpMethod.Post) {
-            setBody(body)
-        }
-        cache.insertFunnelStage(stage, funnelID)
-        return stage
-    }
-
-    @Throws(Exception::class)
-    override suspend fun reorderFunnelStages(funnelID: String, body: ReorderFunnelStagesRequest) {
-        genericRequest<Unit>("$baseURL/v1/workspace/admin/funnelstages/$funnelID/reorder", HttpMethod.Put) {
-            setBody(body)
-        }
-
-        cache.deleteAllFunnelStagesForFunnel(funnelID)
-    }
-
-    @Throws(Exception::class)
-    override suspend fun updateFunnelStage(id: String, body: UpdateFunnelStageRequest): FunnelStage {
-        val stage: FunnelStage = genericRequest("$baseURL/v1/workspace/admin/funnelstages/$id", HttpMethod.Put) {
-            setBody(body)
-        }
-        cache.replaceFunnelStage(stage)
-        return stage
-    }
-
-    @Throws(Exception::class)
-    override suspend fun deleteFunnelStage(id: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/admin/funnelstages/$id", HttpMethod.Delete)
-        cache.deleteFunnelStage(id)
     }
 
     // ------------------------------------------------------------------------
@@ -461,7 +429,7 @@ class FunnelminkAPI(
         val opportunity: Opportunity = genericRequest("$baseURL/v1/workspace/opportunities", HttpMethod.Post) {
             setBody(body)
         }
-        cache.insertOpportunity(opportunity, body.funnelID, body.accountID)
+        cache.insertOpportunity(opportunity)
         return opportunity
     }
 

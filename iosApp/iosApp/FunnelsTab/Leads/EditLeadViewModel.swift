@@ -13,14 +13,29 @@ class EditLeadViewModel: ViewModel {
     @Published var state = State()
     
     struct State: Hashable {
-        var selectedFunnel: Funnel = Funnel(id: "", name: "", type: .lead, stages: [], cases: [], leads: [], opportunities: [])
+        var stages: [FunnelStage] = []
         var selectedStage: FunnelStage = FunnelStage(id: "", name: "", order: 0)
-        var funnels: [Funnel] = []
+        
+        var members: [WorkspaceMember] = []
+        var assignedMember: WorkspaceMember? // TODO: be able to assign to members. Copy the way we select stages
     }
     
     @MainActor
     func setUp(lead: Lead?) async throws {
-        
+        var state = self.state
+        // fire both requests at the same time (don't wait for stages to come back before requesting members)
+        async let stages = Networking.api.getFunnelStages(type: .lead)
+        async let members = Networking.api.getWorkspaceMembers()
+        state.stages = try await stages
+        state.members = try await members
+        if let first = state.stages.first {
+            state.selectedStage = first
+        }
+        if let lead {
+            state.assignedMember = state.members.first(where: { $0.id == lead.assignedToID })
+            state.selectedStage = state.stages.first(where: { $0.id == lead.stageID }) ?? state.selectedStage
+        }
+        self.state = state
     }
     
     @MainActor
@@ -28,26 +43,25 @@ class EditLeadViewModel: ViewModel {
         name: String,
         email: String?,
         phone: String?,
-        company: String?,
-        source: String?,
+        latitude: String?,
+        longitude: String?,
         address: String?,
         city: String?,
         state: String?,
-        zip: String?,
         country: String?,
-        jobTitle: String?,
+        zip: String?,
         notes: String?,
-        assignedTo: String?,
-        latitude: Double?,
-        longitude: Double?,
-        priority: Int32
+        company: String?,
+        jobTitle: String?,
+        priority: Int32,
+        source: String?
     ) async throws {
         let body = CreateLeadRequest(
             name: name,
             email: email,
             phone: phone,
-            latitude: latitude?.kotlinValue,
-            longitude: longitude?.kotlinValue,
+            latitude: nil, // TODO: gps location
+            longitude: nil,
             address: address,
             city: city,
             state: state,
@@ -58,9 +72,7 @@ class EditLeadViewModel: ViewModel {
             jobTitle: jobTitle,
             priority: priority.kotlinValue,
             source: source,
-            accountID: nil,
-            assignedTo: assignedTo?.nilIfEmpty(),
-            funnelID: self.state.selectedFunnel.id,
+            assignedTo: self.state.assignedMember?.id,
             stageID: self.state.selectedStage.id
         )
         // don't need to store the result
@@ -73,26 +85,25 @@ class EditLeadViewModel: ViewModel {
         name: String,
         email: String?,
         phone: String?,
-        company: String?,
-        source: String?,
+        latitude: String?,
+        longitude: String?,
         address: String?,
         city: String?,
         state: String?,
-        zip: String?,
         country: String?,
-        jobTitle: String?,
+        zip: String?,
         notes: String?,
-        assignedTo: String?,
-        latitude: Double?,
-        longitude: Double?,
-        priority: Int32
+        company: String?,
+        jobTitle: String?,
+        priority: Int32?,
+        source: String?
     ) async throws {
         let body = UpdateLeadRequest(
             name: name,
             email: email,
             phone: phone,
-            latitude: latitude?.kotlinValue,
-            longitude: longitude?.kotlinValue,
+            latitude: nil, // TODO: gps location
+            longitude: nil,
             address: address,
             city: city,
             state: state,
@@ -101,11 +112,9 @@ class EditLeadViewModel: ViewModel {
             notes: notes,
             company: company,
             jobTitle: jobTitle,
-            priority: priority.kotlinValue,
+            priority: priority?.kotlinValue,
             source: source,
-            accountID: nil,
-            assignedTo: assignedTo?.nilIfEmpty(),
-            funnelID: self.state.selectedFunnel.id,
+            assignedTo: self.state.assignedMember?.id,
             stageID: self.state.selectedStage.id
         )
         // don't need to store the result

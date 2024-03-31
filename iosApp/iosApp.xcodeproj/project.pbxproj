@@ -40,7 +40,6 @@
 		0D012E2D2B477D7F00658153 /* leveldb-library.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D012DD32B477D1900658153 /* leveldb-library.xcframework */; };
 		0D012E2F2B477D7F00658153 /* nanopb.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D012DE02B477D1C00658153 /* nanopb.xcframework */; };
 		0D012E312B477D7F00658153 /* RecaptchaInterop.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D012DDD2B477D1A00658153 /* RecaptchaInterop.xcframework */; };
-		0D012E672B477E3A00658153 /* FunnelsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E362B477E3900658153 /* FunnelsView.swift */; };
 		0D012E682B477E3A00658153 /* TasksView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E382B477E3900658153 /* TasksView.swift */; };
 		0D012E692B477E3A00658153 /* CGFloat+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E3A2B477E3900658153 /* CGFloat+.swift */; };
 		0D012E6A2B477E3A00658153 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D012E3B2B477E3900658153 /* String+.swift */; };
@@ -69,7 +68,6 @@
 		0D012E942B477FFC00658153 /* GoogleService-Info-PROD.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0D012E922B477FFC00658153 /* GoogleService-Info-PROD.plist */; };
 		0D22BAFB2B8FABC10012BCA8 /* RolePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D22BAFA2B8FABC10012BCA8 /* RolePicker.swift */; };
 		0D3E40422B640F130096E222 /* Kanban.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E40412B640F130096E222 /* Kanban.swift */; };
-		0D3E40442B6413B20096E222 /* FunnelsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3E40432B6413B20096E222 /* FunnelsViewModel.swift */; };
 		0D45D80A2B5E01A100591524 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D45D8092B5E01A100591524 /* Toast.swift */; };
 		0D5987372B5607DF00327504 /* TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5987362B5607DF00327504 /* TaskDetailView.swift */; };
 		0D5987392B561FCD00327504 /* TaskCompletionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D5987382B561FCD00327504 /* TaskCompletionButton.swift */; };
@@ -116,7 +114,6 @@
 		1F9D49AF2B747CCD0085106C /* AddContactAccordion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F9D49AE2B747CCD0085106C /* AddContactAccordion.swift */; };
 		1FA27F7A2B5978F300A447C3 /* TimelineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F792B5978F300A447C3 /* TimelineView.swift */; };
 		1FA27F7C2B5CAA9F00A447C3 /* CustomEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA27F7B2B5CAA9F00A447C3 /* CustomEmptyView.swift */; };
-		1FA27F7F2B5CAD7700A447C3 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1FA27F7E2B5CAD7700A447C3 /* Lottie */; };
 		1FA27F822B5CAFF200A447C3 /* ContactsLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 1FA27F812B5CAFF200A447C3 /* ContactsLottie.json */; };
 		1FA27F842B5EE80E00A447C3 /* TasksLottie.json in Resources */ = {isa = PBXBuildFile; fileRef = 1FA27F832B5EE80E00A447C3 /* TasksLottie.json */; };
 		1FCB70600327C8D33AEA3E90 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FCB7D2C21891A9AE2804154 /* Modal.swift */; };
@@ -173,7 +170,6 @@
 		0D012DF22B477D1D00658153 /* GoogleSignIn.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GoogleSignIn.xcframework; sourceTree = "<group>"; };
 		0D012DF32B477D1D00658153 /* GTMAppAuth.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GTMAppAuth.xcframework; sourceTree = "<group>"; };
 		0D012DF42B477D1D00658153 /* GTMSessionFetcher.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; path = GTMSessionFetcher.xcframework; sourceTree = "<group>"; };
-		0D012E362B477E3900658153 /* FunnelsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FunnelsView.swift; sourceTree = "<group>"; };
 		0D012E382B477E3900658153 /* TasksView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TasksView.swift; sourceTree = "<group>"; };
 		0D012E3A2B477E3900658153 /* CGFloat+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+.swift"; sourceTree = "<group>"; };
 		0D012E3B2B477E3900658153 /* String+.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
@@ -207,7 +203,6 @@
 		0D012E9C2B47878F00658153 /* Firebase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Firebase.h; sourceTree = "<group>"; };
 		0D22BAFA2B8FABC10012BCA8 /* RolePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RolePicker.swift; sourceTree = "<group>"; };
 		0D3E40412B640F130096E222 /* Kanban.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kanban.swift; sourceTree = "<group>"; };
-		0D3E40432B6413B20096E222 /* FunnelsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FunnelsViewModel.swift; sourceTree = "<group>"; };
 		0D45D8092B5E01A100591524 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		0D5987362B5607DF00327504 /* TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDetailView.swift; sourceTree = "<group>"; };
 		0D5987382B561FCD00327504 /* TaskCompletionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskCompletionButton.swift; sourceTree = "<group>"; };
@@ -295,7 +290,6 @@
 				0D012E212B477D7E00658153 /* GoogleSignIn.xcframework in Frameworks */,
 				0D012E132B477D7E00658153 /* FirebaseFirestoreSwift.xcframework in Frameworks */,
 				0D012E052B477D7E00658153 /* FirebaseAppCheckInterop.xcframework in Frameworks */,
-				1FA27F7F2B5CAD7700A447C3 /* Lottie in Frameworks */,
 				0D012E1D2B477D7E00658153 /* GoogleAppMeasurement.xcframework in Frameworks */,
 				0D012E172B477D7E00658153 /* FirebaseRemoteConfig.xcframework in Frameworks */,
 				0D012DFF2B477D7E00658153 /* FirebaseABTesting.xcframework in Frameworks */,
@@ -416,8 +410,6 @@
 		0D012E352B477E3900658153 /* FunnelsTab */ = {
 			isa = PBXGroup;
 			children = (
-				0D012E362B477E3900658153 /* FunnelsView.swift */,
-				0D3E40432B6413B20096E222 /* FunnelsViewModel.swift */,
 				0D79725E2B7A81930048E942 /* Cases */,
 				0D79725D2B7A81890048E942 /* Leads */,
 				0D79725F2B7A81990048E942 /* Opportunities */,
@@ -838,7 +830,6 @@
 			);
 			name = iosApp;
 			packageProductDependencies = (
-				1FA27F7E2B5CAD7700A447C3 /* Lottie */,
 				0DE9E0A62B60E9E500B8288F /* Kingfisher */,
 			);
 			productName = iosApp;
@@ -971,12 +962,10 @@
 				0D79725C2B7A816C0048E942 /* LeadDetailView.swift in Sources */,
 				0D012E782B477E3A00658153 /* AppDelegate.swift in Sources */,
 				1FA27F7C2B5CAA9F00A447C3 /* CustomEmptyView.swift in Sources */,
-				0D012E672B477E3A00658153 /* FunnelsView.swift in Sources */,
 				0DE9E09D2B60CB7200B8288F /* FeatureFlags.swift in Sources */,
 				0DCC16362B50DC9D008F705B /* TaskCell.swift in Sources */,
 				0D012E792B477E3A00658153 /* InboxView.swift in Sources */,
 				0D012E682B477E3A00658153 /* TasksView.swift in Sources */,
-				0D3E40442B6413B20096E222 /* FunnelsViewModel.swift in Sources */,
 				0D9894FE2B814BFD00725BAC /* EditCaseViewModel.swift in Sources */,
 				0D7972522B75E7E80048E942 /* MenuFAB.swift in Sources */,
 				1F2335282B8155640035547D /* ContactDetailsView.swift in Sources */,
@@ -1684,11 +1673,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0DE9E0A52B60E9E500B8288F /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
-		};
-		1FA27F7E2B5CAD7700A447C3 /* Lottie */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 1FA27F7D2B5CAD7700A447C3 /* XCRemoteSwiftPackageReference "lottie-ios" */;
-			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

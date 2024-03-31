@@ -35,7 +35,7 @@ struct OpportunityDetailView: View {
             List {
                 LabeledRow(name: "Value", value: opportunity.value.currencyFormat)
                 Section("OPPORTUNITY MANAGEMENT") {
-                    if let assignedTo = opportunity.assignedTo {
+                    if let assignedTo = opportunity.assignedToName {
                         LabeledRow(name: "Assigned To", value: assignedTo)
                     }
                     LabeledRow(
@@ -46,9 +46,9 @@ struct OpportunityDetailView: View {
                     )
                 }
                 
-                if let notes = opportunity.notes {
+                if !opportunity.notes.isEmpty {
                     Section("NOTES") {
-                        Text(notes)
+                        Text(opportunity.notes)
                     }
                 }
             }

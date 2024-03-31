@@ -13,41 +13,39 @@ class EditCaseViewModel: ViewModel {
     @Published var state = State()
     
     struct State: Hashable {
-        var selectedFunnel: Funnel = Funnel(id: "", name: "", type: .case, stages: [], cases: [], leads: [], opportunities: [])
+        var stages: [FunnelStage] = []
         var selectedStage: FunnelStage = FunnelStage(id: "", name: "", order: 0)
-        var funnels: [Funnel] = []
+        
+        var members: [WorkspaceMember] = []
+        var assignedMember: WorkspaceMember? // TODO: be able to assign to members. Copy the way we select stages
     }
     
     @MainActor
-    func setUp(funnelID: String?, stageID: String?, caseRecord: CaseRecord?) async throws {
-        state.funnels = try await Networking.api.getFunnelsForType(funnelType: .case)
-        guard !state.funnels.isEmpty else {
-            throw "No funnels found"
+    func setUp(caseRecord: CaseRecord?) async throws {
+        var state = self.state
+        // fire both requests at the same time (don't wait for stages to come back before requesting members)
+        async let stages = Networking.api.getFunnelStages(type: .case)
+        async let members = Networking.api.getWorkspaceMembers()
+        state.stages = try await stages
+        state.members = try await members
+        if let first = state.stages.first {
+            state.selectedStage = first
         }
-        if let funnelID,
-           let funnel = state.funnels.first(where: { $0.id == funnelID }),
-           let stageID,
-           let stage = funnel.stages.first(where: { $0.id == stageID }) {
-            state.selectedFunnel = funnel
-            state.selectedStage = stage
-        } else if let funnel = state.funnels.first,
-                  let stage = funnel.stages.first {
-            state.selectedFunnel = funnel
-            state.selectedStage = stage
-        } else {
-            throw "No valid funnel found"
+        if let caseRecord = caseRecord {
+            state.assignedMember = state.members.first(where: { $0.id == caseRecord.assignedToID })
+            state.selectedStage = state.stages.first(where: { $0.id == caseRecord.stageID }) ?? state.selectedStage
         }
+        self.state = state
     }
     
     @MainActor
     func createCase(
         name: String,
-        description: String,
+        description: String?,
         value: String,
         priority: Int32,
         notes: String?,
-        accountID: String,
-        assignedTo: String?
+        accountID: String
     ) async throws {
         guard let val = Double(value) else {
             throw "Value must be a number"
@@ -59,8 +57,7 @@ class EditCaseViewModel: ViewModel {
             priority: priority,
             notes: notes,
             accountID: accountID,
-            assignedToID: assignedTo?.nilIfEmpty(),
-            funnelID: state.selectedFunnel.id,
+            assignedTo: state.assignedMember?.id,
             stageID: state.selectedStage.id
         )
         _ = try await Networking.api.createCase(body: body)
@@ -70,11 +67,10 @@ class EditCaseViewModel: ViewModel {
     func updateCase(
         id: String,
         name: String,
-        description: String,
+        description: String?,
         value: String,
         priority: Int32,
-        notes: String?,
-        assignedTo: String?
+        notes: String?
     ) async throws {
         guard let val = Double(value) else {
             throw "Value must be a number"
@@ -85,9 +81,8 @@ class EditCaseViewModel: ViewModel {
             value: val,
             priority: priority,
             notes: notes,
-            assignedTo: assignedTo?.nilIfEmpty(),
-            stageID: state.selectedStage.id,
-            funnelID: state.selectedFunnel.id
+            assignedTo: state.assignedMember?.id,
+            stageID: state.selectedStage.id
         )
         _ = try await Networking.api.updateCase(id: id, body: body)
     }

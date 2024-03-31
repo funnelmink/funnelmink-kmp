@@ -47,7 +47,7 @@ class LoginViewModel: ViewModel {
                 do {
                     let token = try await authResult.user.getIDToken()
                     try Networking.api.refreshToken(token: token)
-                    let body = CreateUserRequest(id: authResult.user.uid, username: authResult.user.displayName ?? "", email: authResult.user.email ?? "")
+                    let body = CreateUserRequest(id: authResult.user.uid, email: authResult.user.email ?? "", username: authResult.user.displayName ?? "")
                     let user = try await Networking.api.createUser(body: body)
                     AppState.shared.signIn(user: user, token: token)
                 } catch {
