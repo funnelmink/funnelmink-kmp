@@ -14,9 +14,9 @@ struct AccountDetailsView: View {
     @StateObject var viewModel = AccountsViewModel()
     @State private var isAnimating: Bool = false
     @State private var showingActionSheet = false
-    var account: Account
+    @State var account: Account
     var accountFullAddress: String {
-        return ("\(account.address ?? ""), \(account.city ?? ""), \(account.state ?? ""), \(account.country ?? "")")
+        return ("\(account.address), \(account.city), \(account.state), \(account.country)")
     }
     var initials: String {
         
@@ -140,46 +140,43 @@ struct AccountDetailsView: View {
                     Text(account.name)
                         .bold()
                         .font(.title)
-                    Button(action: {
-                        if let email = account.email {
-                            prepareEmail(emailAddress: email)
-                        }
-                    }, label: {
-                        if let email = account.email {
-                            Text(email)
+                    if !account.email.isEmpty {
+                        Button(action: {
+                            prepareEmail(emailAddress: account.email)
+                        }, label: {
+                            Text(account.email)
                                 .foregroundColor(.secondary)
                                 .font(.headline)
-                        }
-                    })
-                    Button(action: {
-                        showingActionSheet = true
-                    }, label: {
-                        if let phone = account.phone {
-                            Text(phone)
+                        })
+                    }
+                    if !account.phone.isEmpty {
+                        Button(action: {
+                            showingActionSheet = true
+                        }, label: {
+                            Text(account.phone)
                                 .foregroundColor(.secondary)
                                 .font(.headline)
+                        })
+                        .foregroundStyle(.primary)
+                        .actionSheet(isPresented: $showingActionSheet) {
+                            ActionSheet(
+                                title: Text("Account"),
+                                message: Text("Call \(account.phone)?"),
+                                buttons: [
+                                    .default(Text("Call")) {
+                                        makeCall(phoneNumber: account.phone)
+                                    },
+                                    .cancel()
+                                ]
+                            )
                         }
-                    })
-                    .foregroundStyle(.primary)
-                    .actionSheet(isPresented: $showingActionSheet) {
-                        ActionSheet(
-                            title: Text("Account"),
-                            message: Text("Call \(account.phone ?? "")?"),
-                            buttons: [
-                                .default(Text("Call")) {
-                                    guard let phoneNumber = account.phone else { return }
-                                    makeCall(phoneNumber: phoneNumber)
-                                },
-                                .cancel()
-                            ]
-                        )
                     }
                 }
             }
             
-            if !cases.isEmpty {
+            if !account.cases.isEmpty {
                 Section(header: Text("Cases").font(.headline), content: {
-                    ForEach(cases, id: \.self) { caseRecord in
+                    ForEach(account.cases, id: \.self) { caseRecord in
                         Button {
                             nav.segue(.caseDetails(caseRecord: caseRecord))
                         } label: {
@@ -191,9 +188,9 @@ struct AccountDetailsView: View {
                 .padding(.horizontal)
             }
             
-            if !opportunities.isEmpty {
+            if !account.opportunities.isEmpty {
                 Section("Opportunities") {
-                    ForEach(opportunities, id: \.self) { opportunity in
+                    ForEach(account.opportunities, id: \.self) { opportunity in
                         Button {
                             nav.segue(.opportunityDetails(opportunity: opportunity))
                         } label: {
@@ -205,18 +202,15 @@ struct AccountDetailsView: View {
                 .padding(.horizontal)
             }
             
-            if !contacts.isEmpty {
+            if !account.contacts.isEmpty {
                 Section(header: Text("Contacts").font(.title3) , content: {
-                    ForEach(contacts, id: \.self) { contact in
+                    ForEach(account.contacts, id: \.self) { contact in
                         Button {
                             nav.presentAlert(.contactDetails(contact))
                         } label: {
-                            if let name = contact.name {
-                                CustomCell(title: name, cellType: .navigation)
-                                    .foregroundColor(.secondary)
-                            }
+                            CustomCell(title: contact.name, cellType: .navigation)
+                                .foregroundColor(.secondary)
                         }
-                        
                     }
                 })
                 .padding(.horizontal)
@@ -224,11 +218,7 @@ struct AccountDetailsView: View {
         }
         .loggedTask {
             do {
-                let details = try await Networking.api.getAccountDetails(id: account.id)
-                contacts = details.contacts
-                opportunities = details.opportunities
-                cases = details.cases
-                contacts = details.contacts
+                account = try await Networking.api.getAccountDetails(id: account.id)
             } catch {
                 Toast.error("Unable to get account details")
             }
@@ -238,5 +228,5 @@ struct AccountDetailsView: View {
 }
 
 #Preview {
-    AccountDetailsView(contacts: [TestData.accountContact], account: TestData.account)
+    AccountDetailsView(account: TestData.account)
 }

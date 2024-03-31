@@ -106,6 +106,11 @@ class FunnelminkAPI(
         return genericRequest("$baseURL/v1/workspace/assignedTo/$memberID", HttpMethod.Get)
     }
 
+    @Throws(Exception::class)
+    override suspend fun getFunnelStages(type: FunnelType): List<FunnelStage> {
+        // TODO: cache
+        return genericRequest("$baseURL/v1/workspace/stages/$type", HttpMethod.Get)
+    }
     // ------------------------------------------------------------------------
     // Accounts
     // ------------------------------------------------------------------------
@@ -199,8 +204,8 @@ class FunnelminkAPI(
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    override suspend fun createContact(accountID: String, body: CreateContactRequest): Contact {
-        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts/$accountID", HttpMethod.Post) {
+    override suspend fun createContact(body: CreateContactRequest): Contact {
+        val contact: Contact = genericRequest("$baseURL/v1/workspace/contacts/${body.accountID}", HttpMethod.Post) {
             setBody(body)
         }
         cache.insertContact(contact)

@@ -14,8 +14,6 @@ struct EditCaseView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = EditCaseViewModel()
     
-    @State private var assignedTo = ""
-    @State private var closedDate = ""
     @State private var description = ""
     @State private var name = ""
     @State private var notes = ""
@@ -26,8 +24,6 @@ struct EditCaseView: View {
     @State private var shouldDisplayRequiredIndicators = false
     
     var caseRecord: CaseRecord?
-    var initialFunnelD: String?
-    var initialStageID: String?
     var accountID: String?
     
     var body: some View {
@@ -59,12 +55,6 @@ struct EditCaseView: View {
                 }
                 
                 Section("CASE MANAGEMENT") {
-                    CustomTextField(text: $assignedTo, placeholder: "Assigned To", style: .text)
-                        .autocorrectionDisabled()
-                        .discreteListRowStyle()
-                    
-                    // TODO: assign it to an account. will need to fetch all accounts
-                    
                     Picker(selection: $priority, label: Text("Priority")) {
                         ForEach(Int32(0)..<4, id: \.self) { prio in
                             Label(" " + prio.priorityName, systemImage: prio.priorityIconName)
@@ -74,15 +64,8 @@ struct EditCaseView: View {
                     .pickerStyle(.menu)
                     .tint(priority.priorityColor)
                     
-                    Picker(selection: $viewModel.state.selectedFunnel, label: Text("Funnel")) {
-                        ForEach(viewModel.state.funnels, id: \.self) { funnel in
-                            Text(funnel.name).tag(funnel.id)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    
                     Picker(selection: $viewModel.state.selectedStage, label: Text("Stage")) {
-                        ForEach(viewModel.selectedFunnel.stages, id: \.self) { stage in
+                        ForEach(viewModel.state.stages, id: \.self) { stage in
                             Text(stage.name).tag(stage.id)
                         }
                     }
@@ -112,8 +95,7 @@ struct EditCaseView: View {
                             description: description,
                             value: value,
                             priority: priority,
-                            notes: notes,
-                            assignedTo: assignedTo
+                            notes: notes
                         )
                     } else if let accountID {
                         try await viewModel.createCase(
@@ -122,8 +104,7 @@ struct EditCaseView: View {
                             value: value,
                             priority: priority,
                             notes: notes,
-                            accountID: accountID,
-                            assignedTo: assignedTo
+                            accountID: accountID
                         )
                     } else {
                         Toast.warn("This case needs to be linked to an Account")
@@ -147,16 +128,14 @@ struct EditCaseView: View {
         .loggedTask {
             if let caseRecord {
                 name = caseRecord.name
-                description = caseRecord.description_ ?? ""
-                assignedTo = caseRecord.assignedTo ?? ""
+                description = caseRecord.description_
                 priority = caseRecord.priority
-                notes = caseRecord.notes ?? ""
+                notes = caseRecord.notes
                 value = "\(caseRecord.value)"
-                closedDate = caseRecord.closedDate ?? ""
-                stageID = caseRecord.stageID ?? ""
+                stageID = caseRecord.stageID
             }
             do {
-                try await viewModel.setUp(funnelID: initialFunnelD, stageID: initialStageID, caseRecord: caseRecord)
+                try await viewModel.setUp(caseRecord: caseRecord)
             } catch {
                 Toast.warn(error)
             }

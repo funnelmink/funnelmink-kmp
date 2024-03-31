@@ -21,7 +21,7 @@ struct AccountsView: View {
     @AppStorage("accountsView.selection") var selection: AccountSelection = .all
     @State private var selectedFilter: AccountSelection = .contacts
     @State var searchText: String = ""
-    @State var allContacts: [AccountContact] = []
+    @State var allContacts: [Contact] = []
     
     let backgroundForButton = Color(hex: "F2F2F7")
     
@@ -129,7 +129,7 @@ struct AccountsView: View {
                 Button {
                     nav.segue(.contactDetailsView(contact))
                 } label: {
-                    CustomCell(title: contact.name!, icon: "person.fill", cellType: .navigation)
+                    CustomCell(title: contact.name, icon: "person.fill", cellType: .navigation)
                 }
             }
         }
@@ -138,7 +138,7 @@ struct AccountsView: View {
     private func fetchAllContacts() {
         Task {
             do {
-                var contacts: [AccountContact] = []
+                var contacts: [Contact] = []
                 for account in viewModel.accounts {
                     let details = try await Networking.api.getAccountDetails(id: account.id)
                     contacts.append(contentsOf: details.contacts)

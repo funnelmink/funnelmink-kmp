@@ -130,5 +130,5 @@ struct ContactDetailsView: View {
 }
 
 #Preview {
-    ContactDetailsView(contact: TestData.accountContact)
+    ContactDetailsView(contact: TestData.contact)
 }

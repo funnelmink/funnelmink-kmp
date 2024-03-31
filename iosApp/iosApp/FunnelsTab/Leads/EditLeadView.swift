@@ -15,7 +15,6 @@ struct EditLeadView: View {
     @StateObject var viewModel = EditLeadViewModel()
     
     @State private var address = ""
-    @State private var assignedTo = ""
     @State private var city = ""
     @State private var closedDate = ""
     @State private var closedResult: LeadClosedResult?
@@ -116,10 +115,6 @@ struct EditLeadView: View {
                 }
                 
                 Section("LEAD MANAGEMENT") {
-                    CustomTextField(text: $assignedTo, placeholder: "Assigned To", style: .text)
-                        .autocorrectionDisabled()
-                        .discreteListRowStyle()
-                    
                     Picker(selection: $priority, label: Text("Priority")) {
                         ForEach(Int32(0)..<4, id: \.self) { prio in
                             Label(" " + prio.priorityName, systemImage: prio.priorityIconName)
@@ -129,15 +124,8 @@ struct EditLeadView: View {
                     .pickerStyle(.menu)
                     .tint(priority.priorityColor)
                     
-                    Picker(selection: $viewModel.state.selectedFunnel, label: Text("Funnel")) {
-                        ForEach(viewModel.state.funnels, id: \.self) { funnel in
-                            Text(funnel.name).tag(funnel.id)
-                        }
-                    }
-                    .pickerStyle(.menu)
-                    
                     Picker(selection: $viewModel.state.selectedStage, label: Text("Stage")) {
-                        ForEach(viewModel.selectedFunnel.stages, id: \.self) { stage in
+                        ForEach(viewModel.state.stages, id: \.self) { stage in
                             Text(stage.name).tag(stage.id)
                         }
                     }
@@ -167,38 +155,36 @@ struct EditLeadView: View {
                             name: name,
                             email: email,
                             phone: phone,
-                            company: company,
-                            source: source,
+                            latitude: latitude,
+                            longitude: longitude,
                             address: address,
                             city: city,
                             state: state,
-                            zip: zip,
                             country: country,
-                            jobTitle: jobTitle,
+                            zip: zip,
                             notes: notes,
-                            assignedTo: assignedTo,
-                            latitude: Double(latitude),
-                            longitude: Double(longitude),
-                            priority: priority
+                            company: company,
+                            jobTitle: jobTitle,
+                            priority: priority,
+                            source: source
                         )
                     } else {
                         try await viewModel.createLead(
                             name: name,
                             email: email,
                             phone: phone,
-                            company: company,
-                            source: source,
+                            latitude: latitude,
+                            longitude: longitude,
                             address: address,
                             city: city,
                             state: state,
-                            zip: zip,
                             country: country,
-                            jobTitle: jobTitle,
+                            zip: zip,
                             notes: notes,
-                            assignedTo: assignedTo,
-                            latitude: Double(latitude),
-                            longitude: Double(longitude),
-                            priority: priority
+                            company: company,
+                            jobTitle: jobTitle,
+                            priority: priority,
+                            source: source
                         )
                     }
                     navigation.dismissModal()
@@ -220,7 +206,6 @@ struct EditLeadView: View {
         .loggedTask {
             if let lead {
                 self.address = lead.address ?? ""
-                self.assignedTo = lead.assignedTo ?? ""
                 self.city = lead.city ?? ""
                 self.closedDate = lead.closedDate ?? ""
                 self.closedResult = lead.closedResult

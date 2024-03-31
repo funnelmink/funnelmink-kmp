@@ -19,7 +19,7 @@ enum Segue: NavigationSegue {
     
     case workspaceSettings
     case accountDetailsView(Account)
-    case contactDetailsView(AccountContact)
+    case contactDetailsView(Contact)
     
     case searchResultList
     case caseDetails(caseRecord: CaseRecord)

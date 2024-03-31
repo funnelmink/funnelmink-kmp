@@ -19,8 +19,8 @@ struct TaskCell: View {
             VStack(alignment: .leading) {
                 Text(task.title)
                     .font(.headline)
-                if let body = task.body, !body.isEmpty {
-                    Text(body)
+                if !task.body.isEmpty {
+                    Text(task.body)
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                         .lineLimit(1)

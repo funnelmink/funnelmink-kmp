@@ -35,7 +35,7 @@ struct CaseDetailView: View {
             List {
                 LabeledRow(name: "Value", value: caseRecord.value.currencyFormat)
                 Section("CASE MANAGEMENT") {
-                    if let assignedTo = caseRecord.assignedTo {
+                    if let assignedTo = caseRecord.assignedToName {
                         LabeledRow(name: "Assigned To", value: assignedTo)
                     }
                     LabeledRow(
@@ -46,9 +46,9 @@ struct CaseDetailView: View {
                     )
                 }
                 
-                if let notes = caseRecord.notes {
+                if !caseRecord.notes.isEmpty {
                     Section("NOTES") {
-                        Text(notes)
+                        Text(caseRecord.notes)
                     }
                 }
             }

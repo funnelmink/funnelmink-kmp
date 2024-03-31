@@ -65,12 +65,9 @@ extension Validator {
 
 extension TestData {
     static var account: Account { Utilities.shared.testData.testAccount }
-    static var accountContact: Contact { Utilities.shared.testData.testContact }
+    static var contact: Contact { Utilities.shared.testData.testContact }
     static var activity: ActivityRecord { Utilities.shared.testData.testActivityRecord }
     static var caseRecord: CaseRecord { Utilities.shared.testData.testCaseRecord }
-    static var caseFunnel: Funnel { Utilities.shared.testData.testCaseFunnel }
-    static var leadFunnel: Funnel { Utilities.shared.testData.testLeadFunnel }
-    static var opportunityFunnel: Funnel { Utilities.shared.testData.testOpportunityFunnel }
     static var funnelStage0: FunnelStage { Utilities.shared.testData.testFunnelStage0 }
     static var funnelStage1: FunnelStage { Utilities.shared.testData.testFunnelStage1 }
     static var lead: Lead { Utilities.shared.testData.testLead }

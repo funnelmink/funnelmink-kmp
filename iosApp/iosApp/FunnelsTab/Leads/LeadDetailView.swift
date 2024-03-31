@@ -40,42 +40,42 @@ struct LeadDetailView: View {
                     .padding()
             }
             List {
-                if lead.email != nil || lead.phone != nil || lead.company != nil || lead.source != nil || lead.jobTitle != nil {
+                if !lead.email.isEmpty || !lead.phone.isEmpty || !lead.company.isEmpty || !lead.source.isEmpty || !lead.jobTitle.isEmpty {
                     Section("CONTACT INFORMATION") {
-                        if let email = lead.email {
-                            LabeledRow(name: "Email", value: email)
+                        if !lead.email.isEmpty {
+                            LabeledRow(name: "Email", value: lead.email)
                         }
-                        if let phone = lead.phone {
-                            LabeledRow(name: "Phone", value: phone)
+                        if !lead.phone.isEmpty {
+                            LabeledRow(name: "Phone", value: lead.phone)
                         }
-                        if let company = lead.company {
-                            LabeledRow(name: "Company", value: company)
+                        if !lead.company.isEmpty {
+                            LabeledRow(name: "Company", value: lead.company)
                         }
-                        if let source = lead.source {
-                            LabeledRow(name: "Source", value: source)
+                        if !lead.source.isEmpty {
+                            LabeledRow(name: "Source", value: lead.source)
                         }
-                        if let jobTitle = lead.jobTitle {
-                            LabeledRow(name: "Job Title", value: jobTitle)
+                        if !lead.jobTitle.isEmpty {
+                            LabeledRow(name: "Job Title", value: lead.jobTitle)
                         }
                     }
                 }
                 
-                if lead.address != nil || lead.city != nil || lead.state != nil || lead.zip != nil || lead.country != nil {
+                if !lead.address.isEmpty || !lead.city.isEmpty || !lead.state.isEmpty || !lead.zip.isEmpty || !lead.country.isEmpty {
                     Section("LOCATION INFORMATION") {
-                        if let address = lead.address {
-                            LabeledRow(name: "Address", value: address)
+                        if !lead.address.isEmpty {
+                            LabeledRow(name: "Address", value: lead.address)
                         }
-                        if let city = lead.city {
-                            LabeledRow(name: "City", value: city)
+                        if !lead.city.isEmpty {
+                            LabeledRow(name: "City", value: lead.city)
                         }
-                        if let state = lead.state {
-                            LabeledRow(name: "State", value: state)
+                        if !lead.state.isEmpty {
+                            LabeledRow(name: "State", value: lead.state)
                         }
-                        if let zip = lead.zip {
-                            LabeledRow(name: "Zip", value: zip)
+                        if !lead.zip.isEmpty {
+                            LabeledRow(name: "Zip", value: lead.zip)
                         }
-                        if let country = lead.country {
-                            LabeledRow(name: "Country", value: country)
+                        if !lead.country.isEmpty {
+                            LabeledRow(name: "Country", value: lead.country)
                         }
                     }
                 }
@@ -88,7 +88,7 @@ struct LeadDetailView: View {
                 }
                 
                 Section("LEAD MANAGEMENT") {
-                    if let assignedTo = lead.assignedTo {
+                    if let assignedTo = lead.assignedToName {
                         LabeledRow(name: "Assigned To", value: assignedTo)
                     }
                     LabeledRow(
@@ -99,9 +99,9 @@ struct LeadDetailView: View {
                     )
                 }
                 
-                if let notes = lead.notes {
+                if !lead.notes.isEmpty {
                     Section("NOTES") {
-                        Text(notes)
+                        Text(lead.notes)
                     }
                 }
             }
