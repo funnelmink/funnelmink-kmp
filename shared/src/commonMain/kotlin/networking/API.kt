@@ -59,7 +59,7 @@ interface API {
 
     // contacts
     @Throws(Exception::class) suspend fun createContact(accountID: String, body: CreateContactRequest): Contact
-    @Throws(Exception::class) suspend fun updateContact(accountID: String, id: String, body: UpdateContactRequest): Contact
+    @Throws(Exception::class) suspend fun updateContact(id: String, body: UpdateContactRequest): Contact
     @Throws(Exception::class) suspend fun deleteContact(id: String)
     @Throws(Exception::class) suspend fun getContact(id: String): Contact
 
@@ -72,12 +72,6 @@ interface API {
     @Throws(Exception::class) suspend fun updateCase(id: String, body: UpdateCaseRequest): CaseRecord
     @Throws(Exception::class) suspend fun deleteCase(id: String)
     @Throws(Exception::class) suspend fun closeCase(id: String, body: RecordClosureRequest): CaseRecord
-
-    // funnels
-    @Throws(Exception::class) suspend fun createDefaultFunnels()
-    @Throws(Exception::class) suspend fun getFunnels(): List<Funnel>
-    @Throws(Exception::class) suspend fun getFunnelsForType(funnelType: FunnelType): List<Funnel>
-    @Throws(Exception::class) suspend fun getFunnel(id: String): Funnel
 
     // leads
     @Throws(Exception::class) suspend fun assignLeadToMember(id: String, memberID: String): Lead
@@ -117,17 +111,6 @@ interface API {
     // MARK: - Workspace Owners-only Endpoints
     // (you need to be signed into a workspace and be an owner)
     // ------------------------------------------------------------------------
-
-    // funnels
-    @Throws(Exception::class) suspend fun createFunnel(body: CreateFunnelRequest): Funnel
-    @Throws(Exception::class) suspend fun updateFunnel(id: String, body: UpdateFunnelRequest): Funnel
-    @Throws(Exception::class) suspend fun deleteFunnel(id: String)
-
-    // funnel stages
-    @Throws(Exception::class) suspend fun createFunnelStage(funnelID: String, body: CreateFunnelStageRequest): FunnelStage
-    @Throws(Exception::class) suspend fun reorderFunnelStages(funnelID: String, body: ReorderFunnelStagesRequest)
-    @Throws(Exception::class) suspend fun updateFunnelStage(id: String, body: UpdateFunnelStageRequest): FunnelStage
-    @Throws(Exception::class) suspend fun deleteFunnelStage(id: String)
 
     // workspaces
     @Throws(Exception::class) suspend fun changeWorkspaceRoles(userID: String, body: WorkspaceMembershipRolesRequest)

@@ -110,20 +110,20 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     private fun mapAccount(
         id: String,
-        address: String?,
-        city: String?,
-        country: String?,
+        address: String,
+        city: String,
+        country: String,
         createdAt: String,
-        email: String?,
+        email: String,
         latitude: String?,
         leadID: String?,
         longitude: String?,
         name: String,
-        notes: String?,
-        phone: String?,
-        state: String?,
+        notes: String,
+        phone: String,
+        state: String,
         updatedAt: String,
-        zip: String?,
+        zip: String,
     ): Account {
         return Account(
             id,

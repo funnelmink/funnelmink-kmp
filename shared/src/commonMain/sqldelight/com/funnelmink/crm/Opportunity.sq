@@ -1,32 +1,32 @@
 CREATE TABLE SQLOpportunity (
     id TEXT PRIMARY KEY,
-    assignedTo TEXT,
+
     closedDate TEXT,
     createdAt TEXT NOT NULL,
-    description TEXT,
+    description TEXT NOT NULL,
     name TEXT NOT NULL,
-    notes TEXT,
+    notes TEXT NOT NULL,
     priority INTEGER NOT NULL,
-    stage TEXT,
     updatedAt TEXT NOT NULL,
     value TEXT,
 
-    funnelId TEXT,
-    accountId TEXT,
+    stageID TEXT NOT NULL,
+    stageName TEXT,
+    accountName TEXT,
+    accountID TEXT NOT NULL,
+    assignedToID TEXT,
+    assignedToName TEXT,
 
-    FOREIGN KEY (funnelId) REFERENCES SQLFunnel(id),
-    FOREIGN KEY (accountId) REFERENCES SQLAccount(id)
+    FOREIGN KEY (accountID) REFERENCES SQLAccount(id)
 );
 
 
 insertOpportunity:
-INSERT INTO SQLOpportunity (id, assignedTo, closedDate, createdAt, description, name, notes, priority, stage, updatedAt, value, funnelId, accountId)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO SQLOpportunity (id, closedDate, createdAt, description, name, notes, priority, updatedAt, value, stageID, stageName, accountName, accountID, assignedToID, assignedToName)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 updateOpportunity:
-UPDATE SQLOpportunity
-SET assignedTo = ?, closedDate = ?, createdAt = ?, description = ?, name = ?, notes = ?, priority = ?, stage = ?, updatedAt = ?, value = ?
-WHERE id = ?;
+UPDATE SQLOpportunity SET closedDate = ?, description = ?, name = ?, notes = ?, priority = ?, updatedAt = ?, value = ?, stageID = ?, stageName = ?, accountName = ?, accountID = ?, assignedToID = ?, assignedToName = ? WHERE id = ?;
 
 deleteOpportunity:
 DELETE FROM SQLOpportunity
@@ -36,21 +36,13 @@ getOpportunity:
 SELECT * FROM SQLOpportunity
 WHERE id = ?;
 
-getAllOpportunitiesForFunnel:
-SELECT * FROM SQLOpportunity
-WHERE funnelId = ?;
-
 getAllOpportunitiesForAccount:
 SELECT * FROM SQLOpportunity
-WHERE accountId = ?;
-
-removeAllOpportunitiesForFunnel:
-DELETE FROM SQLOpportunity
-WHERE funnelId = ?;
+WHERE accountID = ?;
 
 removeAllOpportunitiesForAccount:
 DELETE FROM SQLOpportunity
-WHERE accountId = ?;
+WHERE accountID = ?;
 
 removeAllOpportunities:
 DELETE FROM SQLOpportunity;
