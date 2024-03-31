@@ -43,11 +43,11 @@ data class Account(
 data class Contact(
     val id: String,
 
-    val email: String? = null,
-    val jobTitle: String? = null,
     val name: String,
-    val notes: String? = null,
-    val phone: String? = null,
+    val email: String,
+    val phone: String,
+    val jobTitle: String,
+    val notes: String,
 
     val accountName: String? = null,
     val accountID: String,

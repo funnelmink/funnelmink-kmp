@@ -19,12 +19,12 @@ CREATE TABLE SQLCaseRecord (
 );
 
 insertCase:
-INSERT INTO SQLCaseRecord (id, name, closedDate, createdAt, description, notes, priority, updatedAt, value, stageID, stageName, accountID, assignedToID)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+INSERT INTO SQLCaseRecord (id, name, closedDate, createdAt, description, notes, priority, updatedAt, value, stageID, stageName, accountName, accountID, assignedToID, assignedToName)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 
 updateCase:
-UPDATE SQLCaseRecord SET assignedToID = ?, closedDate = ?, description = ?, name = ?, notes = ?, priority = ?, stageID = ?, stageName = ?, updatedAt = ?, value = ?, accountID = ? WHERE id = ?;
+UPDATE SQLCaseRecord SET name = ?, closedDate = ?, description = ?, notes = ?, priority = ?, updatedAt = ?, value = ?, stageID = ?, stageName = ?, accountName = ?, accountID = ?, assignedToID = ?, assignedToName = ? WHERE id = ?;
 
 selectCaseById:
 SELECT * FROM SQLCaseRecord WHERE id = ?;

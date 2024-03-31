@@ -28,7 +28,8 @@ CREATE TABLE SQLLead (
     stageName TEXT,
 
     assignedToID TEXT,
-    assignedToName TEXT
+    assignedToName TEXT,
+    FOREIGN KEY (stageID) REFERENCES SQLFunnelStage(id)
 );
 
 insertLead:

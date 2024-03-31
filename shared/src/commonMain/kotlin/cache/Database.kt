@@ -10,7 +10,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     private val contactDB = database.contactQueries
     private val activityDB = database.activityQueries
     private val caseDB = database.caseRecordQueries
-    private val funnelsDB = database.funnelQueries
     private val funnelStageDB = database.funnelStageQueries
     private val leadDB = database.leadQueries
     private val opportunityDB = database.opportunityQueries
@@ -27,20 +26,20 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     fun insertAccount(account: Account) {
         accountDB.insertAccount(
             account.id,
+            account.name,
+            account.email,
+            account.phone,
+            account.latitude?.toString(),
+            account.longitude?.toString(),
             account.address,
             account.city,
-            account.country,
-            account.createdAt,
-            account.email,
-            account.latitude?.toString(),
-            account.leadID,
-            account.longitude?.toString(),
-            account.name,
-            account.notes,
-            account.phone,
             account.state,
+            account.country,
+            account.zip,
+            account.notes,
+            account.createdAt,
             account.updatedAt,
-            account.zip
+            account.leadID
         )
     }
 
@@ -49,20 +48,20 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         val cached = accountDB.selectAccountById(id).executeAsOneOrNull() ?: return null
         return mapAccount(
             cached.id,
+            cached.name,
+            cached.email,
+            cached.phone,
+            cached.latitude,
+            cached.longitude,
             cached.address,
             cached.city,
-            cached.country,
-            cached.createdAt,
-            cached.email,
-            cached.latitude,
-            cached.leadID,
-            cached.longitude,
-            cached.name,
-            cached.notes,
-            cached.phone,
             cached.state,
+            cached.country,
+            cached.zip,
+            cached.notes,
+            cached.createdAt,
             cached.updatedAt,
-            cached.zip
+            cached.leadID
         )
     }
 
@@ -74,20 +73,20 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     @Throws(Exception::class)
     fun updateAccount(account: Account) {
         accountDB.updateAccount(
+            account.name,
+            account.email,
+            account.phone,
+            account.latitude?.toString(),
+            account.longitude?.toString(),
             account.address,
             account.city,
-            account.country,
-            account.createdAt,
-            account.email,
-            account.latitude?.toString(),
-            account.leadID,
-            account.longitude?.toString(),
-            account.name,
-            account.notes,
-            account.phone,
             account.state,
-            account.updatedAt,
+            account.country,
             account.zip,
+            account.notes,
+            account.createdAt,
+            account.updatedAt,
+            account.leadID,
             account.id
         )
     }
@@ -110,71 +109,77 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     private fun mapAccount(
         id: String,
+        name: String,
+        email: String,
+        phone: String,
+        latitude: String?,
+        longitude: String?,
         address: String,
         city: String,
-        country: String,
-        createdAt: String,
-        email: String,
-        latitude: String?,
-        leadID: String?,
-        longitude: String?,
-        name: String,
-        notes: String,
-        phone: String,
         state: String,
-        updatedAt: String,
+        country: String,
         zip: String,
+        notes: String,
+        createdAt: String,
+        updatedAt: String,
+        leadID: String?
     ): Account {
         return Account(
             id,
+            name,
+            email,
+            phone,
+            latitude?.toDoubleOrNull(),
+            longitude?.toDoubleOrNull(),
             address,
             city,
-            country,
-            createdAt,
-            email,
-            latitude?.toDouble(),
-            leadID,
-            longitude?.toDouble(),
-            name,
-            notes,
-            phone,
             state,
-            updatedAt,
+            country,
             zip,
+            notes,
+            createdAt,
+            updatedAt,
+            leadID,
             emptyList(),
             emptyList(),
             emptyList(),
+            emptyList()
         )
     }
 
     // ------------------------------------------------------------------------
-    // Account Contact
+    // Contact
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun insertContact(contact: Contact, accountID: String) {
+    fun insertContact(contact: Contact) {
         contactDB.insertContact(
             contact.id,
-            contact.email,
             contact.name,
-            contact.notes,
+            contact.email,
             contact.phone,
-            accountID
+            contact.jobTitle,
+            contact.notes,
+            contact.accountName,
+            contact.accountID
+
         )
     }
 
     @Throws(Exception::class)
     fun selectAllContactsForAccount(id: String): List<Contact> {
-        return contactDB.selectAllContactsForAccount(id).executeAsList().map { mapContact(it.id, it.email, it.name, it.notes, it.phone, id)}
+        return contactDB.selectAllContactsForAccount(id).executeAsList().map { mapContact(it.id, it.name, it.email, it.phone, it.jobTitle, it.notes, it.accountName, it.accountID) }
     }
 
     @Throws(Exception::class)
     fun updateContact(contact: Contact) {
         contactDB.updateContact(
-            contact.email,
             contact.name,
-            contact.notes,
+            contact.email,
             contact.phone,
+            contact.jobTitle,
+            contact.notes,
+            contact.accountName,
             contact.id
         )
     }
@@ -183,15 +188,15 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     fun replaceAllContactsForAccount(id: String, contacts: List<Contact>) {
         contactDB.transaction {
             contactDB.removeAllContactsForAccount(id)
-            contacts.forEach { insertContact(it, id) }
+            contacts.forEach(::insertContact)
         }
     }
 
     @Throws(Exception::class)
-    fun replaceContact(contact: Contact, accountID: String) {
+    fun replaceContact(contact: Contact) {
         contactDB.transaction {
             contactDB.removeContact(contact.id)
-            insertContact(contact, accountID)
+            insertContact(contact)
         }
     }
 
@@ -205,9 +210,19 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         contactDB.removeAllContacts()
     }
 
-    private fun mapContact(id: String, email: String?, name: String?, notes: String?, phone: String?, accountID: String): Contact {
-        return Contact(id, email, name, notes, phone)
+    private fun mapContact(
+        id: String,
+        name: String,
+        email: String,
+        phone: String,
+        jobTitle: String,
+        notes: String,
+        accountName: String?,
+        accountID: String
+    ): Contact {
+        return Contact(id, name, email, phone, jobTitle, notes, accountName, accountID)
     }
+
 
     // ------------------------------------------------------------------------
     // Activities
@@ -249,7 +264,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     }
 
     @Throws(Exception::class)
-    private fun mapActivity(id: String, createdAt: String, details: String?, memberID: String, type: String, recordID: String): ActivityRecord {
+    private fun mapActivity(id: String, createdAt: String, details: String, memberID: String, type: String, recordID: String): ActivityRecord {
         return ActivityRecord(id, createdAt, details, memberID, ActivityRecordType.fromTypeName(type))
     }
 
@@ -263,30 +278,31 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun insertCase(case: CaseRecord, funnelID: String?, accountID: String?) {
+    fun insertCase(case: CaseRecord) {
         caseDB.insertCase(
             case.id,
-            case.assignedTo,
+            case.name,
             case.closedDate,
             case.createdAt,
             case.description,
-            case.name,
             case.notes,
             case.priority.toLong(),
-            case.stageID,
             case.updatedAt,
             case.value.toString(),
-            funnelID,
-            accountID
+            case.stageID,
+            case.stageName,
+            case.accountName,
+            case.accountID,
+            case.assignedToID,
+            case.assignedToName
         )
     }
 
     @Throws(Exception::class)
     fun replaceCase(case: CaseRecord) {
         caseDB.transaction {
-            val cached = caseDB.selectCaseById(case.id).executeAsOneOrNull()
             caseDB.removeCase(case.id)
-            insertCase(case, cached?.funnelId, cached?.accountId)
+            insertCase(case)
         }
     }
 
@@ -295,16 +311,20 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         val cached = caseDB.selectCaseById(id).executeAsOneOrNull() ?: return null
         return mapCase(
             cached.id,
-            cached.assignedTo,
+            cached.name,
             cached.closedDate,
             cached.createdAt,
             cached.description,
-            cached.name,
             cached.notes,
             cached.priority.toInt(),
-            cached.stage,
             cached.updatedAt,
-            cached.value_?.toDouble() ?: 0.0
+            cached.value_.toDouble(),
+            cached.stageID,
+            cached.stageName,
+            cached.accountName,
+            cached.accountID,
+            cached.assignedToID,
+            cached.assignedToName
         )
     }
 
@@ -313,53 +333,41 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         return caseDB.selectAllCasesForAccount(id).executeAsList().map {
             mapCase(
                 it.id,
-                it.assignedTo,
+                it.name,
                 it.closedDate,
                 it.createdAt,
                 it.description,
-                it.name,
                 it.notes,
                 it.priority.toInt(),
-                it.stage,
                 it.updatedAt,
-                it.value_?.toDouble() ?: 0.0
+                it.value_.toDouble(),
+                it.stageID,
+                it.stageName,
+                it.accountName,
+                it.accountID,
+                it.assignedToID,
+                it.assignedToName
             )
 
-        }
-    }
-
-    @Throws(Exception::class)
-    fun selectAllCasesForFunnel(id: String): List<CaseRecord> {
-        return caseDB.selectAllCasesForFunnel(id).executeAsList().map {
-            mapCase(
-                it.id,
-                it.assignedTo,
-                it.closedDate,
-                it.createdAt,
-                it.description,
-                it.name,
-                it.notes,
-                it.priority.toInt(),
-                it.stage,
-                it.updatedAt,
-                it.value_?.toDouble() ?: 0.0
-            )
         }
     }
 
     @Throws(Exception::class)
     fun updateCase(case: CaseRecord) {
         caseDB.updateCase(
-            case.assignedTo,
-            case.closedDate,
-            case.createdAt,
-            case.description,
             case.name,
+            case.closedDate,
+            case.description,
             case.notes,
             case.priority.toLong(),
-            case.stageID,
             case.updatedAt,
             case.value.toString(),
+            case.stageID,
+            case.stageName,
+            case.accountName,
+            case.accountID,
+            case.assignedToID,
+            case.assignedToName,
             case.id
         )
     }
@@ -368,15 +376,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     fun replaceAllCasesForAccount(id: String, cases: List<CaseRecord>) {
         caseDB.transaction {
             caseDB.removeAllCasesForAccount(id)
-            cases.forEach { insertCase(it, null, id) }
-        }
-    }
-
-    @Throws(Exception::class)
-    fun replaceAllCasesForFunnel(id: String, cases: List<CaseRecord>) {
-        caseDB.transaction {
-            caseDB.removeAllCasesForFunnel(id)
-            cases.forEach { insertCase(it, id, null) }
+            cases.forEach { insertCase(it) }
         }
     }
 
@@ -392,147 +392,50 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     private fun mapCase(
         id: String,
-        assignedTo: String?,
+        name: String,
         closedDate: String?,
         createdAt: String,
-        description: String?,
-        name: String,
-        notes: String?,
+        description: String,
+        notes: String,
         priority: Int,
-        stage: String?,
         updatedAt: String,
-        value: Double
+        value: Double,
+        stageID: String,
+        stageName: String?,
+        accountName: String?,
+        accountID: String,
+        assignedToID: String?,
+        assignedToName: String?
     ): CaseRecord {
         return CaseRecord(
             id,
-            assignedTo,
+            name,
             closedDate,
             createdAt,
             description,
-            name,
             notes,
             priority,
-            stage,
             updatedAt,
             value,
             emptyList(),
+            stageID,
+            stageName,
+            accountName,
+            accountID,
+            assignedToID,
+            assignedToName
         )
     }
 
-    // ------------------------------------------------------------------------
-    // Funnels
-    // ------------------------------------------------------------------------
-
-    @Throws(Exception::class)
-    fun insertFunnel(funnel: Funnel) {
-        funnelsDB.insertFunnel(
-            funnel.id,
-            funnel.name,
-            funnel.type.typeName
-        )
-        replaceAllCasesForFunnel(funnel.id, funnel.cases)
-        replaceAllOpportunitiesForFunnel(funnel.id, funnel.opportunities)
-        replaceAllStagesForFunnel(funnel.id, funnel.stages)
-        if (funnel.leads.isNotEmpty()) {
-            replaceAllLeads(funnel.leads)
-        }
-    }
-
-    @Throws(Exception::class)
-    fun replaceFunnel(funnel: Funnel) {
-        funnelsDB.transaction {
-            funnelsDB.removeFunnel(funnel.id)
-            insertFunnel(funnel)
-        }
-    }
-
-    @Throws(Exception::class)
-    fun selectFunnel(id: String): Funnel? {
-        val cached = funnelsDB.selectFunnel(id).executeAsOneOrNull() ?: return null
-        val funnel = mapFunnel(cached.id, cached.name, cached.type)
-        funnel.stages = getAllFunnelStagesForFunnel(funnel.id)
-        when (funnel.type) {
-            FunnelType.Case -> funnel.cases = selectAllCasesForFunnel(funnel.id)
-            FunnelType.Lead -> funnel.leads = selectAllLeads()
-            FunnelType.Opportunity -> funnel.opportunities = selectAllOpportunitiesForFunnel(funnel.id)
-        }
-        return funnel
-    }
-
-    @Throws(Exception::class)
-    fun selectAllFunnels(): List<Funnel> {
-        val funnels = funnelsDB.selectAllFunnels(::mapFunnel).executeAsList()
-        funnels.forEach {
-            val details = selectFunnel(it.id)
-            it.stages = details?.stages.orEmpty()
-            it.cases = details?.cases.orEmpty()
-            it.leads = details?.leads.orEmpty()
-            it.opportunities = details?.opportunities.orEmpty()
-        }
-        return funnels
-    }
-
-    @Throws(Exception::class)
-    fun selectAllFunnelsForType(funnelType: FunnelType): List<Funnel> {
-        val funnels = funnelsDB.selectAllFunnelsForType(funnelType.typeName, ::mapFunnel).executeAsList()
-        funnels.forEach {
-            val details = selectFunnel(it.id)
-            it.stages = details?.stages.orEmpty()
-            it.cases = details?.cases.orEmpty()
-            it.leads = details?.leads.orEmpty()
-            it.opportunities = details?.opportunities.orEmpty()
-        }
-        return funnels
-    }
-
-    @Throws(Exception::class)
-    fun updateFunnel(funnel: Funnel) {
-        funnelsDB.updateFunnel(
-            funnel.name,
-            funnel.type.typeName,
-            funnel.id
-        )
-    }
-
-    @Throws(Exception::class)
-    fun deleteFunnel(id: String) {
-        funnelsDB.removeFunnel(id)
-    }
-
-    @Throws(Exception::class)
-    fun replaceAllFunnels(funnels: List<Funnel>) {
-        funnelsDB.transaction {
-            funnelsDB.removeAllFunnels()
-            funnels.forEach(::insertFunnel)
-        }
-    }
-
-    @Throws(Exception::class)
-    private fun deleteAllFunnels() {
-        funnelsDB.removeAllFunnels()
-    }
-
-    private fun mapFunnel(id: String, name: String, type: String): Funnel {
-        return Funnel(
-            id,
-            name,
-            FunnelType.fromTypeName(type),
-            emptyList(),
-            emptyList(),
-            emptyList(),
-            emptyList()
-        )
-    }
 
     // ------------------------------------------------------------------------
     // Funnel Stages
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun insertFunnelStage(stage: FunnelStage, funnelID: String) {
+    fun insertFunnelStage(stage: FunnelStage) {
         funnelStageDB.insertFunnelStage(
             stage.id,
-            funnelID,
             stage.name,
             stage.order.toLong(),
         )
@@ -543,32 +446,7 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         funnelStageDB.transaction {
             val cached = funnelStageDB.selectStage(stage.id).executeAsOneOrNull()
             funnelStageDB.deleteFunnelStage(stage.id)
-            cached?.funnelId?.let { insertFunnelStage(stage, it) }
         }
-    }
-
-    @Throws(Exception::class)
-    fun getAllFunnelStagesForFunnel(id: String): List<FunnelStage> {
-        return funnelStageDB.selectAllStagesForFunnel(id).executeAsList().map {
-            mapFunnelStage(
-                it.id,
-                it.name,
-                it.order_.toInt()
-            )
-        }
-    }
-
-    @Throws(Exception::class)
-    fun replaceAllStagesForFunnel(id: String, stages: List<FunnelStage>) {
-        funnelStageDB.transaction {
-            funnelStageDB.deleteAllStagesForFunnel(id)
-            stages.forEach { insertFunnelStage(it, id) }
-        }
-    }
-
-    @Throws(Exception::class)
-    fun deleteAllFunnelStagesForFunnel(id: String) {
-        funnelStageDB.deleteAllStagesForFunnel(id)
     }
 
     @Throws(Exception::class)
@@ -590,39 +468,31 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     // ------------------------------------------------------------------------
 
     @Throws(Exception::class)
-    fun insertOpportunity(opportunity: Opportunity, funnelID: String?, accountID: String?) {
+    fun insertOpportunity(opportunity: Opportunity) {
         opportunityDB.insertOpportunity(
             opportunity.id,
-            opportunity.assignedTo,
             opportunity.closedDate,
             opportunity.createdAt,
             opportunity.description,
             opportunity.name,
             opportunity.notes,
             opportunity.priority.toLong(),
-            opportunity.stageID,
             opportunity.updatedAt,
             opportunity.value.toString(),
-            funnelID,
-            accountID
+            opportunity.stageID,
+            opportunity.stageName,
+            opportunity.accountName,
+            opportunity.accountID,
+            opportunity.assignedToID,
+            opportunity.assignedToName
         )
     }
 
     @Throws(Exception::class)
-    fun replaceAllOpportunitiesForFunnel(id: String, opportunities: List<Opportunity>) {
-        opportunityDB.transaction {
-            opportunityDB.removeAllOpportunitiesForFunnel(id)
-            opportunities.forEach { insertOpportunity(it, id, null) }
-        }
-    }
-
-
-    @Throws(Exception::class)
     fun replaceOpportunity(opportunity: Opportunity) {
         opportunityDB.transaction {
-            val cached = opportunityDB.getOpportunity(opportunity.id).executeAsOneOrNull()
             opportunityDB.deleteOpportunity(opportunity.id)
-            insertOpportunity(opportunity, cached?.funnelId, cached?.accountId)
+            insertOpportunity(opportunity)
         }
     }
 
@@ -631,16 +501,20 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         return opportunityDB.getAllOpportunitiesForAccount(id).executeAsList().map {
             mapOpportunity(
                 it.id,
-                it.assignedTo,
                 it.closedDate,
                 it.createdAt,
                 it.description,
                 it.name,
                 it.notes,
-                it.priority.toInt(),
-                it.stage,
+                it.priority,
                 it.updatedAt,
-                it.value_?.toDouble() ?: 0.0
+                it.value_,
+                it.stageID,
+                it.stageName,
+                it.accountName,
+                it.accountID,
+                it.assignedToID,
+                it.assignedToName
             )
         }
     }
@@ -650,80 +524,76 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         val cached = opportunityDB.getOpportunity(id).executeAsOneOrNull() ?: return null
         return mapOpportunity(
             cached.id,
-            cached.assignedTo,
             cached.closedDate,
             cached.createdAt,
             cached.description,
             cached.name,
             cached.notes,
-            cached.priority.toInt(),
-            cached.stage,
+            cached.priority,
             cached.updatedAt,
-            cached.value_?.toDouble() ?: 0.0
+            cached.value_,
+            cached.stageID,
+            cached.stageName,
+            cached.accountName,
+            cached.accountID,
+            cached.assignedToID,
+            cached.assignedToName
         )
     }
 
     private fun mapOpportunity(
         id: String,
-        assignedTo: String?,
         closedDate: String?,
         createdAt: String,
-        description: String?,
+        description: String,
         name: String,
-        notes: String?,
-        priority: Int,
-        stage: String?,
+        notes: String,
+        priority: Long,
         updatedAt: String,
-        value: Double
+        value: String?,
+        stageID: String,
+        stageName: String?,
+        accountName: String?,
+        accountID: String,
+        assignedToID: String?,
+        assignedToName: String?
     ): Opportunity {
         return Opportunity(
             id,
-            assignedTo,
             closedDate,
             createdAt,
             description,
             name,
             notes,
-            priority,
-            stage,
+            priority.toInt(),
             updatedAt,
-            value,
+            value?.toDouble() ?: 0.0,
             emptyList(),
+            stageID,
+            stageName,
+            accountName,
+            accountID,
+            assignedToID,
+            assignedToName
         )
-    }
-
-    @Throws(Exception::class)
-    fun selectAllOpportunitiesForFunnel(id: String): List<Opportunity> {
-        return opportunityDB.getAllOpportunitiesForFunnel(id).executeAsList().map {
-            mapOpportunity(
-                it.id,
-                it.assignedTo,
-                it.closedDate,
-                it.createdAt,
-                it.description,
-                it.name,
-                it.notes,
-                it.priority.toInt(),
-                it.stage,
-                it.updatedAt,
-                it.value_?.toDouble() ?: 0.0
-            )
-        }
     }
 
     @Throws(Exception::class)
     fun updateOpportunity(opportunity: Opportunity) {
         opportunityDB.updateOpportunity(
-            opportunity.assignedTo,
             opportunity.closedDate,
-            opportunity.createdAt,
             opportunity.description,
             opportunity.name,
             opportunity.notes,
             opportunity.priority.toLong(),
-            opportunity.stageID,
             opportunity.updatedAt,
             opportunity.value.toString(),
+            opportunity.stageID,
+            opportunity.stageName,
+            opportunity.accountName,
+            opportunity.accountID,
+            opportunity.assignedToID,
+            opportunity.assignedToName,
             opportunity.id
         )
     }
@@ -746,11 +616,11 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     fun insertTask(task: TaskRecord) {
         taskDB.insertTask(
             task.id,
+            task.title,
             task.body,
             toLong(task.isComplete),
             task.priority.toLong(),
             task.scheduledDate,
-            task.title,
             task.updatedAt
         )
     }
@@ -761,11 +631,11 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
         return mapTask(
             cached.id,
+            cached.title,
             cached.body,
             cached.isComplete,
             cached.priority,
             cached.scheduledDate,
-            cached.title,
             cached.updatedAt
         )
     }
@@ -816,20 +686,20 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     private fun mapTask(
         id: String,
-        body: String?,
+        title: String,
+        body: String,
         isComplete: Long,
         priority: Long,
         scheduledDate: String?,
-        title: String,
         updatedAt: String
     ): TaskRecord {
         return TaskRecord(
             id,
+            title,
             body,
             toBool(isComplete),
             priority.toInt(),
             scheduledDate,
-            title,
             updatedAt
         )
     }
@@ -842,27 +712,30 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     fun insertLead(lead: Lead) {
         leadDB.insertLead(
             lead.id,
-            lead.address,
-            lead.assignedTo,
-            lead.city,
-            lead.closedDate,
-            lead.closedResult?.resultName,
-            lead.company,
-            lead.country,
-            lead.createdAt,
+            lead.name,
             lead.email,
-            lead.jobTitle,
+            lead.phone,
             lead.latitude,
             lead.longitude,
-            lead.name,
+            lead.address,
+            lead.city,
+            lead.state,
+            lead.country,
+            lead.zip,
             lead.notes,
-            lead.phone,
+            lead.createdAt,
+            lead.updatedAt,
+            lead.closedDate,
+            lead.closedResult?.resultName,
+            lead.accountID,
+            lead.company,
+            lead.jobTitle,
             lead.priority.toLong(),
             lead.source,
             lead.stageID,
-            lead.state,
-            lead.updatedAt,
-            lead.zip
+            lead.stageName,
+            lead.assignedToID,
+            lead.assignedToName
         )
     }
 
@@ -871,27 +744,30 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         val cached = leadDB.getLead(id).executeAsOneOrNull() ?: return null
         return mapLead(
             cached.id,
-            cached.address,
-            cached.assignedTo,
-            cached.city,
-            cached.closedDate,
-            cached.closedResult,
-            cached.company,
-            cached.country,
-            cached.createdAt,
+            cached.name,
             cached.email,
-            cached.jobTitle,
+            cached.phone,
             cached.latitude,
             cached.longitude,
-            cached.name.orEmpty(),
+            cached.address,
+            cached.city,
+            cached.state,
+            cached.country,
+            cached.zip,
             cached.notes,
-            cached.phone,
+            cached.createdAt,
+            cached.updatedAt,
+            cached.closedDate,
+            cached.closedResult,
+            cached.accountID,
+            cached.company,
+            cached.jobTitle,
             cached.priority,
             cached.source,
-            cached.stage,
-            cached.state,
-            cached.updatedAt,
-            cached.zip
+            cached.stageID,
+            cached.stageName,
+            cached.assignedToID,
+            cached.assignedToName
         )
     }
 
@@ -903,27 +779,30 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
     @Throws(Exception::class)
     fun updateLead(lead: Lead) {
         leadDB.updateLead(
-            lead.address,
-            lead.assignedTo,
-            lead.city,
-            lead.closedDate,
-            lead.closedResult?.resultName,
-            lead.company,
-            lead.country,
-            lead.createdAt,
+            lead.name,
             lead.email,
-            lead.jobTitle,
+            lead.phone,
             lead.latitude,
             lead.longitude,
-            lead.name,
+            lead.address,
+            lead.city,
+            lead.state,
+            lead.country,
+            lead.zip,
             lead.notes,
-            lead.phone,
+            lead.createdAt,
+            lead.updatedAt,
+            lead.closedDate,
+            lead.closedResult?.resultName,
+            lead.accountID,
+            lead.company,
+            lead.jobTitle,
             lead.priority.toLong(),
             lead.source,
             lead.stageID,
-            lead.state,
-            lead.updatedAt,
-            lead.zip,
+            lead.stageName,
+            lead.assignedToID,
+            lead.assignedToName,
             lead.id
         )
     }
@@ -940,52 +819,58 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
 
     private fun mapLead(
         id: String,
-        address: String?,
-        assignedTo: String?,
-        city: String?,
-        closedDate: String?,
-        closedResult: String?,
-        company: String?,
-        country: String?,
-        createdAt: String,
-        email: String?,
-        jobTitle: String?,
+        name: String,
+        email: String,
+        phone: String,
         latitude: Double?,
         longitude: Double?,
-        name: String,
-        notes: String?,
-        phone: String?,
-        priority: Long,
-        source: String?,
-        stage: String?,
-        state: String?,
+        address: String,
+        city: String,
+        state: String,
+        country: String,
+        zip: String,
+        notes: String,
+        createdAt: String,
         updatedAt: String,
-        zip: String?
+        closedDate: String?,
+        closedResult: String?,
+        accountID: String?,
+        company: String,
+        jobTitle: String,
+        priority: Long,
+        source: String,
+        stageID: String,
+        stageName: String?,
+        assignedToID: String?,
+        assignedToName: String?
     ): Lead {
         return Lead(
             id,
-            address,
-            assignedTo,
-            city,
-            closedDate,
-            closedResult?.let { LeadClosedResult.fromResultName(it) },
-            company,
-            country,
-            createdAt,
+            name,
             email,
-            jobTitle,
+            phone,
             latitude,
             longitude,
-            name,
+            address,
+            city,
+            state,
+            country,
+            zip,
             notes,
-            phone,
+            createdAt,
+            updatedAt,
+            closedDate,
+            closedResult?.let { LeadClosedResult.valueOf(it) },
+            accountID,
+            company,
+            jobTitle,
             priority.toInt(),
             source,
-            stage,
-            state,
-            updatedAt,
-            zip,
             emptyList(),
+            stageID,
+            stageName,
+            assignedToID,
+            assignedToName
         )
     }
 
@@ -1176,7 +1061,6 @@ internal class Database(databaseDriverFactory: DatabaseDriver) {
         deleteAllActivities()
         deleteAllCases()
         deleteAllContacts()
-        deleteAllFunnels()
         deleteAllFunnelStages()
         deleteAllLeads()
         deleteAllOpportunities()
