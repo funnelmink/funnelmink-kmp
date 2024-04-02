@@ -16,8 +16,7 @@ import utilities.*
 
 class FunnelminkAPI(
     private val baseURL: String,
-    private val databaseDriver: DatabaseDriver,
-    private val cacheThreshold: Long
+    private val cache: Database,
 ) : API {
     private var token: String? = null
     private var workspaceID: String? = null
@@ -26,8 +25,7 @@ class FunnelminkAPI(
     override var onDecodingError: ((message: String) -> Unit)? = null
     override var onMissing: ((message: String) -> Unit)? = null
     override var onServerError: ((message: String) -> Unit)? = null
-    private val cache = Database(databaseDriver)
-    private val cacheInvalidator = CacheInvalidator(cacheThreshold)
+    private val cacheInvalidator = CacheInvalidator(60 * 5) // 5 mins
 
     // ------------------------------------------------------------------------
     // Auth

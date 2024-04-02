@@ -4,7 +4,7 @@ import com.funnelmink.crm.FunnelminkCache
 import models.*
 
 
-internal class Database(databaseDriverFactory: DatabaseDriver) {
+class Database(databaseDriverFactory: DatabaseDriver) {
     private val database = FunnelminkCache(databaseDriverFactory.createDriver())
     private val accountDB = database.accountQueries
     private val contactDB = database.contactQueries
