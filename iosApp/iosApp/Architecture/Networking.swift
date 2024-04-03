@@ -12,11 +12,11 @@ import Shared
 
 /// The full API can be found on [GitHub](https://github.com/funnelmink/funnelmink-kmp/blob/main/shared/src/commonMain/kotlin/networking/API.kt)
 class Networking {
+    static let cache = Database(databaseDriverFactory: DatabaseDriver())
     static let api: API = {
         let fmapi = FunnelminkAPI(
             baseURL: Properties.baseURL,
-            databaseDriver: DatabaseDriver(),
-            cacheThreshold: 60 * 5 // 5 minutes
+            cache: cache
         )
         
         fmapi.onAuthFailure = { _ in

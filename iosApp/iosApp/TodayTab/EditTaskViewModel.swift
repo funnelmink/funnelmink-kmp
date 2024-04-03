@@ -17,7 +17,7 @@ class EditTaskViewModel: ViewModel {
     }
     
     @MainActor
-    func createTask(title: String, priority: Int32, body: String?, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
+    func createTask(title: String, priority: Int32, body: String, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
         if title.isEmpty {
             Toast.error("Pretend success!")
             return

@@ -155,7 +155,7 @@ data class UpdateOpportunityRequest(
 @Serializable
 data class CreateTaskRequest(
     val title: String,
-    val body: String? = null,
+    val body: String,
     val priority: Int,
     val scheduledDate: String? = null,
 )
