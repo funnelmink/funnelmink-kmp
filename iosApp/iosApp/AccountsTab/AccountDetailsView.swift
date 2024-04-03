@@ -19,7 +19,6 @@ struct AccountDetailsView: View {
         return ("\(account.address), \(account.city), \(account.state), \(account.country)")
     }
     var initials: String {
-        
         if let initial = account.name.first {
             return String(initial)
         } else {

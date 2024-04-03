@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Shared
 import SwiftUI
 
 struct ToastView: View {
@@ -100,31 +101,37 @@ struct Toast: Hashable, Equatable {
     
     /// Notify user
     static func info(_ message: String) {
+        Logger.info("🎊 TOAST INFO \(message)")
         Navigation.shared.toast(message)
     }
     
     /// Notify user of success
     static func success(_ message: String) {
+        Logger.info("🎊 TOAST SUCCESS \(message)")
         Navigation.shared.toast(message, type: .success)
     }
     
     /// User did something wrong
     static func error(_ message: String) {
+        Logger.error("🎊 TOAST ERROR \(message)")
         Navigation.shared.toast(message, type: .error)
     }
     
     /// User did something wrong
     static func error(_ error: Error) {
+        Logger.error("🎊 TOAST ERROR \(error.localizedDescription)")
         Navigation.shared.toast(error.localizedDescription, type: .error)
     }
     
     /// We did something wrong
     static func warn(_ message: String) {
+        Logger.warning("🎊 TOAST WARN \(message)")
         Navigation.shared.toast(message, type: .warn)
     }
     
     /// We did something wrong
     static func warn(_ error: Error) {
+        Logger.warning("🎊 TOAST WARN \(error.localizedDescription)")
         Navigation.shared.toast(error.localizedDescription, type: .warn)
     }
 }
