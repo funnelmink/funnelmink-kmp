@@ -126,7 +126,7 @@ struct EditTaskView: View {
                 taskName = task.title
                 priority = task.priority
                 date = task.scheduledDate?.toDate()
-                taskBody = task.body ?? ""
+                taskBody = task.body
             }
         }
     }

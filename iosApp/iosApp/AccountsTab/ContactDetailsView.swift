@@ -75,7 +75,7 @@ struct ContactDetailsView: View {
                 Text("Name")
                     .bold()
                 Spacer()
-                Text(contact.name ?? "")
+                Text(contact.name)
             }
             .padding()
 
@@ -84,9 +84,9 @@ struct ContactDetailsView: View {
                     .bold()
                 Spacer()
                 Button(action: {
-                    prepareEmail(emailAddress: contact.email ?? "")
+                    prepareEmail(emailAddress: contact.email)
                 }) {
-                    Text(contact.email ?? "")
+                    Text(contact.email)
                         .foregroundColor(.blue)
                         .underline()
                 }
@@ -98,9 +98,9 @@ struct ContactDetailsView: View {
                     .bold()
                 Spacer()
                 Button(action: {
-                    makeCall(phoneNumber: contact.phone ?? "")
+                    makeCall(phoneNumber: contact.phone)
                 }) {
-                    Text(contact.phone ?? "")
+                    Text(contact.phone)
                         .foregroundColor(.blue)
                         .underline()
                 }
@@ -111,7 +111,7 @@ struct ContactDetailsView: View {
                 Text("Notes")
                     .bold()
                 Spacer()
-                Text(contact.notes ?? "")
+                Text(contact.notes)
             }
             .padding()
 
