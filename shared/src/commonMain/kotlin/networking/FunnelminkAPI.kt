@@ -163,29 +163,30 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun getAccounts(): List<Account> {
-        val cacheKey = "getAccounts"
-        try {
-            if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllAccounts()
-                if (cached.isNotEmpty()) {
-                    Utilities.logger.info("🛃 Retrieved ${cached.size} accounts from cache")
-                    return cached
-                }
-            }
+        // TODO: store the arrays of cases, opps, contacts, etc
+//        val cacheKey = "getAccounts"
+//        try {
+//            if (!cacheInvalidator.isStale(cacheKey)) {
+//                val cached = cache.selectAllAccounts()
+//                if (cached.isNotEmpty()) {
+//                    Utilities.logger.info("🛃 Retrieved ${cached.size} accounts from cache")
+//                    return cached
+//                }
+//            }
             val fetched: List<Account> = genericRequest("$baseURL/v1/workspace/accounts", HttpMethod.Get)
-            cache.replaceAllAccounts(fetched)
-            cacheInvalidator.updateTimestamp(cacheKey)
-            Utilities.logger.info("Cached ${fetched.size} accounts")
+//            cache.replaceAllAccounts(fetched)
+//            cacheInvalidator.updateTimestamp(cacheKey)
+//            Utilities.logger.info("Cached ${fetched.size} accounts")
             return fetched
-        } catch (e: Exception) {
-            val cached = cache.selectAllAccounts()
-            if (cached.isNotEmpty()) {
-                Utilities.logger.warn("🛃 Failed to fetch Accounts. Returned ${cached.size} accounts from cache")
-                return cached
-            } else {
-                throw e
-            }
-        }
+//        } catch (e: Exception) {
+//            val cached = cache.selectAllAccounts()
+//            if (cached.isNotEmpty()) {
+//                Utilities.logger.warn("🛃 Failed to fetch Accounts. Returned ${cached.size} accounts from cache")
+//                return cached
+//            } else {
+//                throw e
+//            }
+//        }
     }
 
     @Throws(Exception::class)
@@ -207,6 +208,7 @@ class FunnelminkAPI(
             setBody(body)
         }
         cache.insertContact(contact)
+        cacheInvalidator.invalidate("getAccounts")
         return contact
     }
 
