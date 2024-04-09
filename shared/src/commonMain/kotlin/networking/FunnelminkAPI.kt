@@ -94,7 +94,7 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun search(body: SearchRequest): SearchResult {
-        return genericRequest("$baseURL/v1/workspace/search", HttpMethod.Get) {
+        return genericRequest("$baseURL/v1/workspace/search", HttpMethod.Post) {
             setBody(body)
         }
     }
