@@ -54,7 +54,8 @@ class EditLeadViewModel: ViewModel {
         company: String?,
         jobTitle: String?,
         priority: Int32,
-        source: String?
+        source: String?,
+        assignedTo: String?
     ) async throws {
         let body = CreateLeadRequest(
             name: name,
@@ -72,7 +73,7 @@ class EditLeadViewModel: ViewModel {
             jobTitle: jobTitle,
             priority: priority.kotlinValue,
             source: source,
-            assignedTo: self.state.assignedMember?.id,
+            assignedTo: assignedTo,
             stageID: self.state.selectedStage.id
         )
         // don't need to store the result
@@ -96,7 +97,8 @@ class EditLeadViewModel: ViewModel {
         company: String?,
         jobTitle: String?,
         priority: Int32?,
-        source: String?
+        source: String?,
+        assignedTo: String?
     ) async throws {
         let body = UpdateLeadRequest(
             name: name,
@@ -114,7 +116,7 @@ class EditLeadViewModel: ViewModel {
             jobTitle: jobTitle,
             priority: priority?.kotlinValue,
             source: source,
-            assignedTo: self.state.assignedMember?.id,
+            assignedTo: assignedTo,
             stageID: self.state.selectedStage.id
         )
         // don't need to store the result

@@ -103,6 +103,7 @@ struct CustomTextField: View {
             HStack {
                 TextField(placeholder, text: $text)
                     .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
                 if let icon {
                     Image(systemName: icon)
                 }

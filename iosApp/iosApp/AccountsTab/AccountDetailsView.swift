@@ -139,6 +139,7 @@ struct AccountDetailsView: View {
                     Text(account.name)
                         .bold()
                         .font(.title)
+                    
                     if !account.email.isEmpty {
                         Button(action: {
                             prepareEmail(emailAddress: account.email)
@@ -148,6 +149,7 @@ struct AccountDetailsView: View {
                                 .font(.headline)
                         })
                     }
+                    
                     if !account.phone.isEmpty {
                         Button(action: {
                             showingActionSheet = true

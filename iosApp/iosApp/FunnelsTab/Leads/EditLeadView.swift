@@ -14,6 +14,8 @@ struct EditLeadView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = EditLeadViewModel()
     
+    @State var members: [WorkspaceMember] = []
+    @State private var assignedTo = ""
     @State private var address = ""
     @State private var city = ""
     @State private var closedResult: LeadClosedResult?
@@ -130,6 +132,13 @@ struct EditLeadView: View {
                     }
                     .pickerStyle(.menu)
                     
+                    Picker(selection: $assignedTo, label: Text("Assigned Member")) {
+                        ForEach(members, id: \.self) { member in
+                            Text(member.username).tag(member.id)
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    
                     
                 }
                 // TODO: add a way to dismiss the keyboard
@@ -165,7 +174,8 @@ struct EditLeadView: View {
                             company: company,
                             jobTitle: jobTitle,
                             priority: priority,
-                            source: source
+                            source: source,
+                            assignedTo: assignedTo
                         )
                     } else {
                         try await viewModel.createLead(
@@ -183,7 +193,8 @@ struct EditLeadView: View {
                             company: company,
                             jobTitle: jobTitle,
                             priority: priority,
-                            source: source
+                            source: source,
+                            assignedTo: assignedTo
                         )
                     }
                     navigation.dismissModal()
@@ -226,6 +237,14 @@ struct EditLeadView: View {
                     self.longitude = "\(lon)"
                 }
             }
+            
+            do {
+                async let workspaceMembers = Networking.api.getWorkspaceMembers()
+                members = try await workspaceMembers
+            } catch {
+                Toast.warn(error)
+            }
+            
             do {
                 try await viewModel.setUp(lead: lead)
             } catch {
