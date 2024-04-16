@@ -13,6 +13,18 @@ struct LeadDetailView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var navigation: Navigation
     @State var lead: Lead
+    
+    private func makeCall(phoneNumber: String) {
+        let cleanedPhoneNumber = phoneNumber.filter { "0123456789+-()".contains($0) }
+        guard let url = URL(string: "tel://\(cleanedPhoneNumber)"),
+              UIApplication.shared.canOpenURL(url) else {
+            print("Cannot make this call")
+            return
+        }
+
+        UIApplication.shared.open(url)
+    }
+    
     var closedPrompt: String? {
         var out = ""
         switch lead.closedResult {
@@ -46,7 +58,12 @@ struct LeadDetailView: View {
                             LabeledRow(name: "Email", value: lead.email)
                         }
                         if !lead.phone.isEmpty {
-                            LabeledRow(name: "Phone", value: lead.phone)
+                            Button {
+                                makeCall(phoneNumber: lead.phone)
+                            } label: {
+                                LabeledRow(name: "Phone", value: lead.phone)
+                            }
+
                         }
                         if !lead.company.isEmpty {
                             LabeledRow(name: "Company", value: lead.company)

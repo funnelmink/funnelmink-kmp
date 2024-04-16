@@ -21,9 +21,9 @@ struct MemberAssignmentsView: View {
     
     var body: some View {
         List {
-            if !cases.isEmpty {
+            if !assignments.cases.isEmpty {
                 Section("Cases") {
-                    ForEach(cases, id: \.self) { caseRecord in
+                    ForEach(assignments.cases, id: \.self) { caseRecord in
                         Button {
                             navigation.segue(.caseDetails(caseRecord: caseRecord))
                         } label: {
@@ -33,9 +33,9 @@ struct MemberAssignmentsView: View {
                 }
             }
             
-            if !opportunities.isEmpty {
+            if !assignments.opportunities.isEmpty {
                 Section("Opportunities") {
-                    ForEach(opportunities, id: \.self) { opportunity in
+                    ForEach(assignments.opportunities, id: \.self) { opportunity in
                         Button {
                             navigation.segue(.opportunityDetails(opportunity: opportunity))
                         } label: {
@@ -45,9 +45,9 @@ struct MemberAssignmentsView: View {
                 }
             }
             
-            if !leads.isEmpty {
+            if !assignments.leads.isEmpty {
                 Section("Leads") {
-                    ForEach(leads, id: \.self) { lead in
+                    ForEach(assignments.leads, id: \.self) { lead in
                         Button {
                             navigation.segue(.leadDetails(lead: lead))
                         } label: {
