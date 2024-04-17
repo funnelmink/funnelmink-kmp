@@ -14,6 +14,7 @@ struct EditOpportunityView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = EditOpportunityViewModel()
     
+    @State private var members: [WorkspaceMember] = []
     @State private var assignedTo = ""
     @State private var closedDate = ""
     @State private var description = ""
@@ -72,6 +73,13 @@ struct EditOpportunityView: View {
                         }
                     }
                     .pickerStyle(.menu)
+                    
+                    Picker(selection: $assignedTo, label: Text("Assigned Member")) {
+                        ForEach(members, id: \.self) { member in
+                            Text(member.username).tag(member.id)
+                        }
+                    }
+                    .pickerStyle(.menu)
                 }
                 
                 // TODO: add a way to dismiss the keyboard
@@ -97,7 +105,8 @@ struct EditOpportunityView: View {
                             description: description,
                             value: value,
                             priority: priority,
-                            notes: notes
+                            notes: notes,
+                            assignedTo: assignedTo
                         )
                     } else if let accountID {
                         try await viewModel.createOpportunity(
@@ -106,7 +115,8 @@ struct EditOpportunityView: View {
                             value: value,
                             priority: priority,
                             notes: notes,
-                            accountID: accountID
+                            accountID: accountID,
+                            assignedTo: assignedTo
                         )
                     } else {
                         Toast.warn("This Opportunity needs to be linked to an Account")
@@ -136,6 +146,14 @@ struct EditOpportunityView: View {
                 value = "\(opportunity.value)"
                 stageID = opportunity.stageID
             }
+            
+            do {
+                async let workspaceMembers = Networking.api.getWorkspaceMembers()
+                members = try await workspaceMembers
+            } catch {
+                Toast.warn(error)
+            }
+            
             do {
                 try await viewModel.setUp(opportunity: opportunity)
             } catch {

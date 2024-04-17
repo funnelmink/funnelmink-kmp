@@ -86,7 +86,6 @@ struct AccountsView: View {
             }
             
         }
-        .searchable(text: $searchText, prompt: selection == .all ? "Search Accounts" : "Search Contacts")
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 // Your custom leading items here, if any.

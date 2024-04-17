@@ -45,7 +45,8 @@ class EditOpportunityViewModel: ViewModel {
         value: String,
         priority: Int32,
         notes: String?,
-        accountID: String
+        accountID: String,
+        assignedTo: String?
     ) async throws {
         guard let val = Double(value) else {
             throw "Value must be a number"
@@ -57,7 +58,7 @@ class EditOpportunityViewModel: ViewModel {
             priority: priority,
             notes: notes,
             accountID: accountID,
-            assignedTo: state.assignedMember?.id,
+            assignedTo: assignedTo,
             stageID: state.selectedStage.id
         )
         _ = try await Networking.api.createOpportunity(body: body)
@@ -70,7 +71,8 @@ class EditOpportunityViewModel: ViewModel {
         description: String?,
         value: String,
         priority: Int32,
-        notes: String?
+        notes: String?,
+        assignedTo: String?
     ) async throws {
         guard let val = Double(value) else {
             throw "Value must be a number"
@@ -81,7 +83,7 @@ class EditOpportunityViewModel: ViewModel {
             value: val,
             priority: priority,
             notes: notes,
-            assignedTo: state.assignedMember?.id,
+            assignedTo: assignedTo,
             stageID: state.selectedStage.id
         )
         _ = try await Networking

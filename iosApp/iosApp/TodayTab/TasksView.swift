@@ -43,7 +43,6 @@ struct TasksView: View {
             case .completed: completed
             }
         }
-        .searchable(text: $viewModel.searchText)
         .tint(.primary)
         .scrollIndicators(.never)
         .navigationTitle(selection == .completed ? "Completed" : "Tasks")

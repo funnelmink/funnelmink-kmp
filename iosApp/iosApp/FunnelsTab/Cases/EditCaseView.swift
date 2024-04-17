@@ -14,6 +14,8 @@ struct EditCaseView: View {
     @EnvironmentObject var navigation: Navigation
     @StateObject var viewModel = EditCaseViewModel()
     
+    @State var members: [WorkspaceMember] = []
+    @State private var assignedTo = ""
     @State private var description = ""
     @State private var name = ""
     @State private var notes = ""
@@ -70,6 +72,13 @@ struct EditCaseView: View {
                         }
                     }
                     .pickerStyle(.menu)
+                    
+                    Picker(selection: $assignedTo, label: Text("Assigned Member")) {
+                        ForEach(members, id: \.self) { member in
+                            Text(member.username).tag(member.id)
+                        }
+                    }
+                    .pickerStyle(.menu)
                 }
                 
                 // TODO: add a way to dismiss the keyboard
@@ -95,7 +104,8 @@ struct EditCaseView: View {
                             description: description,
                             value: value,
                             priority: priority,
-                            notes: notes
+                            notes: notes,
+                            assignedTo: assignedTo
                         )
                     } else if let accountID {
                         try await viewModel.createCase(
@@ -104,7 +114,8 @@ struct EditCaseView: View {
                             value: value,
                             priority: priority,
                             notes: notes,
-                            accountID: accountID
+                            accountID: accountID,
+                            assignedTo: assignedTo
                         )
                     } else {
                         Toast.warn("This case needs to be linked to an Account")
@@ -134,6 +145,14 @@ struct EditCaseView: View {
                 value = "\(caseRecord.value)"
                 stageID = caseRecord.stageID
             }
+            
+            do {
+                async let workspaceMembers = Networking.api.getWorkspaceMembers()
+                members = try await workspaceMembers
+            } catch {
+                Toast.warn(error)
+            }
+            
             do {
                 try await viewModel.setUp(caseRecord: caseRecord)
             } catch {
