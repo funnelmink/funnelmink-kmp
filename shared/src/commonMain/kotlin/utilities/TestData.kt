@@ -54,6 +54,10 @@ class TestData {
         0,
         timestamp,
         timestamp,
+        15,
+        RecordVisibility.Everyone,
+        timestamp,
+        "cb321b92-47bd-4121-80b8-f97e9ecc1be0",
     )
 
     val testUser = User(

@@ -620,8 +620,12 @@ class Database(databaseDriverFactory: DatabaseDriver) {
             task.body,
             toLong(task.isComplete),
             task.priority.toLong(),
-            task.scheduledDate,
-            task.updatedAt
+            task.date,
+            task.time,
+            task.duration?.toLong(),
+            task.visibility.name,
+            task.updatedAt,
+            task.assignedToID
         )
     }
 
@@ -635,8 +639,12 @@ class Database(databaseDriverFactory: DatabaseDriver) {
             cached.body,
             cached.isComplete,
             cached.priority,
-            cached.scheduledDate,
-            cached.updatedAt
+            cached.date,
+            cached.time,
+            cached.duration,
+            cached.visibility,
+            cached.updatedAt,
+            cached.assignedToID
         )
     }
 
@@ -690,8 +698,12 @@ class Database(databaseDriverFactory: DatabaseDriver) {
         body: String,
         isComplete: Long,
         priority: Long,
-        scheduledDate: String?,
-        updatedAt: String
+        date: String?,
+        time: String?,
+        duration: Long?,
+        visibility: String,
+        updatedAt: String,
+        assignedToID: String?
     ): TaskRecord {
         return TaskRecord(
             id,
@@ -699,8 +711,12 @@ class Database(databaseDriverFactory: DatabaseDriver) {
             body,
             toBool(isComplete),
             priority.toInt(),
-            scheduledDate,
-            updatedAt
+            date,
+            time,
+            duration?.toInt(),
+            RecordVisibility.valueOf(visibility),
+            updatedAt,
+            assignedToID
         )
     }
 

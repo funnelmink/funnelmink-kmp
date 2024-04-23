@@ -8,6 +8,12 @@ data class RecordClosureRequest(
 )
 
 @Serializable
+data class LinkRecordRequest(
+    val recordID: String,
+    val type: RecordType,
+)
+
+@Serializable
 data class CreateAccountRequest(
     val name: String,
     val email: String? = null,
@@ -157,16 +163,24 @@ data class CreateTaskRequest(
     val title: String,
     val body: String,
     val priority: Int,
-    val scheduledDate: String? = null,
+    val date: String? = null,
+    val time: String? = null,
+    val duration: Int? = null,
+    val visibility: RecordVisibility,
+    val assignedTo: String
 )
 
 @Serializable
 data class UpdateTaskRequest(
     val title: String,
-    val body: String? = null,
+    val body: String,
     val priority: Int,
     val isComplete: Boolean,
-    val scheduledDate: String? = null,
+    val date: String? = null,
+    val time: String? = null,
+    val duration: Int? = null,
+    val visibility: RecordVisibility,
+    val assignedTo: String
 )
 
 @Serializable

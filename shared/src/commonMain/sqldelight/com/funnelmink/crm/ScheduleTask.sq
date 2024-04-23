@@ -5,13 +5,17 @@ CREATE TABLE SQLTaskRecord(
     body TEXT NOT NULL,
     isComplete INTEGER NOT NULL,
     priority INTEGER NOT NULL,
-    scheduledDate TEXT,
-    updatedAt TEXT NOT NULL
+    date TEXT,
+    time TEXT,
+    duration INTEGER,
+    visibility TEXT NOT NULL,
+    updatedAt TEXT NOT NULL,
+    assignedToID TEXT
 );
 
 insertTask:
-INSERT INTO SQLTaskRecord(id, title, body, isComplete, priority, scheduledDate, updatedAt)
-VALUES(?, ?, ?, ?, ?, ?, ?);
+INSERT INTO SQLTaskRecord(id, title, body, isComplete, priority, date, time, duration, visibility, updatedAt, assignedToID)
+VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 selectTaskById:
 SELECT *
@@ -32,7 +36,7 @@ DELETE FROM SQLTaskRecord WHERE isComplete = 0;
 
 updateTask:
 UPDATE SQLTaskRecord
-SET body = ?, isComplete = ?, priority = ?, scheduledDate = ?, title = ?, updatedAt = ?
+SET body = ?, isComplete = ?, priority = ?, date = ?, time = ?, duration = ?, visibility = ?, updatedAt = ?, assignedToID = ?
 WHERE id = ?;
 
 removeTask:

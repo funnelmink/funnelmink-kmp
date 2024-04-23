@@ -94,12 +94,14 @@ interface API {
     @Throws(Exception::class) suspend fun deleteOpportunity(id: String)
     @Throws(Exception::class) suspend fun closeOpportunity(id: String, body: RecordClosureRequest): Opportunity
 
-    // tasks
-    @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): TaskRecord
+   // tasks
     @Throws(Exception::class) suspend fun deleteTask(id: String)
-    @Throws(Exception::class) suspend fun getTask(id: String): TaskRecord?
+    @Throws(Exception::class) suspend fun unlinkRecordFromTask(taskID: String, recordID: String)
     @Throws(Exception::class) suspend fun getTasks(): List<TaskRecord>
+    @Throws(Exception::class) suspend fun getTask(id: String): TaskRecord
     @Throws(Exception::class) suspend fun getCompletedTasks(): List<TaskRecord>
+    @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): TaskRecord
+    @Throws(Exception::class) suspend fun linkRecordToTask(taskID: String, body: LinkRecordRequest): TaskRecord
     @Throws(Exception::class) suspend fun updateTask(id: String, body: UpdateTaskRequest): TaskRecord
     @Throws(Exception::class) suspend fun toggleTaskCompletion(id: String, isComplete: Boolean) : TaskRecord
 
