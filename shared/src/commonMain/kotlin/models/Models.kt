@@ -159,8 +159,18 @@ data class TaskRecord(
     val body: String,
     val isComplete: Boolean,
     val priority: Int,
-    val scheduledDate: String? = null,
+    val date: String? = null,
+    val time: String? = null,
+    val duration: Int? = null,
+    val visibility: RecordVisibility,
     val updatedAt: String,
+    val assignedToID: String? = null,
+    val assignedToName: String? = null,
+    val accounts: List<Account> = emptyList(),
+    val contacts: List<Contact> = emptyList(),
+    val cases: List<CaseRecord> = emptyList(),
+    val leads: List<Lead> = emptyList(),
+    val opportunities: List<Opportunity> = emptyList(),
 )
 
 @Serializable
@@ -236,6 +246,33 @@ enum class LeadClosedResult(val resultName: String) {
     }
 }
 
+@Serializable(with = RecordTypeSerializer::class)
+enum class RecordType(val typeName: String) {
+    Account("ACCOUNT"),
+    Case("CASE"),
+    Contact("CONTACT"),
+    Lead("LEAD"),
+    Opportunity("OPPORTUNITY");
+
+    companion object {
+        fun fromTypeName(typeName: String): RecordType =
+            entries.find { it.typeName == typeName }
+                ?: throw IllegalArgumentException("Type not found for name: $typeName")
+    }
+}
+
+@Serializable(with = RecordVisibilityRoleSerializer::class)
+enum class RecordVisibility(val visibility: String) {
+    OnlyMe("ONLY_ME"),
+    Everyone("EVERYONE");
+
+    companion object {
+        fun fromRawValue(visibility: String): RecordVisibility =
+            entries.find { it.visibility == visibility }
+                ?: throw IllegalArgumentException("Visibility level not found: `$visibility`")
+    }
+}
+
 @Serializable(with = WorkspaceMembershipRoleSerializer::class)
 enum class WorkspaceMembershipRole(val roleName: String) {
     Admin("Admin"),
@@ -293,6 +330,34 @@ object LeadClosedResultSerializer : KSerializer<LeadClosedResult> {
     override fun deserialize(decoder: Decoder): LeadClosedResult {
         val resultName = decoder.decodeString()
         return LeadClosedResult.fromResultName(resultName)
+    }
+}
+
+object RecordTypeSerializer : KSerializer<RecordType> {
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("RecordType", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: RecordType) {
+        encoder.encodeString(value.typeName)
+    }
+
+    override fun deserialize(decoder: Decoder): RecordType {
+        val typeName = decoder.decodeString()
+        return RecordType.fromTypeName(typeName)
+    }
+}
+
+object RecordVisibilityRoleSerializer : KSerializer<RecordVisibility> {
+    override val descriptor: SerialDescriptor =
+        PrimitiveSerialDescriptor("RecordVisibility", PrimitiveKind.STRING)
+
+    override fun serialize(encoder: Encoder, value: RecordVisibility) {
+        encoder.encodeString(value.visibility)
+    }
+
+    override fun deserialize(decoder: Decoder): RecordVisibility {
+        val visibility = decoder.decodeString()
+        return RecordVisibility.fromRawValue(visibility)
     }
 }
 
