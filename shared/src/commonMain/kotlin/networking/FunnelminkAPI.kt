@@ -481,8 +481,10 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun unlinkRecordFromTask(taskID: String, recordID: String) {
-        genericRequest<Unit>("$baseURL/v1/workspace/tasks/$taskID/unlink/$recordID", HttpMethod.Delete)
+    override suspend fun unlinkRecordFromTask(taskID: String, body: UnlinkRecordRequest) {
+        genericRequest<Unit>("$baseURL/v1/workspace/tasks/$taskID/unlink/", HttpMethod.Delete) {
+            setBody(body)
+        }
     }
 
     @Throws(Exception::class)
@@ -515,11 +517,6 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun getTask(id: String): TaskRecord {
-        val cached = cache.selectTask(id)
-        if (cached != null) {
-            Utilities.logger.info("🛃 Returned task $id from cache")
-            return cached
-        }
         return genericRequest("$baseURL/v1/workspace/tasks/$id", HttpMethod.Get)
     }
 

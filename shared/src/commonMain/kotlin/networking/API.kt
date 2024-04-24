@@ -96,7 +96,7 @@ interface API {
 
    // tasks
     @Throws(Exception::class) suspend fun deleteTask(id: String)
-    @Throws(Exception::class) suspend fun unlinkRecordFromTask(taskID: String, recordID: String)
+    @Throws(Exception::class) suspend fun unlinkRecordFromTask(taskID: String, body: UnlinkRecordRequest)
     @Throws(Exception::class) suspend fun getTasks(): List<TaskRecord>
     @Throws(Exception::class) suspend fun getTask(id: String): TaskRecord
     @Throws(Exception::class) suspend fun getCompletedTasks(): List<TaskRecord>

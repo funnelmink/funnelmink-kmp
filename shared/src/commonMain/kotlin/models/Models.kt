@@ -166,6 +166,11 @@ data class TaskRecord(
     val updatedAt: String,
     val assignedToID: String? = null,
     val assignedToName: String? = null,
+    val accounts: List<Account> = emptyList(),
+    val contacts: List<Contact> = emptyList(),
+    val cases: List<CaseRecord> = emptyList(),
+    val leads: List<Lead> = emptyList(),
+    val opportunities: List<Opportunity> = emptyList(),
 )
 
 @Serializable

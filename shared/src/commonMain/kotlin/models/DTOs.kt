@@ -14,6 +14,12 @@ data class LinkRecordRequest(
 )
 
 @Serializable
+data class UnlinkRecordRequest(
+    val recordID: String,
+    val type: RecordType,
+)
+
+@Serializable
 data class CreateAccountRequest(
     val name: String,
     val email: String? = null,
