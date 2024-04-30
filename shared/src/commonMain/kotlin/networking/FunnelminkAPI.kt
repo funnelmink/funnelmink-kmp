@@ -162,7 +162,7 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getAccounts(): List<Account> {
+    override suspend fun getAccounts(offset: Int): List<Account> {
         // TODO: store the arrays of cases, opps, contacts, etc
 //        val cacheKey = "getAccounts"
 //        try {
@@ -173,7 +173,7 @@ class FunnelminkAPI(
 //                    return cached
 //                }
 //            }
-            val fetched: List<Account> = genericRequest("$baseURL/v1/workspace/accounts", HttpMethod.Get)
+            val fetched: List<Account> = genericRequest("$baseURL/v1/workspace/accounts?offset=$offset", HttpMethod.Get)
 //            cache.replaceAllAccounts(fetched)
 //            cacheInvalidator.updateTimestamp(cacheKey)
 //            Utilities.logger.info("Cached ${fetched.size} accounts")
@@ -231,6 +231,10 @@ class FunnelminkAPI(
         return genericRequest("$baseURL/v1/workspace/contacts/$id", HttpMethod.Get)
     }
 
+    override suspend fun getContacts(offset: Int): List<Contact> {
+        return genericRequest("$baseURL/v1/workspace/contacts?offset=$offset", HttpMethod.Get)
+    }
+
     // ------------------------------------------------------------------------
     // Activities
     // ------------------------------------------------------------------------
@@ -243,8 +247,8 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getActivitiesForRecord(id: String, subtype: ActivitySubtype): List<ActivityRecord> {
-        return genericRequest("$baseURL/v1/workspace/activities/$subtype/$id", HttpMethod.Get)
+    override suspend fun getActivitiesForRecord(id: String, subtype: ActivitySubtype, offset: Int): List<ActivityRecord> {
+        return genericRequest("$baseURL/v1/workspace/activities/$subtype/$id?offset=$offset", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
@@ -297,9 +301,9 @@ class FunnelminkAPI(
         return genericRequest("$baseURL/v1/workspace/cases/$id", HttpMethod.Get)
     }
 
-    override suspend fun getCases(): List<CaseRecord> {
+    override suspend fun getCases(offset: Int): List<CaseRecord> {
         // TODO: val cacheKey = "getCases"
-        return genericRequest("$baseURL/v1/workspace/cases", HttpMethod.Get)
+        return genericRequest("$baseURL/v1/workspace/cases?offset=$offset", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
@@ -336,30 +340,30 @@ class FunnelminkAPI(
     }
 
     @Throws(Exception::class)
-    override suspend fun getLeads(): List<Lead> {
-        val cacheKey = "getLeads"
-        try {
-            if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllLeads()
-                if (cached.isNotEmpty()) {
-                    Utilities.logger.info("🛃 Retrieved ${cached.size} leads from cache")
-                    return cached
-                }
-            }
-            val fetched: List<Lead> = genericRequest("$baseURL/v1/workspace/leads", HttpMethod.Get)
-            cache.replaceAllLeads(fetched)
-            cacheInvalidator.updateTimestamp(cacheKey)
-            Utilities.logger.info("Cached ${fetched.size} leads")
+    override suspend fun getLeads(offset: Int): List<Lead> {
+//        val cacheKey = "getLeads"
+//        try {
+//            if (!cacheInvalidator.isStale(cacheKey)) {
+//                val cached = cache.selectAllLeads()
+//                if (cached.isNotEmpty()) {
+//                    Utilities.logger.info("🛃 Retrieved ${cached.size} leads from cache")
+//                    return cached
+//                }
+//            }
+            val fetched: List<Lead> = genericRequest("$baseURL/v1/workspace/leads?offset=$offset", HttpMethod.Get)
+//            cache.replaceAllLeads(fetched)
+//            cacheInvalidator.updateTimestamp(cacheKey)
+//            Utilities.logger.info("Cached ${fetched.size} leads")
             return fetched
-        } catch (e: Exception) {
-            val cached = cache.selectAllLeads()
-            if (cached.isNotEmpty()) {
-                Utilities.logger.warn("🛃 Failed to fetch Leads. Returned ${cached.size} leads from cache")
-                return cached
-            } else {
-                throw e
-            }
-        }
+//        } catch (e: Exception) {
+//            val cached = cache.selectAllLeads()
+//            if (cached.isNotEmpty()) {
+//                Utilities.logger.warn("🛃 Failed to fetch Leads. Returned ${cached.size} leads from cache")
+//                return cached
+//            } else {
+//                throw e
+//            }
+//        }
     }
 
     @Throws(Exception::class)
@@ -442,8 +446,8 @@ class FunnelminkAPI(
         return genericRequest("$baseURL/v1/workspace/opportunities/$id", HttpMethod.Get)
     }
 
-    override suspend fun getOpportunities(): List<Opportunity> {
-        return genericRequest("$baseURL/v1/workspace/opportunities", HttpMethod.Get)
+    override suspend fun getOpportunities(offset: Int): List<Opportunity> {
+        return genericRequest("$baseURL/v1/workspace/opportunities?offset=$offset", HttpMethod.Get)
     }
 
     @Throws(Exception::class)
@@ -489,30 +493,30 @@ class FunnelminkAPI(
 
     @Throws(Exception::class)
     override suspend fun getTasks(): List<TaskRecord> {
-        val cacheKey = "getTasks"
-        try {
-            if (!cacheInvalidator.isStale(cacheKey)) {
-                val cached = cache.selectAllIncompleteTasks()
-                if (cached.isNotEmpty()) {
-                    Utilities.logger.info("🛃 Retrieved ${cached.size} tasks from cache")
-                    return cached
-                }
-            }
+//        val cacheKey = "getTasks"
+//        try {
+//            if (!cacheInvalidator.isStale(cacheKey)) {
+//                val cached = cache.selectAllIncompleteTasks()
+//                if (cached.isNotEmpty()) {
+//                    Utilities.logger.info("🛃 Retrieved ${cached.size} tasks from cache")
+//                    return cached
+//                }
+//            }
             val fetched: List<TaskRecord> = genericRequest("$baseURL/v1/workspace/tasks", HttpMethod.Get)
-            cache.replaceAllIncompleteTasks(fetched)
-            Utilities.logger.info("Cached ${fetched.size} tasks")
-            cacheInvalidator.updateTimestamp(cacheKey)
+//            cache.replaceAllIncompleteTasks(fetched)
+//            Utilities.logger.info("Cached ${fetched.size} tasks")
+//            cacheInvalidator.updateTimestamp(cacheKey)
             return fetched
-        } catch (e: Exception) {
-            // Fallback to cached data if a network request fails
-            val cached = cache.selectAllIncompleteTasks()
-            if (cached.isNotEmpty()) {
-                Utilities.logger.warn("🛃 Failed to fetch Tasks. Returned ${cached.size} tasks from cache")
-                return cached
-            } else {
-                throw e // Re-throw the exception if there's no cached data
-            }
-        }
+//        } catch (e: Exception) {
+//            // Fallback to cached data if a network request fails
+//            val cached = cache.selectAllIncompleteTasks()
+//            if (cached.isNotEmpty()) {
+//                Utilities.logger.warn("🛃 Failed to fetch Tasks. Returned ${cached.size} tasks from cache")
+//                return cached
+//            } else {
+//                throw e // Re-throw the exception if there's no cached data
+//            }
+//        }
     }
 
     @Throws(Exception::class)
