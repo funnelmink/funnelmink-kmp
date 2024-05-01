@@ -16,34 +16,36 @@ struct SearchResultList: View {
     @State var result = SearchResult(accounts: [], contacts: [], cases: [], leads: [], opportunities: [], tasks: [])
     
     var body: some View {
-                ScrollView {
-                    HStack {
-                        Button(action: {
-                            navigation.popSegue()
-                        }, label: {
-                            Image(systemName: "chevron.left")
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 24, height: 24)
-                                .foregroundStyle(.primary)
-                        })
-                        TextField("Search Tasks, Accounts, Cases, etc.", text: $searchText)
-                            .submitLabel(.search)
-                            .padding(.horizontal)
-                            .onSubmit {
-                                Task {
-                                    let body = SearchRequest(searchText: searchText)
-                                    let searchResult = try await Networking.api.search(body: body)
-                                    self.result = searchResult
-                                }
-                            }
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 25)
-                                    .stroke()
-                                    .frame(height: 35)
-                            }
+        HStack {
+            Button(action: {
+                navigation.popSegue()
+            }, label: {
+                Image(systemName: "chevron.left")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 24, height: 24)
+                    .foregroundStyle(.primary)
+            })
+            TextField("Search Tasks, Accounts, Cases, etc.", text: $searchText)
+                .submitLabel(.search)
+                .padding(.horizontal)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+                .onSubmit {
+                    Task {
+                        let body = SearchRequest(searchText: searchText)
+                        let searchResult = try await Networking.api.search(body: body)
+                        self.result = searchResult
                     }
-                    .padding(.horizontal)
+                }
+                .overlay {
+                    RoundedRectangle(cornerRadius: 25)
+                        .stroke()
+                        .frame(height: 35)
+                }
+        }
+        .padding(.horizontal)
+                List {
                     if !result.cases.isEmpty {
                         Section("Cases") {
                             ForEach(result.cases, id: \.self) { caseRecord in
