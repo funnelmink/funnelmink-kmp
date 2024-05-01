@@ -46,7 +46,7 @@ interface API {
     @Throws(Exception::class) suspend fun getAssignments(memberID: String): MemberAssignments
 
     // accounts
-    @Throws(Exception::class) suspend fun getAccounts(): List<Account>
+    @Throws(Exception::class) suspend fun getAccounts(offset: Int): List<Account>
     @Throws(Exception::class) suspend fun createAccount(body: CreateAccountRequest): Account
     @Throws(Exception::class) suspend fun getAccountDetails(id: String): Account
     @Throws(Exception::class) suspend fun updateAccount(id: String, body: UpdateAccountRequest): Account
@@ -55,7 +55,7 @@ interface API {
 
     // activities
     @Throws(Exception::class) suspend fun createActivity(subtype: ActivitySubtype, body: CreateActivityRequest)
-    @Throws(Exception::class) suspend fun getActivitiesForRecord(id: String, subtype: ActivitySubtype): List<ActivityRecord>
+    @Throws(Exception::class) suspend fun getActivitiesForRecord(id: String, subtype: ActivitySubtype, offset: Int): List<ActivityRecord>
     @Throws(Exception::class) suspend fun deleteActivity(subtype: ActivitySubtype, id: String)
 
     // contacts
@@ -63,12 +63,13 @@ interface API {
     @Throws(Exception::class) suspend fun updateContact(id: String, body: UpdateContactRequest): Contact
     @Throws(Exception::class) suspend fun deleteContact(id: String)
     @Throws(Exception::class) suspend fun getContact(id: String): Contact
+    @Throws(Exception::class) suspend fun getContacts(offset: Int): List<Contact>
 
     // cases
     @Throws(Exception::class) suspend fun assignCaseToMember(id: String, memberID: String): CaseRecord
     @Throws(Exception::class) suspend fun assignCaseToFunnelStage(id: String, stageID: String): CaseRecord
     @Throws(Exception::class) suspend fun getCase(id: String): CaseRecord
-    @Throws(Exception::class) suspend fun getCases(): List<CaseRecord>
+    @Throws(Exception::class) suspend fun getCases(offset: Int): List<CaseRecord>
     @Throws(Exception::class) suspend fun createCase(body: CreateCaseRequest): CaseRecord
     @Throws(Exception::class) suspend fun updateCase(id: String, body: UpdateCaseRequest): CaseRecord
     @Throws(Exception::class) suspend fun deleteCase(id: String)
@@ -77,7 +78,7 @@ interface API {
     // leads
     @Throws(Exception::class) suspend fun assignLeadToMember(id: String, memberID: String): Lead
     @Throws(Exception::class) suspend fun assignLeadToFunnelStage(id: String, stageID: String): Lead
-    @Throws(Exception::class) suspend fun getLeads(): List<Lead>
+    @Throws(Exception::class) suspend fun getLeads(offset: Int): List<Lead>
     @Throws(Exception::class) suspend fun getLead(id: String): Lead
     @Throws(Exception::class) suspend fun createLead(body: CreateLeadRequest): Lead
     @Throws(Exception::class) suspend fun updateLead(id: String, body: UpdateLeadRequest): Lead
@@ -88,18 +89,20 @@ interface API {
     @Throws(Exception::class) suspend fun assignOpportunityToMember(id: String, memberID: String): Opportunity
     @Throws(Exception::class) suspend fun assignOpportunityToFunnelStage(id: String, stageID: String): Opportunity
     @Throws(Exception::class) suspend fun getOpportunity(id: String): Opportunity
-    @Throws(Exception::class) suspend fun getOpportunities(): List<Opportunity>
+    @Throws(Exception::class) suspend fun getOpportunities(offset: Int): List<Opportunity>
     @Throws(Exception::class) suspend fun createOpportunity(body: CreateOpportunityRequest): Opportunity
     @Throws(Exception::class) suspend fun updateOpportunity(id: String, body: UpdateOpportunityRequest): Opportunity
     @Throws(Exception::class) suspend fun deleteOpportunity(id: String)
     @Throws(Exception::class) suspend fun closeOpportunity(id: String, body: RecordClosureRequest): Opportunity
 
-    // tasks
-    @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): TaskRecord
+   // tasks
     @Throws(Exception::class) suspend fun deleteTask(id: String)
-    @Throws(Exception::class) suspend fun getTask(id: String): TaskRecord?
+    @Throws(Exception::class) suspend fun unlinkRecordFromTask(taskID: String, body: UnlinkRecordRequest)
     @Throws(Exception::class) suspend fun getTasks(): List<TaskRecord>
+    @Throws(Exception::class) suspend fun getTask(id: String): TaskRecord
     @Throws(Exception::class) suspend fun getCompletedTasks(): List<TaskRecord>
+    @Throws(Exception::class) suspend fun createTask(body: CreateTaskRequest): TaskRecord
+    @Throws(Exception::class) suspend fun linkRecordToTask(taskID: String, body: LinkRecordRequest): TaskRecord
     @Throws(Exception::class) suspend fun updateTask(id: String, body: UpdateTaskRequest): TaskRecord
     @Throws(Exception::class) suspend fun toggleTaskCompletion(id: String, isComplete: Boolean) : TaskRecord
 
