@@ -18,7 +18,7 @@ class AccountsViewModel: ViewModel {
     
     @MainActor
     func getAccounts() async throws {
-        state.accounts = try await Networking.api.getAccounts()
+        state.accounts = try await Networking.api.getAccounts(offset: 0)
     }
     
     @MainActor

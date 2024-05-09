@@ -17,7 +17,7 @@ class EditTaskViewModel: ViewModel {
     }
     
     @MainActor
-    func createTask(title: String, priority: Int32, body: String, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
+    func createTask(title: String, priority: Int32, body: String, date: String?, time: String?, duration: Int32?, visibility: RecordVisibility, assignedTo: String, onSuccess: @escaping () -> Void) async {
         if title.isEmpty {
             Toast.error("Pretend success!")
             return
@@ -28,11 +28,17 @@ class EditTaskViewModel: ViewModel {
 //            return
 //        }
         do {
+            var kDuration: KotlinInt?
+            if let duration { kDuration = KotlinInt(int: duration) }
             let body = CreateTaskRequest(
                 title: title,
-                body: body, 
-                priority: Int32(priority),
-                scheduledDate: scheduledDate
+                body: body,
+                priority: priority,
+                date: date,
+                time: time,
+                duration: kDuration,
+                visibility: visibility,
+                assignedTo: assignedTo
             )
             _ = try await Networking.api.createTask(body: body)
             onSuccess()
@@ -42,7 +48,7 @@ class EditTaskViewModel: ViewModel {
     }
     
     @MainActor
-    func updateTask(id: String, title: String, priority: Int32, isComplete: Bool,  body: String?, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
+    func updateTask(id: String, title: String, priority: Int32, duration: Int32?, isComplete: Bool, body: String, scheduledDate: String?, onSuccess: @escaping () -> Void) async {
         if title.isEmpty {
             Toast.error("Task name cannot be empty.")
             return
@@ -52,13 +58,9 @@ class EditTaskViewModel: ViewModel {
 //            return
 //        }
         do {
-            let body = UpdateTaskRequest(
-                title: title,
-                body: body, 
-                priority: Int32(priority),
-                isComplete: isComplete,
-                scheduledDate: scheduledDate
-            )
+            var kDuration: KotlinInt?
+            if let duration { kDuration = KotlinInt(int: duration) }
+            let body = UpdateTaskRequest(title: title, body: body, priority: priority, isComplete: isComplete, date: scheduledDate, time: nil, duration: kDuration, visibility: .onlyMe, assignedTo: AppState.shared.user!.id)
             _ = try await Networking.api.updateTask(id: id, body: body)
             onSuccess()
         } catch {

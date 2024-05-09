@@ -35,7 +35,7 @@ struct TaskDetailView: View {
             }
             .padding(.horizontal)
             ScrollView {
-                if let date = task.scheduledDate?.toDate()?.toTaskSectionTitle() {
+                if let date = task.date?.toDate()?.toTaskSectionTitle() {
                     Text(date)
                 }
                 Divider()

@@ -31,7 +31,7 @@ struct LeadsView: View {
         .navigationTitle("Leads")
         .loggedTask {
             do {
-           let leads = try await Networking.api.getLeads()
+                let leads = try await Networking.api.getLeads(offset: 0)
                 self.leads = leads
             } catch {
                 Toast.error(error)

@@ -16,6 +16,11 @@ struct EditTaskView: View {
     @State var taskBody = ""
     @State var priority: Int32 = 0
     @State var date: Date?
+    @State var time: Date?
+    @State var duration: Int32?
+    @State var visibility: RecordVisibility = .onlyMe
+    @State var assignedTo: String = ""
+    
     var task: TaskRecord?
     
     var body: some View {
@@ -93,6 +98,7 @@ struct EditTaskView: View {
                         id: task.id,
                         title: taskName,
                         priority: priority,
+                        duration: task.duration as! Int32,
                         isComplete: task.isComplete,
                         body: taskBody,
                         scheduledDate: date?.iso8601()
@@ -104,10 +110,15 @@ struct EditTaskView: View {
                         title: taskName,
                         priority: priority,
                         body: taskBody,
-                        scheduledDate: date?.iso8601()
-                    ) {
-                        navigation.dismissModal()
-                    }
+                        date: date?.formatted(),
+                        time: time?.formatted(),
+                        duration: duration,
+                        visibility: visibility,
+                        assignedTo: assignedTo,
+                        onSuccess: {
+                            navigation.dismissModal()
+                        }
+                    )
                 }
             } label: {
                 Text(task == nil ? "Create" : "Update")
@@ -125,7 +136,7 @@ struct EditTaskView: View {
             if let task = task {
                 taskName = task.title
                 priority = task.priority
-                date = task.scheduledDate?.toDate()
+                date = task.date?.toDate()
                 taskBody = task.body
             }
         }

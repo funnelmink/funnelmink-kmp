@@ -29,7 +29,7 @@ struct SelectAccountView: View {
         }
         .loggedTask {
             do {
-                accounts = try await Networking.api.getAccounts()
+                accounts = try await Networking.api.getAccounts(offset: 0)
             } catch {
                 Toast.error(error)
             }

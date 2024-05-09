@@ -60,7 +60,7 @@ class TodayViewModel: ViewModel {
             
             state.tasksByDate = Dictionary(
                 grouping: tasks,
-                by: { $0.scheduledDate?.toSortableDate() ?? Date.distantPast }
+                by: { $0.date?.toSortableDate() ?? Date.distantPast }
             )
             state.tasksByPriority = Dictionary(grouping: tasks, by: { $0.priority })
         } catch {
