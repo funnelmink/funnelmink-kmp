@@ -64,7 +64,6 @@ class TestData {
         "c32d4984-1b89-48a3-a0f4-6c1d1239cc99",
         "Onson Sweemy",
         "on.son@example.com",
-        false,
     )
 
     val testWorkspace = Workspace(
