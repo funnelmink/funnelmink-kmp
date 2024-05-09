@@ -1,13 +1,12 @@
 CREATE TABLE SQLUser (
     id TEXT PRIMARY KEY,
     email TEXT UNIQUE NOT NULL,
-    username TEXT NOT NULL,
-    isDevAccount INTEGER NOT NULL
+    username TEXT NOT NULL
 );
 
 insertUser:
-INSERT INTO SQLUser(id, email, username, isDevAccount)
-VALUES(?, ?, ?, ?);
+INSERT INTO SQLUser(id, email, username)
+VALUES(?, ?, ?);
 
 selectUserById:
 SELECT *
@@ -21,8 +20,7 @@ FROM SQLUser;
 updateUser:
 UPDATE SQLUser
 SET email = ?,
-    username = ?,
-    isDevAccount = ?
+    username = ?
 WHERE id = ?;
 
 removeAllUsers:

@@ -918,7 +918,6 @@ class Database(databaseDriverFactory: DatabaseDriver) {
                 user.id,
                 user.email,
                 user.username,
-                toLong(user.isDevAccount)
             )
         }
     }
@@ -930,7 +929,6 @@ class Database(databaseDriverFactory: DatabaseDriver) {
             cached.id,
             cached.email,
             cached.username,
-            cached.isDevAccount
         )
     }
 
@@ -944,7 +942,6 @@ class Database(databaseDriverFactory: DatabaseDriver) {
         userDB.updateUser(
             user.email,
             user.username,
-            toLong(user.isDevAccount),
             user.id
         )
     }
@@ -954,8 +951,8 @@ class Database(databaseDriverFactory: DatabaseDriver) {
         userDB.removeAllUsers()
     }
 
-    private fun mapUser(id: String, email: String, username: String, isDevAccount: Long): User {
-        return User(id, username, email, toBool(isDevAccount))
+    private fun mapUser(id: String, email: String, username: String): User {
+        return User(id, username, email)
     }
 
     // ------------------------------------------------------------------------
